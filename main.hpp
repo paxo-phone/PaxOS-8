@@ -7,12 +7,10 @@
 using namespace std;
 
 #include "interface/interface.hpp"
+#include "widgets/gauss.hpp"
 
 void setup()
 {
-    LFile file("paxos_8.ino");
-    file.write('a');
-    cout << file.read();
 }
 
 void loop()

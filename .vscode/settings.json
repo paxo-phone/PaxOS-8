@@ -7,7 +7,7 @@
         "cstddef": "cpp",
         "cstdio": "cpp",
         "cstdlib": "cpp",
-        "cstring": "cpp",
+        "cstd::string": "cpp",
         "ctime": "cpp",
         "cwchar": "cpp",
         "cwctype": "cpp",
@@ -26,7 +26,7 @@
         "list": "cpp",
         "map": "cpp",
         "set": "cpp",
-        "string": "cpp",
+        "std::string": "cpp",
         "unordered_map": "cpp",
         "vector": "cpp",
         "exception": "cpp",
@@ -39,7 +39,7 @@
         "optional": "cpp",
         "random": "cpp",
         "ratio": "cpp",
-        "string_view": "cpp",
+        "std::string_view": "cpp",
         "system_error": "cpp",
         "tuple": "cpp",
         "type_traits": "cpp",
@@ -65,6 +65,12 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "strstream": "cpp",
+        "cfenv": "cpp",
+        "csignal": "cpp",
+        "cstring": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     }
 }

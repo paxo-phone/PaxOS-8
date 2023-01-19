@@ -20,14 +20,14 @@ enum MemoryOpenMode
 class LFile
 {
     public:
-    LFile(string filename);
+    LFile(std::string filename);
     bool open(MemoryOpenMode mode, bool erase = false); // ouvrir le fichier avec un mode d'ouverture, et la possibilité d'écraser son contenu
 
     char read();        // lire un carractère
-    string readAll();   // lire tout les carractères du fichier
+    std::string readAll();   // lire tout les carractères du fichier
 
     void write(char chr);       // écrire un carractère
-    void print(string data);    // écrire plusieurs carractères
+    void print(std::string data);    // écrire plusieurs carractères
 
     private:
     std::string filename = "";  // adresse du fichier
@@ -39,6 +39,12 @@ class LFile
     #ifdef BUILD_PAXO
     File* file = nullptr;
     #endif
+};
+
+class Memory
+{
+    public:
+    Memory();
 };
 
 #endif
