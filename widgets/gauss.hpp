@@ -41,27 +41,26 @@ enum GAUSS_TYPE
 
 LGFX_Sprite tft(&tft_root);
 
-void init_gauss()
-{
-    
-}
 
 bool reload_afterunlocked = false;
 
 class Gauss // widget system
 {
     public:
-    virtual ~Gauss();
-    static void initScreen();
-    void init(int16_t x, int16_t y, int16_t width, int16_t height);
+    virtual ~Gauss(); // supprime le widget
+
+    static void initScreen(); // initialise l'ecran (tft_root)
+    void init(int16_t x, int16_t y, int16_t width, int16_t height); // constructeur personnalisé
+
+    virtual GAUSS_TYPE getType() = 0;  // retourne le type de l'objet selon GAUSS_TYPE
 
     virtual void draw() = 0;        // draw objet
     virtual bool update();      // update objet
     virtual bool isFocuced();   // return true if is touched
     virtual void clear(color_t color){}; // clear
     virtual void free(){}            // delete[] dynamics allocations before destructor
-    virtual uint8_t getType() = 0;
-    virtual bool isTouched();
+    
+    virtual bool isTouched(); // clique relaché sur l'élément
 
     virtual void drawAll(bool draw_ = true);         // draw all childs and itself
     void renderAll();
@@ -100,8 +99,9 @@ class Gauss // widget system
 
     int16_t getBorderSize();   // get border size
     Alignment getAlignment(); // get alignment
-    bool isEnabled(){return this->enabled;}
-    bool getRadius(){ return this->radius;}
+
+    bool getRadius(){ return this->radius;} // retourne le rayan de l'objet
+    bool isEnabled(){return this->enabled;} // retourne l'état d'activation de l'objet
 
     int16_t getLowestY();
     int16_t getHighestY();
@@ -122,16 +122,17 @@ class Gauss // widget system
 
     void setColor(color_t color);       // colors
     void setBackgroundColor(color_t backgroundColor);
-
     void setBorderColor(color_t borderColor);
+
     void setBorderSize(int16_t borderSize); // set border size
+    // void setAutoSize(bool autoSize){this->autoSize=autoSize;} // a implémenter
 
     void setTheme(uint8_t theme);
+
     void setHorizontalAlignment(Alignment alignment); // set alignment
     void setVerticalAlignment(Alignment alignment); // set alignment
-    void setRadius(int16_t radius); // set radius
 
-    void setAutoSize(bool autoSize){this->autoSize=autoSize;}
+    void setRadius(int16_t radius); // set radius
 
     void setSpeed(bool speed){this->speed=speed;}
 
@@ -173,9 +174,10 @@ class Gauss // widget system
     color_t borderColor = theme_color[DEFAULT_THEME][2];
 
     int16_t borderSize = DEFAULT_BORDER_SIZE;
+    int16_t radius = DEFAULT_RADIUS;
+
     Alignment H_alignment = DEFAULT_H_ALIGNEMENT;
     Alignment V_alignment = DEFAULT_V_ALIGNEMENT;
-    int16_t radius = DEFAULT_RADIUS;
 
     unsigned int timerPress = 0;
 
@@ -193,5 +195,7 @@ class Gauss // widget system
 Gauss *upFromDrawAll = nullptr;
 Gauss *mainWindow = nullptr;
 bool drawing = false;
+
+#include "gauss/box.hpp"
 
 #endif /* GAUSS_HPP */

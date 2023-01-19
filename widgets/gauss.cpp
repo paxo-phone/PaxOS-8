@@ -14,6 +14,11 @@ Gauss::~Gauss()
     }
 }
 
+void Gauss::initScreen()
+{
+    tft_root.init();
+}
+
 void Gauss::init(int16_t x, int16_t y, int16_t width, int16_t height)
 {
     this->x = x;
@@ -89,17 +94,6 @@ bool Gauss::isTouched()
 
 bool Gauss::update()
 {
-    if(mainWindow!=this && getType()==WINDOW_TYPE)
-    {
-        mainWindow=this;
-        drawAll();
-    }
-    if(mainWindow==this)
-    {
-    }
-
-    drawing=false;
-
     bool s = isFocuced();
 
     if(s)
@@ -175,11 +169,11 @@ void Gauss::drawAll(bool draw_)
     
     if(!rendered)
     {
-        rendered=true;
         l_tft.deleteSprite();
         l_tft.setPsram(true);
         l_tft.setColorDepth((speed) ? (8) : (16));
         l_tft.createSprite(this->getWidth(), this->getHeight());
+
         if(upFromDrawAll==this)
             l_tft.fillSprite(0xFFFF);
         else
@@ -198,13 +192,7 @@ void Gauss::drawAll(bool draw_)
     {
         upFromDrawAll=nullptr;
 
-        if(upFromDrawAll==this)
-        {
-            reload_afterunlocked=false;
-            return;
-        }
         l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
-        drawing=false;
     }
     else
     {
@@ -305,6 +293,7 @@ void Gauss::setParent(Gauss *parent)
 {
     this->parent = parent;
     reloadWidget();
+    rendered=false;
 }
 
 Gauss* Gauss::getMaster()
@@ -415,69 +404,73 @@ Alignment Gauss::getAlignment()
 void Gauss::setX(int16_t x)
 {
     this->x=x;
+    rendered=false;
 }
 
 void Gauss::setY(int16_t y)
 {
     this->y=y;
+    rendered=false;
 }
 
 void Gauss::setWidth(int16_t width)
 {
     this->width=width;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setHeight(int16_t height)
 {
     this->height=height;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setMarginX(int16_t marginX)
 {
     this->marginX=marginX;
+    rendered=false;
 }
 
 void Gauss::setMarginY(int16_t marginY)
 {
     this->marginY=marginY;
+    rendered=false;
 }
 
 void Gauss::setPaddingX(int16_t paddingX)
 {
     this->paddingX=paddingX;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setPaddingY(int16_t paddingY)
 {
     this->paddingY=paddingY;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setColor(color_t color)
 {
     this->color=color;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setBackgroundColor(color_t backgroundColor)
 {
     this->backgroundColor=backgroundColor;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setBorderColor(color_t borderColor)
 {
     this->borderColor=borderColor;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setBorderSize(int16_t borderSize)
 {
     this->borderSize=borderSize;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setTheme(uint8_t theme)
@@ -485,25 +478,25 @@ void Gauss::setTheme(uint8_t theme)
     color = theme_color[theme][0];
     backgroundColor = theme_color[theme][1];
     borderColor = theme_color[theme][2];
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setHorizontalAlignment(Alignment alignment)
 {
     this->H_alignment=alignment;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setVerticalAlignment(Alignment alignment)
 {
     this->V_alignment=alignment;
-    reloadWidget();
+    rendered=false;
 }
 
 void Gauss::setRadius(int16_t radius)
 {
     this->radius=radius;
-    reloadWidget();
+    rendered=false;
 }
 
 int16_t Gauss::getLowestY()

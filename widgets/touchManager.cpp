@@ -8,7 +8,7 @@ void TouchManager::update()
 {
     if(timerUpdate+50<millis())
     {
-        tft_root.getTouchRaw(&tx, &ty);
+        cout << tft_root.getTouchRaw(&tx, &ty) << endl;
         tft_root.convertRawXY(&tx, &ty);
         if(tx<0 || tx>320 || ty<0 || ty>480)
         {
@@ -101,6 +101,7 @@ bool TouchManager::isTouchRead() // simple detector
 {
     update();
     uint16_t z = tft_root.getTouchRaw(&tx, &ty);
+    cout << "z = " << z << endl;
     tft_root.convertRawXY(&tx, &ty);
     return z;
     if(tx<0 || tx>320 || ty<0 || ty>480)
