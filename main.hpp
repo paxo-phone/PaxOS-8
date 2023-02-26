@@ -1,44 +1,47 @@
-//#define BUILD_PAXO
+//#define BUILD_PAXO 1
 #define BUILD_EMU 1
 
 #include <stdlib.h>
-#include <iostream>
+#include <stdint.h>
 
 using namespace std;
 
 #include "interface/interface.hpp"
-#include "widgets/gauss.hpp"
-
-#ifdef BUILD_EMU
-
-#include "interface/LovyanGFX/LGFX_SDL.cpp"
-
-#endif
+#include "widgets/gui.hpp"
+#include "tasks/tasks.hpp"
 
 Box* box = nullptr;
+Label* label = nullptr;
+Label* label2 = nullptr;
+Label* label3 = nullptr;
+
 bool state = false;
 
 void setup()
 {
-    Gauss::initScreen();
+    Gui::initScreen();
+    storage::init();
 
-    box = new Box(10, 10, 100, 100);
+    box = new Box(10, 10, 300, 460);
+    
+    label = new Label(0, AUTO, AUTO, 200, "A");
+    label->fontHeight = 1;
+    box->addChild(label);
+    
     box->setBackgroundColor(COLOR_ERROR);
+    box->renderAll();
 
-    box->drawAll();
+    while(!box->isTouched())
+    {
+        box->updateAll();
+    }
 }
 
 void loop()
 {
     box->updateAll();
-    if(box->isTouched())
-    {
-        cout << touch.getX() << " " << touch.getY() << endl;
-        if(state)
-            box->setBackgroundColor(COLOR_GREY);
-        else
-            box->setBackgroundColor(COLOR_BLUE);
-        state=!state;
-        box->drawAll();
-    }
+
+    delay(100);
+    label->fontHeight++;
+    box->renderAll();
 }

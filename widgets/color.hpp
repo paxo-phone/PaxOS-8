@@ -1,7 +1,7 @@
 #ifndef COLOR_HPP
 #define COLOR_HPP
 
-#include "gauss.hpp"
+#include "gui.hpp"
 
 /*###############################################*/
 /*              theme configuration              */

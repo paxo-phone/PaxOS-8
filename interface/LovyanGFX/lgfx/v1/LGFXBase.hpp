@@ -114,6 +114,7 @@ namespace lgfx
                   void drawRoundRect   ( int32_t x, int32_t y, int32_t w, int32_t h, int32_t r);
     LGFX_INLINE_T void fillRoundRect   ( int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, const T& color) { setColor(color); fillRoundRect(x, y, w, h, r); }
                   void fillRoundRect   ( int32_t x, int32_t y, int32_t w, int32_t h, int32_t r);
+                  void drawRoundRectWithBorder( int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t bs, uint16_t Backcolor, uint16_t Bordercolor ) { fillRoundRect(x, y, w, h, r, Bordercolor); fillRoundRect(x+bs, y+bs, w-2*bs, h-2*bs, r-bs, Backcolor); }
     LGFX_INLINE_T void drawCircle      ( int32_t x, int32_t y                      , int32_t r, const T& color) { setColor(color); drawCircle   (x, y      , r); }
                   void drawCircle      ( int32_t x, int32_t y                      , int32_t r);
     LGFX_INLINE_T void fillCircle      ( int32_t x, int32_t y                      , int32_t r, const T& color) { setColor(color); fillCircle   (x, y      , r); }

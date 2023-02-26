@@ -653,7 +653,7 @@ namespace lgfx
     flag |= SDL_WINDOW_FULLSCREEN;
 #endif
     m->panel = this;
-    m->window = SDL_CreateWindow("LGFX Simulator",
+    m->window = SDL_CreateWindow("Paxos 8 emulator",
                               SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               _cfg.panel_width * m->scaling_x, _cfg.panel_height * m->scaling_y, flag);       /*last param. SDL_WINDOW_BORDERLESS to hide borders*/
 

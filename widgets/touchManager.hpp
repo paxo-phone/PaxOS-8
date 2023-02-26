@@ -33,8 +33,6 @@ class TouchManager
     bool isTouchRead();
     bool validTouch();
     
-    
-    
     uint16_t tx, ty;
     bool stateTouch;
     double lastClick = millis();

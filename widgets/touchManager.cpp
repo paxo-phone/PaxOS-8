@@ -2,13 +2,13 @@
 #define TOUCH_MANAGER_CPP
 
 #include "touchManager.hpp"
-#include "gauss.hpp"
+#include "gui.hpp"
 
 void TouchManager::update()
 {
     if(timerUpdate+50<millis())
     {
-        cout << tft_root.getTouchRaw(&tx, &ty) << endl;
+        tft_root.getTouchRaw(&tx, &ty);
         tft_root.convertRawXY(&tx, &ty);
         if(tx<0 || tx>320 || ty<0 || ty>480)
         {
@@ -101,9 +101,9 @@ bool TouchManager::isTouchRead() // simple detector
 {
     update();
     uint16_t z = tft_root.getTouchRaw(&tx, &ty);
-    cout << "z = " << z << endl;
+    //Serial.print(std::string(z));
     tft_root.convertRawXY(&tx, &ty);
-    return z;
+    
     if(tx<0 || tx>320 || ty<0 || ty>480)
     {
         tx = 0; ty = 0;
@@ -142,7 +142,7 @@ bool Touched(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
     touch.update();
     uint16_t xx = touch.getX();
     uint16_t yy = touch.getY();
-    return x<xx && xx<x+width && y<yy && yy<y+height;
+    return touch.isTouch() && x<xx && xx<x+width && y<yy && yy<y+height;
 }
 
 #endif // TOUCH_MANAGER

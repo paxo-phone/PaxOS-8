@@ -1,9 +1,9 @@
-#ifndef GAUSS_CPP
-#define GAUSS_CPP
+#ifndef GUI_CPP
+#define GUI_CPP
 
-#include "gauss.hpp"
+#include "gui.hpp"
 
-Gauss::~Gauss()
+Gui::~Gui()
 {
     for(int i = 0; i < children.size(); i++)
     {
@@ -14,51 +14,57 @@ Gauss::~Gauss()
     }
 }
 
-void Gauss::initScreen()
+void Gui::initScreen()
 {
+    #ifdef BUILD_PAXO
+        uint16_t calibrationData[] = {370, 3950, 273, 239, 3848, 3949, 3872, 302};
+        tft_root.setTouchCalibrate(calibrationData);
+
+        pinMode(25, OUTPUT);
+        digitalWrite(25, 1);
+        pinMode(14, OUTPUT);
+        digitalWrite(14, 1);
+    #endif
+    
     tft_root.init();
 }
 
-void Gauss::init(int16_t x, int16_t y, int16_t width, int16_t height)
+void Gui::init(int16_t x, int16_t y, int16_t width, int16_t height)
 {
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
-    setMarginX(0);
-    setMarginY(0);
-    setPaddingX(0);
-    setPaddingY(0);
+
     onclick = nullptr;
     onlongclick = nullptr;
     onreleased = nullptr;
     onscroll = nullptr;
-    speed=1;
 
     reloadWidget();
 }
 
-bool Gauss::isFocuced()
+bool Gui::isFocuced()
 {
     return Touched(getAbsoluteX(), getAbsoluteY(), width, height); 
 }
 
-void Gauss::EventOnClick()
+void Gui::EventOnClick()
 {
     return; // do nothing
 }
 
-void Gauss::EventOnLongClick()
+void Gui::EventOnLongClick()
 {
     return; // do nothing
 }
 
-void Gauss::EventOnReleased()
+void Gui::EventOnReleased()
 {
     return; // do nothing
 }
 
-bool Gauss::EventOnScroll()
+bool Gui::EventOnScroll()
 {
     int16_t mvtX=touch.isSlidingHorizontally();
     int16_t mvtY=touch.isSlidingVertically();
@@ -68,21 +74,21 @@ bool Gauss::EventOnScroll()
     
     if(mvtX && horizontalSlide)
     {
-        this->paddingX-=mvtX;
+        this->scroolX-=mvtX;
         touch.resetScrollHorizontal();
     }
     if(mvtY && verticalSlide)
     {
-        this->paddingY-=mvtY;
+        this->scroolY-=mvtY;
         touch.resetScrollVertical();
     }
 
     if((mvtX && horizontalSlide) || (mvtY && verticalSlide))
-        drawAll();
+        renderAll();
     return mvtX || mvtY;
 }
 
-bool Gauss::isTouched()
+bool Gui::isTouched()
 {
     if(statePress && !isFocuced())
     {
@@ -92,7 +98,7 @@ bool Gauss::isTouched()
     return 0;
 }
 
-bool Gauss::update()
+bool Gui::update()
 {
     bool s = isFocuced();
 
@@ -157,71 +163,61 @@ bool Gauss::update()
     return false;
 }
 
-void Gauss::drawAll(bool draw_)
+void Gui::renderAll()
 {
+    if(parent!=nullptr)
+    {
+        if(getX()==AUTO)
+            setX(0);
+        if(getY()==AUTO)
+        {
+            if(parent->children[0] == this)
+                setY(0);
+            else
+            {
+                uint i = 0;
+                for(; i<parent->children.size() && parent->children[i] != this; i++);
+                setY(parent->children[i-1]->getY() + parent->children[i-1]->getHeight());
+            }
+        }
+        
+        if(width==AUTO)
+            width=parent->getWidth()-getRelativeX()*2;
+
+        updateSizes();
+        
+        if(height==AUTO_FULL)
+            width=parent->getHeight()-getRelativeY()*2;
+        print(std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(width) + " " + std::to_string(height));
+    }
+
     if(!isEnabled())
         return;
 
     if(upFromDrawAll==nullptr)
-    {
         upFromDrawAll=this;
-    }
     
     if(!rendered)
     {
         l_tft.deleteSprite();
         l_tft.setPsram(true);
-        l_tft.setColorDepth((speed) ? (8) : (16));
+        l_tft.setColorDepth(16);
         l_tft.createSprite(this->getWidth(), this->getHeight());
 
         if(upFromDrawAll==this)
             l_tft.fillSprite(0xFFFF);
-        else
-            l_tft.fillSprite((speed) ? (ALPHA_8B) : (ALPHA_16B));
+        else if(!enabledBackground)
+        {
+            backgroundColor = parent->getBackgroundColor();
+            l_tft.fillSprite(getBackgroundColor());
+        }
+        
 
         draw();
         
         for (int i = 0; i < children.size(); i++)
         {
             if(children[i] != nullptr)
-                children[i]->drawAll();
-        }
-    }
-
-    if(upFromDrawAll==this)
-    {
-        upFromDrawAll=nullptr;
-
-        l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
-    }
-    else
-    {
-        l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), (speed) ? (ALPHA_8B) : (ALPHA_16B));
-    }
-}
-
-void Gauss::renderAll()
-{
-    if(!isEnabled())
-        return;
-    
-    if(upFromDrawAll==this)
-    {
-        reload_afterunlocked=false;
-        return;
-    }
-    
-    if(!rendered)
-    {
-        l_tft.deleteSprite();
-        l_tft.createSprite(this->getWidth(), this->getHeight());
-        l_tft.fillSprite(0xFFFF);
-
-        draw();
-        
-        for (int i = 0; i < children.size(); i++)
-        {
-            if(children[i] != nullptr && (children[i]->getAbsoluteY() < this->getAbsoluteY() + this->getHeight())  && (this->getAbsoluteY() < children[i]->getAbsoluteY() + children[i]->getHeight())  && (children[i]->getAbsoluteX() < this->getAbsoluteX() + this->getWidth()))
                 children[i]->renderAll();
         }
     }
@@ -229,23 +225,23 @@ void Gauss::renderAll()
     if(upFromDrawAll==this)
     {
         upFromDrawAll=nullptr;
+
         l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
-        drawing=false;
     }
     else
     {
-        l_tft.pushSprite(&parent->l_tft, getAbsoluteX(), getAbsoluteY());
+        l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), getBackgroundColor());
     }
 }
 
-void Gauss::reloadWidget()
+void Gui::reloadWidget()
 {
     if(parent!=nullptr)
         parent->reloadWidget();
     rendered=false;
 }
 
-bool Gauss::updateAll()
+bool Gui::updateAll()
 {
     if(!isEnabled())
         return false;
@@ -266,7 +262,7 @@ bool Gauss::updateAll()
     return false;
 }
 
-void Gauss::addChild(Gauss *child)
+void Gui::addChild(Gui *child)
 {
     if(child == nullptr)
         return;
@@ -276,7 +272,7 @@ void Gauss::addChild(Gauss *child)
     reloadWidget();
 }
 
-void Gauss::removechildren()
+void Gui::removechildren()
 {
     for (int i = 0; i < children.size(); i++)
     {
@@ -289,14 +285,14 @@ void Gauss::removechildren()
     }
 }
 
-void Gauss::setParent(Gauss *parent)
+void Gui::setParent(Gui *parent)
 {
     this->parent = parent;
     reloadWidget();
     rendered=false;
 }
 
-Gauss* Gauss::getMaster()
+Gui* Gui::getMaster()
 {
     if(parent == nullptr)
         return this;
@@ -304,27 +300,47 @@ Gauss* Gauss::getMaster()
         return parent->getMaster();
 }
 
-int16_t Gauss::getX()
+int16_t Gui::getX()
 {
     return this->x;
 }
 
-int16_t Gauss::getY()
+int16_t Gui::getY()
 {
     return this->y;
 }
 
-int16_t Gauss::getWidth()
+int16_t Gui::getWidth()
 {
     return this->width;
 }
 
-int16_t Gauss::getHeight()
+int16_t Gui::getHeight()
 {
     return this->height;
 }
 
-int16_t Gauss::getAbsoluteX()
+void Gui::setMarginX(int16_t marginX)
+{
+    this->marginX = marginX;
+}
+
+void Gui::setMarginY(int16_t marginY)
+{
+    this->marginY = marginY;
+}
+
+int16_t Gui::getMarginX()
+{
+    return this->marginX;
+}
+
+int16_t Gui::getMarginY()
+{
+    return this->marginY;
+}
+
+int16_t Gui::getAbsoluteX()
 {
     if(parent==nullptr)
         return getRelativeX();
@@ -332,148 +348,98 @@ int16_t Gauss::getAbsoluteX()
         return getRelativeX() + parent->getAbsoluteX();
 }
 
-int16_t Gauss::getAbsoluteY()
+int16_t Gui::getAbsoluteY()
 {
     if(parent==nullptr)
         return getRelativeY();
     else
-        return getRelativeY() + parent->getAbsoluteY();
+        return getRelativeY() + parent->getAbsoluteY() + parent->getBorderSize() + parent->getRadius()/2;
 }
 
-int16_t Gauss::getRelativeX()
+int16_t Gui::getRelativeX()
 {
-    if(parent==nullptr)
-        return this->getMarginX() + this->getX();
-    else
-        return this->getMarginX() + this->getX() + parent->getPaddingX();
+    return this->getX() + ((parent!=nullptr) ? (parent->getBorderSize() + parent->getRadius()/2) : (0));
 }
 
-int16_t Gauss::getRelativeY()
+int16_t Gui::getRelativeY()
 {
-    if(parent==nullptr)
-        return this->getMarginY() + this->getY();
-    else
-        return this->getMarginY() + this->getY() + parent->getPaddingY();
+        return this->getY() + ((parent!=nullptr) ? (parent->getBorderSize() + parent->getRadius()/2) : (0));
 }
 
-int16_t Gauss::getMarginX()
-{
-    return this->marginX;
-}
-
-int16_t Gauss::getMarginY()
-{
-    return this->marginY;
-}
-
-int16_t Gauss::getPaddingX()
-{
-    return this->paddingX;
-}
-
-int16_t Gauss::getPaddingY()
-{
-    return this->paddingY;
-}
-
-color_t Gauss::getColor()
+color_t Gui::getColor()
 {
     return this->color;
 }
 
-color_t Gauss::getBackgroundColor()
+color_t Gui::getBackgroundColor()
 {
     return this->backgroundColor;
 }
 
-color_t Gauss::getBorderColor()
+color_t Gui::getBorderColor()
 {
     return this->borderColor;
 }
 
-int16_t Gauss::getBorderSize()
+int16_t Gui::getBorderSize()
 {
     return this->borderSize;
 }
 
-Alignment Gauss::getAlignment()
+Alignment Gui::getAlignment()
 {
     return this->H_alignment;
 }
 
-void Gauss::setX(int16_t x)
+void Gui::setX(int16_t x)
 {
     this->x=x;
     rendered=false;
 }
 
-void Gauss::setY(int16_t y)
+void Gui::setY(int16_t y)
 {
     this->y=y;
     rendered=false;
 }
 
-void Gauss::setWidth(int16_t width)
+void Gui::setWidth(int16_t width)
 {
     this->width=width;
     rendered=false;
 }
 
-void Gauss::setHeight(int16_t height)
+void Gui::setHeight(int16_t height)
 {
     this->height=height;
     rendered=false;
 }
 
-void Gauss::setMarginX(int16_t marginX)
-{
-    this->marginX=marginX;
-    rendered=false;
-}
-
-void Gauss::setMarginY(int16_t marginY)
-{
-    this->marginY=marginY;
-    rendered=false;
-}
-
-void Gauss::setPaddingX(int16_t paddingX)
-{
-    this->paddingX=paddingX;
-    rendered=false;
-}
-
-void Gauss::setPaddingY(int16_t paddingY)
-{
-    this->paddingY=paddingY;
-    rendered=false;
-}
-
-void Gauss::setColor(color_t color)
+void Gui::setColor(color_t color)
 {
     this->color=color;
     rendered=false;
 }
 
-void Gauss::setBackgroundColor(color_t backgroundColor)
+void Gui::setBackgroundColor(color_t backgroundColor)
 {
     this->backgroundColor=backgroundColor;
     rendered=false;
 }
 
-void Gauss::setBorderColor(color_t borderColor)
+void Gui::setBorderColor(color_t borderColor)
 {
     this->borderColor=borderColor;
     rendered=false;
 }
 
-void Gauss::setBorderSize(int16_t borderSize)
+void Gui::setBorderSize(int16_t borderSize)
 {
     this->borderSize=borderSize;
     rendered=false;
 }
 
-void Gauss::setTheme(uint8_t theme)
+void Gui::setTheme(uint8_t theme)
 {
     color = theme_color[theme][0];
     backgroundColor = theme_color[theme][1];
@@ -481,25 +447,25 @@ void Gauss::setTheme(uint8_t theme)
     rendered=false;
 }
 
-void Gauss::setHorizontalAlignment(Alignment alignment)
+void Gui::setHorizontalAlignment(Alignment alignment)
 {
     this->H_alignment=alignment;
     rendered=false;
 }
 
-void Gauss::setVerticalAlignment(Alignment alignment)
+void Gui::setVerticalAlignment(Alignment alignment)
 {
     this->V_alignment=alignment;
     rendered=false;
 }
 
-void Gauss::setRadius(int16_t radius)
+void Gui::setRadius(uint16_t radius)
 {
     this->radius=radius;
     rendered=false;
 }
 
-int16_t Gauss::getLowestY()
+int16_t Gui::getLowestY()
 {
     int16_t y = this->getAbsoluteY()+getHeight();
     for (int i = 0; i < children.size(); i++)
@@ -511,7 +477,7 @@ int16_t Gauss::getLowestY()
     return y;
 }
 
-int16_t Gauss::getLowestX()
+int16_t Gui::getLowestX()
 {
     int16_t x = this->getAbsoluteX()+getWidth();
     for (int i = 0; i < children.size(); i++)
@@ -523,7 +489,7 @@ int16_t Gauss::getLowestX()
     return x;
 }
 
-int16_t Gauss::getHighestY()
+int16_t Gui::getHighestY()
 {
     int16_t y = this->getAbsoluteY();
     for (int i = 0; i < children.size(); i++)
@@ -535,7 +501,7 @@ int16_t Gauss::getHighestY()
     return y;
 }
 
-int16_t Gauss::getHighestX()
+int16_t Gui::getHighestX()
 {
     int16_t x = this->getAbsoluteX();
     for (int i = 0; i < children.size(); i++)
@@ -547,14 +513,14 @@ int16_t Gauss::getHighestX()
     return x;
 }
 
-Gauss* Gauss::getParent()
+Gui* Gui::getParent()
 {
     return this->parent; // warning, can return nullptr
 }
 
-void Gauss::reload()
+void Gui::reload()
 {
-    drawAll();
+    renderAll();
 }
 
 #endif

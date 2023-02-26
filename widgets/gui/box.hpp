@@ -1,10 +1,10 @@
 #ifndef BOX_HPP
 #define BOX_HPP
 
-class Box : public Gauss
+class Box : public Gui
 {
     public:
-    GAUSS_TYPE getType(){return BOX_TYPE;}
+    GUI_TYPE getType(){return BOX_TYPE;}
     Box(int16_t x, int16_t y, int16_t width, int16_t height);
     void draw();
     void free(){}
@@ -13,21 +13,17 @@ class Box : public Gauss
 Box::Box(int16_t x, int16_t y, int16_t width, int16_t height)
 {
     init(x, y, width, height);
-    setRadius(0);
-    setMarginX(0);
-    setMarginY(0);
-    setPaddingX(0);
-    setPaddingY(0);
-    setMarginY(0);
-    setBorderSize(0);
-    setBackgroundColor(COLOR_LIGHT);
+    setBorderSize(10);
+    setRadius(50);
+    setBackgroundColor(COLOR_EXTRA_LIGHT);
+    setBorderColor(COLOR_ERROR);
     enabledBackground=true;
 }
 
 void Box::draw()
 {
     if(enabledBackground)
-        l_tft.fillRect(0, 0, getWidth(), getHeight(), getBackgroundColor());
+        l_tft.drawRoundRectWithBorder(0, 0, getWidth(), getHeight(), getRadius(), getBorderSize(), getBackgroundColor(), getBorderColor());
 }
 
 #endif

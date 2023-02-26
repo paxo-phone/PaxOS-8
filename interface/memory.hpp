@@ -1,50 +1,295 @@
-#ifndef MEMORY_HPP
-#define MEMORY_HPP
-
-#include <stdlib.h>
-#include <iostream>
+#ifndef __STORAGE_HPP__
+#define __STORAGE_HPP__
 
 #ifdef BUILD_EMU
-#include <fstream>
+    #include <fstream>
+    #include <cstdio>
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    #include <sys/stat.h>
+    #include <dirent.h>
+    using namespace std;
+#endif
+#ifdef BUILD_PAXO
+    #define SD_CS 4
+    #include "FS.h"
+    #include "SD.h"
+    #include "SPI.h"
+    #include <vector>
 #endif
 
-using namespace std;
-
-enum MemoryOpenMode
+namespace storage
 {
-    READ,
-    WRITE,
-    READ_WRITE,
-};
+    enum OPEN_MODE
+    {
+        READ,   // 0
+        WRITE   // 1
+    };
 
-class LFile
-{
-    public:
-    LFile(std::string filename);
-    bool open(MemoryOpenMode mode, bool erase = false); // ouvrir le fichier avec un mode d'ouverture, et la possibilité d'écraser son contenu
+    class LFile
+    {
+        public:
 
-    char read();        // lire un carractère
-    std::string readAll();   // lire tout les carractères du fichier
+            LFile()
+            {
+                #ifdef BUILD_EMU
+                    this->stream = new fstream();
+                #endif
+            }
 
-    void write(char chr);       // écrire un carractère
-    void print(std::string data);    // écrire plusieurs carractères
+            LFile(const string& path, OPEN_MODE mode, bool erase = false)
+            {
+                #ifdef BUILD_EMU
 
-    private:
-    std::string filename = "";  // adresse du fichier
+                    if(mode == READ)
+                        stream = new fstream(path, ios::in);
 
-    #ifdef BUILD_EMU
-    ofstream* file = nullptr;
-    #endif
+                    if(mode == WRITE && erase == true)
+                        stream = new fstream(path, ios::out | ios::trunc);
 
-    #ifdef BUILD_PAXO
-    File* file = nullptr;
-    #endif
-};
+                    if(mode == WRITE && erase == false)
+                        stream = new fstream(path, ios::out);
 
-class Memory
-{
-    public:
-    Memory();
-};
+                #endif
+            }
 
-#endif
+            ~LFile()
+            {
+                #ifdef BUILD_EMU
+                    delete stream;
+                #endif
+            }
+            
+            void open(const string& path, OPEN_MODE mode, bool erase = false)
+            {
+                #ifdef BUILD_EMU
+
+                    if(mode == READ)
+                        stream = new fstream(path, ios::in);
+
+                    if(mode == WRITE && erase == true)
+                        stream = new fstream(path, ios::out | ios::trunc);
+
+                    if(mode == WRITE && erase == false)
+                        stream = new fstream(path, ios::out);
+
+                #endif
+            }
+
+            void close(void)
+            {
+                #ifdef BUILD_EMU
+                    this->stream->close();
+                #endif
+            }
+
+            string read(void)
+            {
+                #ifdef BUILD_EMU
+                    string o;
+                    
+                    string line;
+                    while( getline(*(this->stream), line) )
+                        o += line + '\n';
+
+                    return o;
+                #endif
+            }
+
+            void write(const string& str)
+            {
+                #ifdef BUILD_EMU
+                    *(this->stream) << str;
+                #endif
+            }
+
+            void write(const char& c)
+            {
+                #ifdef BUILD_EMU
+                    *(this->stream) << c;
+                #endif
+            }
+
+            bool is_open(void)
+            {
+                #ifdef BUILD_EMU
+                    return this->stream->is_open();
+                #endif
+            }
+
+        private:
+
+            #ifdef BUILD_EMU
+                fstream* stream;
+            #endif
+
+            #ifdef BUILD_PAXO
+                File* file = nullptr;
+            #endif
+    };
+
+    void init()
+    {
+        #ifdef BUILD_PAXO
+            SD.begin(SD_CS);
+        #endif
+    }
+
+    vector<string> listdir(const string& path) 
+    {
+        vector<string> list;
+
+        #ifdef BUILD_EMU
+            DIR* dir = opendir(path.c_str());
+            if (dir)
+            {
+                struct dirent* entry;
+                while ((entry = readdir(dir)) != nullptr) 
+                    list.push_back(entry->d_name);
+
+                closedir(dir);
+            }
+        #endif
+
+        #ifdef BUILD_PAXO
+            File dir = SD.open(path.c_str());
+            if(dir)
+            {
+                while (true) 
+                {
+                    File entry = dir.openNextFile();
+                    if (!entry)
+                        break;
+                    
+                    if (entry.isDirectory())
+                        list.push_back(entry.name());
+                    
+                    entry.close();
+                }
+            }
+            
+        #endif
+
+        return list;
+    }
+
+    bool exists(const string& path)
+    {
+        #ifdef BUILD_EMU
+            struct stat s;
+            return stat(path.c_str(), &s) == 0;
+        #endif
+        #ifdef BUILD_PAXO
+            return SD.exists(path.c_str());
+        #endif
+    }
+    
+    bool isfile(const string& filepath)
+    {
+        #ifdef BUILD_EMU
+            fstream file(filepath, ios::in);
+            return file.good();
+        #endif
+        #ifdef BUILD_PAXO
+            File file = SD.open(filepath.c_str());
+            if(file)
+            {
+                if(file.isDirectory())
+                {
+                    file.close();
+                    return false;
+                }else
+                {
+                    file.close();
+                    return true;
+                }
+                
+            }
+        #endif
+        
+    }
+
+    bool isdir(const string& dirpath)
+    {
+        #ifdef BUILD_EMU
+            if( isfile(dirpath) )
+                return false;
+
+            struct stat s;
+            if (stat(dirpath.c_str(), &s) == 0) 
+                return (s.st_mode & S_IFDIR) != 0;
+            else 
+                return false;
+        #endif
+        #ifdef BUILD_PAXO
+            File file = SD.open(dirpath.c_str());
+            if(file)
+            {
+                if(file.isDirectory())
+                {
+                    file.close();
+                    return true;
+                }else
+                {
+                    file.close();
+                    return false;
+                }
+                
+            }
+        #endif
+    }
+
+    // work for files AND directory
+
+    bool newdir(const string& dirpath)
+    {
+        #ifdef BUILD_EMU
+            return mkdir(dirpath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+        #endif
+        #ifdef BUILD_PAXO
+            return SD.mkdir(dirpath.c_str());
+        #endif
+    }
+
+    bool newfile(const string& filepath)
+    {
+        #ifdef BUILD_EMU
+            std::ofstream file(filepath, std::ios::out);
+            return file.is_open();
+        #endif
+        #ifdef BUILD_PAXO
+            File file = SD.open(filepath.c_str(), FILE_WRITE);
+            if(file)
+            {
+                file.close();
+                return false;
+            }else
+            {
+                return true;
+            }
+        #endif
+    }
+    
+    bool remove(const string& path)
+    {
+        #ifdef BUILD_EMU
+            return ::remove(path.c_str()); // from cstdio
+        #endif 
+        #ifdef BUILD_PAXO
+            return SD.remove("logData.txt");
+        #endif
+    }
+    
+    bool rename(const string& from, const string& to)
+    {
+        #ifdef BUILD_EMU
+            return ::rename(from.c_str(), to.c_str()); // from cstdio
+        #endif
+        #ifdef BUILD_PAXO
+            return SD.rename(from.c_str(), to.c_str());
+        #endif
+    }
+}
+
+#endif /* __STORAGE_HPP__*/

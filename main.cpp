@@ -1,5 +1,6 @@
 #include "main.hpp"
 
-#include "interface/memory.cpp"
-#include "widgets/gauss.cpp"
+#include "widgets/gui.cpp"
 #include "widgets/touchManager.cpp"
+#include "interface/shell.cpp"
+#include "widgets/gui/label.cpp"
