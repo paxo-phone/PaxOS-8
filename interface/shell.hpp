@@ -5,20 +5,24 @@
 #include <string>
 #include <vector>
 
+#include "memory.hpp"
+
 void print(string str)
 {
     #ifdef BUILD_EMU
         std::cout << str << std::endl;
     #endif
     #ifdef BUILD_PAXO
-        Serial.print(str);
+        for (int i = 0; i < str.size(); i++)
+            Serial.print(str[i]);
+        Serial.println();
     #endif
 }
 
 void print(char str)
 {
     #ifdef BUILD_EMU
-        std::cout << str << std::endl;
+        std::cout << str;
     #endif
     #ifdef BUILD_PAXO
         Serial.print(str);
@@ -34,7 +38,8 @@ string input()
         getline(cin, line);
     #endif
     #ifdef BUILD_PAXO
-        line = Serial.readString();
+        String str = Serial.readString();
+        line = std::string(str.c_str());
     #endif
 
     return line;
@@ -51,6 +56,13 @@ namespace shell
         SUCCESS = 0,
         ERROR   = 1,
     };
+
+    void init()
+    {
+        #ifdef BUILD_PAXO
+            Serial.begin(115200);
+        #endif
+    }
 
     /* commands */
 
@@ -74,20 +86,23 @@ namespace shell
     int cmd_cat(const ArgList& args);
     int cmd_event(const ArgList& args);
     int cmd_help(const ArgList& args);
+    int cmd_reboot(const ArgList& args);
 
     string cmd_str[] = { "echo", 
                          "ls", 
                          "cd", 
                          "cat", 
                          "event",
-                         "help" };
+                         "help",
+                         "reboot" };
 
     int (*cmd_func[])(const ArgList&) = { &cmd_echo, 
                                           &cmd_ls, 
                                           &cmd_cd, 
                                           &cmd_cat, 
                                           &cmd_event,
-                                          &cmd_help };
+                                          &cmd_help,
+                                          &cmd_reboot };
     /* end commands */
 
     ArgList tokenize(const string& line, char delimiter = ' ')
@@ -215,5 +230,13 @@ namespace shell
         }
     }
 };
+
+void thread_shell(void* data)
+{
+    while(true)
+    {
+        shell::execute(input());
+    }
+}
 
 #endif

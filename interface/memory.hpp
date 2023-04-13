@@ -43,14 +43,25 @@ namespace storage
                 #ifdef BUILD_EMU
 
                     if(mode == READ)
-                        stream = new fstream(path, ios::in);
+                        stream = new fstream(("storage/"+path), ios::in);
 
                     if(mode == WRITE && erase == true)
-                        stream = new fstream(path, ios::out | ios::trunc);
+                        stream = new fstream(("storage/"+path), ios::out | ios::trunc);
 
                     if(mode == WRITE && erase == false)
-                        stream = new fstream(path, ios::out);
+                        stream = new fstream(("storage/"+path), ios::out);
 
+                #endif
+
+                #ifdef BUILD_PAXO
+                    if(mode == READ)
+                        file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_READ);
+
+                    if(mode == WRITE && erase == true)
+                        file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_APPEND);
+
+                    if(mode == WRITE && erase == false)
+                        file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_WRITE);
                 #endif
             }
 
@@ -59,6 +70,9 @@ namespace storage
                 #ifdef BUILD_EMU
                     delete stream;
                 #endif
+                #ifdef BUILD_PAXO
+                    file.close();
+                #endif
             }
             
             void open(const string& path, OPEN_MODE mode, bool erase = false)
@@ -66,14 +80,24 @@ namespace storage
                 #ifdef BUILD_EMU
 
                     if(mode == READ)
-                        stream = new fstream(path, ios::in);
+                        stream = new fstream(("storage/"+path), ios::in);
 
                     if(mode == WRITE && erase == true)
-                        stream = new fstream(path, ios::out | ios::trunc);
+                        stream = new fstream(("storage/"+path), ios::out | ios::trunc);
 
                     if(mode == WRITE && erase == false)
-                        stream = new fstream(path, ios::out);
+                        stream = new fstream(("storage/"+path), ios::out);
+                #endif
 
+                #ifdef BUILD_PAXO
+                    if(mode == READ)
+                        file = SD.open(const_cast<char*>(("/"+path).c_str()), FILE_READ);
+
+                    if(mode == WRITE && erase == true)
+                        file = SD.open(const_cast<char*>(("/"+path).c_str()), FILE_APPEND);
+
+                    if(mode == WRITE && erase == false)
+                        file = SD.open(const_cast<char*>(("/"+path).c_str()), FILE_WRITE);
                 #endif
             }
 
@@ -81,6 +105,9 @@ namespace storage
             {
                 #ifdef BUILD_EMU
                     this->stream->close();
+                #endif
+                #ifdef BUILD_PAXO
+                    file.close();
                 #endif
             }
 
@@ -95,12 +122,31 @@ namespace storage
 
                     return o;
                 #endif
+                #ifdef BUILD_PAXO
+                    string o = "";
+                    while (file.available())
+                        o+=file.read();
+                    return o;
+                #endif
+            }
+
+            char readChr()
+            {
+                #ifdef BUILD_EMU
+                    return (this->stream)->get();
+                #endif
+                #ifdef BUILD_PAXO
+                    return file.read();
+                #endif
             }
 
             void write(const string& str)
             {
                 #ifdef BUILD_EMU
                     *(this->stream) << str;
+                #endif
+                #ifdef BUILD_PAXO
+                    file.print(const_cast<char*>(str.c_str()));
                 #endif
             }
 
@@ -109,12 +155,18 @@ namespace storage
                 #ifdef BUILD_EMU
                     *(this->stream) << c;
                 #endif
+                #ifdef BUILD_PAXO
+                    file.write(c);
+                #endif
             }
 
             bool is_open(void)
             {
                 #ifdef BUILD_EMU
                     return this->stream->is_open();
+                #endif
+                #ifdef BUILD_PAXO
+                    return file;
                 #endif
             }
 
@@ -125,13 +177,15 @@ namespace storage
             #endif
 
             #ifdef BUILD_PAXO
-                File* file = nullptr;
+                File file;
             #endif
     };
 
     void init()
     {
         #ifdef BUILD_PAXO
+            pinMode(15, OUTPUT);
+            digitalWrite(15, 1);
             SD.begin(SD_CS);
         #endif
     }
@@ -168,7 +222,6 @@ namespace storage
                     entry.close();
                 }
             }
-            
         #endif
 
         return list;

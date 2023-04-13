@@ -6,7 +6,7 @@
 
 void TouchManager::update()
 {
-    if(timerUpdate+50<millis())
+    if(timerUpdate+10<millis())
     {
         tft_root.getTouchRaw(&tx, &ty);
         tft_root.convertRawXY(&tx, &ty);
@@ -14,7 +14,12 @@ void TouchManager::update()
         {
             tx = 0; ty = 0;
         }
+        #ifdef BUILD_PAXO
+            //ty = 480 - ty;
+        #endif
         timerUpdate=millis();
+
+        stateTouch=validTouch();
     }
 }
 
@@ -25,20 +30,16 @@ void TouchManager::calibrate()
 
 uint16_t TouchManager::getX()
 {
-    update();
     return tx;
 }
 
 uint16_t TouchManager::getY()
 {
-    update();
     return ty;
 }
 
 bool TouchManager::isTouch()
-{
-    update();
-    stateTouch=validTouch();
+{    
     if(stateTouch)
     {
         if(!isPreviousTouch)
@@ -101,7 +102,7 @@ bool TouchManager::isTouchRead() // simple detector
 {
     update();
     uint16_t z = tft_root.getTouchRaw(&tx, &ty);
-    //Serial.print(std::string(z));
+    print(std::string(z));
     tft_root.convertRawXY(&tx, &ty);
     
     if(tx<0 || tx>320 || ty<0 || ty>480)
@@ -139,10 +140,9 @@ bool TouchManager::validTouch()
 
 bool Touched(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
-    touch.update();
     uint16_t xx = touch.getX();
     uint16_t yy = touch.getY();
-    return touch.isTouch() && x<xx && xx<x+width && y<yy && yy<y+height;
+    return x<xx && xx<x+width && y<yy && yy<y+height;
 }
 
 #endif // TOUCH_MANAGER

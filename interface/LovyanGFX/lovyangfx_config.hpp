@@ -54,10 +54,10 @@ public:
     {
       auto cfg = _light_instance.config();
 
-      cfg.pin_bl = -1;
+      cfg.pin_bl = 25;
       cfg.invert = false;
       cfg.freq   = 44100;
-      cfg.pwm_channel = 25;
+      cfg.pwm_channel = 0;
 
       _light_instance.config(cfg);
       _panel_instance.setLight(&_light_instance);  // バックライトをパネルにセットします。

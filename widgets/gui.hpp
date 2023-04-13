@@ -31,6 +31,7 @@ typedef void event;
 
 enum GUI_TYPE
 {
+    BASIC_TYPE,
     BOX_TYPE,
     BUTTON_TYPE,
     IMAGE_TYPE,
@@ -48,6 +49,8 @@ enum GUI_TYPE
 #define CONTROL_BAR_SIZE 25
 #define LONG_PRESS_TIME 500
 
+#define BASE_FONT_SIZE 16
+
 LGFX_Sprite tft(&tft_root);
 
 bool reload_afterunlocked = false;
@@ -61,13 +64,15 @@ class Gui // widget system
 
     static void initScreen(); // initialise l'ecran (tft_root)
     
-    virtual GUI_TYPE getType() = 0;  // retourne le type de l'objet selon GUI_TYPE
+    virtual GUI_TYPE getType() { return BASIC_TYPE; };  // retourne le type de l'objet selon GUI_TYPE
 
-    void renderAll(); // genere un rendu de tous les enfants
-    virtual void draw() = 0;        // draw objet
+    void renderAll();           // genere un rendu de tous les enfants
+    virtual void draw() = 0;    // draw objet
+    virtual void afterRender() {};
 
-    virtual bool update();      // update objet
     bool updateAll();       // update all children and itself 
+    virtual bool update();  // update objet
+    virtual void virtual_update() {};
 
     virtual void reload();
     virtual void updateSizes() {}
@@ -96,8 +101,12 @@ class Gui // widget system
 
     virtual int16_t getAbsoluteX();    // get absolute position on the screen
     virtual int16_t getAbsoluteY();
+    virtual int16_t getAbsoluteFixX();
+    virtual int16_t getAbsoluteFixY();
     virtual int16_t getRelativeX();    // get sprite position relative to parent sprite
     virtual int16_t getRelativeY();
+    virtual int16_t getRelativeFixX();
+    virtual int16_t getRelativeFixY();
 
 
     void addChild(Gui *child);    // add child
@@ -122,7 +131,8 @@ class Gui // widget system
 
     void setHorizontalAlignment(Alignment alignment); // set alignment
     void setVerticalAlignment(Alignment alignment); // set alignment
-    Alignment getAlignment(); // get alignment
+    Alignment getHorizontalAlignment(); // get alignment
+    Alignment getVerticalAlignment(); // get alignment
 
 
     void setRadius(uint16_t radius); // set radius
@@ -146,9 +156,27 @@ class Gui // widget system
     virtual void EventOnClick();
     virtual void EventOnLongClick();
     virtual void EventOnReleased();
+    virtual void EventOnScreenReleased(){}
     virtual bool EventOnScroll();
 
+    virtual void ClickEffect() {}
+    virtual void ReleasedEffect() {}
+
     bool lockedSlide = false;
+    bool isTouchedState = false;
+    uint8_t statePress = 0; // 0=no 1=yes 2=wait realesed
+
+    enum pressedState
+    {
+        NOT_PRESSED,
+        PRESSED,
+        SLIDED,
+        RELEASED
+    };
+
+    uint8_t objectPressState = 0;
+    static bool isScreenAlreadyPressed; // used for locking touch events for other widgets
+    static Gui* widgetPressed;
 
     void (*onclick)(App *app, Gui* object, void* data) = nullptr;
     void (*onlongclick)(App *app, Gui* object, void* data) = nullptr;
@@ -161,19 +189,23 @@ class Gui // widget system
     bool verticalSlide=false;
     bool horizontalSlide=false;
 
-    uint8_t statePress = 0; // 0=no 1=yes 2=wait realesed
     bool enabledBackground = true;
 
     LGFX_Sprite l_tft;
     bool rendered = false;
 
+    bool noMargin = false;
+
     protected:
     int16_t x, y = 0;                      // position
     int16_t width, height = 0;             // sizes
+    bool autoX, autoY, autoW, autoH = false;
+
     int16_t marginX = 0;                   // marginX
     int16_t marginY = 0;                   // marginY
 
     int16_t scroolX, scroolY = 0;          // scrool position
+    int16_t inercie = 0;
 
     color_t color = theme_color[DEFAULT_THEME][0];
     color_t backgroundColor = theme_color[DEFAULT_THEME][1];
@@ -190,18 +222,21 @@ class Gui // widget system
     bool autoSize = true;
     bool enabled = true;
 
-    int16_t inercie = 0;
 
     std::vector<Gui *> children;
     Gui *parent = nullptr;
-
 };
 
 Gui *upFromDrawAll = nullptr;
 Gui *mainWindow = nullptr;
 bool drawing = false;
+bool Gui::isScreenAlreadyPressed = false;
+Gui* Gui::widgetPressed = nullptr;
 
 #include "gui/box.hpp"
 #include "gui/label.hpp"
+#include "gui/button.hpp"
+#include "gui/image.hpp"
+#include "gui/window.hpp"
 
 #endif /* GUI_HPP */

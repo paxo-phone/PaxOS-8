@@ -2,12 +2,9 @@
 
 Label::Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string text)
 {
-    this->x = x;
-    this->y = y;
-    this->width = width;
-    this->height = height;
+    init(x, y, width, height);
     this->text = text;
-    this->fontHeight = 12;
+    this->fontHeight = BASE_FONT_SIZE;
     enabledBackground=false;
 }
 
@@ -17,8 +14,6 @@ void Label::draw()
         l_tft.drawRoundRectWithBorder(0, 0, getWidth(), getHeight(), getRadius(), getBorderSize(), getBackgroundColor(), getBorderColor());
 
     LGFX_Sprite* renderBuffer = selfDetermination();
-
-    print("factor: " + std::to_string(textFactor));
 
     // parse text
 
@@ -52,16 +47,23 @@ void Label::draw()
             }
 
             // render line
-            renderBuffer->setPsram(false);
+            renderBuffer->setPsram(true);
             renderBuffer->setColorDepth(8);
             renderBuffer->createSprite(totalTextWidth*textFactor, fontHeight*textFactor);
             renderBuffer->fillScreen(getBackgroundColor());
             renderBuffer->setTextColor(textColor);
-            renderBuffer->setCursor(0, 0);
+
+            if(H_alignment == LEFT_ALIGNMENT)
+                renderBuffer->setCursor(0, 0);
+            else if(H_alignment == CENTER_ALIGNMENT)
+                renderBuffer->setCursor(totalTextWidth*textFactor/2 - renderBuffer->textWidth(line.c_str())/2, 0);
+            else
+                renderBuffer->setCursor(totalTextWidth*textFactor - renderBuffer->textWidth(line.c_str()), 0);
+
             renderBuffer->print(line.c_str());
             renderBuffer->pushRotateZoomWithAA(&l_tft,
                                             getWidth()/2,
-                                            totalMarginY + (renderBuffer->fontHeight() / textFactor)/2 + ((renderBuffer->fontHeight() / textFactor + lineSpacing) * (lineNumber)),
+                                            totalMarginY + (renderBuffer->fontHeight() / textFactor)/2 + ((renderBuffer->fontHeight() / textFactor + lineSpacing) * (lineNumber)) + autoMarginYForText,
                                             0,
                                             1/textFactor,
                                             1/textFactor,
@@ -123,7 +125,7 @@ LGFX_Sprite* Label::selfDetermination()
         // error
     }
 
-    textFactor = (float) renderBuffer->fontHeight()/fontHeight;
+    textFactor = (float) renderBuffer->fontHeight()/fontHeight; // > 1
 
     // parse text
 
@@ -172,10 +174,15 @@ LGFX_Sprite* Label::selfDetermination()
         }
     }
 
-    print(std::to_string(lineNumber));
     finalHeight = totalMarginY * 2 + (renderBuffer->fontHeight() / textFactor) + ((renderBuffer->fontHeight() / textFactor + lineSpacing) * (lineNumber - 1));
     
-    if(height == AUTO)
+    if(autoH == true)
+    {
         height = finalHeight;
+    } else
+    if(V_alignment == CENTER_ALIGNMENT)
+    {
+        autoMarginYForText = height/2 - finalHeight/2;
+    }
     return renderBuffer;
 }

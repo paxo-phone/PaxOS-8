@@ -20,8 +20,8 @@ typedef uint16_t color_t;
 #define COLOR_BLUE 0x03FF
 #define COLOR_BEIGE 0xEF5B
 
-#define ALPHA_8B 0xEF5D
-#define ALPHA_16B 1
+#define ALPHA_8B 254
+#define ALPHA_16B 0xF7BE
 
 #define THEME_BLACK 0
 #define THEME_BLUE 1
@@ -60,7 +60,7 @@ color_t theme_color[][3]=
 #define DEFAULT_BORDER_SIZE 1
 #define DEFAULT_H_ALIGNEMENT LEFT_ALIGNMENT
 #define DEFAULT_V_ALIGNEMENT UP_ALIGNMENT
-#define DEFAULT_RADIUS 2
+#define DEFAULT_RADIUS 10
 
 #define CONTROL_BAR_SIZE 25
 

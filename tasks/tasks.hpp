@@ -1,62 +1,65 @@
 #ifndef TASK_HPP
 #define TASK_HPP
 
-#include "../widgets/gui.hpp" // juste pour les tests
-class Gui;
+#include "thread.hpp"
 
 class CallbackClass
 {
     public:
     virtual void call() = 0;
+    virtual void* (*getPtr(void))(void) = 0;
 };
 
 class ConditionClass
 {
     public:
     virtual bool check() = 0;
+    virtual void* (*getPtr(void))(void) = 0;
 };
 
 // Gui sera bien évidement déclaré dans les fichiers de Gui
 
 template <class C>
 
-class CallbackClassAuto : public CallbackClass
+class CallbackMethod : public CallbackClass
 {
     public:
-    CallbackClassAuto(C* object, void (C::*callback)(void)) : object(object), callback(callback) {};
+    CallbackMethod(C* object, void (C::*callback)(void)) : object(object), callback(callback) {};
     C* object = nullptr;
     void (C::*callback)(void) = nullptr;
     void call() { (object->*callback)(); };
+    void* (*getPtr(void))(void) { return (void* (*)()) callback; };
 };
 
 template <class C>
 
-class ConditionClassAuto : public ConditionClass
+class ConditionMethod : public ConditionClass
 {
-    ConditionClassAuto(C* object, bool (C::*condition)(void)) : object(object), condition(condition) {};
+    public:
+    ConditionMethod(C* object, bool (C::*condition)(void)) : object(object), condition(condition) {};
     C* object = nullptr;
     bool (C::* condition)(void);
     bool check() { return (object->*condition)(); };
+    void* (*getPtr(void))(void) { return (void* (*)()) condition; };
 };
 
-class CallbackGui : public CallbackClass
+class Callback : public CallbackClass
 {
     public:
-    CallbackGui(Gui* object, void (Gui::*callback)(void)) : object(object), callback(callback) {};
-    Gui* object = nullptr;
-    void (Gui::*callback)(void) = nullptr;
-    void call() { (object->*callback)(); };
+    Callback(void (*callback)(void)) : callback(callback) {};
+    void (*callback)(void) = nullptr;
+    void call() { (callback)(); };
+    void* (*getPtr(void))(void) { return (void* (*)()) callback; };
 };
 
-class ConditionGui : public ConditionClass
+class Condition : public ConditionClass
 {
-    ConditionGui(Gui* object, bool (Gui::*condition)(void)) : object(object), condition(condition) {};
-    Gui* object = nullptr;
-    bool (Gui::* condition)(void);
-    bool check() { return (object->*condition)(); };
+    public:
+    Condition(bool (*condition)(void)) : condition(condition) {};
+    bool (*condition)(void) = nullptr;
+    bool check() { return (condition)(); };
+    void* (*getPtr(void))(void) { return (void* (*)()) condition; };
 };
-
-// FIN POUR GUI
 
 class Event;
 class Timeout;
@@ -184,61 +187,74 @@ void EventHandler::update()
         if(timeouts[i]->timeout < millis())
         {
             timeouts[i]->callback->call();
-            delete timeouts[i];
+            delete eventHandler.timeouts[i];
+            eventHandler.timeouts.erase(eventHandler.timeouts.begin() + i);
+            break;
             i-=1;
         }
     }
 }
 
 
-void addEventListener(CallbackClass* callback, ConditionClass* condition)
+void addEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* eventHandler = &eventHandler) // OK
 {
-    eventHandler.events.push_back(new Event(callback, condition));
+    eventHandler->events.push_back(new Event(callback, condition));
 }
 
-void removeEventListener(CallbackClass* callback, ConditionClass* condition)
+/* example:
+    addEventListener(new Callback(callbackTest), new ConditionMethod((Gui*) label, &Button::isTouched));
+*/
+
+void removeEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* eventHandler = &eventHandler) // OK
 {
-    for (uint i = 0; i < eventHandler.events.size(); i++)
+    for (uint i = 0; i < eventHandler->events.size(); i++)
     {
-        if(eventHandler.events[i]->callback == callback && eventHandler.events[i]->condition == condition)
+        if(eventHandler->events[i]->callback->getPtr() == callback->getPtr() && eventHandler->events[i]->condition->getPtr() == condition->getPtr())
         {
-            delete eventHandler.events[i];
+            delete eventHandler->events[i];
+            eventHandler->events.erase(eventHandler->events.begin() + i);
+            break;
         }
     }
+
+    delete callback;
+    delete condition;
 }
 
-bool setTimeout(CallbackClass* callback, uint32_t timeout)
+uint setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* eventHandler = &eventHandler) // OK
 {
     Timeout* ntimeout = new Timeout(callback, timeout);
-    eventHandler.timeouts.push_back(ntimeout);
+    eventHandler->timeouts.push_back(ntimeout);
     return ntimeout->id;
 }
 
-void removeTimeout(uint32_t id)
+void removeTimeout(uint32_t id, EventHandler* eventHandler = &eventHandler) // OK
 {
-    for (uint i = 0; i < eventHandler.timeouts.size(); i++)
+    for (uint i = 0; i < eventHandler->timeouts.size(); i++)
     {
-        if(eventHandler.timeouts[i]->id == id)
+        if(eventHandler->timeouts[i]->id == id)
         {
-            delete eventHandler.timeouts[i];
+            delete eventHandler->timeouts[i];
+            eventHandler->timeouts.erase(eventHandler->timeouts.begin() + i);
+            break;
         }
     }
 }
 
-bool setInterval(CallbackClass* callback, uint32_t interval)
+uint setInterval(CallbackClass* callback, uint32_t interval, EventHandler* eventHandler = &eventHandler) // OK
 {
     Interval* ninterval = new Interval(callback, interval);
-    eventHandler.intervals.push_back(ninterval);
+    eventHandler->intervals.push_back(ninterval);
     return ninterval->id;
 }
 
-void removeInterval(uint32_t id)
+void removeInterval(uint32_t id, EventHandler* eventHandler = &eventHandler) // OK
 {
-    for (uint i = 0; i < eventHandler.intervals.size(); i++)
+    for (uint i = 0; i < eventHandler->intervals.size(); i++)
     {
-        if(eventHandler.intervals[i]->id == id)
+        if(eventHandler->intervals[i]->id == id)
         {
-            delete eventHandler.intervals[i];
+            delete eventHandler->intervals[i];
         }
     }
 }

@@ -32,13 +32,14 @@ class Label : public Gui
 public:
     GUI_TYPE getType(){return LABEL_TYPE;}
 
+    Label(){};
     Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string text = "");
 
     void draw();
     void free(){}
 
     LGFX_Sprite* selfDetermination();
-    void updateSizes() { selfDetermination(); }
+    void updateSizes() { delete selfDetermination(); }
 
     // text
     string text;
@@ -65,7 +66,8 @@ public:
         uint16_t totalMarginX = 0;
         uint16_t totalMarginY = 0;
         uint16_t totalTextWidth = 0;
-        float textFactor = 1.0; // *factor to convert to virtual screen and /factor to convert to physical screen
+        uint16_t autoMarginYForText = 0;
+        float textFactor = 1.0; // *factor to convert to virtual screen and /factor to convert to physical screen (>1)
 };
 
 #endif
