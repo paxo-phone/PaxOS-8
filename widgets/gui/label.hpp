@@ -27,6 +27,8 @@ const GFXfont *allFronts[3][4][4] = {
 
 string allFrontsNames[] = {"sans", "mono", "serif"};
 
+class Keyboard;
+
 class Label : public Gui
 {
 public:
@@ -43,7 +45,7 @@ public:
 
     // text
     string text;
-    void setText(string text){this->text = text;}
+    void setText(string text){this->text = text; rendered=false; }
     string getText(){return this->text;}
 
     // text color
@@ -68,6 +70,10 @@ public:
         uint16_t totalTextWidth = 0;
         uint16_t autoMarginYForText = 0;
         float textFactor = 1.0; // *factor to convert to virtual screen and /factor to convert to physical screen (>1)
+
+    Keyboard* key = nullptr;
+    bool linked = false;
+    void link(Keyboard* keyboard){this->key = keyboard;}
 };
 
 #endif

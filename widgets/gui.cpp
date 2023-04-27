@@ -96,8 +96,8 @@ void Gui::initScreen()
 
         pinMode(25, OUTPUT); // power on
         digitalWrite(25, 1);
-        pinMode(14, OUTPUT); // 14 for new and 22 for old
-        digitalWrite(14, 1);
+        pinMode(22, OUTPUT); // 14 for new and 22 for old
+        digitalWrite(22, 1);
     #endif
     
     tft_root.init();
@@ -169,7 +169,7 @@ void Gui::renderAll()
         upFromDrawAll=nullptr;
 
         if(parent != nullptr)
-            l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY(), parent->getBackgroundColor());
+            l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
         else
             l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY(), ALPHA_16B);
     }
@@ -181,6 +181,9 @@ void Gui::renderAll()
 
 bool Gui::updateAll()
 {
+    if (!hasEvent)
+        return false;
+    
     virtual_update();
     if(parent == nullptr) // automatically update events
     {
@@ -552,7 +555,7 @@ color_t Gui::getColor()
 
 color_t Gui::getBackgroundColor()
 {
-    return this->backgroundColor;
+    return ((l_tft.getColorDepth() == 8) ? (l_tft.color16to8(backgroundColor)) : (backgroundColor));
 }
 
 color_t Gui::getBorderColor()

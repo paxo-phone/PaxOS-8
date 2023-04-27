@@ -1,5 +1,7 @@
 #include "shell.hpp"
 
+#include "GSM/GSM.hpp"
+
 int shell::cmd_ls(const ArgList& args)
 {
     vector<string> ls = storage::listdir(args[0]);
@@ -57,5 +59,11 @@ int shell::cmd_reboot(const ArgList& args)
     ESP.restart();
     #endif
     
+    return SUCCESS;
+}
+
+int shell::cmd_getMessages(const ArgList& args)
+{
+    gsm.getNewMessagesMODE();
     return SUCCESS;
 }

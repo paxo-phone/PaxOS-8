@@ -13,7 +13,7 @@ bool Image::parsePngHeader(std::string filename, int16_t* width, int16_t* height
     
     if (!file.is_open()) // error during oppening
     {
-        print("can't open the file...");
+        print("can't open the file: " + filename);
         return false;
     }
 
@@ -40,7 +40,7 @@ bool Image::parseBmpHeader(std::string filename, int16_t* width, int16_t* height
     
     if (!file.is_open()) // error during oppening
     {
-        print("can't open the file...");
+        print("can't open the file: " + filename);
         return false;
     }
 
@@ -65,7 +65,7 @@ bool Image::parseJpgHeader(std::string filename, int16_t *width, int16_t *height
     
     if (!file.is_open()) // error during oppening
     {
-        print("can't open the file...");
+        print("can't open the file: " + filename);
         return false;
     }
 
@@ -114,7 +114,7 @@ void drawImageFromStorage(LGFX_Sprite* sprite, std::string filename, Image::Imag
         case Image::ImageFormat::JPG:
             sprite->drawJpgFile(&file, filename.c_str(), 0, 0);
         break;
-    }
+    };
     print("ok");
 }
 
@@ -220,6 +220,7 @@ void Image::load()
     {
         img->img->setPsram(true);
         img->img->createSprite(this->width, this->height);
+        img->img->fillScreen(ALPHA_16B);
 
         drawImageFromStorage(img->img, filename, ImageFormat(imageFormat));
 
@@ -229,11 +230,13 @@ void Image::load()
         LGFX_Sprite imgPre;
         imgPre.setPsram(true);
         imgPre.createSprite(oW, oH);
+        imgPre.fillScreen(ALPHA_16B);
 
         drawImageFromStorage(&imgPre, filename, ImageFormat(imageFormat));
 
         img->img->setPsram(true);
         img->img->createSprite(this->width, this->height);
+        img->img->fillScreen(ALPHA_16B);
 
         imgPre.pushRotateZoomWithAA(img->img,
                                     getWidth()/2,

@@ -24,6 +24,7 @@
 
 #include "color.hpp"
 #include "touchManager.hpp"
+#include "../tasks/tasks.hpp"
 
 class App;
 typedef uint8_t Alignment;
@@ -139,8 +140,8 @@ class Gui // widget system
     uint16_t getRadius(){ return this->radius; } // retourne le rayan de l'objet
     
 
-    void enable(){this->enabled=true; renderAll();}
-    void disable(){this->enabled=false;}
+    void enable(){this->enabled=true; reloadWidget(); }
+    void disable(){this->enabled=false; reloadWidget(); }
     bool isEnabled(){ return this->enabled; } // retourne l'état d'activation de l'objet
 
 
@@ -185,6 +186,7 @@ class Gui // widget system
 
     App* appCallback = nullptr;
     void* dataCallback = nullptr;
+    bool hasEvent = true;
 
     bool verticalSlide=false;
     bool horizontalSlide=false;
@@ -238,5 +240,6 @@ Gui* Gui::widgetPressed = nullptr;
 #include "gui/button.hpp"
 #include "gui/image.hpp"
 #include "gui/window.hpp"
+#include "gui/keyboard.hpp"
 
 #endif /* GUI_HPP */

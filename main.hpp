@@ -1,4 +1,5 @@
 #define BUILD_PAXO 1
+#include <iterator>
 #ifndef BUILD_PAXO
     #define BUILD_EMU 1
 #endif
@@ -34,24 +35,12 @@ void setup() // initialize the paxos v8
     Gui::initScreen();
     shell::init(); new_thread(CORE_BACK, thread_shell, nullptr);
     storage::init();
+    gsm.init();
+    home_button.init();
 
-    box = new Window("test");
-    
-    label = new Button(0, 0, AUTO, 50, "Button");
-    box->addChild(label);
+    gsm.askForHour();
 
-    Image* image = new Image("launcher.png", AUTO, AUTO, 32*4, 48*2);
-    image->load();
-    box->addChild(image);
-
-    for (int i = 0; i < 5; i++)
-    {
-        Label* label2 = new Label(AUTO, AUTO, AUTO, 100, "this text is an example of text on the paxos 8");
-        label2->setTextColor(COLOR_BLACK);
-        box->addChild(label2);
-    }
-
-    //box->verticalSlide = true;
+    launcher();
 }
 
 void loop()
@@ -59,12 +48,4 @@ void loop()
     #ifdef BUILD_PAXO
     vTaskDelay(1);
     #endif
-
-    box->updateAll();
-    eventHandler.update();
-
-    if (label->isTouched())
-    {
-        print("Press");
-    }
 }

@@ -1,9 +1,6 @@
 #ifndef INTERFACE_HPP
 #define INTERFACE_HPP
 
-#include "memory.hpp"
-#include "shell.hpp"
-
 #ifdef BUILD_EMU
   #include <chrono>
 
@@ -23,5 +20,10 @@
     while (millis() - start < ms);
   }
 #endif
+
+#include "memory.hpp"
+#include "shell.hpp"
+#include "GSM/GSM.hpp"
+#include "button/button.hpp"
 
 #endif

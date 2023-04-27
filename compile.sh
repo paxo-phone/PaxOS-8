@@ -15,4 +15,4 @@ OUT_FILE="main.cpp"
 
 echo "Done."
 
-`g++ -o a.out main.cpp interface/LovyanGFX/lgfx/Fonts/efont/*.c interface/LovyanGFX/lgfx/Fonts/IPA/*.c interface/LovyanGFX/lgfx/utility/*.c interface/LovyanGFX/lgfx/v1/*.cpp interface/LovyanGFX/lgfx/v1/misc/*.cpp interface/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp  -lm -lSDL2  -lSDL_image -Iinterface/LovyanGFX -Iinterface/LovyanGFX/lgfx/v1 -Iinterface/LovyanGFX/lgfx/Fonts/efont -Linterface/LovyanGFX/lgfx -DLGFX_SDL`
+`g++ -w -o a.out main.cpp interface/LovyanGFX/lgfx/Fonts/efont/*.c interface/LovyanGFX/lgfx/Fonts/IPA/*.c interface/LovyanGFX/lgfx/utility/*.c interface/LovyanGFX/lgfx/v1/*.cpp interface/LovyanGFX/lgfx/v1/misc/*.cpp interface/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp  -lm -lSDL2  -lSDL_image -Iinterface/LovyanGFX -Iinterface/LovyanGFX/lgfx/v1 -Iinterface/LovyanGFX/lgfx/Fonts/efont -Linterface/LovyanGFX/lgfx -DLGFX_SDL`

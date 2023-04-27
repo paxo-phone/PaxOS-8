@@ -56,6 +56,11 @@
         "list": "cpp",
         "mutex": "cpp",
         "ranges": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "bitset": "cpp",
+        "cstring": "cpp",
+        "map": "cpp",
+        "regex": "cpp",
+        "sstream": "cpp"
     }
 }

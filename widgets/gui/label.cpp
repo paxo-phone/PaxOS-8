@@ -5,6 +5,7 @@ Label::Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string te
     init(x, y, width, height);
     this->text = text;
     this->fontHeight = BASE_FONT_SIZE;
+    setTextColor(COLOR_BLACK);
     enabledBackground=false;
 }
 
@@ -17,73 +18,77 @@ void Label::draw()
 
     // parse text
 
-    string world = "";
-    string line = "";
+    ////////////////////
+
+    std::vector<std::string> lines;
+    std::string currentLine = "";
+    for (char c : text) {
+        if (c == '\n') {
+            lines.push_back(currentLine);
+            currentLine = "";
+        } else if (renderBuffer->textWidth((currentLine + c).c_str()) / textFactor <= totalTextWidth) {
+            currentLine += c;
+        } else if (c == ' ') {
+            lines.push_back(currentLine);
+            currentLine = "";
+        } else {
+            if (currentLine.empty()) {
+                currentLine += c;
+            } else if (currentLine.back() == ' ') {
+                currentLine += c;
+            } else {
+                std::size_t lastSpace = currentLine.find_last_of(' ');
+                if (lastSpace == std::string::npos) {
+                    lines.push_back(currentLine);
+                    currentLine = "";
+                    currentLine += c;
+                } else {
+                    std::string firstPart = currentLine.substr(0, lastSpace);
+                    lines.push_back(firstPart);
+                    currentLine = currentLine.substr(lastSpace + 1);
+                    currentLine += c;
+                }
+            }
+        }
+    }
+    if(linked)
+        currentLine+="|";
+    if (!currentLine.empty()) {
+        lines.push_back(currentLine);
+    }
+
     uint16_t lineNumber = 0;
-    uint16_t index = 0;
 
-    while (index < text.length())
+    ////////////////////
+
+    std::string line;
+
+    for (int i = 0; i < lines.size(); i++)
     {
-        if(text[index] == '\n' || renderBuffer->textWidth(const_cast<char*>((line + world).c_str())) / textFactor >= totalTextWidth || index+1 == text.length())
-        {
-            if(text[index] == '\n')
-            {
-                line += world;
-                world="";
-                index++;
-            }
+        line = lines[i];
+        renderBuffer->setPsram(true);
+        renderBuffer->setColorDepth(8);
+        renderBuffer->createSprite(totalTextWidth*textFactor, fontHeight*textFactor);
+        renderBuffer->fillScreen(getBackgroundColor());
+        renderBuffer->setTextColor(textColor);
 
-            if(renderBuffer->textWidth(const_cast<char*>((line + world).c_str())) / textFactor >= totalTextWidth)
-            {
-                world += text[index];
-                index++;
-            }
-
-            if(index+1 == text.length())
-            {
-                line += world + text[index];
-                world="";
-                index++;
-            }
-
-            // render line
-            renderBuffer->setPsram(true);
-            renderBuffer->setColorDepth(8);
-            renderBuffer->createSprite(totalTextWidth*textFactor, fontHeight*textFactor);
-            renderBuffer->fillScreen(getBackgroundColor());
-            renderBuffer->setTextColor(textColor);
-
-            if(H_alignment == LEFT_ALIGNMENT)
-                renderBuffer->setCursor(0, 0);
-            else if(H_alignment == CENTER_ALIGNMENT)
-                renderBuffer->setCursor(totalTextWidth*textFactor/2 - renderBuffer->textWidth(line.c_str())/2, 0);
-            else
-                renderBuffer->setCursor(totalTextWidth*textFactor - renderBuffer->textWidth(line.c_str()), 0);
-
-            renderBuffer->print(line.c_str());
-            renderBuffer->pushRotateZoomWithAA(&l_tft,
-                                            getWidth()/2,
-                                            totalMarginY + (renderBuffer->fontHeight() / textFactor)/2 + ((renderBuffer->fontHeight() / textFactor + lineSpacing) * (lineNumber)) + autoMarginYForText,
-                                            0,
-                                            1/textFactor,
-                                            1/textFactor,
-                                            getBackgroundColor());
-            renderBuffer->deleteSprite();
-            
-            line = ""; // erase line
-            lineNumber++;
-        }
-        else if(text[index] == ' ')
-        {
-            line += world + " ";
-            world="";
-            index++;
-        }
+        if(H_alignment == LEFT_ALIGNMENT)
+            renderBuffer->setCursor(0, 0);
+        else if(H_alignment == CENTER_ALIGNMENT)
+            renderBuffer->setCursor(totalTextWidth*textFactor/2 - renderBuffer->textWidth(line.c_str())/2, 0);
         else
-        {
-            world += text[index];
-            index++;
-        }
+            renderBuffer->setCursor(totalTextWidth*textFactor - renderBuffer->textWidth(line.c_str()), 0);
+
+        renderBuffer->print(line.c_str());
+        renderBuffer->pushRotateZoomWithAA(&l_tft,
+                                        getWidth()/2,
+                                        totalMarginY + (renderBuffer->fontHeight() / textFactor)/2 + ((renderBuffer->fontHeight() / textFactor + lineSpacing) * (lineNumber)) + autoMarginYForText,
+                                        0,
+                                        1/textFactor,
+                                        1/textFactor,
+                                        getBackgroundColor());
+        renderBuffer->deleteSprite();
+        lineNumber++;
     }
 
     delete renderBuffer;
@@ -127,52 +132,48 @@ LGFX_Sprite* Label::selfDetermination()
 
     textFactor = (float) renderBuffer->fontHeight()/fontHeight; // > 1
 
-    // parse text
+    ////////////////////
 
-    string world = "";
-    string line = "";
-    uint16_t lineNumber = 0;
-    uint16_t index = 0;
-
-    while (index < text.length())
-    {
-        if(text[index] == '\n' || renderBuffer->textWidth(const_cast<char*>((line + world).c_str())) / textFactor >= totalTextWidth || index+1 == text.length())
-        {
-            if(text[index] == '\n')
-            {
-                line += world;
-                world="";
-                index++;
+    std::vector<std::string> lines;
+    std::string currentLine = "";
+    for (char c : text) {
+        if (c == '\n') {
+            lines.push_back(currentLine);
+            currentLine = "";
+        } else if (renderBuffer->textWidth((currentLine + c).c_str()) / textFactor <= totalTextWidth) {
+            currentLine += c;
+        } else if (c == ' ') {
+            lines.push_back(currentLine);
+            currentLine = "";
+        } else {
+            if (currentLine.empty()) {
+                currentLine += c;
+            } else if (currentLine.back() == ' ') {
+                currentLine += c;
+            } else {
+                std::size_t lastSpace = currentLine.find_last_of(' ');
+                if (lastSpace == std::string::npos) {
+                    lines.push_back(currentLine);
+                    currentLine = "";
+                    currentLine += c;
+                } else {
+                    std::string firstPart = currentLine.substr(0, lastSpace);
+                    lines.push_back(firstPart);
+                    currentLine = currentLine.substr(lastSpace + 1);
+                    currentLine += c;
+                }
             }
-
-            if(renderBuffer->textWidth(const_cast<char*>((line + world).c_str())) / textFactor >= totalTextWidth)
-            {
-                world += text[index];
-                index++;
-            }
-
-            if(index+1 == text.length())
-            {
-                line += world + text[index];
-                world="";
-                index++;
-            }
-            
-            line = ""; // erase line
-            lineNumber++;
-        }
-        else if(text[index] == ' ')
-        {
-            line += world + " ";
-            world="";
-            index++;
-        }
-        else
-        {
-            world += text[index];
-            index++;
         }
     }
+    if(linked)
+        currentLine+="|";
+    if (!currentLine.empty()) {
+        lines.push_back(currentLine);
+    }
+
+    uint16_t lineNumber = lines.size();
+
+    ////////////////////
 
     finalHeight = totalMarginY * 2 + (renderBuffer->fontHeight() / textFactor) + ((renderBuffer->fontHeight() / textFactor + lineSpacing) * (lineNumber - 1));
     

@@ -13,7 +13,7 @@ class Box : public Gui
 Box::Box(int16_t x, int16_t y, int16_t width, int16_t height)
 {
     init(x, y, width, height);
-    setBorderSize(2);
+    setBorderSize(0);
     setRadius(2);
     setBackgroundColor(COLOR_EXTRA_LIGHT);
     setBorderColor(COLOR_PRIMARY);

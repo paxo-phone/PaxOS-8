@@ -7,43 +7,60 @@
 
 #include "memory.hpp"
 
-void print(string str)
+class SerialIO
 {
-    #ifdef BUILD_EMU
-        std::cout << str << std::endl;
-    #endif
-    #ifdef BUILD_PAXO
-        for (int i = 0; i < str.size(); i++)
-            Serial.print(str[i]);
-        Serial.println();
-    #endif
-}
+    virtual void print(string str) = 0;
+    virtual void print(char str) = 0;
+    virtual string input() = 0;
+};
 
-void print(char str)
+class CommandShell : public SerialIO
 {
-    #ifdef BUILD_EMU
-        std::cout << str;
-    #endif
-    #ifdef BUILD_PAXO
-        Serial.print(str);
-    #endif
-}
+    public:
+    void print(string str)
+    {
+        #ifdef BUILD_EMU
+            std::cout << str << std::endl;
+        #endif
+        #ifdef BUILD_PAXO
+            for (int i = 0; i < str.size(); i++)
+                Serial.print(str[i]);
+            Serial.println();
+        #endif
+    }
 
-string input()
-{
-    string line;
+    void print(char str)
+    {
+        #ifdef BUILD_EMU
+            std::cout << str;
+        #endif
+        #ifdef BUILD_PAXO
+            Serial.print(str);
+        #endif
+    }
 
-    #ifdef BUILD_EMU
-        cout << ">> ";
-        getline(cin, line);
-    #endif
-    #ifdef BUILD_PAXO
-        String str = Serial.readString();
-        line = std::string(str.c_str());
-    #endif
+    string input()
+    {
+        string line;
 
-    return line;
-}
+        #ifdef BUILD_EMU
+            cout << ">> ";
+            getline(cin, line);
+        #endif
+        #ifdef BUILD_PAXO
+            String str = Serial.readString();
+            line = std::string(str.c_str());
+        #endif
+
+        return line;
+    }
+};
+
+CommandShell command_shell;
+
+void print(string str) { command_shell.print(str); }
+void print(char str) { command_shell.print(str); }
+string input() { return command_shell.input(); }
 
 using namespace std;
 
@@ -87,6 +104,7 @@ namespace shell
     int cmd_event(const ArgList& args);
     int cmd_help(const ArgList& args);
     int cmd_reboot(const ArgList& args);
+    int cmd_getMessages(const ArgList& args);
 
     string cmd_str[] = { "echo", 
                          "ls", 
@@ -94,7 +112,8 @@ namespace shell
                          "cat", 
                          "event",
                          "help",
-                         "reboot" };
+                         "reboot",
+                         "messages" };
 
     int (*cmd_func[])(const ArgList&) = { &cmd_echo, 
                                           &cmd_ls, 
@@ -102,7 +121,8 @@ namespace shell
                                           &cmd_cat, 
                                           &cmd_event,
                                           &cmd_help,
-                                          &cmd_reboot };
+                                          &cmd_reboot,
+                                          &cmd_getMessages };
     /* end commands */
 
     ArgList tokenize(const string& line, char delimiter = ' ')

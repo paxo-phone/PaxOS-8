@@ -102,7 +102,7 @@ bool TouchManager::isTouchRead() // simple detector
 {
     update();
     uint16_t z = tft_root.getTouchRaw(&tx, &ty);
-    print(std::string(z));
+    //print(std::to_string(z));
     tft_root.convertRawXY(&tx, &ty);
     
     if(tx<0 || tx>320 || ty<0 || ty>480)

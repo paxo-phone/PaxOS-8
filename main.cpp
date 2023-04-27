@@ -6,3 +6,8 @@
 #include "widgets/gui/label.cpp"
 #include "widgets/gui/button.cpp"
 #include "widgets/gui/image.cpp"
+#include "widgets/gui/keyboard.cpp"
+#include "interface/GSM/Sim800L/sim.cpp"
+#include "app/launcher.cpp"
+#include "app/contact/contact.cpp"
+#include "interface/button/button.cpp"

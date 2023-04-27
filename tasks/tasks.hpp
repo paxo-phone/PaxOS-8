@@ -17,8 +17,6 @@ class ConditionClass
     virtual void* (*getPtr(void))(void) = 0;
 };
 
-// Gui sera bien évidement déclaré dans les fichiers de Gui
-
 template <class C>
 
 class CallbackMethod : public CallbackClass
@@ -80,9 +78,10 @@ EventHandler eventHandler;
 class Event
 {
     public:
-    Event(CallbackClass* callback, ConditionClass* condition) : callback(callback), condition(condition) {};
+    Event(CallbackClass* callback, ConditionClass* condition, bool autoremove) : callback(callback), condition(condition), autoremove(autoremove) {};
     CallbackClass* callback;
     ConditionClass* condition;
+    bool autoremove = false;
 
     ~Event()
     {
@@ -172,6 +171,12 @@ void EventHandler::update()
         if(events[i]->condition->check())
         {
             events[i]->callback->call();
+            if(events[i]->autoremove)
+            {
+                delete events[i];
+                eventHandler.events.erase(eventHandler.events.begin() + i);
+                break;
+            }
         }
     }
     for(uint32_t i = 0; i < intervals.size(); i++)
@@ -196,9 +201,9 @@ void EventHandler::update()
 }
 
 
-void addEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* eventHandler = &eventHandler) // OK
+void addEventListener(CallbackClass* callback, ConditionClass* condition, bool autoremove = false, EventHandler* eventHandler = &eventHandler) // OK
 {
-    eventHandler->events.push_back(new Event(callback, condition));
+    eventHandler->events.push_back(new Event(callback, condition, autoremove));
 }
 
 /* example:
@@ -254,6 +259,7 @@ void removeInterval(uint32_t id, EventHandler* eventHandler = &eventHandler) // 
     {
         if(eventHandler->intervals[i]->id == id)
         {
+            eventHandler->intervals.erase(eventHandler->intervals.begin() + i);
             delete eventHandler->intervals[i];
         }
     }
