@@ -8,8 +8,33 @@ void TouchManager::update()
 {
     if(timerUpdate+10<millis())
     {
-        tft_root.getTouchRaw(&tx, &ty);
+        uint16_t z = tft_root.getTouchRaw(&tx, &ty);
         tft_root.convertRawXY(&tx, &ty);
+        
+        if(tx<0 || tx>320 || ty<0 || ty>480)
+        {
+            tx = 0; ty = 0;
+        }
+        if (z && lastClick + timeToWait > millis())
+        {
+            lastClick = millis();
+            stateTouch = 1;
+        }
+        if (z)
+        {
+            lastClick = millis();
+            stateTouch = 1;
+        }
+        if (!z && lastClick + timeToWait < millis())
+        {
+            tx = 0;
+            ty = 0;
+            stateTouch = 0;
+        }
+        else
+        {
+            stateTouch = 1;
+        }
         if(tx<0 || tx>320 || ty<0 || ty>480)
         {
             tx = 0; ty = 0;
@@ -18,8 +43,6 @@ void TouchManager::update()
             //ty = 480 - ty;
         #endif
         timerUpdate=millis();
-
-        stateTouch=validTouch();
     }
 }
 

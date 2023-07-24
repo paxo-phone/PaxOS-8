@@ -2,6 +2,9 @@
 
 void Contact::loadContacts(bool force)
 {
+    if(!force && contacts.size() != 0)
+        return;
+
     storage::LFile file("apps/contact/contact.txt", storage::OPEN_MODE::READ);
     std::string data = file.read();
     file.close();
@@ -39,121 +42,149 @@ void Contact::saveContacts()
 
 void Contact::main()
 {
-    showContact(contactPage());
+    while(!home_button.pressed())
+        showContact(contactPage());
 }
 
 uint Contact::contactPage()
 {
-    Window win("contact");
-    win.setMarginX(0);
-    win.setMarginY(CONTROL_BAR_SIZE);
-
-    loadContacts();
-
-    Label* label = new Label(35, 12, 165, 33, "Contacts");
-        label->enabledBackground=true;
-        label->setHorizontalAlignment(CENTER_ALIGNMENT);
-        label->setBorderSize(0);
-        label->setRadius(0);
-        label->fontHeight=30;
-        win.addChild(label);
-
-    std::vector<Gui*> contactList;
-
-    for (int i = 0; i < contacts.size(); i++)
-    {
-        Label* label = new Label(35, 71 + i*43, 220, 25, contacts[i].name);
-        label->enabledBackground=true;
-        label->setBorderSize(0);
-        label->setRadius(0);
-        label->fontHeight=20;
-        label->bold=true;
-        contactList.push_back(label);
-        win.addChild(label);
-    }
-
-    Image* add = new Image("apps/contact/add.png", 272, 13, 25, 25);
-    add->load();
-    win.addChild(add);
-
     while (true)
     {
-        win.updateAll();
+        Window win("contact");
+        win.setMarginX(0);
+        win.setMarginY(CONTROL_BAR_SIZE);
 
-        for (int i = 0; i < contactList.size(); i++)
+        loadContacts();
+
+        Label* label = new Label(35, 12, 165, 33, "Contacts");
+            label->enabledBackground=true;
+            label->setHorizontalAlignment(CENTER_ALIGNMENT);
+            label->setBorderSize(0);
+            label->setRadius(0);
+            label->fontHeight=30;
+            win.addChild(label);
+
+        std::vector<Gui*> contactList;
+
+        for (int i = 0; i < contacts.size(); i++)
         {
-            if(contactList[i]->isTouched())
+            Label* label = new Label(35, 71 + i*43, 220, 25, contacts[i].name);
+            label->enabledBackground=true;
+            label->setBorderSize(0);
+            label->setRadius(0);
+            label->fontHeight=20;
+            label->bold=true;
+            contactList.push_back(label);
+            win.addChild(label);
+        }
+
+        Image* add = new Image("apps/contact/add.png", 272, 13, 25, 25);
+        add->load();
+        win.addChild(add);
+
+        while (true)
+        {
+            win.updateAll();
+
+            for (int i = 0; i < contactList.size(); i++)
             {
-                return i;
+                if(contactList[i]->isTouched())
+                {
+                    return i;
+                }
             }
-        }
 
-        if (add->isTouched())
-        {
-            editContact(true);
-        }
+            if (add->isTouched())
+            {
+                editContact(true);
+                break; // reload page
+            }
 
-        if(home_button.pressed())
-        {
-            return -1;
+            if(home_button.pressed())
+            {
+                return -1;
+            }
         }
     }
 }
 
 void Contact::showContact(uint index)
 {
-    Window win("new contact");
-    win.setMarginX(0);
-    win.setMarginY(CONTROL_BAR_SIZE);
-
-    Label *name = new Label(75, 59, 210, 38, contacts[index].name);
-    name->enabledBackground=false;
-    name->setTextColor(COLOR_BLACK);
-    name->fontHeight=20;
-    name->bold = true;
-    win.addChild(name);
-
-    Label *number = new Label(75, 119, 210, 28, contacts[index].number);
-    number->enabledBackground=false;
-    number->setTextColor(COLOR_BLACK);
-    number->fontHeight=20;
-    number->bold = true;
-    win.addChild(number);
-
-    Image* contactImage = new Image("apps/contact/con_name.png", 45, 66);
-    contactImage->load();
-    win.addChild(contactImage);
-
-    Image* numImage = new Image("apps/contact/con_num.png", 45, 121);
-    numImage->load();
-    win.addChild(numImage);
-
-    Button* edit = new Button(70, 187, 180, 53, "Edit");
-    win.addChild(edit);
-
-    Image* back = new Image("system/return.png", 17, 6); back->load(); win.addChild(back);
+    if(index == -1)
+        return;
 
     while (true)
     {
-        win.updateAll();
+        Window win("new contact");
+        win.setMarginX(0);
+        win.setMarginY(CONTROL_BAR_SIZE);
 
-        if(back->isTouched())
-            return;
+        Label *name = new Label(75, 59, 210, 38, contacts[index].name);
+        name->enabledBackground=false;
+        name->setTextColor(COLOR_BLACK);
+        name->fontHeight=20;
+        name->bold = true;
+        win.addChild(name);
 
-        if(edit->isTouched())
+        Label *number = new Label(75, 119, 210, 28, contacts[index].number);
+        number->enabledBackground=false;
+        number->setTextColor(COLOR_BLACK);
+        number->fontHeight=20;
+        number->bold = true;
+        win.addChild(number);
+
+        Image* contactImage = new Image("apps/contact/con_name.png", 45, 66);
+        contactImage->load();
+        win.addChild(contactImage);
+
+        Image* numImage = new Image("apps/contact/con_num.png", 45, 121);
+        numImage->load();
+        win.addChild(numImage);
+
+        Button* edit = new Button(70, 187, 180, 53, "Edit");
+        win.addChild(edit);
+
+        Button* delButton = new Button(70, 263, 180, 53, "Delete");
+        delButton->setBackgroundColor(COLOR_ERROR);
+        win.addChild(delButton);
+
+        Back* back = new Back();
+        win.addChild(back);
+
+        while (true)
         {
-            editContact(false, index);
-        }
+            win.updateAll();
 
-        if(home_button.pressed())
-        {
-            return;
+            if(back->isTouched())
+                return;
+
+            if(edit->isTouched())
+            {
+                editContact(false, index);
+                break;
+            }
+
+            if(delButton->isTouched())
+            {
+                contacts.erase(contacts.begin()+index);
+
+                saveContacts();
+
+                return;
+            }
+
+            if(home_button.pressed())
+                return;
         }
     }
+    
 }
 
 void Contact::editContact(bool create, uint index)
 {
+    if(index == -1 && !create)
+        return;
+    
     Window win("new contact");
     win.setMarginX(0);
     win.setMarginY(CONTROL_BAR_SIZE);
@@ -184,6 +215,9 @@ void Contact::editContact(bool create, uint index)
 
     Button* saveButton = new Button(70, 187, 180, 53, "Save Contact");
     win.addChild(saveButton);
+
+    Back* back = new Back();
+    win.addChild(back);
 
     Keyboard *kb = new Keyboard();
     win.addChild(kb);
@@ -218,9 +252,7 @@ void Contact::editContact(bool create, uint index)
             return;
         }
 
-        if(home_button.pressed())
-        {
+        if(home_button.pressed() || back->isTouched())
             return;
-        }
     }
 }

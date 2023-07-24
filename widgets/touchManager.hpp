@@ -7,7 +7,7 @@
 #define SLIDE_LEFT 4
 
 #define FLUIDITY 1
-#define FLUIDITY_START 10
+#define FLUIDITY_START 20
 
 #define timeToWait 10
 

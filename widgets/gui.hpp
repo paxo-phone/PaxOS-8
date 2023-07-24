@@ -77,6 +77,7 @@ class Gui // widget system
 
     virtual void reload();
     virtual void updateSizes() {}
+    void determineSize();
     void reloadWidget();
 
 
@@ -197,7 +198,11 @@ class Gui // widget system
     bool rendered = false;
 
     bool noMargin = false;
+    int16_t scroolX, scroolY = 0;          // scrool position
 
+    std::vector<Gui *> children;
+    Gui *parent = nullptr;
+    
     protected:
     int16_t x, y = 0;                      // position
     int16_t width, height = 0;             // sizes
@@ -206,7 +211,6 @@ class Gui // widget system
     int16_t marginX = 0;                   // marginX
     int16_t marginY = 0;                   // marginY
 
-    int16_t scroolX, scroolY = 0;          // scrool position
     int16_t inercie = 0;
 
     color_t color = theme_color[DEFAULT_THEME][0];
@@ -225,8 +229,6 @@ class Gui // widget system
     bool enabled = true;
 
 
-    std::vector<Gui *> children;
-    Gui *parent = nullptr;
 };
 
 Gui *upFromDrawAll = nullptr;
@@ -241,5 +243,6 @@ Gui* Gui::widgetPressed = nullptr;
 #include "gui/image.hpp"
 #include "gui/window.hpp"
 #include "gui/keyboard.hpp"
+#include "gui/back.hpp"
 
 #endif /* GUI_HPP */

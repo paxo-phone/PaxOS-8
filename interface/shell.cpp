@@ -67,3 +67,16 @@ int shell::cmd_getMessages(const ArgList& args)
     gsm.getNewMessagesMODE();
     return SUCCESS;
 }
+
+int shell::addMessage(const ArgList& args)
+{
+    if(args.size()!=2 && gsm.saveMessages!=nullptr)
+        return ERROR;
+
+    std::vector<GSM::Message> msgs;
+    GSM::Message msg = {args[0], encoder.HexStringToString(args[1]), "10/11/2006"};
+    msgs.push_back(msg);
+    gsm.saveMessages(msgs);
+
+    return SUCCESS;
+}

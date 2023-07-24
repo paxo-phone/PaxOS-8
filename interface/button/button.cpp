@@ -12,8 +12,6 @@ void HomeButton::update()
     bool input = false;
     #endif
 
-    print(to_string(input));
-
     if (!input && state == 1)
     {
         state = 2;

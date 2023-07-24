@@ -105,6 +105,7 @@ namespace shell
     int cmd_help(const ArgList& args);
     int cmd_reboot(const ArgList& args);
     int cmd_getMessages(const ArgList& args);
+    int addMessage(const ArgList& args);
 
     string cmd_str[] = { "echo", 
                          "ls", 
@@ -113,7 +114,8 @@ namespace shell
                          "event",
                          "help",
                          "reboot",
-                         "messages" };
+                         "messages",
+                         "newmsg" };
 
     int (*cmd_func[])(const ArgList&) = { &cmd_echo, 
                                           &cmd_ls, 
@@ -122,7 +124,8 @@ namespace shell
                                           &cmd_event,
                                           &cmd_help,
                                           &cmd_reboot,
-                                          &cmd_getMessages };
+                                          &cmd_getMessages,
+                                          &addMessage };
     /* end commands */
 
     ArgList tokenize(const string& line, char delimiter = ' ')
@@ -251,11 +254,14 @@ namespace shell
     }
 };
 
+#include "../tasks/tasks.hpp"
+
 void thread_shell(void* data)
 {
     while(true)
     {
         shell::execute(input());
+        //Serial.println((String)"\nPSRAM Size available (bytes): " +ESP.getFreePsram());
     }
 }
 

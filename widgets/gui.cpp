@@ -46,8 +46,8 @@ void Gui::init(int16_t x, int16_t y, int16_t width, int16_t height)
 
     rendered = false;
 
-    marginX = marginY = 0;
-    scroolX = scroolY = 0;
+    marginX = 0; marginY = 0;
+    scroolX = 0; scroolY = 0;
 
     inercie = 0;
     
@@ -91,19 +91,30 @@ Gui::~Gui()
 void Gui::initScreen()
 {
     #ifdef BUILD_PAXO
-        uint16_t calibrationData[] = {370, 3950, 273, 239, 3848, 3949, 3872, 302};
+        //uint16_t calibrationData[] = {370, 3950, 273, 239, 3848, 3949, 3872, 302};
+
+        uint16_t calibrationData[] = {626, 153, 523, 3727, 3560, 228, 3544, 3724};
+
         tft_root.setTouchCalibrate(calibrationData);
 
-        pinMode(25, OUTPUT); // power on
-        digitalWrite(25, 1);
-        pinMode(22, OUTPUT); // 14 for new and 22 for old
-        digitalWrite(22, 1);
+        #ifdef NEW_PAXO
+            pinMode(14, OUTPUT); // 22 for new and 14 for old
+            digitalWrite(14, 1);
+            pinMode(22, OUTPUT); // 25 for new and 22 for old
+            digitalWrite(22, 1);
+        #endif
+        #ifdef OLD_PAXO
+            pinMode(22, OUTPUT); // 22 for new and 14 for old
+            digitalWrite(22, 1);
+            pinMode(25, OUTPUT); // 25 for new and 22 for old
+            digitalWrite(25, 1);
+        #endif
     #endif
     
     tft_root.init();
 }
 
-void Gui::renderAll()
+void Gui::determineSize()
 {
     if(parent!=nullptr)
     {
@@ -124,6 +135,15 @@ void Gui::renderAll()
         if(autoW)
             width=parent->getWidth()-getRelativeX()*2;
 
+        updateSizes();
+    }
+}
+
+void Gui::renderAll()
+{
+    determineSize();
+    if(parent!=nullptr)
+    {
         updateSizes();
     }
 
@@ -184,12 +204,14 @@ bool Gui::updateAll()
     if (!hasEvent)
         return false;
     
-    virtual_update();
     if(parent == nullptr) // automatically update events
     {
         eventHandler.update();
         touch.update();
     }
+    
+    virtual_update();
+
     if(rendered == false)
     {
         renderAll();
@@ -257,6 +279,7 @@ bool Gui::update()
                 }
 
                 objectPressState = RELEASED;
+                ReleasedEffect();
             }
 
             if(touch.stateSlider) // if slide
@@ -276,8 +299,6 @@ bool Gui::update()
                     parent->objectPressState = SLIDED;
                     this->objectPressState = NOT_PRESSED;
 
-                    this->isTouchedState = false;
-                    parent->isTouchedState = true;
 
                     ReleasedEffect();
                 }
@@ -291,8 +312,6 @@ bool Gui::update()
     {
         if(touch.stateSlider) // if slide
         {
-            objectPressState = SLIDED;
-
             if(onscroll!=nullptr)
             {
                 onscroll(appCallback, this, dataCallback);
@@ -303,11 +322,8 @@ bool Gui::update()
             {
                 widgetPressed = parent;
 
-                parent->objectPressState = SLIDED;
+                parent->objectPressState = SLIDED; // warning: is not recursive
                 this->objectPressState = NOT_PRESSED;
-
-                this->isTouchedState = false;
-                parent->isTouchedState = true;
 
                 ReleasedEffect();
             }
@@ -321,18 +337,19 @@ bool Gui::update()
         widgetPressed = nullptr;
         ReleasedEffect();
 
+        print("objectPressState" + to_string(objectPressState));
+
         if (objectPressState == PRESSED)
         {
             isTouchedState = true;
 
             EventOnReleased();
 
-            //print ("released");
+            print ("released");
 
             if(onreleased!=nullptr)
             {
                 onreleased(appCallback, this, dataCallback);
-                return true;
             }
         }
 
@@ -354,7 +371,7 @@ bool Gui::isFocuced()
 
 bool Gui::isTouched()
 {
-    if(isTouchedState && !isFocuced())
+    if(isTouchedState)
     {
         isTouchedState = false;
         return true;
@@ -627,8 +644,8 @@ int16_t Gui::getLowestY()
     for (int i = 0; i < children.size(); i++)
     {
         if(children[i] != nullptr)
-            if(children[i]->getLowestY()>y)
-                y=children[i]->getLowestY();
+            if(children[i]->getAbsoluteFixY() + children[i]->getHeight()>y)
+                y=children[i]->getAbsoluteFixY() + children[i]->getHeight();
     }
 
     /*if (children.size() == 0)
@@ -691,16 +708,25 @@ bool Gui::EventOnScroll()
         this->scroolX-=mvtX;
         touch.resetScrollHorizontal();
     }
-    if(mvtY && verticalSlide && getLowestY() > -(this->scroolY-mvtY) + this->height  && 0 < -(this->scroolY-mvtY))
+    if(mvtY && verticalSlide)
     {
-        this->scroolY-=mvtY;
-        touch.resetScrollVertical();
+        if(getLowestY() + 20 > -(this->scroolY-mvtY) + this->height  && 0 < -(this->scroolY-mvtY))
+        {
+            this->scroolY-=mvtY;
+            touch.resetScrollVertical();
+        }else
+        {
+            if(getLowestY() + 20 <= -(this->scroolY-mvtY) + this->height)
+                this->scroolY = this->height - 20 - getLowestY();
+            if(-(this->scroolY-mvtY) <= 0)
+                this->scroolY = 0;
+            touch.resetScrollVertical();
+        }
     }
 
     if((mvtX && horizontalSlide) || (mvtY && verticalSlide))
         renderAll();
     return mvtX || mvtY;
 }
-
 
 #endif

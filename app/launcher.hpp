@@ -50,8 +50,9 @@ void launcher()
         {
             if(appBoxs[i]->isTouched())
             {
-                print(apps[i].name);
-                apps[i].app->main();
+                apps[i].app->main(); // launch application
+
+                home_button.clear(); // clear the exit of the application
             }
         }
 
@@ -68,8 +69,7 @@ void launcher()
 
         if(home_button.pressed())
         {
-            home_button.clear();
-            print("home button pressed");
+            // standby mode
         }
     }
 }

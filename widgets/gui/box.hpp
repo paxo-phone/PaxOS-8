@@ -5,6 +5,7 @@ class Box : public Gui
 {
     public:
     GUI_TYPE getType(){return BOX_TYPE;}
+    Box(){};
     Box(int16_t x, int16_t y, int16_t width, int16_t height);
     void draw();
     void free(){}
@@ -14,10 +15,10 @@ Box::Box(int16_t x, int16_t y, int16_t width, int16_t height)
 {
     init(x, y, width, height);
     setBorderSize(0);
-    setRadius(2);
+    setRadius(0);
     setBackgroundColor(COLOR_EXTRA_LIGHT);
     setBorderColor(COLOR_PRIMARY);
-    enabledBackground=true;
+    enabledBackground=false;
 }
 
 void Box::draw()

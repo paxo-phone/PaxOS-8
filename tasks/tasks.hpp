@@ -41,6 +41,8 @@ class ConditionMethod : public ConditionClass
     void* (*getPtr(void))(void) { return (void* (*)()) condition; };
 };
 
+template <class C>
+
 class Callback : public CallbackClass
 {
     public:
@@ -49,6 +51,8 @@ class Callback : public CallbackClass
     void call() { (callback)(); };
     void* (*getPtr(void))(void) { return (void* (*)()) callback; };
 };
+
+template <class C>
 
 class Condition : public ConditionClass
 {
@@ -74,6 +78,7 @@ class EventHandler
 };
 
 EventHandler eventHandler;
+EventHandler graphicalEventHandler;
 
 class Event
 {
@@ -203,6 +208,7 @@ void EventHandler::update()
 
 void addEventListener(CallbackClass* callback, ConditionClass* condition, bool autoremove = false, EventHandler* eventHandler = &eventHandler) // OK
 {
+    print("addEventListener: " + to_string(eventHandler->events.size()));
     eventHandler->events.push_back(new Event(callback, condition, autoremove));
 }
 
@@ -212,6 +218,7 @@ void addEventListener(CallbackClass* callback, ConditionClass* condition, bool a
 
 void removeEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* eventHandler = &eventHandler) // OK
 {
+    print("removeEventListener: " + to_string(eventHandler->events.size()));
     for (uint i = 0; i < eventHandler->events.size(); i++)
     {
         if(eventHandler->events[i]->callback->getPtr() == callback->getPtr() && eventHandler->events[i]->condition->getPtr() == condition->getPtr())

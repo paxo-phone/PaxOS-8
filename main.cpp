@@ -10,4 +10,8 @@
 #include "interface/GSM/Sim800L/sim.cpp"
 #include "app/launcher.cpp"
 #include "app/contact/contact.cpp"
+#include "app/message/message.cpp"
+#include "app/phone/phone.cpp"
+#include "app/calcul/calcul.cpp"
+//#include "app/calcul/tinyexpr.c"
 #include "interface/button/button.cpp"

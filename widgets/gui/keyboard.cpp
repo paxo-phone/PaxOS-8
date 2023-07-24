@@ -8,11 +8,10 @@
 
 Keyboard::Keyboard()
 {
-    init(15, 310, 290, 157);
+    init(15, 323, 290, 157);
     noMargin = true;
     enabled=false;
     this->label=nullptr;
-    setY(300);
     //setMarginX(15);
     
     Image* maj = new Image("system/keyboard/maj_"+to_string(mode)+".bmp", 8, 9);   // majuscule

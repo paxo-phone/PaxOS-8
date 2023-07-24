@@ -4,17 +4,11 @@
 class Message : public App
 {
     public:
-    void main()
-    {
-        Window win("message");
-
-        
-
-        while (true)
-        {
-            win.updateAll();
-        }
-    }
+    void main();
+    static void saveMessage(std::vector<GSM::Message> message);
+    static bool notif;
 };
+
+bool Message::notif = false;
 
 #endif

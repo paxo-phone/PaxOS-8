@@ -19,6 +19,11 @@
     uint64_t start = millis();
     while (millis() - start < ms);
   }
+
+  int random(int i, int j)
+  {
+    return (rand()%(j-i))-i;
+  }
 #endif
 
 #include "memory.hpp"

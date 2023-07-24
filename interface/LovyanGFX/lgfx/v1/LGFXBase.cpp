@@ -3151,6 +3151,7 @@ namespace lgfx
                  |(-(touch_offsetrot + panel_offsetrot) & 3));
 
       uint16_t orig[8];
+      uint16_t pmx, pmy;
       for (int i = 0; i < 4; ++i) {
         int32_t px = (width() -  1) * ((i>>1) & 1);
         int32_t py = (height() - 1) * ( i     & 1);

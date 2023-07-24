@@ -1,4 +1,8 @@
 #define BUILD_PAXO 1
+
+//#define OLD_PAXO
+#define NEW_PAXO
+
 #include <iterator>
 #ifndef BUILD_PAXO
     #define BUILD_EMU 1
@@ -21,11 +25,6 @@ using namespace std;
 #include "extensions/extensions.hpp"
 #include "app/app.hpp"
 
-Window* box = nullptr;
-Label* label = nullptr;
-Label* label2 = nullptr;
-Label* label3 = nullptr;
-
 void setup() // initialize the paxos v8
 {
     #ifdef BUILD_PAXO
@@ -36,6 +35,7 @@ void setup() // initialize the paxos v8
     shell::init(); new_thread(CORE_BACK, thread_shell, nullptr);
     storage::init();
     gsm.init();
+    gsm.saveMessages = Message::saveMessage;
     home_button.init();
 
     gsm.askForHour();
@@ -45,7 +45,4 @@ void setup() // initialize the paxos v8
 
 void loop()
 {
-    #ifdef BUILD_PAXO
-    vTaskDelay(1);
-    #endif
 }

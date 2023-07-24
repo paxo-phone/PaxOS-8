@@ -1,0 +1,17 @@
+~MO:Salut
+~MI:Comment tu vas?
+~MO:1
+~MO:2
+~MO:3
+~MO:4
+~MO:5
+~MO:6
+~MO:7
+~MO:8
+~MO:9
+~MO:10
+~MO:11
+~MO:12
+~MI:é
+~MI:é
+~MI:é

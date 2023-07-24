@@ -8,10 +8,10 @@ class Contact : public App
     public:
     void main();
     static void loadContacts(bool force = false);
-    void saveContacts();
-    uint contactPage();
-    void editContact(bool create = false, uint index = -1);
-    void showContact(uint index);
+    static void saveContacts();
+    static uint contactPage();
+    static void editContact(bool create = false, uint index = -1);
+    static void showContact(uint index);
 
     struct OneContact
     {

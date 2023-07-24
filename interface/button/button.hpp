@@ -1,7 +1,12 @@
 #ifndef BUTTON_HARD_HPP
 #define BUTTON_HARD_HPP
 
-#define HOME_BUTTON 33
+#ifdef NEW_PAXO
+    #define HOME_BUTTON 33
+#endif
+#ifdef OLD_PAXO
+    #define HOME_BUTTON 32
+#endif
 
 #include "../../tasks/tasks.hpp"
 

@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.md": "html",
         "chrono": "cpp",
         "vector": "cpp",
         "iostream": "cpp",
@@ -61,6 +62,8 @@
         "cstring": "cpp",
         "map": "cpp",
         "regex": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "tinyexpr.c": "cpp",
+        "set": "cpp"
     }
 }
