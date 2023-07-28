@@ -1,23 +1,21 @@
-# paxos_8
+Presentation of the OS: The paxos_8
 
-Présentation de l'OS: Le paxos_8
+The paxos_8 is the latest version of the os, it brings a very reliable event system allowing a very fluid use of the device. Its new graphic module adds new, more aesthetic widgets in a precise theme designed on figma!
 
-Le paxos_8 est la dernière version de l'os, elle apporte un système d'évènements très fiable permettant une utilisation très fluide de l'appareil. Son nouveau module graphique ajoute de nouveaux widgets plus esthétiques dans un thème précis conçue sur figma!
+The homepage features 8 simplistic apps but none too many:
 
-La page d'accueil présente 8 applications simplistes mais aucune de trop:
+The phone application for making calls
 
-    L'application téléphone permettant de passer des appels
+Message, to send bubble messages to contacts
 
-    Message, pour envoyer des messages sous forme de bulles aux contacts
+Contacts, which allows you to add and delete contacts that can be used in other applications
 
-    Contacts, qui permet de créer ajouter et supprimer des contacts utilisables dans les autres applications
+Calculator
 
-    Calculatrice
+Clock, which will allow you to program alarms and launch stopwatches and timers
 
-    Horloge, qui permettra de programmer des alarmes et de lancer des chronomètres et minuteurs
+Map to calculate its GPS coordinates
 
-    Map pour calculer ses coordonnées GPS
+and two games which are snake and the 2048!
 
-    et deux jeux qui sont snake et le 2048!
-
-  voir plus sur https://www.paxo.fr
+see more on https://www.paxo.fr
