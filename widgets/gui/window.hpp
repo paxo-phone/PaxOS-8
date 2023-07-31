@@ -9,6 +9,8 @@ class Window : public Gui
     int updateEventId;
     Window(std::string title)
     {
+
+
         this->title = title;
         init(0, 0, 320, 480);
         setBackgroundColor(COLOR_LIGHT);
@@ -35,17 +37,36 @@ class Window : public Gui
             hourLabel->setRadius(0);
             bar->addChild(hourLabel);
 
-        std::string netState[2] = {"", "2G"};
-        networkLabel = new Label(0, 0, 100, CONTROL_BAR_SIZE, netState[gsm.network_state]);
-            networkLabel->fontHeight = 20;
-            networkLabel->bold = true;
-            networkLabel->setTextColor(COLOR_BLACK);
-            networkLabel->setVerticalAlignment(CENTER_ALIGNMENT);
-            networkLabel->enabledBackground = true;
-            networkLabel->setBackgroundColor(COLOR_EXTRA_LIGHT);
-            networkLabel->setBorderSize(0);
-            networkLabel->setRadius(0);
-            bar->addChild(networkLabel);
+        for(int i = 0; i < 5; i++) // load network quality
+        {
+            netQual[i] = new Image("system/sig_" + to_string(i) + ".png", 4, 4);
+            netQual[i]->load();
+            bar->addChild(netQual[i]);
+        }
+
+        for(int i = 0; i < 5; i++) // load battery level
+        {
+            battLevel[i] = new Image("system/batt_0" + to_string(i+1) + ".png", 279, 6);
+            battLevel[i]->load();
+            bar->addChild(battLevel[i]);
+
+        }
+
+        for(int i = 0; i < 5; i++) // load network quality
+        {
+            if(gsm.quality == i)
+                netQual[i]->enable();
+            else
+                netQual[i]->disable();
+        }
+
+        for(int i = 0; i < 5; i++) // load network quality
+        {
+            if(gsm.batteryLevel == i)
+                battLevel[i]->enable();
+            else
+                battLevel[i]->disable();
+        }
 
         updateEventId = setInterval(new CallbackMethod<Window>(this, &Window::updateModules), 1000);
     }
@@ -59,8 +80,24 @@ class Window : public Gui
     {
         // hour
         hourLabel->setText(to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes));
-        std::string netState[2] = {"", "2G"};
-        networkLabel->setText(netState[gsm.network_state]);
+
+        print(to_string(gsm.batteryLevel));
+
+        for(int i = 0; i < 5; i++) // network quality
+        {
+            if(gsm.quality == i)
+                netQual[i]->enable();
+            else
+                netQual[i]->disable();
+        }
+
+        for(int i = 0; i < 5; i++) // load network quality
+        {
+            if(gsm.batteryLevel == i)
+                battLevel[i]->enable();
+            else
+                battLevel[i]->disable();
+        }
     }
 
     void draw()
@@ -103,7 +140,10 @@ class Window : public Gui
     std::string title = "";
     Box* bar = nullptr;
     Label* hourLabel = nullptr;
-    Label* networkLabel = nullptr;
+
+    Image* netQual[5];
+    Image* battLevel[5];
 };
+
 
 #endif

@@ -88,7 +88,7 @@ void Message::main()
             bool resetScrool = true;
 
             text->setText(actual_message);
-            
+
             while(true)
             {
                 win.updateAll();

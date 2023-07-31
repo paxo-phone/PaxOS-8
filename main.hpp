@@ -34,6 +34,7 @@ void setup() // initialize the paxos v8
     Gui::initScreen();
     shell::init(); new_thread(CORE_BACK, thread_shell, nullptr);
     storage::init();
+    screen_light.init();
     gsm.init();
     gsm.saveMessages = Message::saveMessage;
     home_button.init();

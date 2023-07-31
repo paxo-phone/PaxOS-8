@@ -197,6 +197,8 @@ void Gui::renderAll()
     {
         l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
     }
+
+    screen_light.ON();
 }
 
 bool Gui::updateAll()

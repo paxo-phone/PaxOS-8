@@ -12,9 +12,10 @@ void HomeButton::update()
     bool input = false;
     #endif
 
-    if (!input && state == 1)
+    if ((!input && state == 1) || needStandbyMod())
     {
         state = 2;
+        resetStandbyMod();
         return;
     }
 

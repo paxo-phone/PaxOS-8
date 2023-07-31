@@ -28,6 +28,15 @@ class HomeButton
 
     private:
     unsigned int button_chrono = 0;
+
+    public:
+    // standby mod
+
+    uint32_t timer = 0;
+    uint32_t timer_delay = 30000; // milliseconds
+
+    void resetStandbyMod() { timer = millis(); }
+    bool needStandbyMod() { return timer_delay + timer < millis(); }
 };
 
 HomeButton home_button;

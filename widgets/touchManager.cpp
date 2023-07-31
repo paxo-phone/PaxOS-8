@@ -10,6 +10,9 @@ void TouchManager::update()
     {
         uint16_t z = tft_root.getTouchRaw(&tx, &ty);
         tft_root.convertRawXY(&tx, &ty);
+        tx = tx*320/340;
+        ty = ty*480/460;
+        //print ("touch: " + to_string(tx) + "; " + to_string(ty));
         
         if(tx<0 || tx>320 || ty<0 || ty>480)
         {
@@ -18,11 +21,13 @@ void TouchManager::update()
         if (z && lastClick + timeToWait > millis())
         {
             lastClick = millis();
+            home_button.resetStandbyMod();
             stateTouch = 1;
         }
         if (z)
         {
             lastClick = millis();
+            home_button.resetStandbyMod();
             stateTouch = 1;
         }
         if (!z && lastClick + timeToWait < millis())
@@ -127,6 +132,11 @@ bool TouchManager::isTouchRead() // simple detector
     uint16_t z = tft_root.getTouchRaw(&tx, &ty);
     //print(std::to_string(z));
     tft_root.convertRawXY(&tx, &ty);
+
+    if (z)
+    {
+        home_button.resetStandbyMod();
+    }
     
     if(tx<0 || tx>320 || ty<0 || ty>480)
     {

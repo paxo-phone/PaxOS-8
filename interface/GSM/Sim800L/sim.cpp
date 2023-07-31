@@ -6,36 +6,37 @@ void GSM::init()
     pinMode(32, OUTPUT);
     SIM800Serial.begin(9600);
 
-    delay(3000);
 
-    while(SIM800Serial.available())
-        get_data();
+    addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
+    #endif
+}
 
-    SIM800Serial.print(F("AT\r\n"));
-
-    uint32_t t = millis();
-    
-    while(!SIM800Serial.available())
+bool GSM::moduleCheck()
+{
+    if(timer+1000 < millis())
     {
-        if(t + 200 <= millis())
+        SIM800Serial.print(F("AT\r\n"));
+
+        uint32_t t = millis();
+        
+        while(!SIM800Serial.available())
         {
-            print("not responding");
-
-            /*digitalWrite(32, 1); // Ne pas activer !!!
-            delay(1500);
-            digitalWrite(32, 0);*/
-
-            SIM800Serial.print(F("AT\r\n"));
-            break;
+            if(t + 200 <= millis())
+            {
+                print("not responding");
+                timer = millis();
+                return false;
+            }
         }
+        return true;        
     }
-    
-    addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleReady), true);
+    else
+        return false;
 }
 
 void GSM::initRequests()
 {
-    //SIM800Serial.print(F("AT+CPOWD=0\r\n"));
+    #ifdef BUILD_PAXO
     delay(10);
     SIM800Serial.print(F("AT+CNMI=2,1,0,0,0\r\n"));
     delay(10);
@@ -50,6 +51,8 @@ void GSM::initRequests()
     setInterval(new CallbackMethod<GSM>(this, &GSM::update), 2);
     setInterval(new CallbackMethod<GSM>(this, &GSM::getHour), 5000);
     setInterval(new CallbackMethod<GSM>(this, &GSM::askForMessages), 6000);
+    setInterval(new CallbackMethod<GSM>(this, &GSM::getNetworkQuality), 10000);
+    setInterval(new CallbackMethod<GSM>(this, &GSM::getBatteryLevel), 10000);
 
     struct Key key1 = {&GSM::askForMessages, "+CMTI\n", false}; add_key(key1); // message
     struct Key key2 = {&GSM::getNumberWhoCall, "RING\n", false}; add_key(key2); // call
@@ -217,6 +220,11 @@ void GSM::sendNewMessageMODE(std::string number, std::string message)
     this->number_buffer = number;
     this->message_buffer = message;
 
+    add_request({&GSM::sendNewMessageRequest});
+}
+
+void GSM::sendNewMessageRequest()
+{
     data="";
 
     this->gsm_print("AT+CMGF=1\r\n");
@@ -246,12 +254,11 @@ void GSM::sendNewMessageMODE(std::string number, std::string message)
     while(data.find("\nOK")==-1 && data.find("\nERROR")==-1)
         get_data();
     
-    sendNewMessageSEND();
-}
 
-void GSM::sendNewMessageSEND()
-{
-    print("[GSM] I: Message sent!");
+    if(data.find("\nOK")!=-1)
+        print("[GSM] I: Message sent!");
+    else
+        print("[GSM] I: Message not sent...");
 }
 
 void GSM::askedForCall()
@@ -350,14 +357,65 @@ void GSM::parseHour()
         data = "";
         return;
     }
-    data = data.substr(data.find("\"") + 1, data.find_last_of("\"") - 1 - data.find("\"") - 1);
+    std::string data2 = data.substr(data.find("\"") + 1, data.find_last_of("\"") - 1 - data.find("\"") - 1);
 
-    print("data:" + data);
-    years = stoi(data.substr(0, 2));
-    months = stoi(data.substr(3, 5-3));
-    days = stoi(data.substr(6, 8-6));
-    hours = stoi(data.substr(9, 11-9));
-    minutes = stoi(data.substr(12, 14-12));
-    seconds = stoi(data.substr(15, 17-15));
+    print("data:" + data2);
+    years = stoi(data2.substr(0, 2));
+    months = stoi(data2.substr(3, 5-3));
+    days = stoi(data2.substr(6, 8-6));
+    hours = stoi(data2.substr(9, 11-9));
+    minutes = stoi(data2.substr(12, 14-12));
+    seconds = stoi(data2.substr(15, 17-15));
     print(to_string(years) + " " + to_string(months) + " " + to_string(days) + " " + to_string(hours) + " " + to_string(minutes) + " " + to_string(seconds));
+}
+
+void GSM::getNetworkQuality()
+{
+    add_request({&GSM::askNetworkQuality, &GSM::parseNetworkQuality});
+}
+
+void GSM::askNetworkQuality()
+{
+    this->gsm_print("AT+CSQ\r\n");
+}
+
+void GSM::parseNetworkQuality()
+{
+    quality = stoi(data.substr(data.find("+CSQ: ") + 5, data.find(",") - data.find("+CSQ: ") - 5));
+
+    if (quality > 19) // excellent quality
+        quality = 4;
+    else if (quality > 14) // Good quality
+        quality = 3;
+    else if (quality > 9) // ok quality
+        quality = 2;
+    else if (quality > 0) // Marginal quality
+        quality = 1;
+}
+
+void GSM::getBatteryLevel()
+{
+    add_request({&GSM::askBatteryLevel, &GSM::parseBatteryLevel});
+}
+
+void GSM::askBatteryLevel()
+{
+    this->gsm_print("AT+CBC\r\n");
+}
+
+void GSM::parseBatteryLevel()
+{
+    std::string data2 = data.substr(data.find("+CBC:"), data.find_last_of(",") - data.find("+CBC:"));
+    batteryLevel = stoi(data2.substr(data2.find(",") + 1, data2.find_last_of(",") - data2.find(",") - 1));
+
+    if (batteryLevel > 90) // excellent quality
+        batteryLevel = 4;
+    else if (batteryLevel > 75) // Good quality
+        batteryLevel = 3;
+    else if (batteryLevel > 40) // ok quality
+        batteryLevel = 2;
+    else if (batteryLevel > 20) // Marginal quality
+        batteryLevel = 1;
+    else
+        batteryLevel = 0;
 }

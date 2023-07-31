@@ -46,6 +46,8 @@ class GSM
     };
 
     void init();
+    bool moduleCheck();
+    uint32_t timer = 0;
     bool moduleReady() { get_data(); return data.find("SMS Ready")!=-1; }
     void initRequests();
     void write(char c);
@@ -68,8 +70,7 @@ class GSM
     void getNewMessagesPARSE();
 
     void sendNewMessageMODE(std::string number, std::string message);
-    void sendNewMessageNUMBER();
-    void sendNewMessageSEND();
+    void sendNewMessageRequest();
 
     std::string number_buffer = "";
     std::string message_buffer = "";
@@ -84,6 +85,16 @@ class GSM
     void getHour();
     void askForHour();
     void parseHour();
+
+    void getNetworkQuality();
+    void askNetworkQuality();
+    void parseNetworkQuality();
+    uint quality = 0;
+
+    void getBatteryLevel();
+    void askBatteryLevel();
+    void parseBatteryLevel();
+    uint batteryLevel = 0;
 
     void (*saveMessages)(std::vector<Message>) = nullptr;
     void (*getCall)(std::string number) = nullptr;

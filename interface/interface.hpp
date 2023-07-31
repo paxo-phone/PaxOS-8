@@ -30,5 +30,6 @@
 #include "shell.hpp"
 #include "GSM/GSM.hpp"
 #include "button/button.hpp"
+#include "lights.hpp"
 
 #endif

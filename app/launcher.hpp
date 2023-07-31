@@ -70,6 +70,26 @@ void launcher()
         if(home_button.pressed())
         {
             // standby mode
+            #ifdef NEW_PAXO
+            screen_light.OFF();
+            #endif
+
+            home_button.clear();
+
+            #ifdef OLD_PAXO
+                pinMode(22, OUTPUT); // 22 for new and 14 for old
+                digitalWrite(22, 1);
+            #endif
+
+            while (!home_button.pressed())
+            {
+                eventHandler.update();
+                home_button.resetStandbyMod();
+            }
+
+            home_button.clear();
+
+            screen_light.ON();
         }
     }
 }
