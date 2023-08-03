@@ -298,7 +298,11 @@ namespace storage
     bool newdir(const string& dirpath)
     {
         #ifdef BUILD_EMU
+        #ifdef WIN32
+            return mkdir(dirpath.c_str()) == 0;
+        #else
             return mkdir(dirpath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+        #endif
         #endif
         #ifdef BUILD_PAXO
             return SD.mkdir(dirpath.c_str());

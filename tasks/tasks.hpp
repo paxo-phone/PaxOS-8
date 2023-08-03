@@ -3,6 +3,10 @@
 
 #include "thread.hpp"
 
+#ifdef WIN32
+#define uint unsigned int
+#endif
+
 class CallbackClass
 {
     public:
