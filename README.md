@@ -1,6 +1,6 @@
 # PaxOS 8
 
-![Logo of the paxo project](https://lh5.googleusercontent.com/LNcbzZ5TWAsTR8ANFHSieD6bn9Wd1ht0z30c1nECuselcdPhdZsnWl2E3Gz9ZDm3_tIV5kRYmsUZwstJwj4vKADaNQfbmbTE6U-5078HRluwoAuxNedFp1yT0nSnZt65Eg=w1280)
+![Logo of the paxo project](logo.png)
 
 **PaxOS 8** is the latest version of **PaxOS**, a lightweight operating system for PaxoPhones. 
 
