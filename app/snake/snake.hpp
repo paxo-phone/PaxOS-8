@@ -27,7 +27,7 @@ class Snake : public App
             pointxy[1] = random(4, 40);
             uint16_t pointColor = tft_root.color565(random(100, 255), random(100, 255), random(100, 255));
             tft_root.fillRoundRect(pointxy[0]*10, pointxy[1]*10, 10, 10, 3, pointColor);
-            long snakeTimer = millis();   // init the timer
+            uint64_t snakeTimer = millis();   // init the timer
             uint8_t direction = 1;         // 1=right 2=under 3=left 4=up
             uint8_t direction_ = 1;
             bool gameover = 0;
