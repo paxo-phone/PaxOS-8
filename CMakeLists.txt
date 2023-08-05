@@ -32,8 +32,9 @@ target_include_directories(PaxOS8 PUBLIC "interface/LovyanGFX")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	find_package(SDL2 REQUIRED SDL2)
+
 	include_directories(${SDL2_INCLUDE_DIRS})
-	target_link_libraries(LGFX_SDL -lpthread ${SDL2_LIBRARIES})
+	target_link_libraries(PaxOS8 -lpthread ${SDL2_LIBRARIES})
 
 	target_link_libraries(PaxOS8 PRIVATE m)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -47,6 +48,7 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/Zc:__cplusplus>")
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 	find_package(SDL2 REQUIRED COMPONENTS SDL2)
+
 	target_link_libraries(PaxOS8 PRIVATE SDL2::SDL2)
 
 	target_link_libraries(PaxOS8 PRIVATE m)
