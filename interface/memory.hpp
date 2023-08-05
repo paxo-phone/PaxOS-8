@@ -45,6 +45,16 @@ namespace storage
             {
                 #ifdef BUILD_EMU
 
+                #ifdef WIN32
+                    if(mode == READ)
+                        stream = new fstream(("storage/"+path), ios::in | ios::binary);
+
+                    if(mode == WRITE && erase == true)
+                        stream = new fstream(("storage/"+path), ios::out | ios::trunc | ios::binary);
+
+                    if(mode == WRITE && erase == false)
+                        stream = new fstream(("storage/"+path), ios::out | ios::binary);
+                #else
                     if(mode == READ)
                         stream = new fstream(("storage/"+path), ios::in);
 
@@ -53,6 +63,7 @@ namespace storage
 
                     if(mode == WRITE && erase == false)
                         stream = new fstream(("storage/"+path), ios::out);
+                #endif
 
                 #endif
 
@@ -337,7 +348,7 @@ namespace storage
             return ::remove(path.c_str()); // from cstdio
         #endif 
         #ifdef BUILD_PAXO
-            return SD.remove("logData.txt");
+            return SD.remove(path.c_str());
         #endif
     }
     
