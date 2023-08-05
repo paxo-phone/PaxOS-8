@@ -9,58 +9,50 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
-if(WIN32)
-	set(SDL2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/win32/SDL2-2.28.2/cmake)
-	set(SDL2_image_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/win32/SDL2_image-2.6.3/cmake)
-else()
-	set(SDL2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/linux/SDL2-2.28.2/cmake)
-	set(SDL2_image_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/linux/SDL2_image-2.6.3/cmake)
-endif()
-
-find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
-find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2main)
-find_package(SDL2_image REQUIRED CONFIG REQUIRED COMPONENTS SDL2_image)
-
-set(LovyanGFX_include
-	"interface/LovyanGFX"
-	"interface/LovyanGFX/lgfx/Fonts/efont"
-	"interface/LovyanGFX/lgfx/v1"
+file(GLOB LovyanGFX_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
+ 	interface/LovyanGFX/lgfx/Fonts/efont/*.c
+	interface/LovyanGFX/lgfx/Fonts/IPA/*.c
+	interface/LovyanGFX/lgfx/utility/*.c
+	interface/LovyanGFX/lgfx/v1/*.cpp
+	interface/LovyanGFX/lgfx/v1/misc/*.cpp
+	interface/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp
+	interface/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
+	interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
 )
 
-file(GLOB LovyanGFX_src
-#	"interface/LovyanGFX/lgfx/Fonts/efont/*.c"
-#	"interface/LovyanGFX/lgfx/Fonts/IPA/*.c"
-	"interface/LovyanGFX/lgfx/utility/*.c"
-	"interface/LovyanGFX/lgfx/v1/*.cpp"
-	"interface/LovyanGFX/lgfx/v1/misc/*.cpp"
-	"interface/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp"
-	"interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp"
+file (GLOB src
+	*.cpp
 )
 
 add_definitions(-DLGFX_SDL)
 
-if(WIN32)
-	add_executable(PaxOS8 WIN32 main.cpp ${LovyanGFX_src})
-else()
-	add_executable(PaxOS8 main.cpp ${LovyanGFX_src})
-endif()
+add_executable(PaxOS8 interface/LovyanGFX/LGFX_SDL.cpp ${src} ${LovyanGFX_src})
 
-target_include_directories(PaxOS8 PRIVATE ${LovyanGFX_include})
+target_include_directories(PaxOS8 PUBLIC "interface/LovyanGFX")
 
-target_link_libraries(PaxOS8 PRIVATE m)
-if (TARGET SDL2::SDL2main)
-	target_link_libraries(PaxOS8 PRIVATE SDL2::SDL2main)
-endif()
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+	find_package(SDL2 REQUIRED SDL2)
+	include_directories(${SDL2_INCLUDE_DIRS})
+	target_link_libraries(LGFX_SDL -lpthread ${SDL2_LIBRARIES})
 
-if (WIN32)
+	target_link_libraries(PaxOS8 PRIVATE m)
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+	target_include_directories(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2-2.28.2/include")
+
+	target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
+	target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2-2.28.2/lib/x64/SDL2main.lib")
+
+	add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+	add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+	add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/Zc:__cplusplus>")
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+	find_package(SDL2 REQUIRED COMPONENTS SDL2)
 	target_link_libraries(PaxOS8 PRIVATE SDL2::SDL2)
-	target_link_libraries(PaxOS8 PRIVATE SDL2_image::SDL2_image)
-else()
-	target_link_libraries(PaxOS8 PRIVATE SDL2)
-	target_link_libraries(PaxOS8 PRIVATE SDL2_image)
-endif()
 
-target_link_directories(PaxOS8 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/interface/LovyanGFX/lgfx)
+	target_link_libraries(PaxOS8 PRIVATE m)
+ENDIF ()
+
+target_compile_features(PaxOS8 PUBLIC cxx_std_17)
 
 if(WIN32)
 	include_directories(lib/dirent-1.23.2/include)

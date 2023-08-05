@@ -9,6 +9,9 @@
     #include <string>
     #include <sys/stat.h>
     #include <dirent.h>
+    #ifdef WIN32
+        #include <direct.h>
+    #endif
     using namespace std;
 #endif
 #ifdef BUILD_PAXO
@@ -299,7 +302,7 @@ namespace storage
     {
         #ifdef BUILD_EMU
         #ifdef WIN32
-            return mkdir(dirpath.c_str()) == 0;
+            return _mkdir(dirpath.c_str()) == 0;
         #else
             return mkdir(dirpath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
         #endif

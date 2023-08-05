@@ -64,6 +64,8 @@ string input() { return command_shell.input(); }
 
 using namespace std;
 
+#undef ERROR
+
 namespace shell
 {
     typedef vector<string> ArgList;
