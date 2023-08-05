@@ -26,8 +26,6 @@ extern const uint8_t lgfx_efont_kr_24_b[];
 extern const uint8_t lgfx_efont_kr_24_bi[];
 extern const uint8_t lgfx_efont_kr_24_i[];
 
-#include "lgfx_efont_kr.c"
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

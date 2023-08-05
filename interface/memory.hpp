@@ -9,6 +9,9 @@
     #include <string>
     #include <sys/stat.h>
     #include <dirent.h>
+    #ifdef WIN32
+        #include <direct.h>
+    #endif
     using namespace std;
 #endif
 #ifdef BUILD_PAXO
@@ -42,6 +45,16 @@ namespace storage
             {
                 #ifdef BUILD_EMU
 
+                #ifdef WIN32
+                    if(mode == READ)
+                        stream = new fstream(("storage/"+path), ios::in | ios::binary);
+
+                    if(mode == WRITE && erase == true)
+                        stream = new fstream(("storage/"+path), ios::out | ios::trunc | ios::binary);
+
+                    if(mode == WRITE && erase == false)
+                        stream = new fstream(("storage/"+path), ios::out | ios::binary);
+                #else
                     if(mode == READ)
                         stream = new fstream(("storage/"+path), ios::in);
 
@@ -50,6 +63,7 @@ namespace storage
 
                     if(mode == WRITE && erase == false)
                         stream = new fstream(("storage/"+path), ios::out);
+                #endif
 
                 #endif
 
@@ -298,7 +312,11 @@ namespace storage
     bool newdir(const string& dirpath)
     {
         #ifdef BUILD_EMU
+        #ifdef WIN32
+            return _mkdir(dirpath.c_str()) == 0;
+        #else
             return mkdir(dirpath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+        #endif
         #endif
         #ifdef BUILD_PAXO
             return SD.mkdir(dirpath.c_str());
@@ -330,7 +348,7 @@ namespace storage
             return ::remove(path.c_str()); // from cstdio
         #endif 
         #ifdef BUILD_PAXO
-            return SD.remove("logData.txt");
+            return SD.remove(path.c_str());
         #endif
     }
     

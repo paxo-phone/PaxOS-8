@@ -26,8 +26,6 @@ extern const uint8_t lgfx_efont_ja_24_b[];
 extern const uint8_t lgfx_efont_ja_24_bi[];
 extern const uint8_t lgfx_efont_ja_24_i[];
 
-#include "lgfx_efont_ja.c"
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

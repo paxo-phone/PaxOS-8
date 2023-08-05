@@ -3,6 +3,10 @@
 
 #include "thread.hpp"
 
+#ifdef WIN32
+#define uint unsigned int
+#endif
+
 class CallbackClass
 {
     public:
@@ -26,7 +30,8 @@ class CallbackMethod : public CallbackClass
     C* object = nullptr;
     void (C::*callback)(void) = nullptr;
     void call() { (object->*callback)(); };
-    void* (*getPtr(void))(void) { return (void* (*)()) callback; };
+    //void* (*getPtr(void))(void) { return (void* (*)()) callback; };
+    void* (*getPtr(void))(void) {};
 };
 
 template <class C>
@@ -38,7 +43,8 @@ class ConditionMethod : public ConditionClass
     C* object = nullptr;
     bool (C::* condition)(void);
     bool check() { return (object->*condition)(); };
-    void* (*getPtr(void))(void) { return (void* (*)()) condition; };
+    //void* (*getPtr(void))(void) { return (void* (*)()) condition; };
+    void* (*getPtr(void))(void) {};
 };
 
 template <class C>
@@ -49,7 +55,8 @@ class Callback : public CallbackClass
     Callback(void (*callback)(void)) : callback(callback) {};
     void (*callback)(void) = nullptr;
     void call() { (callback)(); };
-    void* (*getPtr(void))(void) { return (void* (*)()) callback; };
+    //void* (*getPtr(void))(void) { return (void* (*)()) callback; };
+    void* (*getPtr(void))(void) {};
 };
 
 template <class C>
@@ -60,7 +67,8 @@ class Condition : public ConditionClass
     Condition(bool (*condition)(void)) : condition(condition) {};
     bool (*condition)(void) = nullptr;
     bool check() { return (condition)(); };
-    void* (*getPtr(void))(void) { return (void* (*)()) condition; };
+    //void* (*getPtr(void))(void) { return (void* (*)()) condition; };
+    void* (*getPtr(void))(void) {};
 };
 
 class Event;
@@ -206,25 +214,25 @@ void EventHandler::update()
 }
 
 
-void addEventListener(CallbackClass* callback, ConditionClass* condition, bool autoremove = false, EventHandler* eventHandler = &eventHandler) // OK
+void addEventListener(CallbackClass* callback, ConditionClass* condition, bool autoremove = false, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    print("addEventListener: " + to_string(eventHandler->events.size()));
-    eventHandler->events.push_back(new Event(callback, condition, autoremove));
+    print("addEventListener: " + std::to_string(pEventHandler->events.size()));
+    pEventHandler->events.push_back(new Event(callback, condition, autoremove));
 }
 
 /* example:
     addEventListener(new Callback(callbackTest), new ConditionMethod((Gui*) label, &Button::isTouched));
 */
 
-void removeEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* eventHandler = &eventHandler) // OK
+void removeEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    print("removeEventListener: " + to_string(eventHandler->events.size()));
-    for (uint i = 0; i < eventHandler->events.size(); i++)
+    print("removeEventListener: " + std::to_string(pEventHandler->events.size()));
+    for (uint i = 0; i < pEventHandler->events.size(); i++)
     {
-        if(eventHandler->events[i]->callback->getPtr() == callback->getPtr() && eventHandler->events[i]->condition->getPtr() == condition->getPtr())
+        if(pEventHandler->events[i]->callback->getPtr() == callback->getPtr() && pEventHandler->events[i]->condition->getPtr() == condition->getPtr())
         {
-            delete eventHandler->events[i];
-            eventHandler->events.erase(eventHandler->events.begin() + i);
+            delete pEventHandler->events[i];
+            pEventHandler->events.erase(pEventHandler->events.begin() + i);
             break;
         }
     }
@@ -233,41 +241,41 @@ void removeEventListener(CallbackClass* callback, ConditionClass* condition, Eve
     delete condition;
 }
 
-uint setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* eventHandler = &eventHandler) // OK
+uint setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventHandler = &eventHandler) // OK
 {
     Timeout* ntimeout = new Timeout(callback, timeout);
-    eventHandler->timeouts.push_back(ntimeout);
+    pEventHandler->timeouts.push_back(ntimeout);
     return ntimeout->id;
 }
 
-void removeTimeout(uint32_t id, EventHandler* eventHandler = &eventHandler) // OK
+void removeTimeout(uint32_t id, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    for (uint i = 0; i < eventHandler->timeouts.size(); i++)
+    for (uint i = 0; i < pEventHandler->timeouts.size(); i++)
     {
-        if(eventHandler->timeouts[i]->id == id)
+        if(pEventHandler->timeouts[i]->id == id)
         {
-            delete eventHandler->timeouts[i];
-            eventHandler->timeouts.erase(eventHandler->timeouts.begin() + i);
+            delete pEventHandler->timeouts[i];
+            pEventHandler->timeouts.erase(pEventHandler->timeouts.begin() + i);
             break;
         }
     }
 }
 
-uint setInterval(CallbackClass* callback, uint32_t interval, EventHandler* eventHandler = &eventHandler) // OK
+uint setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler = &eventHandler) // OK
 {
     Interval* ninterval = new Interval(callback, interval);
-    eventHandler->intervals.push_back(ninterval);
+    pEventHandler->intervals.push_back(ninterval);
     return ninterval->id;
 }
 
-void removeInterval(uint32_t id, EventHandler* eventHandler = &eventHandler) // OK
+void removeInterval(uint32_t id, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    for (uint i = 0; i < eventHandler->intervals.size(); i++)
+    for (uint i = 0; i < pEventHandler->intervals.size(); i++)
     {
-        if(eventHandler->intervals[i]->id == id)
+        if(pEventHandler->intervals[i]->id == id)
         {
-            eventHandler->intervals.erase(eventHandler->intervals.begin() + i);
-            delete eventHandler->intervals[i];
+            pEventHandler->intervals.erase(pEventHandler->intervals.begin() + i);
+            delete pEventHandler->intervals[i];
         }
     }
 }

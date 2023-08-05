@@ -12,7 +12,7 @@
     #define LGFX_USE_V1
     #include "../interface/LovyanGFX/LovyanGFX.hpp"
     #include "../interface/LovyanGFX/LGFX_AUTODETECT.hpp"
-    #include "../interface/LovyanGFX/LGFX_SDL.cpp"
+    //#include "../sdl_main.cpp"
     LGFX tft_root(WIDTH, HEIGHT);
 #endif
 #ifdef BUILD_PAXO

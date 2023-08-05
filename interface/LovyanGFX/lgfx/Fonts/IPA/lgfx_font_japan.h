@@ -44,8 +44,6 @@ extern const uint8_t lgfx_font_japan_gothic_p_32[];
 extern const uint8_t lgfx_font_japan_gothic_p_36[];
 extern const uint8_t lgfx_font_japan_gothic_p_40[];
 
-#include "lgfx_font_japan.c"
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

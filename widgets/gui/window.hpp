@@ -81,7 +81,7 @@ class Window : public Gui
         // hour
         hourLabel->setText(to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes));
 
-        print(to_string(gsm.batteryLevel));
+        //print(to_string(gsm.batteryLevel));
 
         for(int i = 0; i < 5; i++) // network quality
         {
