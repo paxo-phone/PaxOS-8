@@ -19,3 +19,17 @@ Map to calculate its GPS coordinates
 and two games which are snake and the 2048!
 
 see more on https://www.paxo.fr
+
+### Windows Build Instructions
+
+Before getting started, you need an IDE, a Visual Studio License (Community Edition is enough) and know how to setup a CMake project with custom toolchain.
+
+1. Install Visual Studio Community or Visual Studio Build Tools with CLang
+
+![CLang selected on the right of Visual Studio Installer](docs/images/clang_visual_studio_install.png)
+
+2. Setup your favorite IDE (eg. CLion) with CLang (very important ! not compatible with MSVC or MinGW)
+
+3. Setup CMake using Ninja (recommended)
+
+4. You shouldn't have to install any library (everything is included)
