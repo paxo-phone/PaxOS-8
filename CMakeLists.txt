@@ -9,7 +9,11 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
-file(GLOB LovyanGFX_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
+file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
+	*.cpp
+
+	interface/LovyanGFX/LGFX_SDL.cpp
+
  	interface/LovyanGFX/lgfx/Fonts/efont/*.c
 	interface/LovyanGFX/lgfx/Fonts/IPA/*.c
 	interface/LovyanGFX/lgfx/utility/*.c
@@ -20,13 +24,9 @@ file(GLOB LovyanGFX_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 	interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
 )
 
-file (GLOB src
-	*.cpp
-)
-
 add_definitions(-DLGFX_SDL)
 
-add_executable(PaxOS8 interface/LovyanGFX/LGFX_SDL.cpp ${src} ${LovyanGFX_src})
+add_executable(PaxOS8 ${src})
 
 target_include_directories(PaxOS8 PUBLIC "interface/LovyanGFX")
 
