@@ -58,7 +58,8 @@ if(WIN32)
 	include_directories(lib/dirent-1.23.2/include)
 endif()
 
+file(COPY resources/storage DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/storage)
 
-
-
-
+if (WIN32)
+	file(COPY resources/SDL2.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
