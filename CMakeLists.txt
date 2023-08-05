@@ -34,7 +34,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	find_package(SDL2 REQUIRED SDL2)
 
 	include_directories(${SDL2_INCLUDE_DIRS})
-	target_link_libraries(PaxOS8 -lpthread ${SDL2_LIBRARIES})
+	target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES})
 
 	target_link_libraries(PaxOS8 PRIVATE m)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
