@@ -4,3 +4,6 @@ paxos_8.code-workspace
 a.out
 /CMakeFiles/
 PaxOS8
+CMakeCache.txt
+cmake_install.cmake
+Makefile
