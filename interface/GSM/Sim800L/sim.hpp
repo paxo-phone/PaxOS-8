@@ -85,6 +85,9 @@ class GSM
     void getHour();
     void askForHour();
     void parseHour();
+    #ifdef BUILD_EMU
+    void parseHourFromComputer(time_t* time);
+    #endif
 
     void getNetworkQuality();
     void askNetworkQuality();
@@ -108,7 +111,7 @@ class GSM
     // end
 
     private:
-    uint timeout = 0;
+    uint64_t timeout = 0;
     std::string data;
     std::vector<std::vector<void (GSM::*)(void)>> requests;
     std::vector<Key> keys;
