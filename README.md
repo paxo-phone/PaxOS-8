@@ -38,3 +38,14 @@ Before getting started, you need an IDE, a Visual Studio License (Community Edit
 3. Setup CMake using Ninja (recommended)
 
 4. You shouldn't have to install any library (everything is included)
+
+### macOS Build Instructions (using Xcode)
+
+1. Clone the repository and access the dir.
+2. `cmake -G Xcode`
+3. You can open the .xcodeproj directly in Xcode, to edit PaxOS's files you'll need to drag the folders `app`, `extensions`, `interface`, `lib`, `ressources`, `storage`, `tasks` and `widgets` to the project.
+
+Troubleshooting:
+- If you get the message `ld: warning: ignoring file /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib': found architecture 'arm64', required architecture 'x86_64'` followed by an error you can do:
+  1. `cp lib/SDL2-2.28.2/libSDL2-2.0.0-2.dylib /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib`
+  2. Disable the quarantine for the file: `xattr -dr com.apple.quarantine /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib` 
