@@ -34,6 +34,9 @@ bool GSM::moduleCheck()
         else
             return false;
     #endif
+    #ifdef BUILD_EMU
+    return true;
+    #endif
 
     return false; // in emulator, sim800 is not available
 }
@@ -344,9 +347,30 @@ void GSM::makeCall(string number)
 
 void GSM::getHour()
 {
+    #ifdef BUILD_PAXO
     add_request({&GSM::askForHour, &GSM::parseHour});
+    #endif
+    #ifdef BUILD_EMU
+    time_t nowTime = time(0);
+    parseHourFromComputer(&nowTime);
+    #endif
     print("getHour");
 }
+
+#ifdef BUILD_EMU
+void GSM::parseHourFromComputer(time_t* time) {
+    struct tm* formattedTime;
+    formattedTime = gmtime(time);
+    
+    // https://cplusplus.com/reference/ctime/tm/
+    years = formattedTime->tm_year + 1900;
+    months = formattedTime->tm_mon;
+    days = formattedTime->tm_wday;
+    hours = formattedTime->tm_hour;
+    minutes = formattedTime->tm_min;
+    seconds = formattedTime->tm_sec;
+}
+#endif
 
 void GSM::askForHour()
 {

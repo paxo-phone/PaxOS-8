@@ -169,7 +169,7 @@ class Interval
     CallbackClass* callback;
     uint32_t interval;
     uint32_t id = 0;
-    uint32_t lastExecution = 0;
+    uint64_t lastExecution = 0;
 
     ~Interval()
     {
@@ -261,6 +261,7 @@ void removeTimeout(uint32_t id, EventHandler* pEventHandler = &eventHandler) // 
     }
 }
 
+/// Add a reccruring task to pEventHandler, returns its id in pEventHandler.
 uint setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler = &eventHandler) // OK
 {
     Interval* ninterval = new Interval(callback, interval);
@@ -268,6 +269,8 @@ uint setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEven
     return ninterval->id;
 }
 
+
+/// Remove a reccuring task from pEventHandler with its id.
 void removeInterval(uint32_t id, EventHandler* pEventHandler = &eventHandler) // OK
 {
     for (uint i = 0; i < pEventHandler->intervals.size(); i++)

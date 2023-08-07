@@ -7,3 +7,9 @@ PaxOS8
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+CMakeLists.txt
+CMakeScripts
+Debug
+PaxOS8.xcodeproj
+build
+
