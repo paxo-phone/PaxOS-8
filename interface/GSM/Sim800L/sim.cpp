@@ -8,6 +8,7 @@ void GSM::init()
     #endif
 
 
+    getHour();
     addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
 }
 
@@ -68,12 +69,14 @@ void GSM::initRequests()
 void GSM::update()
 {
     get_data();
-
+    
+    #ifdef BUILD_PAXO
     for (int i = 0; i < keys.size(); i++)
     {
         if(data.find(keys[i].key) != -1)
             keys[i].isDetected = true;
     }
+    #endif
 
     if(requests.size()!=0)
     {
@@ -148,7 +151,9 @@ void GSM::get_data()
 
 void GSM::askForMessages()
 {
+    #ifdef BUILD_PAXO
     add_request({&GSM::getNewMessagesMODE, &GSM::getNewMessagesGET, &GSM::getNewMessagesPARSE});
+    #endif
 }
 
 void GSM::getNewMessagesMODE()
@@ -399,7 +404,12 @@ void GSM::parseHour()
 
 void GSM::getNetworkQuality()
 {
+    #ifdef BUILD_PAXO
     add_request({&GSM::askNetworkQuality, &GSM::parseNetworkQuality});
+    #endif
+    #ifdef BUILD_EMU
+    quality = 4;
+    #endif
 }
 
 void GSM::askNetworkQuality()
@@ -423,7 +433,12 @@ void GSM::parseNetworkQuality()
 
 void GSM::getBatteryLevel()
 {
+    #ifdef BUILD_PAXO
     add_request({&GSM::askBatteryLevel, &GSM::parseBatteryLevel});
+    #endif
+    #ifdef BUILD_EMU
+    batteryLevel = 4;
+    #endif
 }
 
 void GSM::askBatteryLevel()

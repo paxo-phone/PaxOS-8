@@ -655,7 +655,8 @@ namespace lgfx
     m->panel = this;
     m->window = SDL_CreateWindow("Paxos 8 emulator",
                               SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              _cfg.panel_width * m->scaling_x, _cfg.panel_height * m->scaling_y, flag);       /*last param. SDL_WINDOW_BORDERLESS to hide borders*/
+                              _cfg.panel_width * m->scaling_x, _cfg.panel_height * m->scaling_y,
+                                 SDL_WINDOW_RESIZABLE);       /*last param. SDL_WINDOW_BORDERLESS to hide borders*/
 
     m->renderer = SDL_CreateRenderer(m->window, -1, SDL_RENDERER_SOFTWARE);
     m->texture = SDL_CreateTexture(m->renderer,

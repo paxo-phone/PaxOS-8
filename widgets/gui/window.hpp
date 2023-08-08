@@ -6,18 +6,20 @@
 class Window : public Gui
 {
     public:
+    const static int WINDOW_WIDTH = 320;
+    const static int WINDOW_HEIGHT = 480;
     int updateEventId;
     Window(std::string title)
     {
 
 
         this->title = title;
-        init(0, 0, 320, 480);
+        init(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         setBackgroundColor(COLOR_LIGHT);
         setMarginX(10);
         setMarginY(10 + CONTROL_BAR_SIZE);
 
-        bar = new Box(0, 0, 320, CONTROL_BAR_SIZE);
+        bar = new Box(0, 0, WINDOW_WIDTH, CONTROL_BAR_SIZE);
             bar->setBackgroundColor(COLOR_EXTRA_LIGHT);
             bar->setRadius(0);
             bar->setBorderSize(0);
@@ -115,12 +117,12 @@ class Window : public Gui
     void afterRender()
     {
         uint16_t maxH = getLowestY();
-        uint16_t windowSize = 480 - CONTROL_BAR_SIZE;
+        uint16_t windowSize = WINDOW_HEIGHT - CONTROL_BAR_SIZE;
         uint16_t slideBarSize = windowSize*windowSize / maxH;
         
-        if(maxH > 480)
+        if(maxH > WINDOW_HEIGHT)
         {
-            l_tft.fillRoundRect(320-2-6, CONTROL_BAR_SIZE + 2 + (windowSize)*(-scroolY)/maxH, 6, slideBarSize, 3, COLOR_GREY);
+            l_tft.fillRoundRect(WINDOW_WIDTH-2-6, CONTROL_BAR_SIZE + 2 + (windowSize)*(-scroolY)/maxH, 6, slideBarSize, 3, COLOR_GREY);
         }
     }
 

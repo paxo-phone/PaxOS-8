@@ -8,7 +8,7 @@
 void launcher()
 {
     Window win("launcher");
-
+    
     win.setMarginX(0);
     win.setMarginY(CONTROL_BAR_SIZE);
 
