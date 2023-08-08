@@ -367,13 +367,15 @@ void GSM::parseHourFromComputer(time_t* time) {
     struct tm* formattedTime;
     formattedTime = gmtime(time);
     
+    localtime_r(time, formattedTime);
+    
     // https://cplusplus.com/reference/ctime/tm/
     years = formattedTime->tm_year + 1900;
-    months = formattedTime->tm_mon;
-    days = formattedTime->tm_wday;
-    hours = formattedTime->tm_hour;
-    minutes = formattedTime->tm_min;
-    seconds = formattedTime->tm_sec;
+    months = formattedTime->tm_mon + 1; // 0-11
+    days = formattedTime->tm_mday + 1; // 0-6
+    hours = formattedTime->tm_hour; // 0-23
+    minutes = formattedTime->tm_min; // 0-59
+    seconds = formattedTime->tm_sec; // 0-60 "tm_sec is generally 0-59. The extra range is to accommodate for leap seconds in certain systems."
 }
 #endif
 
