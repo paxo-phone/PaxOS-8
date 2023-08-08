@@ -87,9 +87,9 @@ class Snake : public App
                         snake_color = pointColor;
 
                         tft_root.setTextColor(0x0000);
-                        tft_root.drawCentreString(("score = " + std::to_string(level-8)).c_str(), 160, 460, 4);
+                        tft_root.drawCentreString(("score = " + std::to_string(level-8)).c_str(), 160, 460, &fonts::Font4);
                         tft_root.setTextColor(0xFFFF);
-                        tft_root.drawCentreString(("score = " + std::to_string(level-7)).c_str(), 160, 460, 4);
+                        tft_root.drawCentreString(("score = " + std::to_string(level-7)).c_str(), 160, 460, &fonts::Font4);
                         
                         pointColor = tft_root.color565(random(100, 255), random(100, 255), random(100, 255));
                     }

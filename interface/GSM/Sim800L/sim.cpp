@@ -175,16 +175,16 @@ void GSM::getNewMessagesPARSE()
 
     print("==={\n"+data+"}===");
 
-    for (uint i = 0; i < data.size();) {
+    for (u_long i = 0; i < data.size();) {
         std::string number, message, date;
-        uint j = data.find("+CMGL:", i);
+        u_long j = data.find("+CMGL:", i);
 
         if (j == -1)
         {
             break;
         }
 
-        uint k = data.find("\"", j);
+        u_long k = data.find("\"", j);
         k = data.find("\"", k+1);
         k = data.find("\"", k+1);
 
@@ -295,7 +295,7 @@ void GSM::showCall()
 
     if(data.find("+CLCC:") != -1)
     {
-        uint k = data.find("+CLCC:");
+        u_long k = data.find("+CLCC:");
         k = data.find("\"", k);
 
         number = data.substr(

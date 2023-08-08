@@ -28,7 +28,7 @@ class Phone : public App
         Box* keyboardnumber = new Box(30, 106, 235, 320);
             win.addChild(keyboardnumber);
 
-            char* keys = "123456789+0 ";
+            string keys = "123456789+0 ";
 
             for (int i=0; i<12; i++)
             {

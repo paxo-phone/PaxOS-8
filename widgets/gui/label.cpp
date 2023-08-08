@@ -117,7 +117,7 @@ LGFX_Sprite* Label::selfDetermination()
 
     for(int i = 0; i < 4; i++)
     {
-        renderBuffer->setFreeFont(allFronts[frontIndex][bold*2+italic][i]);
+        renderBuffer->setFont(allFronts[frontIndex][bold*2+italic][i]);
         if(renderBuffer->fontHeight()>fontHeight)
         {
             front = allFronts[frontIndex][bold*2+italic][i];

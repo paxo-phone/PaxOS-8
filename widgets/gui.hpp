@@ -223,7 +223,7 @@ class Gui // widget system
     Alignment H_alignment = DEFAULT_H_ALIGNEMENT;
     Alignment V_alignment = DEFAULT_V_ALIGNEMENT;
 
-    unsigned int timerPress = 0;
+    uint64_t timerPress = 0;
 
     bool autoSize = true;
     bool enabled = true;

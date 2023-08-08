@@ -11,7 +11,7 @@ void Contact::loadContacts(bool force)
 
     std::vector<OneContact>().swap(contacts);
 
-    uint i = 0;
+    u_long i = 0;
 
     while(data.find("\"", i) != -1)
     {

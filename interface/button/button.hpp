@@ -32,7 +32,7 @@ class HomeButton
     public:
     // standby mod
 
-    uint32_t timer = 0;
+    uint64_t timer = 0;
     uint32_t timer_delay = 30000; // milliseconds
 
     void resetStandbyMod() { timer = millis(); }
