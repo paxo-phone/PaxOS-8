@@ -11,7 +11,7 @@ class Hour : public App
     {
         Window win("hour");
 
-        while (true)
+        while (!home_button.pressed())
         {
             win.updateAll();
             SDL_Delay(20);

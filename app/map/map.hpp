@@ -11,7 +11,7 @@ class Map : public App
     {
         Window win("map");
 
-        while (true)
+        while (!home_button.pressed())
         {
             win.updateAll();
             SDL_Delay(20);
