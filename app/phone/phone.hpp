@@ -57,7 +57,7 @@ class Phone : public App
         while (true)
         {
             win.updateAll();
-
+            
             for (int i=0; i<11; i++) // check numbers and +
             {
                 if(keyboardnumber->children[i]->isTouched())
@@ -85,6 +85,7 @@ class Phone : public App
             {
                 break;
             }
+            SDL_Delay(20);
         }
     }
 

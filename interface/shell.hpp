@@ -107,6 +107,7 @@ namespace shell
     int cmd_help(const ArgList& args);
     int cmd_reboot(const ArgList& args);
     int cmd_getMessages(const ArgList& args);
+    int cmd_pressHomeButton(const ArgList& args);
     int addMessage(const ArgList& args);
 
     string cmd_str[] = { "echo", 
@@ -117,6 +118,7 @@ namespace shell
                          "help",
                          "reboot",
                          "messages",
+                         "phb",
                          "newmsg" };
 
     int (*cmd_func[])(const ArgList&) = { &cmd_echo, 
@@ -127,6 +129,7 @@ namespace shell
                                           &cmd_help,
                                           &cmd_reboot,
                                           &cmd_getMessages,
+                                          &cmd_pressHomeButton,
                                           &addMessage };
     /* end commands */
 

@@ -14,6 +14,7 @@ class Map : public App
         while (true)
         {
             win.updateAll();
+            SDL_Delay(20);
         }
     }
 };

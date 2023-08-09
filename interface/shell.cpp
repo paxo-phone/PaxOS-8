@@ -68,6 +68,13 @@ int shell::cmd_getMessages(const ArgList& args)
     return SUCCESS;
 }
 
+int shell::cmd_pressHomeButton(const ArgList& args)
+{
+    home_button.state = 2;
+    return SUCCESS;
+}
+
+
 int shell::addMessage(const ArgList& args)
 {
     if(args.size()!=2 && gsm.saveMessages!=nullptr)

@@ -117,5 +117,6 @@ void Calcul::buildGui()
         {
             actualCalculLabel->setText("");
         }
+        SDL_Delay(20);
     }
 }

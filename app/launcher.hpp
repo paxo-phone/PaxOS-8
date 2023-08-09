@@ -89,6 +89,7 @@ void launcher()
 
             screen_light.ON();
         }
+        SDL_Delay(20);
     }
 }
 

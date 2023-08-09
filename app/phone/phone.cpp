@@ -29,6 +29,7 @@ void Phone::during_calling(std::string number)
             gsm.answerCall(false); // hang off
             break;
         }
+        SDL_Delay(20);
     }
 }
 
@@ -65,6 +66,7 @@ void Phone::get_a_call()
             during_calling(number);
             break;
         }
+        SDL_Delay(20);
     }
 
     print("exiting");

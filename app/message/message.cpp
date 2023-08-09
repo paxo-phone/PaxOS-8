@@ -127,6 +127,7 @@ void Message::main()
                     actual_message="";
                     break;
                 }
+                SDL_Delay(20);
             }
         }
     }

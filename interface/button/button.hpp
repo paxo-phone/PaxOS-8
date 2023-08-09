@@ -9,6 +9,7 @@
 #endif
 
 #include "../../tasks/tasks.hpp"
+#include "../../widgets/gui.hpp"
 
 class HomeButton
 {
