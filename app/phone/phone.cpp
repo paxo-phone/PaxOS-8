@@ -29,6 +29,9 @@ void Phone::during_calling(std::string number)
             gsm.answerCall(false); // hang off
             break;
         }
+        #ifdef BUILD_EMU
+            SDL_Delay(20);
+        #endif
     }
 }
 
@@ -65,6 +68,9 @@ void Phone::get_a_call()
             during_calling(number);
             break;
         }
+        #ifdef BUILD_EMU
+            SDL_Delay(20);
+        #endif
     }
 
     print("exiting");

@@ -11,9 +11,12 @@ class Map : public App
     {
         Window win("map");
 
-        while (true)
+        while (!home_button.pressed())
         {
             win.updateAll();
+            #ifdef BUILD_EMU
+                SDL_Delay(20);
+            #endif
         }
     }
 };

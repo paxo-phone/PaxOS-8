@@ -77,7 +77,7 @@ void Keyboard::draw()
             {
                 std::string c = "";
                 c.push_back(alphabet[mode][j][i]);
-                l_tft.drawCentreString(c.c_str(), 15 + i * 29, 7 + j * 37, 4);
+                l_tft.drawCentreString(c.c_str(), 15 + i * 29, 7 + j * 37, &fonts::Font4);
             }
         }
     }
@@ -165,7 +165,7 @@ char Keyboard::getKey()
                     std::string c = "";
                     c.push_back(alphabet[mode][j][i]);
 
-                    tft_root.drawCentreString(c.c_str(), getAbsoluteX() + 15 + i * 29, getAbsoluteY() + 7 + j * 37, 4);
+                    tft_root.drawCentreString(c.c_str(), getAbsoluteX() + 15 + i * 29, getAbsoluteY() + 7 + j * 37, &fonts::Font4);
                     
                     while(touch.isTouch())
                     {
@@ -173,7 +173,7 @@ char Keyboard::getKey()
                     }
                     
                     tft_root.setTextColor(COLOR_BLACK);
-                    tft_root.drawCentreString(c.c_str(), getAbsoluteX() + 15 + i * 29, getAbsoluteY() + 7 + j * 37, 4);
+                    tft_root.drawCentreString(c.c_str(), getAbsoluteX() + 15 + i * 29, getAbsoluteY() + 7 + j * 37, &fonts::Font4);
                     
                     lastChar=alphabet[mode][j][i];
                     timer_last_char=millis();

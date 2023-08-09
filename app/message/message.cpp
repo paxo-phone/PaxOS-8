@@ -49,7 +49,7 @@ void Message::main()
 
             // parser
 
-            uint k = -1;
+            u_long k = -1;
 
             Label* bull = nullptr;
 
@@ -127,6 +127,9 @@ void Message::main()
                     actual_message="";
                     break;
                 }
+                #ifdef BUILD_EMU
+                    SDL_Delay(20);
+                #endif
             }
         }
     }

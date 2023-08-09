@@ -11,7 +11,7 @@ void Contact::loadContacts(bool force)
 
     std::vector<OneContact>().swap(contacts);
 
-    uint i = 0;
+    u_long i = 0;
 
     while(data.find("\"", i) != -1)
     {
@@ -61,7 +61,7 @@ uint Contact::contactPage()
             label->setHorizontalAlignment(CENTER_ALIGNMENT);
             label->setBorderSize(0);
             label->setRadius(0);
-            label->fontHeight=30;
+            label->fontHeight=29;
             win.addChild(label);
 
         std::vector<Gui*> contactList;

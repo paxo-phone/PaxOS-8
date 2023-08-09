@@ -28,7 +28,7 @@ class Phone : public App
         Box* keyboardnumber = new Box(30, 106, 235, 320);
             win.addChild(keyboardnumber);
 
-            char* keys = "123456789+0 ";
+            string keys = "123456789+0 ";
 
             for (int i=0; i<12; i++)
             {
@@ -57,7 +57,7 @@ class Phone : public App
         while (true)
         {
             win.updateAll();
-
+            
             for (int i=0; i<11; i++) // check numbers and +
             {
                 if(keyboardnumber->children[i]->isTouched())
@@ -85,6 +85,9 @@ class Phone : public App
             {
                 break;
             }
+            #ifdef BUILD_EMU
+                SDL_Delay(20);
+            #endif
         }
     }
 
