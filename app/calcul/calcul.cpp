@@ -117,6 +117,8 @@ void Calcul::buildGui()
         {
             actualCalculLabel->setText("");
         }
-        SDL_Delay(20);
+        #ifdef BUILD_EMU
+            SDL_Delay(20);
+        #endif
     }
 }

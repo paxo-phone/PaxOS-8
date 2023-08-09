@@ -14,7 +14,9 @@ class Hour : public App
         while (!home_button.pressed())
         {
             win.updateAll();
-            SDL_Delay(20);
+            #ifdef BUILD_EMU
+                SDL_Delay(20);
+            #endif
         }
     }
 };
