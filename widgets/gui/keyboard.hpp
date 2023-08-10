@@ -84,7 +84,7 @@ private:
 
     uint8_t mode = 0;
     char lastChar = 0;
-    unsigned int timer_last_char = 0;
+    uint64_t timer_last_char = 0;
     uint8_t blocked = 0; // 0=no, 1=used for the first time, 2 = repeat
 };
 

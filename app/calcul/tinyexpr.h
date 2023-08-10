@@ -143,7 +143,7 @@ void parser::eval_exp5(double &result)
 {
     char op;
     op = 0;
-    if ((tok_type == DELIMITER) && *token == '+' || *token == '-')
+    if ((tok_type == DELIMITER) && (*token == '+' || *token == '-'))
     {
         op = *token;
         get_token();
@@ -162,7 +162,7 @@ void parser::eval_exp6(double &result)
         strcpy(temp_token, token);
         get_token();
     } 
-    if ((*token == '(')) 
+    if (*token == '(')
     {
         get_token();
         eval_exp2(result);

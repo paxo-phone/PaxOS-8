@@ -12,6 +12,7 @@ class CallbackClass
     public:
     virtual void call() = 0;
     virtual void* (*getPtr(void))(void) = 0;
+    virtual ~CallbackClass() {};
 };
 
 class ConditionClass
@@ -19,6 +20,7 @@ class ConditionClass
     public:
     virtual bool check() = 0;
     virtual void* (*getPtr(void))(void) = 0;
+    virtual ~ConditionClass() {};
 };
 
 template <class C>
@@ -130,7 +132,7 @@ class Timeout
         }
     }
     CallbackClass* callback;
-    uint32_t timeout;
+    uint64_t timeout;
     uint32_t id = 0;
 
     ~Timeout()

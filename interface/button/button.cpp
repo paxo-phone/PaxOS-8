@@ -40,5 +40,4 @@ void HomeButton::clear()
 {
     state = 0;
 }
-
 #endif

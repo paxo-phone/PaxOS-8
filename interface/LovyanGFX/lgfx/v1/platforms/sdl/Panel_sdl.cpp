@@ -26,6 +26,7 @@ Porting for SDL:
 #include "../../Bus.hpp"
 
 #include <list>
+#include  <iostream>
 
 namespace lgfx
 {
@@ -516,7 +517,7 @@ namespace lgfx
       int32_t pos = x + y;
       int32_t end = pos + w;
       while (end != (pos = param->fp_copy(monitor.tft_fb, pos, end, param))
-         &&  end != (pos = param->fp_skip(      pos, end, param)));
+         &&  end != (pos = param->fp_skip(pos, end, param)));
       param->src_x32 = (sx32 += nextx);
       param->src_y32 = (sy32 += nexty);
       y += _cfg.panel_width;
@@ -665,9 +666,11 @@ namespace lgfx
 
   void Panel_sdl::sdl_update(const monitor_t* const m)
   {
+    // m->tft_fb array of pixels, m->panel->config().panel_width * sizeof(bgr888_t) = 320 * 3 = 960
     SDL_UpdateTexture(m->texture, NULL, m->tft_fb, m->panel->config().panel_width * sizeof(bgr888_t));
-
+      
     /*Update the renderer with the texture containing the rendered image*/
+    SDL_RenderClear(m->renderer);
     SDL_RenderCopy(m->renderer, m->texture, NULL, NULL);
     SDL_RenderPresent(m->renderer);
   }

@@ -8,7 +8,7 @@
 void launcher()
 {
     Window win("launcher");
-
+    
     win.setMarginX(0);
     win.setMarginY(CONTROL_BAR_SIZE);
 
@@ -89,6 +89,9 @@ void launcher()
 
             screen_light.ON();
         }
+        #ifdef BUILD_EMU
+            SDL_Delay(20);
+        #endif
     }
 }
 

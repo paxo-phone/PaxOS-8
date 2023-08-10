@@ -8,6 +8,7 @@ void GSM::init()
     #endif
 
 
+    getHour();
     addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
 }
 
@@ -68,12 +69,14 @@ void GSM::initRequests()
 void GSM::update()
 {
     get_data();
-
+    
+    #ifdef BUILD_PAXO
     for (int i = 0; i < keys.size(); i++)
     {
         if(data.find(keys[i].key) != -1)
             keys[i].isDetected = true;
     }
+    #endif
 
     if(requests.size()!=0)
     {
@@ -148,7 +151,9 @@ void GSM::get_data()
 
 void GSM::askForMessages()
 {
+    #ifdef BUILD_PAXO
     add_request({&GSM::getNewMessagesMODE, &GSM::getNewMessagesGET, &GSM::getNewMessagesPARSE});
+    #endif
 }
 
 void GSM::getNewMessagesMODE()
@@ -170,16 +175,16 @@ void GSM::getNewMessagesPARSE()
 
     print("==={\n"+data+"}===");
 
-    for (uint i = 0; i < data.size();) {
+    for (u_long i = 0; i < data.size();) {
         std::string number, message, date;
-        uint j = data.find("+CMGL:", i);
+        u_long j = data.find("+CMGL:", i);
 
         if (j == -1)
         {
             break;
         }
 
-        uint k = data.find("\"", j);
+        u_long k = data.find("\"", j);
         k = data.find("\"", k+1);
         k = data.find("\"", k+1);
 
@@ -290,7 +295,7 @@ void GSM::showCall()
 
     if(data.find("+CLCC:") != -1)
     {
-        uint k = data.find("+CLCC:");
+        u_long k = data.find("+CLCC:");
         k = data.find("\"", k);
 
         number = data.substr(
@@ -362,13 +367,15 @@ void GSM::parseHourFromComputer(time_t* time) {
     struct tm* formattedTime;
     formattedTime = gmtime(time);
     
+    localtime_r(time, formattedTime);
+    
     // https://cplusplus.com/reference/ctime/tm/
     years = formattedTime->tm_year + 1900;
-    months = formattedTime->tm_mon;
-    days = formattedTime->tm_wday;
-    hours = formattedTime->tm_hour;
-    minutes = formattedTime->tm_min;
-    seconds = formattedTime->tm_sec;
+    months = formattedTime->tm_mon + 1; // 0-11
+    days = formattedTime->tm_mday + 1; // 0-6
+    hours = formattedTime->tm_hour; // 0-23
+    minutes = formattedTime->tm_min; // 0-59
+    seconds = formattedTime->tm_sec; // 0-60 "tm_sec is generally 0-59. The extra range is to accommodate for leap seconds in certain systems."
 }
 #endif
 
@@ -399,7 +406,12 @@ void GSM::parseHour()
 
 void GSM::getNetworkQuality()
 {
+    #ifdef BUILD_PAXO
     add_request({&GSM::askNetworkQuality, &GSM::parseNetworkQuality});
+    #endif
+    #ifdef BUILD_EMU
+    quality = 4;
+    #endif
 }
 
 void GSM::askNetworkQuality()
@@ -423,7 +435,12 @@ void GSM::parseNetworkQuality()
 
 void GSM::getBatteryLevel()
 {
+    #ifdef BUILD_PAXO
     add_request({&GSM::askBatteryLevel, &GSM::parseBatteryLevel});
+    #endif
+    #ifdef BUILD_EMU
+    batteryLevel = 4;
+    #endif
 }
 
 void GSM::askBatteryLevel()

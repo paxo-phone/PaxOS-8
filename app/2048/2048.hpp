@@ -214,12 +214,12 @@ void Game_2048::draw()
             {
                 S.fillRoundRect(15 + i * 75, 50 + j * 75, 65, 65, 5, colors[0][matrice1[i][j]-1]);
                 S.setTextColor(0xFFFF);
-                S.drawCenterString(std::to_string(colors[1][matrice1[i][j]-1]).c_str(), 15 + i * 75 + 65 / 2, 50 + j * 75 + 65 / 4, 4);
+                S.drawCenterString(std::to_string(colors[1][matrice1[i][j]-1]).c_str(), 15 + i * 75 + 65 / 2, 50 + j * 75 + 65 / 4, &fonts::Font4);
             }
         }
     }
     S.setTextColor(0x0000);
-    S.drawCenterString(std::to_string(score).c_str(), 160, 400, 4);
+    S.drawCenterString(std::to_string(score).c_str(), 160, 400, &fonts::Font4);
     S.pushSprite(&tft_root, 0, 25);
 }
 

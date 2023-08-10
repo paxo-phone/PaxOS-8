@@ -2,6 +2,7 @@
 #define __STORAGE_HPP__
 
 #ifdef BUILD_EMU
+    #include <filesystem>
     #include <fstream>
     #include <cstdio>
     #include <iostream>
@@ -24,6 +25,27 @@
 
 namespace storage
 {
+    #ifdef BUILD_EMU
+        #ifdef __APPLE__
+        /// Get the absolute path of a relative path that is inside the paxos folder.
+        ///
+        /// Needed only on macOS because if PaxOS's emulator is compiled and ran in Xcode, the binary that would be running is in a `Debug/` or `Release/` directory instead of directly in the project's directory.
+        string getMacOSPath(const string& basePath)
+        {
+            if (filesystem::path(basePath).is_relative()) // If the path is a relative one then the check should be done
+            {
+                string filePath = string(std::filesystem::current_path()); // Get current directory and convert it to a string
+                if (filePath.substr(filePath.find_last_of("\\/"), filePath.size() - 1) == "/Debug" || filePath.substr(filePath.find_last_of("\\/"), filePath.size() - 1) == "/Release") // Check if the binary is executed from Xcode
+                {
+                    filePath = filePath.substr(0, filePath.find_last_of("\\/")); // Remove the last component of the path
+                }
+                return filePath+"/"+basePath;
+            }
+            return basePath;
+        }
+        #endif
+    #endif
+
     enum OPEN_MODE
     {
         READ,   // 0
@@ -55,14 +77,25 @@ namespace storage
                     if(mode == WRITE && erase == false)
                         stream = new fstream(("storage/"+path), ios::out | ios::binary);
                 #else
-                    if(mode == READ)
-                        stream = new fstream(("storage/"+path), ios::in);
+                    #ifdef __APPLE__
+                        if(mode == READ)
+                            stream = new fstream(getMacOSPath("storage/"+path), ios::in);
 
-                    if(mode == WRITE && erase == true)
-                        stream = new fstream(("storage/"+path), ios::out | ios::trunc);
+                        if(mode == WRITE && erase == true)
+                            stream = new fstream(getMacOSPath("storage/"+path), ios::out | ios::trunc);
 
-                    if(mode == WRITE && erase == false)
-                        stream = new fstream(("storage/"+path), ios::out);
+                        if(mode == WRITE && erase == false)
+                            stream = new fstream(getMacOSPath("storage/"+path), ios::out);
+                    #else
+                        if(mode == READ)
+                            stream = new fstream(("storage/"+path), ios::in);
+
+                        if(mode == WRITE && erase == true)
+                            stream = new fstream(("storage/"+path), ios::out | ios::trunc);
+
+                        if(mode == WRITE && erase == false)
+                            stream = new fstream(("storage/"+path), ios::out);
+                    #endif
                 #endif
 
                 #endif
@@ -93,14 +126,25 @@ namespace storage
             {
                 #ifdef BUILD_EMU
 
-                    if(mode == READ)
-                        stream = new fstream(("storage/"+path), ios::in);
+                    #ifdef __APPLE__
+                        if(mode == READ)
+                            stream = new fstream(getMacOSPath("storage/"+path), ios::in);
 
-                    if(mode == WRITE && erase == true)
-                        stream = new fstream(("storage/"+path), ios::out | ios::trunc);
+                        if(mode == WRITE && erase == true)
+                            stream = new fstream(getMacOSPath("storage/"+path), ios::out | ios::trunc);
 
-                    if(mode == WRITE && erase == false)
-                        stream = new fstream(("storage/"+path), ios::out);
+                        if(mode == WRITE && erase == false)
+                            stream = new fstream(getMacOSPath("storage/"+path), ios::out);
+                    #else
+                        if(mode == READ)
+                            stream = new fstream(("storage/"+path), ios::in);
+
+                        if(mode == WRITE && erase == true)
+                            stream = new fstream(("storage/"+path), ios::out | ios::trunc);
+
+                        if(mode == WRITE && erase == false)
+                            stream = new fstream(("storage/"+path), ios::out);
+                    #endif
                 #endif
 
                 #ifdef BUILD_PAXO
@@ -209,15 +253,27 @@ namespace storage
         vector<string> list;
 
         #ifdef BUILD_EMU
-            DIR* dir = opendir(path.c_str());
-            if (dir)
-            {
-                struct dirent* entry;
-                while ((entry = readdir(dir)) != nullptr) 
-                    list.push_back(entry->d_name);
+            #ifdef __APPLE__
+                DIR* dir = opendir(getMacOSPath(path).c_str());
+                if (dir)
+                {
+                    struct dirent* entry;
+                    while ((entry = readdir(dir)) != nullptr)
+                        list.push_back(entry->d_name);
 
-                closedir(dir);
-            }
+                    closedir(dir);
+                }
+            #else
+                DIR* dir = opendir(path.c_str());
+                if (dir)
+                {
+                    struct dirent* entry;
+                    while ((entry = readdir(dir)) != nullptr)
+                        list.push_back(entry->d_name);
+
+                    closedir(dir);
+                }
+            #endif
         #endif
 
         #ifdef BUILD_PAXO
@@ -244,8 +300,12 @@ namespace storage
     bool exists(const string& path)
     {
         #ifdef BUILD_EMU
-            struct stat s;
-            return stat(path.c_str(), &s) == 0;
+        struct stat s;
+            #ifdef __APPLE__
+                return stat(getMacOSPath(path).c_str(), &s) == 0;
+            #else
+                return stat(path.c_str(), &s) == 0;
+            #endif
         #endif
         #ifdef BUILD_PAXO
             return SD.exists(path.c_str());
@@ -255,7 +315,11 @@ namespace storage
     bool isfile(const string& filepath)
     {
         #ifdef BUILD_EMU
-            fstream file(filepath, ios::in);
+            #ifdef __APPLE__
+                fstream file(getMacOSPath(filepath), ios::in);
+            #else
+                fstream file(filepath, ios::in);
+            #endif
             return file.good();
         #endif
         #ifdef BUILD_PAXO
@@ -284,10 +348,17 @@ namespace storage
                 return false;
 
             struct stat s;
-            if (stat(dirpath.c_str(), &s) == 0) 
-                return (s.st_mode & S_IFDIR) != 0;
-            else 
-                return false;
+            #ifdef __APPLE__
+                if (stat(getMacOSPath(dirpath).c_str(), &s) == 0)
+                    return (s.st_mode & S_IFDIR) != 0;
+                else
+                    return false;
+            #else
+                if (stat(dirpath.c_str(), &s) == 0)
+                    return (s.st_mode & S_IFDIR) != 0;
+                else
+                    return false;
+            #endif
         #endif
         #ifdef BUILD_PAXO
             File file = SD.open(dirpath.c_str());
@@ -315,7 +386,11 @@ namespace storage
         #ifdef WIN32
             return _mkdir(dirpath.c_str()) == 0;
         #else
-            return mkdir(dirpath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+            #ifdef __APPLE__
+                return mkdir(getMacOSPath(dirpath).c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+            #else
+                return mkdir(dirpath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+            #endif
         #endif
         #endif
         #ifdef BUILD_PAXO
@@ -326,7 +401,11 @@ namespace storage
     bool newfile(const string& filepath)
     {
         #ifdef BUILD_EMU
-            std::ofstream file(filepath, std::ios::out);
+            #ifdef __APPLE__
+                std::ofstream file(getMacOSPath(filepath), std::ios::out);
+            #else
+                std::ofstream file(filepath, std::ios::out);
+            #endif
             return file.is_open();
         #endif
         #ifdef BUILD_PAXO
@@ -345,8 +424,12 @@ namespace storage
     bool remove(const string& path)
     {
         #ifdef BUILD_EMU
-            return ::remove(path.c_str()); // from cstdio
-        #endif 
+            #ifdef __APPLE__
+                return ::remove(getMacOSPath(path).c_str()); // from cstdio
+            #else
+                return ::remove(path.c_str()); // from cstdio
+            #endif
+        #endif
         #ifdef BUILD_PAXO
             return SD.remove(path.c_str());
         #endif
@@ -355,7 +438,11 @@ namespace storage
     bool rename(const string& from, const string& to)
     {
         #ifdef BUILD_EMU
-            return ::rename(from.c_str(), to.c_str()); // from cstdio
+            #ifdef __APPLE__
+                return ::rename(getMacOSPath(from).c_str(), getMacOSPath(to).c_str()); // from cstdio
+            #else
+                return ::rename(from.c_str(), to.c_str()); // from cstdio
+            #endif
         #endif
         #ifdef BUILD_PAXO
             return SD.rename(from.c_str(), to.c_str());
