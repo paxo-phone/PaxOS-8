@@ -66,7 +66,7 @@ void Label::draw()
     for (int i = 0; i < lines.size(); i++)
     {
         line = lines[i];
-        renderBuffer->setPsram(true);
+        renderBuffer->setPsram(false);
         renderBuffer->setColorDepth(8);
         renderBuffer->createSprite(totalTextWidth*textFactor, fontHeight*textFactor);
         renderBuffer->fillScreen(getBackgroundColor());

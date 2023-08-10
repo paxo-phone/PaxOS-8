@@ -81,25 +81,31 @@ class Window : public Gui
     void updateModules()
     {
         // hour
-        hourLabel->setText(to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes));
 
-        //print(to_string(gsm.batteryLevel));
-
-        for(int i = 0; i < 5; i++) // network quality
+        if(OldnetQual != gsm.quality || OldbattLevel != gsm.batteryLevel || oldhourString != to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes))
         {
-            if(gsm.quality == i)
-                netQual[i]->enable();
-            else
-                netQual[i]->disable();
+            oldhourString = to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes);
+            hourLabel->setText(oldhourString);
+
+            for(int i = 0; i < 5; i++) // network quality
+            {
+                if(gsm.quality == i)
+                    netQual[i]->enable();
+                else
+                    netQual[i]->disable();
+            }
+
+            for(int i = 0; i < 5; i++) // load network quality
+            {
+                if(gsm.batteryLevel == i)
+                    battLevel[i]->enable();
+                else
+                    battLevel[i]->disable();
+            }
         }
 
-        for(int i = 0; i < 5; i++) // load network quality
-        {
-            if(gsm.batteryLevel == i)
-                battLevel[i]->enable();
-            else
-                battLevel[i]->disable();
-        }
+        OldnetQual = gsm.batteryLevel;
+        OldbattLevel = gsm.quality;
     }
 
     void draw()
@@ -145,6 +151,10 @@ class Window : public Gui
 
     Image* netQual[5];
     Image* battLevel[5];
+
+    int OldnetQual = 0;
+    int OldbattLevel = 0;
+    std::string oldhourString = "";
 };
 
 

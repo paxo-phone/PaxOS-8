@@ -93,7 +93,7 @@ void Gui::initScreen()
     #ifdef BUILD_PAXO
         //uint16_t calibrationData[] = {370, 3950, 273, 239, 3848, 3949, 3872, 302};
 
-        uint16_t calibrationData[] = {626, 153, 523, 3727, 3560, 228, 3544, 3724};
+        uint16_t calibrationData[] = {316, 194, 307, 3778+300, 3771-200, 204, 3740-200, 3750+300};
 
         tft_root.setTouchCalibrate(calibrationData);
 
