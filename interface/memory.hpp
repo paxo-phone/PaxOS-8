@@ -34,12 +34,18 @@ namespace storage
         {
             if (filesystem::path(basePath).is_relative()) // If the path is a relative one then the check should be done
             {
-                string filePath = string(std::filesystem::current_path()); // Get current directory and convert it to a string
-                if (filePath.substr(filePath.find_last_of("\\/"), filePath.size() - 1) == "/Debug" || filePath.substr(filePath.find_last_of("\\/"), filePath.size() - 1) == "/Release") // Check if the binary is executed from Xcode
+                try
                 {
-                    filePath = filePath.substr(0, filePath.find_last_of("\\/")); // Remove the last component of the path
+                    string filePath = string(std::filesystem::current_path()); // Get current directory and convert it to a string
+                    if (filePath.substr(filePath.find_last_of("\\/"), filePath.size() - 1) == "/Debug" || filePath.substr(filePath.find_last_of("\\/"), filePath.size() - 1) == "/Release") // Check if the binary is executed from Xcode
+                    {
+                        filePath = filePath.substr(0, filePath.find_last_of("\\/")); // Remove the last component of the path
+                    }
+                    return filePath+"/"+basePath;
+                } catch (std::filesystem::filesystem_error exception)
+                {
+                    return basePath;
                 }
-                return filePath+"/"+basePath;
             }
             return basePath;
         }
@@ -248,7 +254,7 @@ namespace storage
         #endif
     }
 
-    vector<string> listdir(const string& path) 
+    vector<string> listdir(const string& path)
     {
         vector<string> list;
 
@@ -280,7 +286,7 @@ namespace storage
             File dir = SD.open(path.c_str());
             if(dir)
             {
-                while (true) 
+                while (true)
                 {
                     File entry = dir.openNextFile();
                     if (!entry)
