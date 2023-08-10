@@ -9,10 +9,11 @@ void TouchManager::update()
     if(timerUpdate+10<millis())
     {
         uint16_t z = tft_root.getTouchRaw(&tx, &ty);
+        //print ("touch: " + to_string(tx) + "; " + to_string(ty));
         tft_root.convertRawXY(&tx, &ty);
         tx = tx*320/340;
         ty = ty*480/460;
-        //print ("touch: " + to_string(tx) + "; " + to_string(ty));
+        //tft_root.drawCircle(tx, ty, 3, 0x0000);
         
         if(tx<0 || tx>320 || ty<0 || ty>480)
         {
