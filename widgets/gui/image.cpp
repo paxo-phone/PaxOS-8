@@ -96,7 +96,11 @@ void drawImageFromStorage(LGFX_Sprite* sprite, std::string filename, Image::Imag
 {
     print("drawing image from storage...");
     #ifdef BUILD_EMU
-        filename = "storage/" + filename;
+        #ifdef __APPLE__
+            filename = storage::getMacOSPath("storage/" + filename);
+        #else
+            filename = "storage/" + filename;
+        #endif
     #endif
     #ifdef BUILD_PAXO
         filename = "/storage/" + filename;
