@@ -294,17 +294,19 @@ namespace lgfx
       auto* src = dst;
       uint_fast16_t add_dst = bw;
       uint_fast16_t len = w * bytes;
-
-      if (w != bw)
+        
+      uint_fast32_t w_32 = w;
+        
+      if (w_32 != bw)
       {
         dst += add_dst;
       }
       else
       {
-        w *= h;
+        w_32 *= h;
         h = 1;
       }
-      memset_multi((uint8_t*)src, rawcolor, bytes, w);
+      memset_multi((uint8_t*)src, rawcolor, bytes, w_32);
       while (--h)
       {
         memcpy(dst, src, len);
