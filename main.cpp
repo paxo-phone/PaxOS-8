@@ -3,7 +3,6 @@
 #include "./app/contact/contact.cpp"
 #include "./app/launcher.cpp"
 #include "./app/message/message.cpp"
-#include "./app/minecraft/SimplexNoise.cpp"
 #include "./app/phone/phone.cpp"
 #include "./interface/button/button.cpp"
 #include "./interface/GSM/Sim800L/sim.cpp"

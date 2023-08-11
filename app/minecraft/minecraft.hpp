@@ -27,7 +27,7 @@ class Chunk
 class Minecraft : public App
 {
     public:
-    void launch();
+    void main();
     std::vector<Chunk *> chunks;
     void renderChunk(int index, LGFX_Sprite* buffer);
     void renderBlock(int type, int x, int y, int z, LGFX_Sprite* buffer);
@@ -54,14 +54,17 @@ uint8_t Minecraft::isBlock(int x, int y, int z)
     return false;
 }
 
-void Minecraft::launch()
+void Minecraft::main()
 {
+    Window win("minecraft");
+    
+    
     LGFX_Sprite output(&tft_root);
     render = new RenderingEngine();
     output.setPsram(false);
     output.setColorDepth(8);
 
-    Box keys(104, 382, 180, 76);
+    Box keys(50, 250, 180, 76);
     Label* front = new Label(39, 0, 29, 34, "^");
     Label* back = new Label(39, 42, 29, 34, "v");
     Label* right = new Label(0, 23, 34, 29, "<");
@@ -83,7 +86,7 @@ void Minecraft::launch()
     keys.addChild(down);
 
     tft_root.fillScreen(0xFFFF);
-    keys.renderAll();
+    win.addChild(&keys);
     
     output.createSprite(320, 240);
 
@@ -139,6 +142,7 @@ void Minecraft::launch()
 
     while (true)
     {
+        win.updateAll();
         {
             std::vector<int> chunks_indexs; // chunks index from farthest
 
@@ -225,7 +229,9 @@ void Minecraft::launch()
             render->cameraRX-=radian(touch.isSlidingVertically()/3);
             touch.resetScrollVertical();
         }
-        
+        #ifdef BUILD_EMU
+                SDL_Delay(20);
+        #endif
     }
 
     free(chunks[0]);
