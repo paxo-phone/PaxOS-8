@@ -86,8 +86,8 @@ void GSM::update()
     {
         if (actual_cmd_count==0 || data.find("OK")!=-1 || data.find("ERROR")!=-1 || timeout+10000 < millis())
         {
-            print("Request: 1/" + to_string(requests.size()));
-            if(((data.find("ERROR")==-1 && data.find("OK")!=-1) && timeout+10000 > millis() && requests[0].size()!=actual_cmd_count) || actual_cmd_count==0)
+            // print("Request: 1/" + to_string(requests.size()));
+            if(((data.find("ERROR")==-1 && data.find("OK")!=-1) && timeout+10000 > millis() && requests[0].size()!=actual_cmd_count && !break_) || actual_cmd_count==0)
             {
                 (this->*requests[0][actual_cmd_count])();
                 timeout=millis();
@@ -109,6 +109,8 @@ void GSM::update()
                         (this->*keys[i].func)();
                     }
                 }
+
+                break_ = false;
             }
         }
     }
@@ -156,7 +158,7 @@ void GSM::get_data()
 void GSM::askForMessages()
 {
     #ifdef BUILD_PAXO
-    add_request({&GSM::getNewMessagesMODE, &GSM::getNewMessagesGET, &GSM::getNewMessagesPARSE});
+    add_request({&GSM::getNewMessagesMODE, &GSM::getNewMessagesGET, &GSM::getNewMessagesPARSE, &GSM::getNewMessagesClear});
     #endif
 }
 
@@ -222,11 +224,18 @@ void GSM::getNewMessagesPARSE()
             print("[GSM] E: Can't save messages because no function was provided");
             print("[GSM] I: " + to_string(messages.size()) + " messages received");
         }
+        this->gsm_print("AT+CMGD=4\r\n");
     }
     else
     {
         print("[GSM] I: No message received");
+        break_ = true;
     }
+}
+
+void GSM::getNewMessagesClear()
+{
+
 }
 
 void GSM::sendNewMessageMODE(std::string number, std::string message)

@@ -2,9 +2,13 @@
 
 #include "GSM/GSM.hpp"
 
+void print(string str) { command_shell.print(str + "\n" + shell::currentDirectory + "$ ", false); }
+void print(char str) { command_shell.print(str); }
+string input() { return command_shell.input(); }
+
 int shell::cmd_ls(const ArgList& args)
 {
-    vector<string> ls = storage::listdir(args[0]);
+    vector<string> ls = storage::listdir(shell::currentDirectory+"/"+args[0]);
     for (int i = 0; i < ls.size(); i++)
     {
         print(ls[i]);
@@ -12,9 +16,22 @@ int shell::cmd_ls(const ArgList& args)
     return SUCCESS;
 }
 
-int shell::cmd_cd(const ArgList& args)
+int shell::cmd_cd(const ArgList& args) // does not work properly
 {
-    // to fill
+    if(args.size()!=1)
+        return ERROR;
+    
+    if(args[0] == "/")
+    {
+        currentDirectory = "/";
+    }else
+    {
+        if(storage::isdir(currentDirectory+"/"+args[0]))
+            currentDirectory += "/"+args[0];
+        else
+            return ERROR;
+    }
+
     return SUCCESS;
 }
 
@@ -25,7 +42,7 @@ int shell::cmd_cat(const ArgList& args)
         print("Usage: cat filename");
         return ERROR;
     }
-    storage::LFile file(args[0], storage::OPEN_MODE::READ, false);
+    storage::LFile file(shell::currentDirectory+"/"+args[0], storage::OPEN_MODE::READ, false);
     if(file.is_open() == false)
     {
         print("Error opening file: " + args[0]);

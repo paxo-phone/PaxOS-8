@@ -9,7 +9,7 @@
 
 class SerialIO
 {
-    virtual void print(string str) = 0;
+    virtual void print(string str, bool newLine = true) = 0;
     virtual void print(char str) = 0;
     virtual string input() = 0;
 };
@@ -17,15 +17,16 @@ class SerialIO
 class CommandShell : public SerialIO
 {
     public:
-    void print(string str)
+    void print(string str, bool newLine = true)
     {
         #ifdef BUILD_EMU
-            std::cout << str << std::endl;
+            std::cout << str << (newLine)?(std::endl):("");
         #endif
         #ifdef BUILD_PAXO
             for (int i = 0; i < str.size(); i++)
                 Serial.print(str[i]);
-            Serial.println();
+            if(newLine)
+                Serial.println();
         #endif
     }
 
@@ -48,6 +49,8 @@ class CommandShell : public SerialIO
             getline(cin, line);
         #endif
         #ifdef BUILD_PAXO
+            while (!Serial.available())
+                delay(10);
             String str = Serial.readString();
             line = std::string(str.c_str());
         #endif
@@ -58,9 +61,9 @@ class CommandShell : public SerialIO
 
 CommandShell command_shell;
 
-void print(string str) { command_shell.print(str); }
-void print(char str) { command_shell.print(str); }
-string input() { return command_shell.input(); }
+void print(string str);
+void print(char str);
+string input();
 
 using namespace std;
 
@@ -131,6 +134,9 @@ namespace shell
                                           &cmd_getMessages,
                                           &cmd_pressHomeButton,
                                           &addMessage };
+
+    std::string currentDirectory = "/";
+                                        
     /* end commands */
 
     ArgList tokenize(const string& line, char delimiter = ' ')
@@ -199,7 +205,8 @@ namespace shell
         }
 
         // unknown command
-        print(string(command + ": command not found\n"));
+        command_shell.print(string(command + ": command not found\n"));
+        print("");
         return ERROR;
     }
 
@@ -265,7 +272,8 @@ void thread_shell(void* data)
 {
     while(true)
     {
-        shell::execute(input());
+        std::string data = input();
+        shell::execute(data.substr(0, data.length()-1));
         //Serial.println((String)"\nPSRAM Size available (bytes): " +ESP.getFreePsram());
     }
 }

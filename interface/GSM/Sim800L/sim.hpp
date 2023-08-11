@@ -68,6 +68,7 @@ class GSM
     void getNewMessagesMODE();
     void getNewMessagesGET();
     void getNewMessagesPARSE();
+    void getNewMessagesClear();
 
     void sendNewMessageMODE(std::string number, std::string message);
     void sendNewMessageRequest();
@@ -116,6 +117,7 @@ class GSM
     std::vector<std::vector<void (GSM::*)(void)>> requests;
     std::vector<Key> keys;
     uint actual_cmd_count = 0;
+    bool break_ = false;
 };
 
 GSM gsm;
