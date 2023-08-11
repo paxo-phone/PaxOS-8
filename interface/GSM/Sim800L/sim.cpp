@@ -119,7 +119,7 @@ void GSM::update()
 void GSM::add_request(std::vector<void (GSM::*)(void)> requests, bool priority)
 {
     if (priority) {
-        // Si la priorité est vraie, nous insérons la requête à l'arrière (ID=0)
+        // Si la priorité est vraie, nous insérons la requête à ID=1
         this->requests.insert(this->requests.begin()+1, requests);
     } else {
         // Si la priorité est fausse, nous vérifions d'abord si la requête existe déjà

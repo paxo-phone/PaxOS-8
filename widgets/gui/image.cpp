@@ -221,7 +221,7 @@ void Image::draw()
                 {
                     imagesLoaded[i].img->pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
                 }
-            }        
+            }
         }
     }
 }

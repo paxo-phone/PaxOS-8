@@ -186,7 +186,8 @@ void Gui::renderAll()
         afterRender();
 
         rendered = true;
-    }
+    }else if(getType() == IMAGE_TYPE)
+        draw();
 
     if(getType() != IMAGE_TYPE)
     {

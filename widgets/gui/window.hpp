@@ -56,7 +56,7 @@ class Window : public Gui
 
         }
 
-        for(int i = 0; i < 5; i++) // load network quality
+        for(int i = 0; i < 5; i++)
         {
             if(gsm.quality == i)
                 netQual[i]->enable();
@@ -64,7 +64,7 @@ class Window : public Gui
                 netQual[i]->disable();
         }
 
-        for(int i = 0; i < 5; i++) // load network quality
+        for(int i = 0; i < 5; i++)
         {
             if(gsm.batteryLevel == i)
                 battLevel[i]->enable();
