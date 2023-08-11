@@ -7,7 +7,6 @@ void GSM::init()
     SIM800Serial.begin(9600);
     #endif
 
-    getHour();
     addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
 }
 
@@ -258,40 +257,42 @@ void GSM::sendNewMessageMODE(std::string number, std::string message)
 
 void GSM::sendNewMessageRequest()
 {
-    data="";
-
-    this->gsm_print("AT+CMGF=1\r\n");
-    
-    while(data.find("\nOK")==-1 && data.find("\nERROR")==-1)
-        get_data();
-
-    if(data.find("\nERROR")!=-1)
-    {
-        print("[GSM] E: Can't send message");
+    #ifdef BUILD_PAXO
         data="";
-        return;
-    }
-    
-    print("[GSM] I: sending number to module...");
-    data="";
-    this->gsm_print("AT+CMGS=\"" + this->number_buffer + "\"\r");
 
-    delay(10);
+        this->gsm_print("AT+CMGF=1\r\n");
+        
+        while(data.find("\nOK")==-1 && data.find("\nERROR")==-1)
+            get_data();
 
-    print("[GSM] I: sending message to module...");
-    
-    data="";
+        if(data.find("\nERROR")!=-1)
+        {
+            print("[GSM] E: Can't send message");
+            data="";
+            return;
+        }
+        
+        print("[GSM] I: sending number to module...");
+        data="";
+        this->gsm_print("AT+CMGS=\"" + this->number_buffer + "\"\r");
 
-    this->gsm_print(this->message_buffer + (char)26);
+        delay(10);
 
-    while(data.find("\nOK")==-1 && data.find("\nERROR")==-1)
-        get_data();
-    
+        print("[GSM] I: sending message to module...");
+        
+        data="";
 
-    if(data.find("\nOK")!=-1)
-        print("[GSM] I: Message sent!");
-    else
-        print("[GSM] I: Message not sent...");
+        this->gsm_print(this->message_buffer + (char)26);
+
+        while(data.find("\nOK")==-1 && data.find("\nERROR")==-1)
+            get_data();
+        
+
+        if(data.find("\nOK")!=-1)
+            print("[GSM] I: Message sent!");
+        else
+            print("[GSM] I: Message not sent...");
+    #endif
 }
 
 void GSM::askedForCall()

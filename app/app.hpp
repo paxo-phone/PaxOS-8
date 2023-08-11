@@ -25,6 +25,7 @@ struct AppData
 #include "hour/hour.hpp"
 #include "map/map.hpp"
 #include "2048/2048.hpp"
+#include "settings/settings.cpp"
 #include "snake/snake.hpp"
 
 AppData apps[] = {
@@ -36,6 +37,7 @@ AppData apps[] = {
     AppData (new Map, "map"),
     AppData (new Game_2048, "2048"),
     AppData (new Snake, "snake"),
+    AppData (new Settings, "settings")
 };
 
 #include "launcher.hpp"

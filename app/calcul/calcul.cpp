@@ -2,7 +2,6 @@
 
 
 #include "calcul.hpp"
-#include <string>
 
 void Calcul::launch()
 {
@@ -16,17 +15,21 @@ void Calcul::buildGui()
     window.setMarginY(0);
     window.verticalSlide=false;
 
-    std::string keys[] = {"AC", "+/-", "%", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "0", " ", ".", "="};
+    std::string keys[] = {"^", "+/-", "%", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "0", ".", "AC", "="};
 
-    Box* calculContent = new Box(63, 44, 193, 81);
-        Label* oldCalculLabel = new Label(0, 0, 193, 31, "");
+    Box* calculContent = new Box(25, 44, 250, 66);
+        Label* oldCalculLabel = new Label(0, 0, 250, 16, "");
             oldCalculLabel->fontHeight=16;
             oldCalculLabel->setTextColor(COLOR_GREY);
             oldCalculLabel->setHorizontalAlignment(CENTER_ALIGNMENT);
-        Label* actualCalculLabel = new Label(0, 31, 193, 50, "");
+            oldCalculLabel->setVerticalAlignment(CENTER_ALIGNMENT);
+            oldCalculLabel->setRadius(0);
+
+        Label* actualCalculLabel = new Label(0, 31, 250, 40, "");
             actualCalculLabel->fontHeight=40;
             actualCalculLabel->setTextColor(COLOR_BLACK);
             actualCalculLabel->setHorizontalAlignment(CENTER_ALIGNMENT);
+            actualCalculLabel->setVerticalAlignment(CENTER_ALIGNMENT);
             actualCalculLabel->setRadius(0);
         calculContent->addChild(oldCalculLabel);
         calculContent->addChild(actualCalculLabel);
@@ -38,6 +41,7 @@ void Calcul::buildGui()
         for(int y = 0; y < 5; y++)
             for(int x = 0; x < 4; x++)
             {
+                std::string buttonText = keys[x+y*4];
                 Label* nbt = new Label(72.5*x, 70*y, 62, 60, keys[x+y*4]);
                 nbt->setRadius(30);
                 nbt->fontHeight=20;
@@ -47,21 +51,22 @@ void Calcul::buildGui()
                 else
                     nbt->setBackgroundColor(COLOR_LIGHT);
 
-                if(x==0 && y==4)
-                    nbt->setWidth(135);
-
-                if(x==0 && y==0)
-                    AC_btn=nbt;
-                if(x==1 && y==0)
-                    invert_btn=nbt;
-                if(x==3 && y==4)
-                    equals_btn=nbt;
                 
-                nbt->onreleased = addChar;
-                nbt->dataCallback = (void*) actualCalculLabel;
 
-                if(keys[x+y*4]=="0")
-                    x++;
+                if(buttonText == "AC")
+                    AC_btn=nbt;
+                else if(buttonText == "+/-")
+                {
+                    invert_btn=nbt;
+                    invert_btn->fontHeight = 15;
+                }
+                else if(buttonText == "=")
+                    equals_btn=nbt;
+                else
+                {
+                    nbt->onreleased = addChar;
+                    nbt->dataCallback = (void*) actualCalculLabel;
+                }
                 
                 keyboard->addChild(nbt);
             }
@@ -80,45 +85,100 @@ void Calcul::buildGui()
         }
 
         {
-            int oldFont = actualCalculLabel->fontHeight;
-            while(actualCalculLabel->getTextWidth()<160 && actualCalculLabel->fontHeight <= 40) // getWidth invalid
+            int oldFontAL = actualCalculLabel->fontHeight;
+            long textWidthAL = oldFontAL * actualCalculLabel->getText().size() / 2; // 2 is an approx for the font w-h ration
+            while (textWidthAL < 160 && actualCalculLabel->fontHeight <= 39)
             {
                 actualCalculLabel->fontHeight++;
+                oldFontAL = actualCalculLabel->fontHeight;
+                textWidthAL = oldFontAL * actualCalculLabel->getText().size() / 2;
             }
-            while(actualCalculLabel->getTextWidth()>160)
+            while (textWidthAL > 160)
             {
                 actualCalculLabel->fontHeight--;
+                oldFontAL = actualCalculLabel->fontHeight;
+                textWidthAL = oldFontAL * actualCalculLabel->getText().size() / 2;
             }
-            if(actualCalculLabel->fontHeight != oldFont && false)
+            if(actualCalculLabel->fontHeight != oldFontAL && false)
                 actualCalculLabel->updateAll();
+        }
+        
+        {
+            int oldFontOL = oldCalculLabel->fontHeight;
+            long textWidthOL = oldFontOL * oldCalculLabel->getText().size() / 2; // 2 is an approx for the font w-h ration
+            while (textWidthOL < 160 && oldCalculLabel->fontHeight <= 15)
+            {
+                oldCalculLabel->fontHeight++;
+                oldFontOL = oldCalculLabel->fontHeight;
+                textWidthOL = oldFontOL * oldCalculLabel->getText().size() / 2;
+            }
+            while (textWidthOL > 160)
+            {
+                oldCalculLabel->fontHeight--;
+                oldFontOL = oldCalculLabel->fontHeight;
+                textWidthOL = oldFontOL * oldCalculLabel->getText().size() / 2;
+            }
+            if(oldCalculLabel->fontHeight != oldFontOL && false)
+                oldCalculLabel->updateAll();
         }
 
         if(equals_btn->isTouched())
         {
-            std::string str = actualCalculLabel->getText();
-            if(str.length()!=0)
-            {
-                /*char * chr =(char *) malloc(str.length());
-                strcpy(chr, str.c_str());
-                str = std::to_string(te_interp(chr, 0));*/
-                
-                parser ob;
-                str=std::to_string(ob.eval_exp((char*) str.c_str()));
-                print("result: " + str);
-                while(str[str.length()-1]=='0')
-                    str.erase(str.length()-1);
-                if(str[str.length()-1]=='.')
-                    str.erase(str.length()-1);
-                oldCalculLabel->setText(actualCalculLabel->getText());
-                actualCalculLabel->setText(str);
-            }
+            std::string currentExpression = actualCalculLabel->getText();
+            oldCalculLabel->setText(currentExpression);
+            processExpression(currentExpression);
+            actualCalculLabel->setText(currentExpression);
         }
         if(AC_btn->isTouched())
         {
+            std::string currentExpression = actualCalculLabel->getText();
+            processExpression(currentExpression);
+            oldCalculLabel->setText(currentExpression);
             actualCalculLabel->setText("");
+        }
+        if (invert_btn->isTouched())
+        {
+            std::string currentInput = actualCalculLabel->getText();
+            std::replace(currentInput.begin(), currentInput.end(), '-', 'p');
+            std::replace(currentInput.begin(), currentInput.end(), '+', 'm');
+            
+            std::replace(currentInput.begin(), currentInput.end(), 'p', '+');
+            std::replace(currentInput.begin(), currentInput.end(), 'm', '-');
+            
+            if (currentInput[0] != '-' && currentInput[0] != '+' && !currentInput.empty()) {
+                currentInput = "-" + currentInput;
+            }
+            actualCalculLabel->setText(currentInput);
         }
         #ifdef BUILD_EMU
             SDL_Delay(20);
         #endif
+    }
+}
+
+void Calcul::processExpression(std::string &expression)
+{
+    bool shouldCalculate = false;
+    for (char chr : expression)
+    {
+        if (!(chr >= 48 && chr <= 57))
+        {
+            shouldCalculate = true;
+        }
+    }
+    
+    if(expression.length() != 0 && shouldCalculate)
+    {
+        /*char * chr =(char *) malloc(str.length());
+        strcpy(chr, str.c_str());
+        str = std::to_string(te_interp(chr, 0));*/
+        
+        parser ob;
+        expression=std::to_string(ob.eval_exp((char*) expression.c_str()));
+        print("result: " + expression);
+        while(expression[expression.length()-1]=='0')
+            expression.erase(expression.length()-1);
+        if(expression[expression.length()-1]=='.')
+            expression.erase(expression.length()-1);
     }
 }
