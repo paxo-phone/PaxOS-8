@@ -55,7 +55,7 @@ class GSM
     void get_data();
 
     void update();
-    void add_request(std::vector<void (GSM::*)(void)> request);
+    void add_request(std::vector<void (GSM::*)(void)> request, bool priority = false);
     void add_key(Key key);
 
     // specific methods

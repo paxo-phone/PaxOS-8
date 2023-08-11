@@ -116,12 +116,20 @@ void GSM::update()
     }
 }
 
-void GSM::add_request(std::vector<void (GSM::*)(void)> requests)
+void GSM::add_request(std::vector<void (GSM::*)(void)> requests, bool priority)
 {
-    for (uint i = 0; i < this->requests.size(); i++)
-        if(this->requests[i][0] == requests[0])
-            return;
-    this->requests.push_back(requests);
+    if (priority) {
+        // Si la priorité est vraie, nous insérons la requête à l'arrière (ID=0)
+        this->requests.insert(this->requests.begin()+1, requests);
+    } else {
+        // Si la priorité est fausse, nous vérifions d'abord si la requête existe déjà
+        for (uint i = 0; i < this->requests.size(); i++) {
+            if (this->requests[i][0] == requests[0])
+                return; // La requête existe déjà, nous ne l'ajoutons pas à nouveau
+        }
+        // Si la requête n'existe pas déjà, nous l'ajoutons à la fin
+        this->requests.push_back(requests);
+    }
 }
 
 void GSM::add_key(Key key)
@@ -245,7 +253,7 @@ void GSM::sendNewMessageMODE(std::string number, std::string message)
     this->number_buffer = number;
     this->message_buffer = message;
 
-    add_request({&GSM::sendNewMessageRequest});
+    add_request({&GSM::sendNewMessageRequest}, true);
 }
 
 void GSM::sendNewMessageRequest()
