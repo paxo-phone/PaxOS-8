@@ -7,7 +7,6 @@ void GSM::init()
     SIM800Serial.begin(9600);
     #endif
 
-
     getHour();
     addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
 }
@@ -61,6 +60,11 @@ void GSM::initRequests()
     setInterval(new CallbackMethod<GSM>(this, &GSM::askForMessages), 6000);
     setInterval(new CallbackMethod<GSM>(this, &GSM::getNetworkQuality), 10000);
     setInterval(new CallbackMethod<GSM>(this, &GSM::getBatteryLevel), 10000);
+    
+    getHour();
+    askForMessages();
+    getNetworkQuality();
+    getBatteryLevel();
 
     struct Key key1 = {&GSM::askForMessages, "+CMTI\n", false}; add_key(key1); // message
     struct Key key2 = {&GSM::getNumberWhoCall, "RING\n", false}; add_key(key2); // call

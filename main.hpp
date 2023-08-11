@@ -1,4 +1,4 @@
-//#define BUILD_PAXO 1
+#define BUILD_PAXO 1
 
 //#define OLD_PAXO
 #define NEW_PAXO

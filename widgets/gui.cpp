@@ -185,19 +185,22 @@ void Gui::renderAll()
         rendered = true;
     }
 
-
-    if(upFromDrawAll==this)
+    if(getType() != IMAGE_TYPE)
     {
-        upFromDrawAll=nullptr;
-        if(parent != nullptr)
-            l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
+        if(upFromDrawAll==this)
+        {
+            upFromDrawAll=nullptr;
+            if(parent != nullptr)
+                l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
+            else
+                l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY(), ALPHA_16B);
+        }
         else
-            l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY(), ALPHA_16B);
+        {
+            l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
+        }
     }
-    else
-    {
-        l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
-    }
+    
 
     screen_light.ON();
 }

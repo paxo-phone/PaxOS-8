@@ -129,6 +129,17 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h)
     if(filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos)
         imageFormat = ImageFormat::JPG;
 
+    for (int i = 0; i < imagesLoaded.size(); i++)
+    {
+        if (imagesLoaded[i].path == this->filename)
+        {
+            w = imagesLoaded[i].width;
+            h = imagesLoaded[i].height;
+            init(x, y, w, h);
+            return;
+        }
+    }
+    
     switch (imageFormat) // image size with right format
     {
         case BMP:
@@ -164,7 +175,7 @@ void Image::unload()
     {
         if (imagesLoaded[i].path == this->filename && imagesLoaded[i].width == this->width && imagesLoaded[i].height == this->height)
         {
-            if(imagesLoaded[i].usedBy.size() == 1)
+            if(imagesLoaded[i].usedBy.size() == 1 && imagesLoaded[i].canbedeleted == true)
             {
                 imagesLoaded[i].img->deleteSprite();
                 imagesLoaded.erase(imagesLoaded.begin() + i);
@@ -188,7 +199,36 @@ void Image::draw()
     {
         if (imagesLoaded[i].path == this->filename && imagesLoaded[i].width == this->width && imagesLoaded[i].height == this->height)
         {
-            imagesLoaded[i].img->pushSprite(&l_tft, 0, 0);
+            if(children.size()!=0)
+            {
+                imagesLoaded[i].img->pushSprite(&l_tft, 0, 0);
+            }
+            else
+            {
+                if(upFromDrawAll==this)
+                {
+                    upFromDrawAll=nullptr;
+                    if(parent != nullptr)
+                        imagesLoaded[i].img->pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
+                    else
+                        imagesLoaded[i].img->pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY(), ALPHA_16B);
+                }
+                else
+                {
+                    imagesLoaded[i].img->pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
+                }
+            }        
+        }
+    }
+}
+
+image_header* Image::getImage()
+{
+    for (int i = 0; i < imagesLoaded.size(); i++)
+    {
+        if (imagesLoaded[i].path == this->filename && imagesLoaded[i].width == this->width && imagesLoaded[i].height == this->height)
+        {
+            return &imagesLoaded[i];
         }
     }
 }
@@ -223,7 +263,6 @@ void Image::load()
         img->img->fillScreen(ALPHA_16B);
 
         drawImageFromStorage(img->img, filename, ImageFormat(imageFormat));
-
     }
     else // need to be resized
     {

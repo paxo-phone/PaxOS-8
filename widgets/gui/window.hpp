@@ -43,6 +43,7 @@ class Window : public Gui
         {
             netQual[i] = new Image("system/sig_" + to_string(i) + ".png", 4, 4);
             netQual[i]->load();
+            netQual[i]->getImage()->canbedeleted = false;
             bar->addChild(netQual[i]);
         }
 
@@ -50,6 +51,7 @@ class Window : public Gui
         {
             battLevel[i] = new Image("system/batt_0" + to_string(i+1) + ".png", 279, 6);
             battLevel[i]->load();
+            (battLevel[i]->getImage())->canbedeleted = false;
             bar->addChild(battLevel[i]);
 
         }
@@ -85,6 +87,9 @@ class Window : public Gui
         if(OldnetQual != gsm.quality || OldbattLevel != gsm.batteryLevel || oldhourString != to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes))
         {
             oldhourString = to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes);
+            OldbattLevel = gsm.batteryLevel;
+            OldnetQual = gsm.quality;
+        
             hourLabel->setText(oldhourString);
 
             for(int i = 0; i < 5; i++) // network quality
@@ -102,10 +107,9 @@ class Window : public Gui
                 else
                     battLevel[i]->disable();
             }
-        }
 
-        OldnetQual = gsm.batteryLevel;
-        OldbattLevel = gsm.quality;
+            print("update modules");
+        }
     }
 
     void draw()
@@ -130,6 +134,7 @@ class Window : public Gui
         {
             l_tft.fillRoundRect(WINDOW_WIDTH-2-6, CONTROL_BAR_SIZE + 2 + (windowSize)*(-scroolY)/maxH, 6, slideBarSize, 3, COLOR_GREY);
         }
+
     }
 
     void virtual_update()
