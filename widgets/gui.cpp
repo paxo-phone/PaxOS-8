@@ -156,20 +156,23 @@ void Gui::renderAll()
     
     if(!rendered)   // render if not already rendered
     {
-        l_tft.deleteSprite();
-        l_tft.setPsram(true);
-        l_tft.setColorDepth(16);
-        l_tft.createSprite(this->getWidth(), this->getHeight());
+        if(getType() != IMAGE_TYPE || children.size()!=0)
+        {
+            l_tft.deleteSprite();
+            l_tft.setPsram(true);
+            l_tft.setColorDepth(16);
+            l_tft.createSprite(this->getWidth(), this->getHeight());
 
-        if(parent == nullptr) // no parent -> background = white
-        {
-            l_tft.fillSprite(COLOR_LIGHT);
-        }else // has parent -> background = parent background
-        {
-            if(!enabledBackground)
-                setBackgroundColor(parent->getBackgroundColor());
-            
-            l_tft.fillSprite(parent->getBackgroundColor());
+            if(parent == nullptr) // no parent -> background = white
+            {
+                l_tft.fillSprite(COLOR_LIGHT);
+            }else // has parent -> background = parent background
+            {
+                if(!enabledBackground)
+                    setBackgroundColor(parent->getBackgroundColor());
+                
+                l_tft.fillSprite(parent->getBackgroundColor());
+            }
         }
 
         draw(); // draw himself in a sprite
