@@ -13,7 +13,10 @@ void Message::main()
         std::string number = Contact::contacts[contactIndex].number;
         std::string actual_message = "";
         print (number);
-        number = number.substr(number.length()-9, 9);
+        try
+        {
+            number = number.substr(number.length()-9, 9);
+        } catch (std::out_of_range exception) {}
 
 
         bool reload = false;
@@ -109,7 +112,7 @@ void Message::main()
 
                 if (home_button.pressed())
                 {
-                    reload=true;
+                    reload = true;
                     break;
                 }
 

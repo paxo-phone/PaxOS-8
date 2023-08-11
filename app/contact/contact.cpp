@@ -104,6 +104,9 @@ uint Contact::contactPage()
             {
                 return -1;
             }
+            #ifdef BUILD_EMU
+                SDL_Delay(20);
+            #endif
         }
     }
 }
@@ -239,6 +242,9 @@ void Contact::editContact(bool create, uint index)
             n.name = name->getText();
             n.number = number->getText();
 
+            if (n.name.empty())
+                continue;
+            
             if(create)
             {
                 contacts.push_back(n);

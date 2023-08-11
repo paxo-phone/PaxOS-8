@@ -8,9 +8,7 @@
 #include <math.h> 
  
 #define PI 3.14159265358979323846 
- 
-using namespace std;
- 
+
 enum types { DELIMITER = 1, VARIABLE, NUMBER, FUNCTION };
 const int NUMVARS = 26;
 class parser {
@@ -105,13 +103,13 @@ void parser::eval_exp2(double &result)
         }
     }
 }
-// Multiply or divide two factors.
+// Multiply, divide or modulo two factors.
 void parser::eval_exp3(double &result)
 {
     char op;
     double temp;
     eval_exp4(result);
-    while ((op = *token) == '*' || op == '/') 
+    while ((op = *token) == '*' || op == '/' || op == '%')
     {
         get_token();
         eval_exp4(temp);
@@ -122,6 +120,9 @@ void parser::eval_exp3(double &result)
             break;
         case '/':
             result = result / temp;
+            break;
+        case '%':
+            result = std::fmod(result,temp);
             break;
         }
     }

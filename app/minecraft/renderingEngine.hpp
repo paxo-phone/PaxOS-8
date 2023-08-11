@@ -120,11 +120,11 @@ void RenderingEngine::render(LGFX_Sprite* buffer)
         Triangle* t = triangles[i];
         uint8_t result = 0;
         uint8_t corners = 0;
-        result+=gp2D(t->x1, t->y1, t->z1); double co1[2] = {buffer_out_x, buffer_out_y};
+        result+=gp2D(t->x1, t->y1, t->z1); double co1[2] = {static_cast<double>(buffer_out_x), static_cast<double>(buffer_out_y)};
         corners+=(0<buffer_out_x && buffer_out_x<320 && 0<buffer_out_y && buffer_out_y<240);
-        result+=gp2D(t->x2, t->y2, t->z2); double co2[2] = {buffer_out_x, buffer_out_y};
+        result+=gp2D(t->x2, t->y2, t->z2); double co2[2] = {static_cast<double>(buffer_out_x), static_cast<double>(buffer_out_y)};
         corners+=(0<buffer_out_x && buffer_out_x<320 && 0<buffer_out_y && buffer_out_y<240);
-        result+=gp2D(t->x3, t->y3, t->z3); double co3[2] = {buffer_out_x, buffer_out_y};
+        result+=gp2D(t->x3, t->y3, t->z3); double co3[2] = {static_cast<double>(buffer_out_x), static_cast<double>(buffer_out_y)};
         corners+=(0<buffer_out_x && buffer_out_x<320 && 0<buffer_out_y && buffer_out_y<240);
         if(!result && corners != 0)
         {

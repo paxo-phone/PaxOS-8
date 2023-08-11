@@ -20,7 +20,11 @@ class CommandShell : public SerialIO
     void print(string str, bool newLine = true)
     {
         #ifdef BUILD_EMU
-            std::cout << str << (newLine)?(std::endl):("");
+            std::cout << str;
+            if (newLine)
+            {
+                std::cout<<std::endl;
+            }
         #endif
         #ifdef BUILD_PAXO
             for (int i = 0; i < str.size(); i++)
@@ -273,7 +277,11 @@ void thread_shell(void* data)
     while(true)
     {
         std::string data = input();
-        shell::execute(data.substr(0, data.length()-1));
+        #ifdef BUILD_PAXO
+            shell::execute(data.substr(0, data.length()-1));
+        #else
+            shell::execute(data);
+        #endif
         //Serial.println((String)"\nPSRAM Size available (bytes): " +ESP.getFreePsram());
     }
 }
