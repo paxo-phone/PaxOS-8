@@ -441,16 +441,15 @@ namespace lgfx
     uint32_t sx32 = param->src_x32;
     uint32_t sy32 = param->src_y32;
 
-    y *= _cfg.panel_width;
     do
     {
-      int32_t pos = x + y;
+      int32_t pos = x + y * _cfg.panel_width;
       int32_t end = pos + w;
       while (end != (pos = param->fp_copy(_fbp, pos, end, param))
          &&  end != (pos = param->fp_skip(      pos, end, param)));
       param->src_x32 = (sx32 += nextx);
       param->src_y32 = (sy32 += nexty);
-      y += _cfg.panel_width;
+      y++;
     } while (--h);
   }
 
