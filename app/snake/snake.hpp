@@ -152,6 +152,10 @@ class Snake : public App
                     interprete = 0;
                 if(home_button.pressed())
                     return;
+                
+                #ifdef BUILD_EMU
+                    SDL_Delay(20);
+                #endif
             }
         }
     }

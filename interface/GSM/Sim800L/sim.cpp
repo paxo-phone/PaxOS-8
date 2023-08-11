@@ -247,12 +247,17 @@ void GSM::getNewMessagesClear()
 
 void GSM::sendNewMessageMODE(std::string number, std::string message)
 {
-    print("[GSM] I: message to " + number);
-    locked = true;
-    this->number_buffer = number;
-    this->message_buffer = message;
-
-    add_request({&GSM::sendNewMessageRequest}, true);
+    #ifdef BUILD_PAXO
+        print("[GSM] I: message to " + number);
+        locked = true;
+        this->number_buffer = number;
+        this->message_buffer = message;
+        add_request({&GSM::sendNewMessageRequest}, true);
+    #else
+        print("[GSM EMU] I: message to " + number);
+        Message messageToSend = {number, message, std::to_string(days) + "/" + std::to_string(months) + "/" + std::to_string(years)};
+        gsm.saveMessages({messageToSend});
+    #endif
 }
 
 void GSM::sendNewMessageRequest()
