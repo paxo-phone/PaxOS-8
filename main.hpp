@@ -19,17 +19,22 @@
 
 using namespace std;
 
+bool *shouldUS;
+
 #include "interface/interface.hpp"
 #include "widgets/gui.hpp"
 #include "tasks/tasks.hpp"
 #include "extensions/extensions.hpp"
 #include "app/app.hpp"
 
-void setup() // initialize the paxos v8
+
+void setup(bool *shouldUpdateScreen) // initialize the paxos v8
 {
     #ifdef BUILD_PAXO
     esp_task_wdt_init(10000, 0);
     #endif
+    
+    shouldUS = shouldUpdateScreen;
 
     Gui::initScreen();
     shell::init(); new_thread(CORE_BACK, thread_shell, nullptr);

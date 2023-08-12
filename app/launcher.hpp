@@ -42,7 +42,7 @@ void launcher()
 
         appBoxs.push_back(image);
     }
-
+    
     while(true)
     {
         win.updateAll();
@@ -50,8 +50,11 @@ void launcher()
         {
             if(appBoxs[i]->isTouched())
             {
-                apps[i].app->main(); // launch application
-
+                std::shared_ptr<App> app = apps[i].createInstance();
+                app->main(); // launch application
+                app.reset(); // Delete app from memory
+//                apps[i].app->main();
+                
                 home_button.clear(); // clear the exit of the application
             }
         }
@@ -83,6 +86,9 @@ void launcher()
             {
                 eventHandler.update();
                 home_button.resetStandbyMod();
+                #ifdef BUILD_EMU
+                    SDL_Delay(1);
+                #endif
             }
 
             home_button.clear();

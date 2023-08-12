@@ -90,6 +90,10 @@ class Phone : public App
             #endif
         }
     }
+    
+    static std::shared_ptr<App> createInstance() {
+        return std::make_shared<Phone>();
+    }
 
     void make_a_call(std::string number);
     static void during_calling(std::string number);

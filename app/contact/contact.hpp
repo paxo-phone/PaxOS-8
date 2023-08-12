@@ -7,6 +7,11 @@ class Contact : public App
 {
     public:
     void main();
+    
+    static std::shared_ptr<App> createInstance() {
+        return std::make_shared<Contact>();
+    }
+    
     static void loadContacts(bool force = false);
     static void saveContacts();
     static uint contactPage();

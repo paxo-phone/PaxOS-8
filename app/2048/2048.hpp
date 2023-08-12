@@ -14,6 +14,11 @@ class Game_2048 : public App
     {
         launch();
     }
+    
+    static std::shared_ptr<App> createInstance() {
+        return std::make_shared<Game_2048>();
+    }
+
 
     private:
     unsigned int matrice1[4][4];
@@ -225,6 +230,8 @@ void Game_2048::draw()
     S.setTextColor(0x0000);
     S.drawCenterString(std::to_string(score).c_str(), 160, 400, &fonts::Font4);
     S.pushSprite(&tft_root, 0, 25);
+    
+    *shouldUS = true;
 }
 
 #endif

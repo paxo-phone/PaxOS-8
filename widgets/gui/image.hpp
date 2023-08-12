@@ -29,7 +29,7 @@ class Image : public Gui
     static bool parsePngHeader(std::string filename, int16_t* width, int16_t* height);
     static bool parseBmpHeader(std::string filename, int16_t* width, int16_t* height);
     static bool parseJpgHeader(std::string filename, int16_t* width, int16_t* height);
-
+    
     enum ImageFormat
     {
         BMP,

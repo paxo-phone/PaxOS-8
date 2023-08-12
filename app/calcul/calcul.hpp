@@ -14,6 +14,11 @@ class Calcul : public App
     {
         launch();
     }
+    
+    static std::shared_ptr<App> createInstance() {
+        return std::make_shared<Calcul>();
+    }
+
 
     void launch();
 
@@ -28,14 +33,14 @@ class Calcul : public App
         std::string currentInput = label->getText();
         if (currentInput.empty())
         {
-            if (chr == "*" || chr == "/" || chr == "%")
+            if (chr == "*" || chr == "/" || chr == "%" || chr == "^")
             {
                 return;
             }
         } else
         {
             const char lastChar = currentInput[currentInput.size() - 1];
-            if (strchr("+-*/%", lastChar) && (chr == "*" || chr == "/" || chr == "%"))
+            if (strchr("+-*/%^", lastChar) && (chr == "*" || chr == "/" || chr == "%" || chr == "^"))
             {
                 return;
             }

@@ -1,8 +1,6 @@
 #ifndef MINECRAFT_HPP
 #define MINECRAFT_HPP
 
-#include "../../widgets/gui.hpp"
-
 #include <vector>
 #include "blocks.hpp"
 #include "renderingEngine.hpp"
@@ -28,7 +26,13 @@ class Minecraft : public App
 {
     public:
     void main();
+    
+    static std::shared_ptr<App> createInstance() {
+        return std::make_shared<Minecraft>();
+    }
+    
     std::vector<Chunk *> chunks;
+    void processChunks(LGFX_Sprite* output);
     void renderChunk(int index, LGFX_Sprite* buffer);
     void renderBlock(int type, int x, int y, int z, LGFX_Sprite* buffer);
     uint8_t isBlock(int x, int y, int z);
@@ -56,14 +60,13 @@ uint8_t Minecraft::isBlock(int x, int y, int z)
 
 void Minecraft::main()
 {
-    Window win("minecraft");
-    
+    mainWindow=nullptr;
     
     LGFX_Sprite output(&tft_root);
     render = new RenderingEngine();
     output.setPsram(false);
     output.setColorDepth(8);
-
+    
     Box keys(50, 250, 180, 76);
     Label* front = new Label(39, 0, 29, 34, "^");
     Label* back = new Label(39, 42, 29, 34, "v");
@@ -71,7 +74,7 @@ void Minecraft::main()
     Label* left = new Label(72, 23, 34, 29, ">");
     Label* up = new Label(147, 0, 29, 34, "+");
     Label* down = new Label(147, 42, 29, 34, "-");
-
+    
     front->setBackgroundColor(0x0000);
     back->setBackgroundColor(0x0000);
     right->setBackgroundColor(0x0000);
@@ -84,19 +87,18 @@ void Minecraft::main()
     keys.addChild(back);
     keys.addChild(up);
     keys.addChild(down);
-
+    
     tft_root.fillScreen(0xFFFF);
-    win.addChild(&keys);
     
     output.createSprite(320, 240);
-
+    
     for(int cx = 0; cx < 10; cx++)
     {
         for(int cy = 0; cy < 10; cy++)
         {
             chunks.push_back((Chunk*) malloc(sizeof(Chunk)));
             chunks[chunks.size()-1]->chunk(cx,cy);
-
+            
             for(int x = 0; x < 16; x++)
             {
                 for(int y = 0; y < 16; y++)
@@ -107,7 +109,7 @@ void Minecraft::main()
                     }
                 }
             }
-
+            
             for(int x = 0; x < 16; x++)
             {
                 for(int y = 0; y < 16; y++)
@@ -118,7 +120,7 @@ void Minecraft::main()
                         if(noi+4==z)
                         {
                             chunks[chunks.size()-1]->data[x][y][z] = GRASS;
-
+                            
                             if(rand()%128==1)
                             {
                                 for(int z2 = z; z2-z<=3 || rand()%3; z2++)
@@ -127,7 +129,7 @@ void Minecraft::main()
                                     chunks[chunks.size()-1]->data[x][y][z2+1] = LEAVES;
                                 }
                             }
-                        }    
+                        }
                         else
                             chunks[chunks.size()-1]->data[x][y][z] = DIRT;
                     }
@@ -135,65 +137,44 @@ void Minecraft::main()
             }
         }
     }
-
-
+    
+    
     unsigned long timer = millis();
     unsigned long timer_m = millis();
-
-    while (true)
+    
+    keys.updateAll();
+    
+    processChunks(&output);
+    processChunks(&output);
+            
+    while (!home_button.pressed())
     {
-        win.updateAll();
-        {
-            std::vector<int> chunks_indexs; // chunks index from farthest
-
-            for (int j = 0; j < chunks.size(); j++)
-            {
-                double distance_max = 0;
-                int index_max = 0;
-
-                for (int i = 0; i < chunks.size(); i++)
-                {
-                    Chunk* ch = chunks[i];
-
-                    bool pass = false;
-
-                    for(int ii = 0; ii < chunks_indexs.size(); ii++)
-                        if(i == chunks_indexs[ii])
-                            pass=true;
-
-                    if(!pass && pow((ch->x*16+8)-render->cameraX, 2) + pow((ch->y*16+8)-render->cameraY, 2)>distance_max)
-                    {
-                        distance_max = pow((ch->x*16+8)-render->cameraX, 2) + pow((ch->y*16+8)-render->cameraY, 2);
-                        index_max=i;
-                    }
-                }
-                chunks_indexs.push_back(index_max);
-            }
-
-            for (int i = 0; i < chunks_indexs.size() && i < 10; i++)
-                renderChunk(chunks_indexs[chunks_indexs.size()+i-10], &output);
-                //renderChunk(chunks_indexs[chunks_indexs.size()-1], &output);
-        }
-
-
+        keys.updateAll();
+        
         //output.drawString(std::string(float(1000/(millis() - timer))) + " fps", 0, 0); // print fps
-
+        
         timer_m = float(1000/(millis() - timer));
         timer = millis();
-
-        output.pushSprite(0, 0); // show frame
         
-        output.fillSprite(0xFFFF); // clear frame
-
         double speed = 4.3/timer_m; // calculate speed for tps
-
-        if(isBlock(render->cameraX, render->cameraY, render->cameraZ-3)==AIR)   // gravity
+        
+        if(isBlock(render->cameraX, render->cameraY, render->cameraZ-4)==AIR)   // gravity
+        {
             render->cameraZ-=1;
-        if(isBlock(render->cameraX, render->cameraY, render->cameraZ-3)!=AIR && isBlock(render->cameraX, render->cameraY, render->cameraZ-3)!=WATER) // up blocks
+            processChunks(&output);
+        } else if(isBlock(render->cameraX, render->cameraY, render->cameraZ-3)!=AIR && isBlock(render->cameraX, render->cameraY, render->cameraZ-3)!=WATER) // up blocks
+        {
             render->cameraZ+=1;
-        if(isBlock(isBlock(render->cameraX, render->cameraY, render->cameraZ-3-0.2)!=AIR && render->cameraX, render->cameraY, render->cameraZ-3)==WATER) // water
+            processChunks(&output);
+        } else if(isBlock(isBlock(render->cameraX, render->cameraY, render->cameraZ-3-0.2)!=AIR && render->cameraX, render->cameraY, render->cameraZ-3)==WATER) // water
+        {
             render->cameraZ-=0.2;
-
+            processChunks(&output);
+        } else if (touch.isTouch())
+        {
+            processChunks(&output);
+        }
+        
         if(right->isFocuced())
         {
             render->cameraX+=rotate(speed, 0, render->cameraRY, 0);
@@ -229,12 +210,55 @@ void Minecraft::main()
             render->cameraRX-=radian(touch.isSlidingVertically()/3);
             touch.resetScrollVertical();
         }
+                
         #ifdef BUILD_EMU
-                SDL_Delay(20);
+            SDL_Delay(20);
         #endif
     }
+    
+    for(Chunk* ch : chunks)
+    {
+        delete ch;
+    }
+    chunks.clear();
+}
 
-    free(chunks[0]);
+void Minecraft::processChunks(LGFX_Sprite* output)
+{
+    output->pushSprite(0, 0); // show frame
+    
+    output->fillSprite(0xFFFF); // clear frame
+    
+    std::vector<int> chunks_indexs; // chunks index from farthest
+    
+    for (int j = 0; j < chunks.size(); j++)
+    {
+        double distance_max = 0;
+        int index_max = 0;
+        
+        for (int i = 0; i < chunks.size(); i++)
+        {
+            Chunk* ch = chunks[i];
+            
+            bool pass = false;
+            
+            for(int ii = 0; ii < chunks_indexs.size(); ii++)
+                if(i == chunks_indexs[ii])
+                    pass=true;
+            
+            if(!pass && pow((ch->x*16+8)-render->cameraX, 2) + pow((ch->y*16+8)-render->cameraY, 2)>distance_max)
+            {
+                distance_max = pow((ch->x*16+8)-render->cameraX, 2) + pow((ch->y*16+8)-render->cameraY, 2);
+                index_max=i;
+            }
+        }
+        chunks_indexs.push_back(index_max);
+    }
+    for (int i = 0; i < chunks_indexs.size() && i < 10; i++)
+        renderChunk(chunks_indexs[chunks_indexs.size()+i-10], output);
+    //renderChunk(chunks_indexs[chunks_indexs.size()-1], &output);
+    
+    *shouldUS = true;
 }
 
 void Minecraft::renderChunk(int index, LGFX_Sprite* buffer)
@@ -356,7 +380,6 @@ void Minecraft::renderBlock(int type, int x, int y, int z, LGFX_Sprite* buffer)
         }
     }
     
-
     render->render(buffer);
 }
 

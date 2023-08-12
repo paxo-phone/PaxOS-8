@@ -115,9 +115,13 @@ namespace lgfx
     }
   }
 
-  void Panel_sdl::sdl_event_handler(void)
+  void Panel_sdl::sdl_event_handler(bool *shouldUpdateScreen)
   {
-    sdl_update_handler();
+    if (*shouldUpdateScreen)
+    {
+        sdl_update_handler();
+        *shouldUpdateScreen = false;
+    }
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -167,6 +171,7 @@ namespace lgfx
           if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
           {
             mon->touched = true;
+              *shouldUpdateScreen = true;
           }
           if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
           {

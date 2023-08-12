@@ -703,7 +703,19 @@ namespace lgfx
    #endif
   #endif
 
-    size_t write(const uint8_t *buf, size_t size) { size_t n = 0; this->startWrite(); while (size--) { n += write(*buf++); } this->endWrite(); return n; }
+    size_t write(const uint8_t *buf, size_t size)
+      {
+        size_t n = 0; 
+        this->startWrite();
+        while (size--)
+        {
+            n += write(*buf++);
+        } 
+        this->endWrite();
+        _cursor_x = 0;
+        _cursor_y = 0;
+        return n;
+    }
     size_t write(uint8_t utf8);
     size_t vprintf(const char *format, va_list arg);
 

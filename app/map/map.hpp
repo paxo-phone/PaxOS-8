@@ -19,6 +19,10 @@ class Map : public App
             #endif
         }
     }
+    
+    static std::shared_ptr<App> createInstance() {
+        return std::make_shared<Map>();
+    }
 };
 
 #endif
