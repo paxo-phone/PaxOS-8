@@ -4,6 +4,7 @@
 #include "./app/launcher.cpp"
 #include "./app/message/message.cpp"
 #include "./app/phone/phone.cpp"
+#include "./app/clock/Clock.cpp"
 #include "./interface/button/button.cpp"
 #include "./interface/GSM/Sim800L/sim.cpp"
 #include "./interface/shell.cpp"

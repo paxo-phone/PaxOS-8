@@ -82,7 +82,7 @@ class Window : public Gui
 
     void updateModules()
     {
-        // hour
+        // clock
 
         if(OldnetQual != gsm.quality || OldbattLevel != gsm.batteryLevel || oldhourString != to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes))
         {

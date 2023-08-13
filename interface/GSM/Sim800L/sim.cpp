@@ -60,7 +60,7 @@ void GSM::initRequests()
     #endif
 
     setInterval(new CallbackMethod<GSM>(this, &GSM::update), 2);
-    setInterval(new CallbackMethod<GSM>(this, &GSM::getHour), 5000);
+    setInterval(new CallbackMethod<GSM>(this, &GSM::getHour), 1000);
     setInterval(new CallbackMethod<GSM>(this, &GSM::askForMessages), 6000);
     setInterval(new CallbackMethod<GSM>(this, &GSM::getNetworkQuality), 10000);
     setInterval(new CallbackMethod<GSM>(this, &GSM::getBatteryLevel), 10000);
