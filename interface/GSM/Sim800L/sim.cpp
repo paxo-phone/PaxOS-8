@@ -1,5 +1,10 @@
 #include "sim.hpp"
 
+#ifndef localtime_r
+// Can be undefined, so we use "localtime_s" in replacement
+#define localtime_r(timer, buf) localtime_s((tm *const) timer, (const time_t *const) buf)
+#endif
+
 void GSM::init()
 {
     #ifdef BUILD_PAXO
@@ -191,16 +196,16 @@ void GSM::getNewMessagesPARSE()
 
     print("==={\n"+data+"}===");
 
-    for (u_long i = 0; i < data.size();) {
+    for (uint64_t i = 0; i < data.size();) {
         std::string number, message, date;
-        u_long j = data.find("+CMGL:", i);
+        uint64_t j = data.find("+CMGL:", i);
 
         if (j == -1)
         {
             break;
         }
 
-        u_long k = data.find("\"", j);
+        uint64_t k = data.find("\"", j);
         k = data.find("\"", k+1);
         k = data.find("\"", k+1);
 
@@ -250,12 +255,17 @@ void GSM::getNewMessagesClear()
 
 void GSM::sendNewMessageMODE(std::string number, std::string message)
 {
-    print("[GSM] I: message to " + number);
-    locked = true;
-    this->number_buffer = number;
-    this->message_buffer = message;
-
-    add_request({&GSM::sendNewMessageRequest}, true);
+    #ifdef BUILD_PAXO
+        print("[GSM] I: message to " + number);
+        locked = true;
+        this->number_buffer = number;
+        this->message_buffer = message;
+        add_request({&GSM::sendNewMessageRequest}, true);
+    #else
+        print("[GSM EMU] I: message to " + number);
+        Message messageToSend = {number, message, std::to_string(days) + "/" + std::to_string(months) + "/" + std::to_string(years)};
+        gsm.saveMessages({messageToSend});
+    #endif
 }
 
 void GSM::sendNewMessageRequest()
@@ -320,7 +330,7 @@ void GSM::showCall()
 
     if(data.find("+CLCC:") != -1)
     {
-        u_long k = data.find("+CLCC:");
+        uint64_t k = data.find("+CLCC:");
         k = data.find("\"", k);
 
         number = data.substr(
@@ -391,9 +401,9 @@ void GSM::getHour()
 void GSM::parseHourFromComputer(time_t* time) {
     struct tm* formattedTime;
     formattedTime = gmtime(time);
-    
+
     localtime_r(time, formattedTime);
-    
+
     // https://cplusplus.com/reference/ctime/tm/
     years = formattedTime->tm_year + 1900;
     months = formattedTime->tm_mon + 1; // 0-11

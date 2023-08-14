@@ -77,6 +77,10 @@ void Game_2048::launch()
                 slide = 2;
             if (slide)
                 break;
+            
+            #ifdef BUILD_EMU
+                SDL_Delay(20);
+            #endif
         }
 
         touch.resetScrollVertical();

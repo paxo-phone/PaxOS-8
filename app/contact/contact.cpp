@@ -11,7 +11,7 @@ void Contact::loadContacts(bool force)
 
     std::vector<OneContact>().swap(contacts);
 
-    u_long i = 0;
+    uint64_t i = 0;
 
     while(data.find("\"", i) != -1)
     {
@@ -121,6 +121,9 @@ void Contact::showContact(uint index)
         Window win("new contact");
         win.setMarginX(0);
         win.setMarginY(CONTROL_BAR_SIZE);
+        
+        Back* back = new Back();
+        win.addChild(back);
 
         Label *name = new Label(75, 59, 210, 38, contacts[index].name);
         name->enabledBackground=false;
@@ -151,15 +154,14 @@ void Contact::showContact(uint index)
         delButton->setBackgroundColor(COLOR_ERROR);
         win.addChild(delButton);
 
-        Back* back = new Back();
-        win.addChild(back);
-
         while (true)
         {
             win.updateAll();
-
-            if(back->isTouched())
+            
+            if (back->isTouched())
+            {
                 return;
+            }
 
             if(edit->isTouched())
             {
@@ -178,6 +180,10 @@ void Contact::showContact(uint index)
 
             if(home_button.pressed())
                 return;
+            
+            #ifdef BUILD_EMU
+                SDL_Delay(20);
+            #endif
         }
     }
     
@@ -260,5 +266,9 @@ void Contact::editContact(bool create, uint index)
 
         if(home_button.pressed() || back->isTouched())
             return;
+        
+        #ifdef BUILD_EMU
+            SDL_Delay(20);
+        #endif
     }
 }

@@ -52,7 +52,7 @@ void Message::main()
 
             // parser
 
-            u_long k = -1;
+            uint64_t k = -1;
 
             Label* bull = nullptr;
 
