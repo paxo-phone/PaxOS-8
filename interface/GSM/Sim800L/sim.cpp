@@ -4,10 +4,13 @@ void GSM::init()
 {
     #ifdef BUILD_PAXO
     pinMode(32, OUTPUT);
+    if(SIM800Serial)
+        SIM800Serial.end();
+    else
+        addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
+    
     SIM800Serial.begin(9600);
     #endif
-
-    addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
 }
 
 bool GSM::moduleCheck()
@@ -417,12 +420,12 @@ void GSM::parseHour()
     std::string data2 = data.substr(data.find("\"") + 1, data.find_last_of("\"") - 1 - data.find("\"") - 1);
 
     print("data:" + data2);
-    years = stoi(data2.substr(0, 2));
-    months = stoi(data2.substr(3, 5-3));
-    days = stoi(data2.substr(6, 8-6));
-    hours = stoi(data2.substr(9, 11-9));
-    minutes = stoi(data2.substr(12, 14-12));
-    seconds = stoi(data2.substr(15, 17-15));
+    years = atoi(data2.substr(0, 2).c_str());
+    months = atoi(data2.substr(3, 5-3).c_str());
+    days = atoi(data2.substr(6, 8-6).c_str());
+    hours = atoi(data2.substr(9, 11-9).c_str());
+    minutes = atoi(data2.substr(12, 14-12).c_str());
+    seconds = atoi(data2.substr(15, 17-15).c_str());
     print(to_string(years) + " " + to_string(months) + " " + to_string(days) + " " + to_string(hours) + " " + to_string(minutes) + " " + to_string(seconds));
 }
 
@@ -443,7 +446,7 @@ void GSM::askNetworkQuality()
 
 void GSM::parseNetworkQuality()
 {
-    quality = stoi(data.substr(data.find("+CSQ: ") + 5, data.find(",") - data.find("+CSQ: ") - 5));
+    quality = atoi(data.substr(data.find("+CSQ: ") + 5, data.find(",") - data.find("+CSQ: ") - 5).c_str());
 
     if (quality > 19) // excellent quality
         quality = 4;
@@ -473,7 +476,7 @@ void GSM::askBatteryLevel()
 void GSM::parseBatteryLevel()
 {
     std::string data2 = data.substr(data.find("+CBC:"), data.find_last_of(",") - data.find("+CBC:"));
-    batteryLevel = stoi(data2.substr(data2.find(",") + 1, data2.find_last_of(",") - data2.find(",") - 1));
+    batteryLevel = atoi(data2.substr(data2.find(",") + 1, data2.find_last_of(",") - data2.find(",") - 1).c_str());
 
     if (batteryLevel > 90) // excellent quality
         batteryLevel = 4;

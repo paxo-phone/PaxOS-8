@@ -39,7 +39,7 @@ class Window : public Gui
             hourLabel->setRadius(0);
             bar->addChild(hourLabel);
 
-        for(int i = 0; i < 5; i++) // load network quality
+        for(int i = 1; i < 5; i++) // load network quality
         {
             netQual[i] = new Image("system/sig_" + to_string(i) + ".png", 4, 4);
             netQual[i]->load();
@@ -56,7 +56,7 @@ class Window : public Gui
 
         }
 
-        for(int i = 0; i < 5; i++)
+        for(int i = 1; i < 5; i++)
         {
             if(gsm.quality == i)
                 netQual[i]->enable();
@@ -92,7 +92,7 @@ class Window : public Gui
         
             hourLabel->setText(oldhourString);
 
-            for(int i = 0; i < 5; i++) // network quality
+            for(int i = 1; i < 5; i++) // network quality
             {
                 if(gsm.quality == i)
                     netQual[i]->enable();

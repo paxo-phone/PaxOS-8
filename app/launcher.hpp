@@ -79,11 +79,25 @@ void launcher()
                 digitalWrite(22, 1);
             #endif
 
+            #ifdef BUILD_PAXO
+                setCpuFrequencyMhz(40);
+                Serial.end();
+                Serial.begin(115200);
+                gsm.init();
+            #endif
+
             while (!home_button.pressed())
             {
                 eventHandler.update();
                 home_button.resetStandbyMod();
             }
+
+            #ifdef BUILD_PAXO
+                setCpuFrequencyMhz(240);
+                Serial.end();
+                Serial.begin(115200);
+                gsm.init();
+            #endif
 
             home_button.clear();
 
