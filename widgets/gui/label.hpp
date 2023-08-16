@@ -34,7 +34,7 @@ class Label : public Gui
 public:
     GUI_TYPE getType(){return LABEL_TYPE;}
 
-    Label(){};
+    Label();
     Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string text = "");
 
     void draw();
