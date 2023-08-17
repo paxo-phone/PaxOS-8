@@ -1,20 +1,22 @@
 #include "sim.hpp"
 
-#ifndef localtime_r
+/*#ifndef localtime_r
 // Can be undefined, so we use "localtime_s" in replacement
 #define localtime_r(timer, buf) localtime_s((tm *const) timer, (const time_t *const) buf)
-#endif
+#endif*/
 
 void GSM::init()
 {
     #ifdef BUILD_PAXO
-    pinMode(32, OUTPUT);
-    if(SIM800Serial)
-        SIM800Serial.end();
-    else
+        pinMode(32, OUTPUT);
+        if(SIM800Serial)
+            SIM800Serial.end();
+        else
+            addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
+        
+        SIM800Serial.begin(9600);
+    #else
         addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
-    
-    SIM800Serial.begin(9600);
     #endif
 }
 
@@ -80,21 +82,13 @@ void GSM::initRequests()
 void GSM::update()
 {
     get_data();
-    
-    #ifdef BUILD_PAXO
-    for (int i = 0; i < keys.size(); i++)
-    {
-        if(data.find(keys[i].key) != -1)
-            keys[i].isDetected = true;
-    }
-    #endif
 
     if(requests.size()!=0)
     {
-        if (actual_cmd_count==0 || data.find("OK")!=-1 || data.find("ERROR")!=-1 || timeout+10000 < millis())
+        if (actual_cmd_count==0 || data.find("OK")!=std::string::npos || data.find("ERROR")!=std::string::npos || timeout+10000 < millis())
         {
             // print("Request: 1/" + to_string(requests.size()));
-            if(((data.find("ERROR")==-1 && data.find("OK")!=-1) && timeout+10000 > millis() && requests[0].size()!=actual_cmd_count && !break_) || actual_cmd_count==0)
+            if(((data.find("ERROR")==std::string::npos && data.find("OK")!=std::string::npos) && timeout+10000 > millis() && requests[0].size()!=actual_cmd_count && !break_) || actual_cmd_count==0)
             {
                 (this->*requests[0][actual_cmd_count])();
                 timeout=millis();
@@ -108,12 +102,15 @@ void GSM::update()
                 requests.erase(requests.begin());
                 actual_cmd_count = 0;
 
+                data = data.substr(0,data.find_first_of("OK\n")+3);
+
                 for (int i = 0; i < keys.size(); i++)
                 {
                     if(keys[i].isDetected)
                     {
                         keys[i].isDetected = false;
                         (this->*keys[i].func)();
+                        print("key detected: " + keys[i].key);
                     }
                 }
 
@@ -196,16 +193,18 @@ void GSM::getNewMessagesPARSE()
 
     print("==={\n"+data+"}===");
 
-    for (uint64_t i = 0; i < data.size();) {
+    for (int64_t i = 0; i < data.size();) {
         std::string number, message, date;
-        uint64_t j = data.find("+CMGL:", i);
+        int64_t j = data.find("+CMGL:", i);
 
-        if (j == -1)
+        print("id: " + to_string(j));
+
+        if (j == std::string::npos)
         {
             break;
         }
 
-        uint64_t k = data.find("\"", j);
+        int64_t k = data.find("\"", j);
         k = data.find("\"", k+1);
         k = data.find("\"", k+1);
 
@@ -275,10 +274,10 @@ void GSM::sendNewMessageRequest()
 
         this->gsm_print("AT+CMGF=1\r\n");
         
-        while(data.find("\nOK")==-1 && data.find("\nERROR")==-1)
+        while(data.find("\nOK")==std::string::npos && data.find("\nERROR")==std::string::npos)
             get_data();
 
-        if(data.find("\nERROR")!=-1)
+        if(data.find("\nERROR")!=std::string::npos)
         {
             print("[GSM] E: Can't send message");
             data="";
@@ -297,11 +296,11 @@ void GSM::sendNewMessageRequest()
 
         this->gsm_print(this->message_buffer + (char)26);
 
-        while(data.find("\nOK")==-1 && data.find("\nERROR")==-1)
+        while(data.find("\nOK")==std::string::npos && data.find("\nERROR")==std::string::npos)
             get_data();
         
 
-        if(data.find("\nOK")!=-1)
+        if(data.find("\nOK")!=std::string::npos)
             print("[GSM] I: Message sent!");
         else
             print("[GSM] I: Message not sent...");
@@ -328,9 +327,9 @@ void GSM::showCall()
 
     std::string number = "";
 
-    if(data.find("+CLCC:") != -1)
+    if(data.find("+CLCC:") != std::string::npos)
     {
-        uint64_t k = data.find("+CLCC:");
+        int64_t k = data.find("+CLCC:");
         k = data.find("\"", k);
 
         number = data.substr(
@@ -370,7 +369,7 @@ void GSM::answerCall(bool answer)
 
 bool GSM::callEnded()
 {
-    if(data.find("NO CARRIER") != -1)
+    if(data.find("NO CARRIER") != std::string::npos)
     {
         call=false;
         return true;
@@ -422,7 +421,7 @@ void GSM::askForHour()
 void GSM::parseHour()
 {
     print("parseHour");
-    if(data.find("\"") == -1)
+    if(data.find("\"") == std::string::npos)
     {
         data = "";
         return;
