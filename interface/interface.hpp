@@ -27,6 +27,7 @@
 #endif
 
 #include "memory.hpp"
+#include "storage/storage.hpp"
 #include "shell.hpp"
 #include "GSM/GSM.hpp"
 #include "button/button.hpp"
