@@ -92,9 +92,9 @@ void Minecraft::main()
     
     output.createSprite(320, 240);
     
-    for(int cx = 0; cx < 10; cx++)
+    for(int cx = 0; cx < 2; cx++)
     {
-        for(int cy = 0; cy < 10; cy++)
+        for(int cy = 0; cy < 2; cy++)
         {
             chunks.push_back((Chunk*) malloc(sizeof(Chunk)));
             chunks[chunks.size()-1]->chunk(cx,cy);
@@ -115,7 +115,7 @@ void Minecraft::main()
                 for(int y = 0; y < 16; y++)
                 {
                     uint16_t noi = (Get2DPerlinNoiseValue(x+(chunks[chunks.size()-1]->x*16), y+(chunks[chunks.size()-1]->y*16), 30)+1)*2;
-                    for(int z = 1; z < noi+5; z++)
+                    for(int z = 1; z < noi+1; z++)
                     {
                         if(noi+4==z)
                         {
@@ -254,8 +254,8 @@ void Minecraft::processChunks(LGFX_Sprite* output)
         }
         chunks_indexs.push_back(index_max);
     }
-    for (int i = 0; i < chunks_indexs.size() && i < 10; i++)
-        renderChunk(chunks_indexs[chunks_indexs.size()+i-10], output);
+    for (int i = 0; i < chunks_indexs.size() && i < 1; i++)
+        renderChunk(chunks_indexs[chunks_indexs.size()+i-1], output);
     //renderChunk(chunks_indexs[chunks_indexs.size()-1], &output);
     
     *shouldUS = true;
