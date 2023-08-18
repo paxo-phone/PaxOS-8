@@ -712,8 +712,6 @@ namespace lgfx
             n += write(*buf++);
         } 
         this->endWrite();
-        _cursor_x = 0;
-        _cursor_y = 0;
         return n;
     }
     size_t write(uint8_t utf8);

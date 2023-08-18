@@ -171,6 +171,7 @@ class Snake : public App
     {
         gameover = true;
         tft_root.fillRect(snake[0][0] * 10, snake[0][1] * 10, 10, 10, 0xD820);
+        tft_root.setCursor(0, 0);
         tft_root.write("\n\n        Click anywhere on the screen to restart");
         
         *shouldUS = true;
