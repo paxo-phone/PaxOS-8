@@ -207,6 +207,7 @@ void Gui::renderAll()
     
 
     screen_light.ON();
+    *shouldUS = true;
 }
 
 bool Gui::updateAll()
@@ -242,7 +243,7 @@ bool Gui::updateAll()
     {
         return true;
     }
-    
+
     return false;
 }
 

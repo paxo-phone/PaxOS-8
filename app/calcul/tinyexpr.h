@@ -137,6 +137,7 @@ void parser::eval_exp4(double &result)
         get_token();
         eval_exp5(temp);
         result = pow(result, temp);
+        break;
     }
 }
 // Evaluate a unary + or -.

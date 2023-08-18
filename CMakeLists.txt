@@ -4,7 +4,11 @@ project(PaxOS8)
 if(WIN32)
 	message("> Building for Windows")
 else()
-	message("> Building for Linux")
+    if(__APPLE__)
+        message("> Building for macOS")
+    else()
+        message("> Building for Linux")
+    endif()
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
@@ -15,8 +19,6 @@ endif()
 
 file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 	*.cpp
-
-	interface/LovyanGFX/LGFX_SDL.cpp
 
  	interface/LovyanGFX/lgfx/Fonts/efont/*.c
 	interface/LovyanGFX/lgfx/Fonts/IPA/*.c

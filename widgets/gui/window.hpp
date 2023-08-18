@@ -84,13 +84,13 @@ class Window : public Gui
     {
         // hour
 
-        if(OldnetQual != gsm.quality || OldbattLevel != gsm.batteryLevel || oldhourString != to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes))
+        const std::string newHourString = to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes);
+        if(OldnetQual != gsm.quality || OldbattLevel != gsm.batteryLevel || oldhourString != newHourString)
         {
-            oldhourString = to_string(gsm.hours) + ":" + ((gsm.minutes<=9)?("0"):("")) + to_string(gsm.minutes);
             OldbattLevel = gsm.batteryLevel;
             OldnetQual = gsm.quality;
         
-            hourLabel->setText(oldhourString);
+            hourLabel->setText(newHourString);
 
             for(int i = 1; i < 5; i++) // network quality
             {

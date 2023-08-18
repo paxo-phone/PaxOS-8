@@ -86,40 +86,39 @@ void Calcul::buildGui()
 
         {
             int oldFontAL = actualCalculLabel->fontHeight;
-            long textWidthAL = oldFontAL * actualCalculLabel->getText().size() / 2; // 2 is an approx for the font w-h ration
+            long textWidthAL = oldFontAL * actualCalculLabel->getText().size() / 2; // 2 is an approx for the font w-h ratio
             while (textWidthAL < 160 && actualCalculLabel->fontHeight <= 39)
             {
-                actualCalculLabel->fontHeight++;
-                oldFontAL = actualCalculLabel->fontHeight;
-                textWidthAL = oldFontAL * actualCalculLabel->getText().size() / 2;
+                textWidthAL =  ++actualCalculLabel->fontHeight * actualCalculLabel->getText().size() / 2;
             }
             while (textWidthAL > 160)
             {
-                actualCalculLabel->fontHeight--;
-                oldFontAL = actualCalculLabel->fontHeight;
-                textWidthAL = oldFontAL * actualCalculLabel->getText().size() / 2;
+                textWidthAL = --actualCalculLabel->fontHeight * actualCalculLabel->getText().size() / 2;
             }
-            if(actualCalculLabel->fontHeight != oldFontAL && false)
+    
+            if(actualCalculLabel->fontHeight != oldFontAL)
+            {
+                actualCalculLabel->rendered = false;
                 actualCalculLabel->updateAll();
+            }
         }
         
         {
             int oldFontOL = oldCalculLabel->fontHeight;
-            long textWidthOL = oldFontOL * oldCalculLabel->getText().size() / 2; // 2 is an approx for the font w-h ration
+            long textWidthOL = oldFontOL * oldCalculLabel->getText().size() / 2; // 2 is an approx for the font w-h ratio
             while (textWidthOL < 160 && oldCalculLabel->fontHeight <= 15)
             {
-                oldCalculLabel->fontHeight++;
-                oldFontOL = oldCalculLabel->fontHeight;
-                textWidthOL = oldFontOL * oldCalculLabel->getText().size() / 2;
+                textWidthOL = ++oldCalculLabel->fontHeight * oldCalculLabel->getText().size() / 2;
             }
             while (textWidthOL > 160)
             {
-                oldCalculLabel->fontHeight--;
-                oldFontOL = oldCalculLabel->fontHeight;
-                textWidthOL = oldFontOL * oldCalculLabel->getText().size() / 2;
+                textWidthOL = --oldCalculLabel->fontHeight * oldCalculLabel->getText().size() / 2;
             }
-            if(oldCalculLabel->fontHeight != oldFontOL && false)
+            if(oldCalculLabel->fontHeight != oldFontOL)
+            {
+                oldCalculLabel->rendered = false;
                 oldCalculLabel->updateAll();
+            }
         }
 
         if(equals_btn->isTouched())
@@ -159,6 +158,7 @@ void Calcul::buildGui()
 void Calcul::processExpression(std::string &expression)
 {
     bool shouldCalculate = false;
+    // Check if the expression contains only digits, if yes then it won't process it.
     for (char chr : expression)
     {
         if (!(chr >= 48 && chr <= 57))
