@@ -1,5 +1,13 @@
 #include "label.hpp"
 
+Label::Label()
+{
+    init(0, 0, 0, 0);
+    this->fontHeight = BASE_FONT_SIZE;
+    setTextColor(COLOR_BLACK);
+    enabledBackground=false;
+}
+
 Label::Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string text)
 {
     init(x, y, width, height);

@@ -1,4 +1,6 @@
-//#define BUILD_PAXO 1
+#ifdef ESP32
+    #define BUILD_PAXO 1
+#endif
 
 //#define OLD_PAXO
 #define NEW_PAXO

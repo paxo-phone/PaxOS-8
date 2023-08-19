@@ -189,7 +189,7 @@ namespace lgfx
 
   void Panel_RA8875::update_madctl(void)
   {
-    //SYSR   bit[4:3]=00 256 color  bit[2:1]=  00 8bit MPU interface    1x 64k color  1x 16bit
+    //SYSR   bit[4:3]=00 256 color  bit[2:1]=  00 8bit MPU extern    1x 64k color  1x 16bit
     _write_reg(0x10, _write_depth == rgb565_2Byte ? 0x0C : 0x00);
 
     uint_fast8_t data = 0;

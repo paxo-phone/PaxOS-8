@@ -98,7 +98,7 @@ class GSM
     void getBatteryLevel();
     void askBatteryLevel();
     void parseBatteryLevel();
-    uint batteryLevel = 0;
+    uint batteryLevel = 4;
 
     void (*saveMessages)(std::vector<Message>) = nullptr;
     void (*getCall)(std::string number) = nullptr;
