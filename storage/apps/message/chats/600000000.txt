@@ -1,8 +1,4 @@
 ~MO:ggg
 ~MO:th
 ~MO:gg
-<<<<<<< HEAD
 ~MO:               jjlmoopp
-=======
-~MO:               jjlmoopp
->>>>>>> 9515f375c3c1ea78e8b80910b423c771617b9b27

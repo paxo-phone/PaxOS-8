@@ -21,6 +21,7 @@
 #include <iostream>
 
 #ifdef BUILD_EMU
+#include <atomic>
 
 struct Rectangle {
     uint16_t x;

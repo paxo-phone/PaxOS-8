@@ -25,6 +25,8 @@ Porting for SDL:
 #include "../../Touch.hpp"
 #include "common.hpp"
 
+#include <atomic>
+
 namespace lgfx
 {
  inline namespace v1
