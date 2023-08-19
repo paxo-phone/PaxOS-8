@@ -4,6 +4,7 @@
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 #include <iostream>
+#include <atomic>
 
 struct Rectangle {
     uint16_t x;

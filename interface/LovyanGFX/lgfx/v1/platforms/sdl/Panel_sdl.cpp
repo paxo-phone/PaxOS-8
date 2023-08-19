@@ -28,6 +28,7 @@ Porting for SDL:
 #include <list>
 #include  <iostream>
 
+
 namespace lgfx
 {
  inline namespace v1
