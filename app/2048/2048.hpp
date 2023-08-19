@@ -231,7 +231,9 @@ void Game_2048::draw()
     S.drawCenterString(std::to_string(score).c_str(), 160, 400, &fonts::Font4);
     S.pushSprite(&tft_root, 0, 25);
     
-    *shouldUS = true;
+    #ifdef BUILD_EMU
+        *shouldUS = true;
+    #endif
 }
 
 #endif

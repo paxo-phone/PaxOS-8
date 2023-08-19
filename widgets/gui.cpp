@@ -207,7 +207,9 @@ void Gui::renderAll()
     
 
     screen_light.ON();
-    *shouldUS = true;
+    #ifdef BUILD_EMU
+        *shouldUS = true;
+    #endif
 }
 
 bool Gui::updateAll()

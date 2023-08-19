@@ -123,7 +123,9 @@ class Snake : public App
                 }
 
                 snakeTimer = millis();
-                *shouldUS = true;
+                #ifdef BUILD_EMU
+                    *shouldUS = true;
+                #endif
             }
 
             touch.update();
@@ -174,7 +176,9 @@ class Snake : public App
         tft_root.setCursor(0, 0);
         tft_root.write("\n\n        Click anywhere on the screen to restart");
         
-        *shouldUS = true;
+        #ifdef BUILD_EMU
+            *shouldUS = true;
+        #endif
         while(true)
         {
             touch.update();

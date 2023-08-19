@@ -5,14 +5,24 @@
 #include <LGFX_AUTODETECT.hpp>
 #include <iostream>
 
-void setup(bool *shouldUpdateScreen);
-void loop(void);
+struct Rectangle {
+    uint16_t x;
+    uint16_t y;
+    uint16_t width;
+    uint16_t height;
+};
 
-bool shouldUpdateScreen = true;
+
+void setup(std::atomic<bool> *shouldUpdateScreen, std::atomic<Rectangle*> *screenUpdateZones);
+
+std::atomic<bool> shouldUpdateScreen = true;
+std::atomic<Rectangle*> screenUpdateZones;
+
+void loop(void);
 
 static void loopThread(void)
 {
-  setup(&shouldUpdateScreen);
+  setup(&shouldUpdateScreen, &screenUpdateZones);
   for (;;)
   {
     std::this_thread::yield();
