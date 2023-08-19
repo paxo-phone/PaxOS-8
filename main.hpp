@@ -29,8 +29,8 @@ struct Rectangle {
     uint16_t height;
 };
 
-std::atomic<bool> *shouldUS;
-std::atomic<Rectangle*> *screenUZ;
+bool *shouldUS;
+Rectangle* *screenUZ;
 
 #endif
 
@@ -50,7 +50,7 @@ void setup() // initialize paxos v8
     
 #ifdef BUILD_EMU
     
-void setup(std::atomic<bool> *shouldUpdateScreen, std::atomic<Rectangle*> *screenUpdateZones) // initialize paxos v8
+void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initialize paxos v8
     {
     shouldUS = shouldUpdateScreen;
     screenUZ = screenUpdateZones;

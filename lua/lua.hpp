@@ -47,6 +47,13 @@ void addVariable(lua_State* L, std::string name, int value)
     lua_setglobal(L, name.c_str());
 }
 
+struct LuaEvent
+{
+    string callback;
+    Gui* obj;
+    bool (Gui::*func)(void);
+};
+
 class LuaInterpreter
 {
     public:
@@ -54,7 +61,7 @@ class LuaInterpreter
     std::string data = "";
     static uint idcounter;
     static vector<Gui*> gui;
-    static vector<Gui*> events;
+    static vector<LuaEvent> events;
 
     void loadScript(std::string filename)
     {
@@ -74,6 +81,7 @@ class LuaInterpreter
         addFunction(L, "Gui", luaNewObject);
         addFunction(L, "setColor", setColor);
         addFunction(L, "setText", setText);
+        addFunction(L, "onClick", onClick);
 
         setColorInit(L);
 
@@ -92,6 +100,14 @@ class LuaInterpreter
         while(true)
         {
             gui[0]->updateAll();
+
+            for (int i = 0; i < events.size(); i++)
+            {
+                if(((events[i].obj)->*(events[i].func))())
+                {
+                    runLuaFunction(L, events[i].callback);
+                }
+            }
         }
 
         lua_close(L);
@@ -148,7 +164,6 @@ class LuaInterpreter
 
     static int setText(lua_State* L)
     {
-        print(to_string(lua_tointeger(L, 1)));
         Gui* g = gui[lua_tointeger(L, 1)];
         string text = lua_tostring(L, 2);
 
@@ -160,7 +175,20 @@ class LuaInterpreter
         }else
             print("not label");
     }
+
+    static int onClick(lua_State* L)
+    {
+        print("onClick");
+        Gui* g = gui[lua_tointeger(L, 1)];
+        string text = lua_tostring(L, 2);
+        LuaEvent event;
+        event.callback = text;
+        event.func = &Gui::isTouched;
+        event.obj = g;
+        events.push_back(event);
+    }
 };
 
 uint LuaInterpreter::idcounter;
 vector<Gui*> LuaInterpreter::gui;
+vector<LuaEvent> LuaInterpreter::events;

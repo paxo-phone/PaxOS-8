@@ -13,10 +13,10 @@ struct Rectangle {
 };
 
 
-void setup(std::atomic<bool> *shouldUpdateScreen, std::atomic<Rectangle*> *screenUpdateZones);
+void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones);
 
-std::atomic<bool> shouldUpdateScreen = true;
-std::atomic<Rectangle*> screenUpdateZones;
+bool shouldUpdateScreen = true;
+Rectangle* screenUpdateZones;
 
 void loop(void);
 
