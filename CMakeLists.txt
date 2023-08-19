@@ -16,6 +16,8 @@ set(CMAKE_CXX_STANDARD 17)
 file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 	*.cpp
 
+  interface/LovyanGFX/LGFX_SDL.cpp
+
  	interface/LovyanGFX/lgfx/Fonts/efont/*.c
 	interface/LovyanGFX/lgfx/Fonts/IPA/*.c
 	interface/LovyanGFX/lgfx/utility/*.c
