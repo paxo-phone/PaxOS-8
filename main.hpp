@@ -27,6 +27,7 @@ bool *shouldUS;
 #include "widgets/gui.hpp"
 #include "tasks/tasks.hpp"
 #include "extensions/extensions.hpp"
+#include "lua/lua.hpp"
 #include "app/app.hpp"
 
 
@@ -45,6 +46,10 @@ void setup(bool *shouldUpdateScreen) // initialize the paxos v8
     gsm.init();
     gsm.saveMessages = Message::saveMessage;
     home_button.init();
+
+    LuaInterpreter lua;
+    lua.loadScript("test.lua");
+    lua.runApp();
 
     launcher();
 }
