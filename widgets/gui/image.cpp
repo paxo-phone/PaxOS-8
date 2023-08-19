@@ -282,9 +282,6 @@ void Image::load()
         img->img->fillScreen(ALPHA_16B);
 
         
-        //uint8_t grayConverted = getGreyscaleFromRGB(s[i].r, s[i].g, s[i].b);
-        //argb8888_t castedGC = static_cast<const argb8888_t>(grayConverted)
-        
         imgPre.pushRotateZoomWithAA(img->img,
                                     getWidth()/2,
                                     getHeight()/2,

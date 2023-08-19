@@ -216,11 +216,11 @@ void Minecraft::main()
         #endif
     }
     
-    for(Chunk* ch : chunks)
-    {
-        delete ch;
-    }
-    chunks.clear();
+//    for(Chunk* ch : chunks)
+//    {
+//        delete ch;
+//    }
+//    chunks.clear();
 }
 
 void Minecraft::processChunks(LGFX_Sprite* output)
@@ -258,7 +258,9 @@ void Minecraft::processChunks(LGFX_Sprite* output)
         renderChunk(chunks_indexs[chunks_indexs.size()+i-1], output);
     //renderChunk(chunks_indexs[chunks_indexs.size()-1], &output);
     
-    *shouldUS = true;
+    #ifdef BUILD_EMU
+        *shouldUS = true;
+    #endif
 }
 
 void Minecraft::renderChunk(int index, LGFX_Sprite* buffer)

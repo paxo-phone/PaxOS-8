@@ -18,10 +18,21 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <iostream>
 
-using namespace std;
+#ifdef BUILD_EMU
 
-bool *shouldUS;
+struct Rectangle {
+    uint16_t x;
+    uint16_t y;
+    uint16_t width;
+    uint16_t height;
+};
+
+std::atomic<bool> *shouldUS;
+std::atomic<Rectangle*> *screenUZ;
+
+#endif
 
 #include "interface/interface.hpp"
 #include "widgets/gui.hpp"
@@ -29,15 +40,20 @@ bool *shouldUS;
 #include "extensions/extensions.hpp"
 #include "app/app.hpp"
 
+#ifdef BUILD_PAXO
 
-void setup(bool *shouldUpdateScreen) // initialize the paxos v8
+void setup() // initialize paxos v8
 {
-    #ifdef BUILD_PAXO
     esp_task_wdt_init(10000, 0);
-    #endif
+#endif
     
+#ifdef BUILD_EMU
+    
+void setup(std::atomic<bool> *shouldUpdateScreen, std::atomic<Rectangle*> *screenUpdateZones) // initialize paxos v8
+    {
     shouldUS = shouldUpdateScreen;
-
+    screenUZ = screenUpdateZones;
+#endif
     Gui::initScreen();
     shell::init(); new_thread(CORE_BACK, thread_shell, nullptr);
     storage::init();

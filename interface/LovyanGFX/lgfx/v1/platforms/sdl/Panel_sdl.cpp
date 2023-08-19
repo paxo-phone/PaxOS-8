@@ -115,7 +115,7 @@ namespace lgfx
     }
   }
 
-  void Panel_sdl::sdl_event_handler(bool *shouldUpdateScreen)
+  void Panel_sdl::sdl_event_handler(std::atomic<bool> *shouldUpdateScreen)
   {
     if (*shouldUpdateScreen)
     {
