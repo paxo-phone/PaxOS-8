@@ -51,7 +51,7 @@ namespace lgfx
   {
 
   public:
-    static void sdl_event_handler(std::atomic<bool> *shouldUpdateScreen);
+    static void sdl_event_handler(bool *shouldUpdateScreen);
     static void sdl_update_handler(void);
     Panel_sdl(void);
     virtual ~Panel_sdl(void);
