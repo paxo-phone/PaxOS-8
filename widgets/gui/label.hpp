@@ -1,6 +1,10 @@
 #ifndef Label_HPP
 #define Label_HPP
 
+#include <string.h>
+
+using namespace std;
+
 #define DEFAULT_LINE_SPACING 5
 
 const GFXfont *allFronts[3][4][4] = {

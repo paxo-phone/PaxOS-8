@@ -17,7 +17,7 @@ void TouchManager::update()
             ty = ty*480/460;
         #endif
 
-        tft_root.drawCircle(tx, ty, 3, 0x0000);
+        //tft_root.drawCircle(tx, ty, 3, 0x0000);
         
         if(tx<0 || tx>320 || ty<0 || ty>480)
         {

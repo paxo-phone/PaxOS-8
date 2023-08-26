@@ -14,7 +14,23 @@ Label::Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string te
     this->text = text;
     this->fontHeight = BASE_FONT_SIZE;
     setTextColor(COLOR_BLACK);
+    
     enabledBackground=false;
+
+    frontName = "mono";
+    fontHeight;
+    lineSpacing = DEFAULT_LINE_SPACING;
+    textWidth = 0;
+    bold = false;
+    italic = false;
+
+    halfRadius = 0;
+    finalHeight = 0;
+    totalMarginX = 0;
+    totalMarginY = 0;
+    totalTextWidth = 0;
+    autoMarginYForText = 0;
+    textFactor = 1.0;
 }
 
 void Label::draw()

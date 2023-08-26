@@ -1,6 +1,12 @@
 #ifndef __STORAGE_HPP__
 #define __STORAGE_HPP__
 
+#include <cstdio>
+#include <vector>
+#include <string>
+
+using namespace std;
+
 #ifdef BUILD_EMU
     #include <filesystem>
     #include <fstream>
@@ -13,7 +19,6 @@
     #ifdef WIN32
         #include <direct.h>
     #endif
-    using namespace std;
 #endif
 #ifdef BUILD_PAXO
     #define SD_CS 4

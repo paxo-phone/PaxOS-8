@@ -31,7 +31,7 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 	interface/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
 	interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
 	interface/LovyanGFX/LGFX_SDL.cpp
-	lua/src/*.c
+	src/*.c
 )
 
 add_definitions(-DLGFX_SDL)

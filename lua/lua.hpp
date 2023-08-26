@@ -1,4 +1,4 @@
-#include "src/lua.hpp"
+#include "../src/lua.hpp"
 #include <stdlib.h>
 #include <string>
 using namespace std;
@@ -26,10 +26,10 @@ bool runLuaFunction(lua_State* L, const std::string& functionName) {
             // Lua function executed successfully, and output is captured in luaOutput.
             return true;
         } else {
-            std::cerr << "Error executing Lua function '" << functionName << "': " << lua_tostring(L, -1) << std::endl;
+            //std::cerr << "Error executing Lua function '" << functionName << "': " << lua_tostring(L, -1) << std::endl;
         }
     } else {
-        std::cerr << "Lua function '" << functionName << "' not found." << std::endl;
+        //std::cerr << "Lua function '" << functionName << "' not found." << std::endl;
     }
 
     return false;
@@ -45,6 +45,23 @@ void addVariable(lua_State* L, std::string name, int value)
 {
     lua_pushinteger(L, value);
     lua_setglobal(L, name.c_str());
+}
+
+void* custom_allocator(void *ud, void *ptr, size_t osize, size_t nsize) {
+    if (nsize == 0) {
+        // Free the block
+        if (ptr != NULL) {
+            free(ptr);
+        }
+        return NULL;
+    } else {
+        // Allocate or resize the block
+        #ifdef BUILD_PAXO
+            return ps_realloc(ptr, nsize);
+        #else
+            return realloc(ptr, nsize);
+        #endif
+    }
 }
 
 struct LuaEvent
@@ -75,6 +92,8 @@ class LuaInterpreter
         idcounter = 0;
 
         lua_State* L = luaL_newstate();
+        lua_setallocf(L, custom_allocator, NULL);
+
         luaL_openlibs(L);
 
         addFunction(L, "print", customPrint);
@@ -110,7 +129,7 @@ class LuaInterpreter
 
         runLuaFunction(L, "run");
 
-        while(true)
+        /*while(true)
         {
             gui[0]->updateAll();
 
@@ -121,7 +140,7 @@ class LuaInterpreter
                     runLuaFunction(L, events[i].callback);
                 }
             }
-        }
+        }*/
 
         lua_close(L);
     }
@@ -239,13 +258,13 @@ class LuaInterpreter
     static int setText(lua_State* L)
     {
         Gui* g = gui[lua_tointeger(L, 1)];
-        string text = lua_tostring(L, 2);
+        //string text = lua_tostring(L, 2);
 
 
         if(g->getType() == GUI_TYPE::LABEL_TYPE)
         {
             print("label");
-            reinterpret_cast<Label*>(g)->setText(text);
+            reinterpret_cast<Label*>(g)->setText(lua_tostring(L, 2));
         }else
             print("not label");
     }

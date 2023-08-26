@@ -44,9 +44,15 @@ Rectangle* *screenUZ;
 
 #ifdef BUILD_PAXO
 
+#include "esp_task_wdt.h"
+
 void setup() // initialize paxos v8
 {
-    esp_task_wdt_init(10000, 0);
+    //esp_task_wdt_init(10000, 0);
+    esp_task_wdt_init(30, true);
+  
+  // Disable the task watchdog timer
+  esp_task_wdt_deinit();
 #endif
     
 #ifdef BUILD_EMU

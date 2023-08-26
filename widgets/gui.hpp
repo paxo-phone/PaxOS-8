@@ -227,8 +227,6 @@ class Gui // widget system
 
     bool autoSize = true;
     bool enabled = true;
-
-
 };
 
 Gui *upFromDrawAll = nullptr;
