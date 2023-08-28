@@ -65,6 +65,7 @@ class GSM
     bool listMessageAvailable();
 
     void askForMessages();
+    void askForMessagesPrio();
     void getNewMessagesMODE();
     void getNewMessagesGET();
     void getNewMessagesPARSE();

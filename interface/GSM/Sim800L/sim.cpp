@@ -13,32 +13,41 @@ void GSM::init()
             SIM800Serial.end();
         else
             addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
-        
-        SIM800Serial.begin(9600);
+        SIM800Serial.begin(4800);
+        delay(100);
     #else
         addEventListener(new CallbackMethod<GSM>(this, &GSM::initRequests), new ConditionMethod<GSM>(this, &GSM::moduleCheck), true);
     #endif
+
+    timer = 0;
 }
 
 bool GSM::moduleCheck()
 {
-    #ifdef BUILD_PAXO
-        if(timer+1000 < millis())
-        {
-            SIM800Serial.print(F("AT\r\n"));
+    while(SIM800Serial.available())
+    {
+        char c = SIM800Serial.read();
+        data.push_back(c);
+        Serial.write(c);
+    }
 
-            uint32_t t = millis();
+    #ifdef BUILD_PAXO
+        if(timer + 1000 < millis())
+        {
             
-            while(!SIM800Serial.available())
+            if(data.find("SMS Ready") != std::string::npos)
             {
-                if(t + 200 <= millis())
-                {
-                    print("not responding");
-                    timer = millis();
-                    return false;
-                }
+                data="";
+                print ("module ok");
+                return true;
             }
-            return true;        
+            else
+                print ("not responding...:" + data);
+            timer = millis();
+            
+            //SIM800Serial.end();
+            //SIM800Serial.begin(4800);
+            SIM800Serial.print("AT\r\n");
         }
         else
             return false;
@@ -53,15 +62,15 @@ bool GSM::moduleCheck()
 void GSM::initRequests()
 {
     #ifdef BUILD_PAXO
-    delay(10);
-    SIM800Serial.print(F("AT+CNMI=2,1,0,0,0\r\n"));
-    delay(10);
-    SIM800Serial.print(F("AT+CLTS=1\r\n"));
-    delay(10);
+    delay(100);
     SIM800Serial.print(F("AT+CMGF=1\r\n"));
-    delay(10);
+    delay(100);
+    SIM800Serial.print(F("AT+CNMI=1,1,0,0,0\r\n"));
+    delay(100);
+    SIM800Serial.print(F("AT+CLTS=1\r\n"));
+    delay(100);
     SIM800Serial.print(F("AT&W\r\n"));
-    delay(10);
+    delay(100);
     #endif
 
     setInterval(new CallbackMethod<GSM>(this, &GSM::update), 2);
@@ -75,13 +84,21 @@ void GSM::initRequests()
     getNetworkQuality();
     getBatteryLevel();
 
-    struct Key key1 = {&GSM::askForMessages, "+CMTI\n", false}; add_key(key1); // message
-    struct Key key2 = {&GSM::getNumberWhoCall, "RING\n", false}; add_key(key2); // call
+    struct Key key1 = {&GSM::askForMessagesPrio, "+CMTI", false}; add_key(key1); // message
+    struct Key key2 = {&GSM::askedForCall, "RING", false}; add_key(key2); // call
 }
 
 void GSM::update()
 {
     get_data();
+    
+    for (int i = 0; i < keys.size(); i++) // need to be fixed, if someone send a key in a sms, it will be interpreted as a key...
+    {
+        if(data.find(keys[i].key) != std::string::npos)
+        {
+            keys[i].isDetected = true;
+        }
+    }
 
     if(requests.size()!=0)
     {
@@ -104,7 +121,7 @@ void GSM::update()
 
                 data = data.substr(0,data.find_first_of("OK\n")+3);
 
-                for (int i = 0; i < keys.size(); i++)
+                for (int i = 0; i < keys.size(); i++) // need to be fixed, if someone send a key in a sms, it will be interpreted as a key...
                 {
                     if(keys[i].isDetected)
                     {
@@ -174,6 +191,13 @@ void GSM::askForMessages()
     #endif
 }
 
+void GSM::askForMessagesPrio()
+{
+    #ifdef BUILD_PAXO
+    add_request({&GSM::getNewMessagesMODE, &GSM::getNewMessagesGET, &GSM::getNewMessagesPARSE, &GSM::getNewMessagesClear}, 1);
+    #endif
+}
+
 void GSM::getNewMessagesMODE()
 {
     this->gsm_print("AT+CMGF=1\r\n");
@@ -238,7 +262,7 @@ void GSM::getNewMessagesPARSE()
             print("[GSM] E: Can't save messages because no function was provided");
             print("[GSM] I: " + to_string(messages.size()) + " messages received");
         }
-        this->gsm_print("AT+CMGD=4\r\n");
+        this->gsm_print("AT+CMGDA=\"DEL ALL\"\r\n");
     }
     else
     {

@@ -29,6 +29,9 @@ void Phone::during_calling(std::string number)
             gsm.answerCall(false); // hang off
             break;
         }
+
+        home_button.resetStandbyMod();
+
         #ifdef BUILD_EMU
             SDL_Delay(20);
         #endif
