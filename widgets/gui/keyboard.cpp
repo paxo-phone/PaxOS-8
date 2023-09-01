@@ -193,7 +193,7 @@ void Keyboard::virtual_update()
 
     char chr = getKey();
 
-    print(chr);
+    //print(chr);
 
     if(chr!=0)
     {

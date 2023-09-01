@@ -175,7 +175,7 @@ void Calcul::processExpression(std::string &expression)
         
         parser ob;
         expression=std::to_string(ob.eval_exp((char*) expression.c_str()));
-        print("result: " + expression);
+        //print("result: " + expression);
         while(expression[expression.length()-1]=='0')
             expression.erase(expression.length()-1);
         if(expression[expression.length()-1]=='.')

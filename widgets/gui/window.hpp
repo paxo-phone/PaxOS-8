@@ -108,7 +108,7 @@ class Window : public Gui
                     battLevel[i]->disable();
             }
 
-            print("update modules");
+            //print("update modules");
         }
     }
 

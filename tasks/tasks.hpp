@@ -218,7 +218,7 @@ void EventHandler::update()
 
 void addEventListener(CallbackClass* callback, ConditionClass* condition, bool autoremove = false, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    print("addEventListener: " + std::to_string(pEventHandler->events.size()));
+    //print("addEventListener: " + std::to_string(pEventHandler->events.size()));
     pEventHandler->events.push_back(new Event(callback, condition, autoremove));
 }
 
@@ -228,7 +228,7 @@ void addEventListener(CallbackClass* callback, ConditionClass* condition, bool a
 
 void removeEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    print("removeEventListener: " + std::to_string(pEventHandler->events.size()));
+    //print("removeEventListener: " + std::to_string(pEventHandler->events.size()));
     for (uint i = 0; i < pEventHandler->events.size(); i++)
     {
         if(pEventHandler->events[i]->callback->getPtr() == callback->getPtr() && pEventHandler->events[i]->condition->getPtr() == condition->getPtr())

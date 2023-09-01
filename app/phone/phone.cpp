@@ -76,5 +76,5 @@ void Phone::get_a_call()
         #endif
     }
 
-    print("exiting");
+    //print("exiting");
 }

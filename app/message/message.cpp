@@ -27,7 +27,7 @@ void Message::main()
             win.setMarginX(0);
             win.setMarginY(CONTROL_BAR_SIZE);
 
-            print("apps/message/" + number + ".txt");
+            //print("apps/message/" + number + ".txt");
 
             std::string data = "";
             storage::LFile file("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::READ);
@@ -101,10 +101,10 @@ void Message::main()
                 if(resetScrool && bull!=nullptr)
                 {
                     resetScrool = false;
-                    print("box: " + std::to_string(bull->getRelativeY()));
+                    //print("box: " + std::to_string(bull->getRelativeY()));
                     if(bull->getRelativeY() > box->getHeight())
                     {
-                        print("too much messages, resizing...");
+                        //print("too much messages, resizing...");
                         box->scroolY = - bull->getRelativeY() - bull->getHeight() + box->getHeight();
                         box->rendered=false;
                     }

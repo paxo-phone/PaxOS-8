@@ -350,7 +350,7 @@ bool Gui::update()
         widgetPressed = nullptr;
         ReleasedEffect();
 
-        print("objectPressState" + to_string(objectPressState));
+        //print("objectPressState" + to_string(objectPressState));
 
         if (objectPressState == PRESSED)
         {

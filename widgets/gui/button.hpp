@@ -23,7 +23,7 @@ class Button : public Label
         setBorderSize(0);
     }
 
-    Button(int16_t x, int16_t y, int16_t width, int16_t height, std::string text)
+    Button(int16_t x, int16_t y, int16_t width, int16_t height, std::string text = "")
     {
         init(x, y, width, height);
         this->text = text;

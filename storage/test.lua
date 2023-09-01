@@ -2,35 +2,35 @@ box = 0;
 state = false;
 
 function run()
-    win = Gui("Window")
-    label = Gui("Label", 10, 150, 100, 100, win)
+    win = Gui(WINDOW_TYPE)
+    label = Gui(BUTTON_TYPE, 10, 150, 100, 100, win)
     
     
-    upButton = Gui("Label", 50, 280, 40, 40, win)
+    upButton = Gui(BUTTON_TYPE, 50, 280, 40, 40, win)
     setText(upButton, "^")
     onClick(upButton, "moveUp")
     
-    downButton = Gui("Label", 50, 320, 40, 40, win)
+    downButton = Gui(BUTTON_TYPE, 50, 320, 40, 40, win)
     setText(downButton, "V")
     onClick(downButton, "moveDown")
     
-    rightButton = Gui("Label", 90, 300, 40, 40, win)
+    rightButton = Gui(BUTTON_TYPE, 90, 300, 40, 40, win)
     setText(rightButton, ">")
     onClick(rightButton, "moveRight")
     
-    leftButton = Gui("Label", 10, 300, 40, 40, win)
+    leftButton = Gui(BUTTON_TYPE, 10, 300, 40, 40, win)
     setText(leftButton, "<")
     onClick(leftButton, "moveLeft")
     
-    zoomInButton = Gui("Label", 130, 300, 40, 40, win)
+    zoomInButton = Gui(BUTTON_TYPE, 130, 300, 40, 40, win)
     setText(zoomInButton, "+")
     onClick(zoomInButton, "zoomIn")
     
-    zoomOutButton = Gui("Label", 170, 300, 40, 40, win)
+    zoomOutButton = Gui(BUTTON_TYPE, 170, 300, 40, 40, win)
     setText(zoomOutButton, "-")
     onClick(zoomOutButton, "zoomOut")
     
-    box = Gui("Box", 10, 10, 100, 100, win)
+    box = Gui(BOX_TYPE, 10, 10, 100, 100, win)
 
     setText(label, "hello world")
     setColor(box, COLOR_SUCCESS)

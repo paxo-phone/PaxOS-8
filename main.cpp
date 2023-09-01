@@ -14,3 +14,4 @@
 #include "./widgets/gui/label.cpp"
 #include "./widgets/gui.cpp"
 #include "./widgets/touchManager.cpp"
+#include "./lua/lua.cpp"

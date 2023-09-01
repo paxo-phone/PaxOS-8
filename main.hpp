@@ -70,9 +70,9 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
     gsm.saveMessages = Message::saveMessage;
     home_button.init();
 
-    /*LuaInterpreter lua;
+    LuaInterpreter lua;
     lua.loadScript("test.lua");
-    lua.runApp();*/
+    lua.runApp();
 
     launcher();
 }

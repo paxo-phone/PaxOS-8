@@ -272,6 +272,17 @@ namespace shell
 
 #include "../tasks/tasks.hpp"
 
+uint64_t heap = 0;
+uint64_t nh = 0;
+
+uint64_t pheap = 0;
+uint64_t pnh = 0;
+
+/*#include <esp_system.h>
+#include <esp_spi_flash.h>
+#include <esp_heap_caps.h>
+*/
+
 void thread_shell(void* data)
 {
     while(true)
@@ -282,7 +293,19 @@ void thread_shell(void* data)
         #else
             shell::execute(data);
         #endif
-        //Serial.println((String)"\nPSRAM Size available (bytes): " +ESP.getFreePsram());
+        /*nh = esp_get_free_heap_size();
+        if(heap != nh)
+        {
+            heap = nh;
+            Serial.println((String)"ram:" + nh);
+        }
+
+        pnh = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+        if(pheap != pnh)
+        {
+            pheap = pnh;
+            Serial.println((String)"psram:" + pnh);
+        }*/
     }
 }
 

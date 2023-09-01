@@ -13,7 +13,7 @@ bool Image::parsePngHeader(std::string filename, int16_t* width, int16_t* height
     
     if (!file.is_open()) // error during oppening
     {
-        print("can't open the file: " + filename);
+        //print("can't open the file: " + filename);
         return false;
     }
 
@@ -29,7 +29,7 @@ bool Image::parsePngHeader(std::string filename, int16_t* width, int16_t* height
 
     file.close();
 
-    // print(to_string(*width) + "; " + to_string(*height)); // debug ok
+    // //print(to_string(*width) + "; " + to_string(*height)); // debug ok
 
     return true;
 }
@@ -40,7 +40,7 @@ bool Image::parseBmpHeader(std::string filename, int16_t* width, int16_t* height
     
     if (!file.is_open()) // error during oppening
     {
-        print("can't open the file: " + filename);
+        //print("can't open the file: " + filename);
         return false;
     }
 
@@ -65,7 +65,7 @@ bool Image::parseJpgHeader(std::string filename, int16_t *width, int16_t *height
     
     if (!file.is_open()) // error during oppening
     {
-        print("can't open the file: " + filename);
+        //print("can't open the file: " + filename);
         return false;
     }
 
@@ -94,7 +94,7 @@ bool Image::parseJpgHeader(std::string filename, int16_t *width, int16_t *height
 
 void drawImageFromStorage(LGFX_Sprite* sprite, std::string filename, Image::ImageFormat format)
 {
-    print("drawing image from storage...");
+    //print("drawing image from storage...");
     #ifdef BUILD_EMU
         #ifdef __APPLE__
             filename = storage::getMacOSPath("storage/" + filename);
@@ -119,7 +119,7 @@ void drawImageFromStorage(LGFX_Sprite* sprite, std::string filename, Image::Imag
             sprite->drawJpgFile(&file, filename.c_str(), 0, 0);
         break;
     };
-    print("ok");
+    //print("ok");
 }
 
 Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h)
@@ -164,12 +164,12 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h)
 
     init(x, y, w, h);
 
-    print (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
+    //print (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
 }
 
 Image::~Image()
 {
-    print("Image::~Image");
+    //print("Image::~Image");
     unload();
 }
 
@@ -239,7 +239,7 @@ image_header* Image::getImage()
 
 void Image::load()
 {
-    print("Image::load");
+    //print("Image::load");
     for (int i = 0; i < imagesLoaded.size(); i++)
     {
         if (imagesLoaded[i].path == this->filename && imagesLoaded[i].width == this->width && imagesLoaded[i].height == this->height)
@@ -305,5 +305,5 @@ void Image::load()
         mask.deleteSprite();
     }
 
-    print("image loaded! ");
+    //print("image loaded! ");
 }
