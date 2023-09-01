@@ -15,6 +15,9 @@ void TouchManager::update()
 
             tx = tx*320/340;
             ty = ty*480/460;
+            #ifdef OLD_PAXO
+            ty = 480-ty;
+            #endif
         #endif
 
         //tft_root.drawCircle(tx, ty, 3, 0x0000);
