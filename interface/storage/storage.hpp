@@ -14,6 +14,9 @@ using namespace std;
     #include <fstream>
     #include <sys/stat.h>
     #include <unistd.h>
+    #ifdef __APPLE__
+        #include <sstream>
+    #endif
 #endif
 
 namespace Storage
