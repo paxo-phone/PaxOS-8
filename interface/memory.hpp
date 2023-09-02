@@ -259,33 +259,26 @@ namespace storage
         #endif
     }
 
-    vector<string> listdir(string path)
+    vector<string> listdir(string path, bool onlyDirs = false)
     {
         vector<string> list;
 
         #ifdef BUILD_EMU
             path="storage/"+path;
             #ifdef __APPLE__
-                DIR* dir = opendir(getMacOSPath(path).c_str());
-                if (dir)
-                {
-                    struct dirent* entry;
-                    while ((entry = readdir(dir)) != nullptr)
-                        list.push_back(entry->d_name);
-
-                    closedir(dir);
-                }
-            #else
-                DIR* dir = opendir(path.c_str());
-                if (dir)
-                {
-                    struct dirent* entry;
-                    while ((entry = readdir(dir)) != nullptr)
-                        list.push_back(entry->d_name);
-
-                    closedir(dir);
-                }
+                path = getMacOSPath(path);
             #endif
+                std::vector<std::string> r;
+                if (onlyDirs)
+                {
+                    for(auto& p : std::filesystem::directory_iterator(path))
+                        if (p.is_directory())
+                            r.push_back(p.path().filename().string());
+                } else {
+                    for(auto& p : std::filesystem::directory_iterator(path))
+                        r.push_back(p.path().filename().string());
+                }
+                return r;
         #endif
 
         #ifdef BUILD_PAXO

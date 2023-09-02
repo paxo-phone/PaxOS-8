@@ -49,7 +49,7 @@ class LuaApp : public App
     {
         conf = name+"/conf.txt";
         this->name = name;
-        icon = icon = "apps/lua/" + name + "/logo.png";
+        icon = "apps/lua/" + name + "/logo.png";
     }
 
     std::string conf;
@@ -88,7 +88,7 @@ void initializeApplications()
 
 
     // lua
-    vector<string> list = storage::listdir("apps/lua");
+    vector<string> list = storage::listdir("apps/lua", true);
     for (auto app : list)
     {
         print(app);
