@@ -3,7 +3,7 @@
 
 LGFX_Sprite S(&tft_root);
 
-class Game_2048 : public App
+class Game_2048 : public CppAppContainer
 {
     public:
     void launch();
@@ -13,10 +13,6 @@ class Game_2048 : public App
     void main()
     {
         launch();
-    }
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Game_2048>();
     }
 
 

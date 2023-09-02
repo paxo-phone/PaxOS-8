@@ -4,7 +4,7 @@
 #include "../../widgets/gui.hpp"
 #include "../../interface/memory.hpp"
 
-class Snake : public App
+class Snake : public CppAppContainer
 {
     public:
     void main()
@@ -35,10 +35,6 @@ class Snake : public App
             if (!start())
                 break;
         }
-    }
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Snake>();
     }
     
     private:

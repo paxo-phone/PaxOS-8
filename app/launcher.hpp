@@ -7,6 +7,8 @@
 
 void launcher()
 {
+    initializeApplications();
+
     Window win("launcher");
     
     win.setMarginX(0);
@@ -28,13 +30,13 @@ void launcher()
 
     std::vector<Gui*> appBoxs;
 
-    for (int i = 0; i < sizeof(apps) / sizeof(AppData); i++)
+    for (int i = 0; i < App::appList.size(); i++)
     {
         Box* box = new Box(33 + (95 * (i%3)), 117 + (95 * int(i/3)), 63, 63);
         box->setBackgroundColor(COLOR_EXTRA_LIGHT);
         box->setRadius(15);
 
-        Image* image = new Image("apps/" + apps[i].name + "/logo.png", AUTO, AUTO, AUTO, AUTO);
+        Image* image = new Image(App::appList[i]->icon, AUTO, AUTO, AUTO, AUTO);
         image->load();
         box->addChild(image);
 
@@ -46,14 +48,11 @@ void launcher()
     while(true)
     {
         win.updateAll();
-        for (int i = 0; i < sizeof(apps) / sizeof(AppData); i++)
+        for (int i = 0; i < App::appList.size(); i++)
         {
             if(appBoxs[i]->isTouched())
             {
-                std::shared_ptr<App> app = apps[i].createInstance();
-                app->main(); // launch application
-                app.reset(); // Delete app from memory
-//                apps[i].app->main();
+                App::appList[i]->run(); // launch application
                 
                 home_button.clear(); // clear the exit of the application
             }

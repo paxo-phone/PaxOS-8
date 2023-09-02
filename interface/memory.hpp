@@ -259,11 +259,12 @@ namespace storage
         #endif
     }
 
-    vector<string> listdir(const string& path)
+    vector<string> listdir(string path)
     {
         vector<string> list;
 
         #ifdef BUILD_EMU
+            path="storage/"+path;
             #ifdef __APPLE__
                 DIR* dir = opendir(getMacOSPath(path).c_str());
                 if (dir)

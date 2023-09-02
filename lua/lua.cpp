@@ -11,6 +11,8 @@ void LuaInterpreter::runApp()
 {
     idcounter = 0;
 
+    print ("vector" + to_string(gui.size()));
+
     lua_State* L = luaL_newstate();
     lua_setallocf(L, custom_allocator, NULL);
 
@@ -69,6 +71,17 @@ void LuaInterpreter::runApp()
     }
 
     lua_close(L);
+
+    for (int i = 0; i < gui.size(); i++)
+    {
+        if(gui[i]->parent == nullptr)
+            delete gui[i];
+    }
+
+    gui.clear();
+    events.clear();
+
+    data = "";
 }
 
 int LuaInterpreter::luaNewObject(lua_State* L)

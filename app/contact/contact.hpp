@@ -3,14 +3,10 @@
 
 #include <vector>
 
-class Contact : public App
+class Contact : public CppAppContainer
 {
     public:
     void main();
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Contact>();
-    }
     
     static void loadContacts(bool force = false);
     static void saveContacts();
@@ -28,5 +24,6 @@ class Contact : public App
 };
 
 std::vector<Contact::OneContact> Contact::contacts = {};
+
 
 #endif

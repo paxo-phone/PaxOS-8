@@ -22,14 +22,10 @@ class Chunk
     uint8_t data[16][16][32] = {{{AIR}}}; // [x][y][z]
 };
 
-class Minecraft : public App
+class Minecraft : public CppAppContainer
 {
     public:
     void main();
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Minecraft>();
-    }
     
     std::vector<Chunk *> chunks;
     void processChunks(LGFX_Sprite* output);

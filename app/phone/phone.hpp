@@ -5,7 +5,7 @@
 #include "../../interface/memory.hpp"
 #include "../contact/contact.hpp"
 
-class Phone : public App
+class Phone : public CppAppContainer
 {
     public:
     void main()
@@ -89,10 +89,6 @@ class Phone : public App
                 SDL_Delay(20);
             #endif
         }
-    }
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Phone>();
     }
 
     void make_a_call(std::string number);

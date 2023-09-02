@@ -7,16 +7,12 @@
 #include "../../widgets/gui.hpp"
 #include "../../interface/memory.hpp"
 
-class Calcul : public App
+class Calcul : public CppAppContainer
 {
     public:
     void main()
     {
         launch();
-    }
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Calcul>();
     }
 
 

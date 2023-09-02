@@ -7,7 +7,7 @@
 
 #include "settings.hpp"
 
-class Settings : public App
+class Settings : public CppAppContainer
 {
     public:
     void main()
@@ -22,9 +22,4 @@ class Settings : public App
             #endif
         }
     }
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Settings>();
-    }
-
 };

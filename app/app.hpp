@@ -3,27 +3,63 @@
 
 #include "../widgets/gui.hpp"
 #include "../interface/memory.hpp"
+#include "../lua/lua.hpp"
 
 class App
 {
     public:
-    virtual void main() = 0;
-    static std::shared_ptr<App> createInstance();
+    static std::vector<App*> appList;
+    uint id;
+    std::string name;
+    std::string icon;
+
+    virtual void run() = 0;
 };
 
-struct AppData
-{
-    std::shared_ptr<App> (*createInstance)();
-    std::string name;
+std::vector<App*> App::appList;
 
-    AppData(std::shared_ptr<App> (*createInstance)(), std::string name) {
-        this->createInstance = createInstance;
+class CppAppContainer
+{
+    public:
+    virtual void main() = 0;
+};
+
+template<class APP_T>
+
+class CppApp : public App
+{
+    public:
+    CppApp(std::string name)
+    {
         this->name = name;
+        icon = "apps/" + name + "/logo.png";
     }
-//    App* app = nullptr;
-//    std::string name;
-//
-//    AppData(App* app, std::string name) : app(app), name(name) {}
+    void run()
+    {
+        CppAppContainer* app = new APP_T;
+        app->main();
+        delete app;
+    }
+};
+
+class LuaApp : public App
+{
+    public:
+    LuaApp(std::string name)
+    {
+        conf = name+"/conf.txt";
+        this->name = name;
+        icon = icon = "apps/lua/" + name + "/logo.png";
+    }
+
+    std::string conf;
+
+    void run()
+    {
+        LuaInterpreter lua;
+        lua.loadScript("apps/lua/"+name+"/main.lua");
+        lua.runApp();
+    }
 };
 
 #include "phone/phone.hpp"
@@ -37,29 +73,28 @@ struct AppData
 #include "settings/settings.cpp"
 #include "snake/snake.hpp"
 
-AppData apps[] = {
-    AppData (Phone::createInstance, "phone"),
-    AppData (Message::createInstance, "message"),
-    AppData (Contact::createInstance, "contact"),
-    AppData (Calcul::createInstance, "calcul"),
-    AppData (Hour::createInstance, "hour"),
-    AppData (Map::createInstance, "map"),
-    AppData (Game_2048::createInstance, "2048"),
-    AppData (Snake::createInstance, "snake"),
-    AppData (Minecraft::createInstance, "settings")
-};
+void initializeApplications()
+{
+    // cpp
+    App::appList.push_back(new CppApp<Phone>("phone"));
+    App::appList.push_back(new CppApp<Message>("message"));
+    App::appList.push_back(new CppApp<Contact>("contact"));
+    App::appList.push_back(new CppApp<Calcul>("calcul"));
+    App::appList.push_back(new CppApp<Hour>("hour"));
+    App::appList.push_back(new CppApp<Map>("map"));
+    App::appList.push_back(new CppApp<Game_2048>("2048"));
+    App::appList.push_back(new CppApp<Snake>("snake"));
+    //App::appList.push_back(new CppApp<Minecraft>("minecraft"));
 
-//AppData apps[] = {
-//    AppData (new Phone, "phone"),
-//    AppData (new Message, "message"),
-//    AppData (new Contact, "contact"),
-//    AppData (new Calcul, "calcul"),
-//    AppData (new Hour, "hour"),
-//    AppData (new Map, "map"),
-//    AppData (new Game_2048, "2048"),
-//    AppData (new Snake, "snake"),
-//    AppData (new Minecraft, "settings")
-//};
+
+    // lua
+    vector<string> list = storage::listdir("apps/lua");
+    for (auto app : list)
+    {
+        print(app);
+        App::appList.push_back(new LuaApp(app));
+    }
+}
 
 #include "launcher.hpp"
 

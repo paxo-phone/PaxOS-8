@@ -4,7 +4,7 @@
 #include "../../widgets/gui.hpp"
 #include "../../interface/memory.hpp"
 
-class Hour : public App
+class Hour : public CppAppContainer
 {
     public:
     void main()
@@ -18,10 +18,6 @@ class Hour : public App
                 SDL_Delay(20);
             #endif
         }
-    }
-    
-    static std::shared_ptr<App> createInstance() {
-        return std::make_shared<Hour>();
     }
 };
 
