@@ -24,6 +24,7 @@ void GSM::init()
 
 bool GSM::moduleCheck()
 {
+    #ifdef BUILD_PAXO
     while(SIM800Serial.available())
     {
         char c = SIM800Serial.read();
@@ -31,7 +32,6 @@ bool GSM::moduleCheck()
         Serial.write(c);
     }
 
-    #ifdef BUILD_PAXO
         if(timer + 1000 < millis())
         {
             

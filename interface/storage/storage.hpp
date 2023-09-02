@@ -18,13 +18,23 @@ using namespace std;
 
 namespace Storage
 {
+    void init()
+    {
+        #ifdef BUILD_PAXO
+            pinMode(15, OUTPUT);
+            digitalWrite(15, 1);
+            SD.begin(SD_CS);
+        #endif
+    };
+
     class LFile
     {
         public:
         enum Mode
         {
             R, // read only
-            W  // read and write
+            W,  // read and write
+            E   // erase and write
         };
 
         LFile(std::string filename, Mode mode = R);
@@ -41,13 +51,12 @@ namespace Storage
         private:
         std::string filename;
         std::string data;
+        Mode mode;
 
 #ifdef ESP32
         File file;
-#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-        HANDLE fileHandle;
-#elif defined(__APPLE__) || defined(__linux__)
-        std::fstream fileStream;
+#else
+        std::fstream file;
 #endif
     };
 
