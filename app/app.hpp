@@ -56,7 +56,7 @@ class LuaApp : public App
 
     void run()
     {
-        LuaInterpreter lua;
+        LuaInterpreter lua("apps/lua/"+name+"/");
         lua.loadScript("apps/lua/"+name+"/main.lua");
         lua.runApp();
     }

@@ -45,15 +45,21 @@ void LuaInterpreter::runApp()
 
     setColorInit(L);
 
+    addFunction(L, "readFile", readFile);
+    addFunction(L, "writeFile", writeFile);
+
     if (luaL_loadstring(L, data.c_str()) == 0) {
         if (lua_pcall(L, 0, LUA_MULTRET, 0) == 0) {
             // Lua script executed successfully, and output is captured in luaOutput.
         } else {
-            //print("Error executing Lua script: " + std::string(lua_tostring(L, -1)));
+            print("Error executing Lua script: " + std::string(lua_tostring(L, -1)));
+            return;
         }
     } else {
         printf("Error loading Lua script");
     }
+
+    data="";
 
     runLuaFunction(L, "run");
 
@@ -86,6 +92,10 @@ void LuaInterpreter::runApp()
 
 int LuaInterpreter::luaNewObject(lua_State* L)
 {
+    for (int i = 0; i < lua_gettop(L); i++)
+        if (!lua_isnumber(L, i+1))
+            return luaL_error(L, "invalid");
+
     uint type = lua_tonumber(L, 1);
     uint x = lua_tonumber(L, 2);
     uint y = lua_tonumber(L, 3);
@@ -131,6 +141,9 @@ void LuaInterpreter::setColorInit(lua_State* L)
 
 int LuaInterpreter::setX(lua_State* L)
 {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
+        return luaL_error(L, "invalid");
+        
     Gui* g = gui[lua_tointeger(L, 1)];
     uint16_t xPos = lua_tointeger(L, 2);
     g->setX(xPos);
@@ -139,6 +152,9 @@ int LuaInterpreter::setX(lua_State* L)
 
 int LuaInterpreter::setY(lua_State* L)
 {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     uint16_t yPos = lua_tointeger(L, 2);
     g->setY(yPos);
@@ -147,6 +163,9 @@ int LuaInterpreter::setY(lua_State* L)
 
 int LuaInterpreter::setWidth(lua_State* L)
 {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     uint16_t width = lua_tointeger(L, 2);
     g->setWidth(width);
@@ -155,6 +174,9 @@ int LuaInterpreter::setWidth(lua_State* L)
 
 int LuaInterpreter::setHeight(lua_State* L)
 {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     uint16_t height = lua_tointeger(L, 2);
     g->setHeight(height);
@@ -163,6 +185,9 @@ int LuaInterpreter::setHeight(lua_State* L)
 
 int LuaInterpreter::getX(lua_State* L)
 {
+    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     lua_pushnumber(L, g->getX());
     return 1;
@@ -170,6 +195,9 @@ int LuaInterpreter::getX(lua_State* L)
 
 int LuaInterpreter::getY(lua_State* L)
 {
+    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     lua_pushnumber(L, g->getY());
     return 1;
@@ -177,6 +205,9 @@ int LuaInterpreter::getY(lua_State* L)
 
 int LuaInterpreter::getWidth(lua_State* L)
 {
+    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     lua_pushnumber(L, g->getWidth());
     return 1;
@@ -184,6 +215,9 @@ int LuaInterpreter::getWidth(lua_State* L)
 
 int LuaInterpreter::getHeight(lua_State* L)
 {
+    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     lua_pushnumber(L, g->getHeight());
     return 1;
@@ -191,6 +225,9 @@ int LuaInterpreter::getHeight(lua_State* L)
 
 int LuaInterpreter::setColor(lua_State* L)
 {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     uint color = lua_tointeger(L, 2);
     g->setBackgroundColor(color);
@@ -199,6 +236,9 @@ int LuaInterpreter::setColor(lua_State* L)
 
 int LuaInterpreter::setText(lua_State* L)
 {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isstring(L, 2))
+        return luaL_error(L, "invalid");
+
     Gui* g = gui[lua_tointeger(L, 1)];
     //string text = lua_tostring(L, 2);
 
@@ -220,5 +260,23 @@ int LuaInterpreter::onClick(lua_State* L)
     event.func = &Gui::isTouched;
     event.obj = g;
     events.push_back(event);
+    return 0;
+}
+
+int LuaInterpreter::readFile(lua_State* L)
+{
+    Storage::LFile file(dir + "/" + lua_tostring(L, 1));
+    file.open();
+    lua_pushstring(L, file.read().c_str());
+    file.close();
+    return 1;
+}
+
+int LuaInterpreter::writeFile(lua_State* L)
+{
+    Storage::LFile file(dir + "/" + lua_tostring(L, 1), Storage::LFile::W);
+    file.open();
+    file.write(lua_tostring(L, 2));
+    file.close();
     return 0;
 }

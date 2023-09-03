@@ -32,7 +32,7 @@ function run()
     
     box = Gui(BOX_TYPE, 10, 10, 100, 100, win)
 
-    setText(label, "hello world")
+    setText(label, readFile("conf.txt"));
     setColor(box, COLOR_SUCCESS)
     onClick(box, "pressed")
 end

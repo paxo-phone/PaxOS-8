@@ -78,11 +78,13 @@ class LuaInterpreter
 {
     public:
 
-    std::string conf = "";
+    static std::string dir;
     std::string data = "";
     static uint idcounter;
     static vector<Gui*> gui;
     static vector<LuaEvent> events;
+
+    LuaInterpreter(string dir) { LuaInterpreter::dir = dir; }
 
     void loadScript(std::string filename);
     void runApp();
@@ -100,11 +102,14 @@ class LuaInterpreter
     static int setColor(lua_State* L);
     static int setText(lua_State* L);
     static int onClick(lua_State* L);
+
+    static int readFile(lua_State* L);
+    static int writeFile(lua_State* L);
 };
 
 uint LuaInterpreter::idcounter;
 vector<Gui*> LuaInterpreter::gui;
 vector<LuaEvent> LuaInterpreter::events;
-
+std::string LuaInterpreter::dir = "";
 
 #endif
