@@ -160,13 +160,13 @@ namespace storage
 
                 #ifdef BUILD_PAXO
                     if(mode == READ)
-                        file = SD.open(const_cast<char*>(("/"+path).c_str()), FILE_READ);
+                        file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_READ);
 
                     if(mode == WRITE && erase == true)
-                        file = SD.open(const_cast<char*>(("/"+path).c_str()), FILE_APPEND);
+                        file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_APPEND);
 
                     if(mode == WRITE && erase == false)
-                        file = SD.open(const_cast<char*>(("/"+path).c_str()), FILE_WRITE);
+                        file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_WRITE);
                 #endif
             }
 
@@ -282,7 +282,7 @@ namespace storage
         #endif
 
         #ifdef BUILD_PAXO
-            File dir = SD.open(path.c_str());
+            File dir = SD.open(("/storage/"+path).c_str());
             if(dir)
             {
                 while (true)
@@ -291,8 +291,10 @@ namespace storage
                     if (!entry)
                         break;
                     
-                    if (entry.isDirectory())
+                    if (!onlyDirs || entry.isDirectory())
                         list.push_back(entry.name());
+
+                    Serial.println((path+"/"+entry.name()).c_str());
                     
                     entry.close();
                 }
@@ -313,7 +315,7 @@ namespace storage
             #endif
         #endif
         #ifdef BUILD_PAXO
-            return SD.exists(path.c_str());
+            return SD.exists(("/storage/"+path).c_str());
         #endif
     }
     
@@ -328,7 +330,7 @@ namespace storage
             return file.good();
         #endif
         #ifdef BUILD_PAXO
-            File file = SD.open(filepath.c_str());
+            File file = SD.open(("/storage/"+filepath).c_str());
             if(file)
             {
                 if(file.isDirectory())
@@ -366,7 +368,7 @@ namespace storage
             #endif
         #endif
         #ifdef BUILD_PAXO
-            File file = SD.open(dirpath.c_str());
+            File file = SD.open(("/storage/"+dirpath).c_str());
             if(file)
             {
                 if(file.isDirectory())
@@ -399,7 +401,7 @@ namespace storage
         #endif
         #endif
         #ifdef BUILD_PAXO
-            return SD.mkdir(dirpath.c_str());
+            return SD.mkdir(("/storage/"+dirpath).c_str());
         #endif
     }
 
@@ -414,7 +416,7 @@ namespace storage
             return file.is_open();
         #endif
         #ifdef BUILD_PAXO
-            File file = SD.open(filepath.c_str(), FILE_WRITE);
+            File file = SD.open(("/storage/"+filepath).c_str(), FILE_WRITE);
             if(file)
             {
                 file.close();
@@ -436,7 +438,7 @@ namespace storage
             #endif
         #endif
         #ifdef BUILD_PAXO
-            return SD.remove(path.c_str());
+            return SD.remove(("/storage/"+path).c_str());
         #endif
     }
     
@@ -450,7 +452,7 @@ namespace storage
             #endif
         #endif
         #ifdef BUILD_PAXO
-            return SD.rename(from.c_str(), to.c_str());
+            return SD.rename(("/storage/"+from).c_str(), ("/storage/"+to).c_str());
         #endif
     }
 }

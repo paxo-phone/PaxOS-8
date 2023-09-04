@@ -41,6 +41,7 @@ Rectangle* *screenUZ;
 #include "extensions/extensions.hpp"
 #include "lua/lua.hpp"
 #include "app/app.hpp"
+#include "web/web.hpp"
 
 #ifdef BUILD_PAXO
 
@@ -73,6 +74,23 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
     /*LuaInterpreter lua;
     lua.loadScript("apps/lua/test/main.lua");
     lua.runApp();*/
+
+    webdriver.powerOn();
+    webdriver.disconnect();
+    webdriver.connect();
+    
+    uint64_t t = millis();
+
+    while(!webdriver.isConnected())
+    {
+        print ("waiting connection");
+    }
+
+    print("connected in: " + to_string(millis()-t));
+
+    HttpClient client;
+
+    print("get: " + client.get("http://example.com"));
 
     launcher();
 }
