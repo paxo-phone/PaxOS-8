@@ -1,3 +1,5 @@
+#ifdef BUILD_PAXO
+
 #include <HTTPClient.h>
 #include <WiFi.h>
 #include <string>
@@ -26,3 +28,57 @@ public:
         }
     }
 };
+
+#endif
+#ifdef BUILD_EMU
+
+#include <iostream>
+#include <string>
+#include <curl/curl.h>
+
+class HttpClient {
+public:
+    HttpClient() {
+        curl_global_init(CURL_GLOBAL_ALL);
+        curl = curl_easy_init();
+    }
+
+    ~HttpClient() {
+        if (curl) {
+            curl_easy_cleanup(curl);
+            curl_global_cleanup();
+        }
+    }
+
+    std::string get(const std::string& url) {
+        if (!curl) {
+            return "";
+        }
+
+        std::string response;
+
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+
+        CURLcode res = curl_easy_perform(curl);
+
+        if (res != CURLE_OK) {
+            std::cerr << "cURL error: " << curl_easy_strerror(res) << std::endl;
+            return "";
+        }
+
+        return response;
+    }
+
+private:
+    CURL* curl;
+
+    static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
+        size_t total_size = size * nmemb;
+        output->append(static_cast<char*>(contents), total_size);
+        return total_size;
+    }
+};
+
+#endif

@@ -76,17 +76,12 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
     lua.runApp();*/
 
     webdriver.powerOn();
-    webdriver.disconnect();
     webdriver.connect();
-    
-    uint64_t t = millis();
 
     while(!webdriver.isConnected())
     {
         print ("waiting connection");
     }
-
-    print("connected in: " + to_string(millis()-t));
 
     HttpClient client;
 
