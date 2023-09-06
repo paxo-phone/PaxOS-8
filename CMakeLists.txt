@@ -58,6 +58,10 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
     find_package(SDL2 REQUIRED COMPONENTS SDL2)
 
+    find_package(CURL REQUIRED) # Add this line to find cURL
+
+    target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl) # Link to cURL
+
     target_link_libraries(PaxOS8 PRIVATE SDL2::SDL2)
 
     target_link_libraries(PaxOS8 PRIVATE m)
