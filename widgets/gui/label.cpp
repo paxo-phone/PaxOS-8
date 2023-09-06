@@ -1,16 +1,14 @@
 #include "label.hpp"
 
-Label::Label()
+Label::Label() : Gui(0, 0, 0, 0)
 {
-    init(0, 0, 0, 0);
     this->fontHeight = BASE_FONT_SIZE;
     setTextColor(COLOR_BLACK);
     enabledBackground=false;
 }
 
-Label::Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string text)
+Label::Label(int16_t x, int16_t y, int16_t width, int16_t height, std::string text) : Gui(x, y, width, height)
 {
-    init(x, y, width, height);
     this->text = text;
     this->fontHeight = BASE_FONT_SIZE;
     setTextColor(COLOR_BLACK);

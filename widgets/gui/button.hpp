@@ -8,9 +8,8 @@ class Button : public Label
     public:
     GUI_TYPE getType(){return BUTTON_TYPE;}
 
-    Button()
+    Button() : Label()
     {
-        init(0, 0, 0, 0);
         this->fontHeight = 20;
         this->bold = true;
         enabledBackground=true;
@@ -23,10 +22,8 @@ class Button : public Label
         setBorderSize(0);
     }
 
-    Button(int16_t x, int16_t y, int16_t width, int16_t height, std::string text = "")
+    Button(int16_t x, int16_t y, int16_t width, int16_t height, std::string text = "") : Label(x, y, width, height, text)
     {
-        init(x, y, width, height);
-        this->text = text;
         this->fontHeight = 20;
         this->bold = true;
         enabledBackground=true;

@@ -9,12 +9,10 @@ class Window : public Gui
     const static int WINDOW_WIDTH = 320;
     const static int WINDOW_HEIGHT = 480;
     int updateEventId;
-    Window(std::string title)
+
+    Window(std::string title) : Gui(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
     {
-
-
         this->title = title;
-        init(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         setBackgroundColor(COLOR_LIGHT);
         setMarginX(10);
         setMarginY(10 + CONTROL_BAR_SIZE);

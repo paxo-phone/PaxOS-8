@@ -3,7 +3,65 @@
 
 #include "gui.hpp"
 
-void Gui::init(int16_t x, int16_t y, int16_t width, int16_t height)
+Gui::Gui()
+{
+    this->x = 0;
+    this->y = 0;
+    this->width = 0;
+    this->height = 0;
+
+    autoX = false;
+    autoY = false;
+    autoW = false;
+    autoH = false;
+
+    lockedSlide = false;
+
+    onclick = nullptr;
+    onlongclick = nullptr;
+    onreleased = nullptr;
+    onscroll = nullptr;
+
+    appCallback = nullptr;
+    dataCallback = nullptr;
+
+    verticalSlide = false;
+    horizontalSlide = false;
+
+    verticalSlide=false;
+    horizontalSlide=false;
+
+    statePress = 0;
+    isTouchedState = false;
+    enabledBackground = true;
+
+    marginX = 0; marginY = 0;
+    scroolX = 0; scroolY = 0;
+
+    inercie = 0;
+    
+    enabled = true;
+    autoSize = true;
+    rendered = false;
+
+    color = COLOR_BLACK;
+    backgroundColor = COLOR_LIGHT;
+    borderColor = COLOR_GREY;
+
+    borderSize = DEFAULT_BORDER_SIZE;
+    radius = DEFAULT_RADIUS;
+
+    H_alignment = DEFAULT_H_ALIGNEMENT;
+    V_alignment = DEFAULT_V_ALIGNEMENT;
+
+    timerPress = 0;
+
+    parent = nullptr;
+
+    reloadWidget();
+}
+
+Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
 {
     this->x = x;
     this->y = y;
@@ -44,17 +102,15 @@ void Gui::init(int16_t x, int16_t y, int16_t width, int16_t height)
     isTouchedState = false;
     enabledBackground = true;
 
-    rendered = false;
-
     marginX = 0; marginY = 0;
     scroolX = 0; scroolY = 0;
 
     inercie = 0;
     
     enabled = true;
+    autoSize = true;
+    rendered = false;
 
-    inercie = 0;
-    
     color = COLOR_BLACK;
     backgroundColor = COLOR_LIGHT;
     borderColor = COLOR_GREY;
@@ -66,11 +122,6 @@ void Gui::init(int16_t x, int16_t y, int16_t width, int16_t height)
     V_alignment = DEFAULT_V_ALIGNEMENT;
 
     timerPress = 0;
-
-    autoSize = true;
-    enabled = true;
-
-    enabledBackground = true;
 
     parent = nullptr;
 

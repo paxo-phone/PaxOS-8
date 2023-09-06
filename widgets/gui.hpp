@@ -59,7 +59,8 @@ bool reload_afterunlocked = false;
 class Gui // widget system
 {
     public:
-    void init(int16_t x, int16_t y, int16_t width, int16_t height); // constructeur personnalisé
+    Gui();
+    Gui(int16_t x, int16_t y, int16_t width, int16_t height); // constructeur personnalisé
     
     virtual ~Gui(); // supprime le widget
 
@@ -164,10 +165,33 @@ class Gui // widget system
     virtual void ClickEffect() {}
     virtual void ReleasedEffect() {}
 
+
+    void (*onclick)(App *app, Gui* object, void* data) = nullptr;
+    void (*onlongclick)(App *app, Gui* object, void* data) = nullptr;
+    void (*onreleased)(App *app, Gui* object, void* data) = nullptr;
+    void (*onscroll)(App *app, Gui* object, void* data) = nullptr;
+
+    bool verticalSlide=false;
+    bool horizontalSlide=false;
+
+    App* appCallback = nullptr;
+    void* dataCallback = nullptr;
+    bool hasEvent = true;
+
+    bool enabledBackground = true;
+
+    std::vector<Gui *> children;
+    Gui *parent = nullptr;
+
+    bool autoSize = true;
+    int16_t scroolX, scroolY = 0;          // scrool position
+    bool rendered = false;
+
+    protected:
+
     bool lockedSlide = false;
     bool isTouchedState = false;
     uint8_t statePress = 0; // 0=no 1=yes 2=wait realesed
-
     enum pressedState
     {
         NOT_PRESSED,
@@ -179,29 +203,9 @@ class Gui // widget system
     uint8_t objectPressState = 0;
     static bool isScreenAlreadyPressed; // used for locking touch events for other widgets
     static Gui* widgetPressed;
-
-    void (*onclick)(App *app, Gui* object, void* data) = nullptr;
-    void (*onlongclick)(App *app, Gui* object, void* data) = nullptr;
-    void (*onreleased)(App *app, Gui* object, void* data) = nullptr;
-    void (*onscroll)(App *app, Gui* object, void* data) = nullptr;
-
-    App* appCallback = nullptr;
-    void* dataCallback = nullptr;
-    bool hasEvent = true;
-
-    bool verticalSlide=false;
-    bool horizontalSlide=false;
-
-    bool enabledBackground = true;
-
     LGFX_Sprite l_tft;
-    bool rendered = false;
 
     bool noMargin = false;
-    int16_t scroolX, scroolY = 0;          // scrool position
-
-    std::vector<Gui *> children;
-    Gui *parent = nullptr;
     
     protected:
     int16_t x, y = 0;                      // position
@@ -225,8 +229,16 @@ class Gui // widget system
 
     uint64_t timerPress = 0;
 
-    bool autoSize = true;
     bool enabled = true;
+
+    friend class Box;
+    friend class Label;
+    friend class Button;
+    friend class Image;
+    friend class Window;
+    friend class Keyboard;
+    friend class Keyboard;
+    friend class Back;
 };
 
 Gui *upFromDrawAll = nullptr;

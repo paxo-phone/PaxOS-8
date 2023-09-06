@@ -122,7 +122,7 @@ void drawImageFromStorage(LGFX_Sprite* sprite, std::string filename, Image::Imag
     //print("ok");
 }
 
-Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h)
+Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h) : Gui(x, y, w, h)
 {
     this->filename = filename;
 
@@ -137,9 +137,12 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h)
     {
         if (imagesLoaded[i].path == this->filename)
         {
-            w = imagesLoaded[i].width;
-            h = imagesLoaded[i].height;
-            init(x, y, w, h);
+            this->width = imagesLoaded[i].width;
+            this->height = imagesLoaded[i].height;
+
+            autoW = false;
+            autoH = false;
+
             return;
         }
     }
@@ -162,9 +165,13 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h)
     if(h == AUTO)
         h = oH;
 
-    init(x, y, w, h);
+    autoW = false;
+    autoH = false;
 
-    //print (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
+    this->width = w;
+    this->height = h;
+
+    print (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
 }
 
 Image::~Image()

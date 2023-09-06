@@ -6,13 +6,11 @@
 #include "image.hpp"
 #include "keyboard.hpp"
 
-Keyboard::Keyboard()
+Keyboard::Keyboard() : Gui(15, 323, 290, 157)
 {
-    init(15, 323, 290, 157);
     noMargin = true;
     enabled=false;
     this->label=nullptr;
-    //setMarginX(15);
     
     Image* maj = new Image("system/keyboard/maj_"+to_string(mode)+".bmp", 8, 9);   // majuscule
     Image* type = new Image("system/keyboard/type_"+to_string(mode)+".bmp", 0, 2);   // type

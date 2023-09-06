@@ -11,9 +11,8 @@ class Box : public Gui
     void free(){}
 };
 
-Box::Box(int16_t x, int16_t y, int16_t width, int16_t height)
+Box::Box(int16_t x, int16_t y, int16_t width, int16_t height) : Gui(x, y, width, height)
 {
-    init(x, y, width, height);
     setBorderSize(0);
     setRadius(0);
     setBackgroundColor(COLOR_EXTRA_LIGHT);

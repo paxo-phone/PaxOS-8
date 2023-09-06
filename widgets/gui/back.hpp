@@ -7,9 +7,8 @@
 class Back : public Box
 {
     public:
-    Back()
+    Back() : Box(4, 3, 44, 44)
     {
-        init(4, 3, 44, 44);
         enabledBackground=false;
         
         setBackgroundColor(COLOR_LIGHT);
