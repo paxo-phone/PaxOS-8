@@ -1,74 +1,53 @@
-box = 0;
+p = require('paxolib')
 state = false;
 
 function run()
-    win = Gui(WINDOW_TYPE)
-    label = Gui(BUTTON_TYPE, 10, 150, 100, 100, win)
+   local window = p.window("Mon application")
+   local label  = p.button(window, 10, 150, 100, 100)
+   local box    = p.box(window, 10, 10, 100, 100)
+	
+    p.setWindow(window)
+	
+    upButton = p.button(window, 50, 280, 40, 40)
+    upButton:setText("^")
+    upButton:onClick(function () box:setY(box:getY() - 10) end)
     
+    downButton = p.button(window, 50, 320, 40, 40)
+    downButton:setText("V")
+    downButton:onClick(function () box:setY(box:getY() + 10) end)
     
-    upButton = Gui(BUTTON_TYPE, 50, 280, 40, 40, win)
-    setText(upButton, "^")
-    onClick(upButton, "moveUp")
+    rightButton = p.button(window, 90, 300, 40, 40)
+    rightButton:setText(">")
+    rightButton:onClick(function () box:setX(box:getX() + 10) end)
     
-    downButton = Gui(BUTTON_TYPE, 50, 320, 40, 40, win)
-    setText(downButton, "V")
-    onClick(downButton, "moveDown")
+    leftButton = p.button(window, 10, 300, 40, 40)
+    leftButton:setText("<")
+    leftButton:onClick(function () box:setX(box:getX() - 10) end)
     
-    rightButton = Gui(BUTTON_TYPE, 90, 300, 40, 40, win)
-    setText(rightButton, ">")
-    onClick(rightButton, "moveRight")
+    zoomInButton = p.button(window, 130, 300, 40, 40)
+    zoomInButton:setText("+")
+    zoomInButton:onClick(function ()
+			box:setWidth(box:getWidth() * 2)
+			box:setHeight(box:getHeight() * 2)
+		end)
     
-    leftButton = Gui(BUTTON_TYPE, 10, 300, 40, 40, win)
-    setText(leftButton, "<")
-    onClick(leftButton, "moveLeft")
-    
-    zoomInButton = Gui(BUTTON_TYPE, 130, 300, 40, 40, win)
-    setText(zoomInButton, "+")
-    onClick(zoomInButton, "zoomIn")
-    
-    zoomOutButton = Gui(BUTTON_TYPE, 170, 300, 40, 40, win)
-    setText(zoomOutButton, "-")
-    onClick(zoomOutButton, "zoomOut")
-    
-    box = Gui(BOX_TYPE, 10, 10, 100, 100, win)
+    zoomOutButton = p.button(window, 170, 300, 40, 40)
+    zoomOutButton:setText("-")
+    zoomOutButton:onClick(function ()
+			box:setWidth(box:getWidth() / 2)
+			box:setHeight(box:getHeight() / 2)
+		end)
 
-    setText(label, readFile("conf.txt"));
-    setColor(box, COLOR_SUCCESS)
-    onClick(box, "pressed")
-end
-
-function pressed()
-    if(state == false) then
-        setColor(box, COLOR_ERROR)
-        state = true
-    else
-        setColor(box, COLOR_SUCCESS)
-        state = false
-    end
-end
-
-function moveUp()
-    setY(box, getY(box) - 10)
-end
-
-function moveDown()
-    setY(box, getY(box) + 10)
-end
-
-function moveRight()
-    setX(box, getX(box) + 10)
-end
-
-function moveLeft()
-    setX(box, getX(box) - 10)
-end
-
-function zoomIn()
-    setWidth(box, getWidth(box) * 2)
-    setHeight(box, getHeight(box) * 2)
-end
-
-function zoomOut()
-    setWidth(box, getWidth(box) / 2)
-    setHeight(box, getHeight(box) / 2)
+    label:setText(p.readFile("conf.txt"));
+    label:setColor(p.COLOR_SUCCESS);
+    box:setColor(p.COLOR_SUCCESS)
+    box:onClick(function()
+    		if(state == false) then
+			box:setColor(p.COLOR_BLACK)
+			state = true
+		else
+			box:setColor(p.COLOR_SUCCESS)
+			state = false
+		end
+	end)
 end
