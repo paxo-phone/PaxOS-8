@@ -1,282 +1,362 @@
 #include "lua.hpp"
 
-void LuaInterpreter::loadScript(std::string filename)
-{
+LuaInterpreter::LuaInterpreter(string dir) {
+    LuaInterpreter::dir = dir;
+}
+
+void LuaInterpreter::loadScript(std::string filename) {
     storage::LFile file(filename, storage::OPEN_MODE::READ);
     data = file.read();
     file.close();
 }
 
-void LuaInterpreter::runApp()
-{
-    idcounter = 0;
-
-    print ("vector" + to_string(gui.size()));
-
+void LuaInterpreter::runApp() {
+    // Creating lua state and adding base libraries and our own library
     lua_State* L = luaL_newstate();
     lua_setallocf(L, custom_allocator, NULL);
-
     luaL_openlibs(L);
+    luaL_requiref(L, "paxolib", luaopen_paxolib, 1);
+    lua_pop(L, 1); // Remove the library from the stack
 
-    addFunction(L, "print", customPrint);
-    addFunction(L, "Gui", luaNewObject);
-    
-    // GUI methods
-    addFunction(L, "setX", setX);
-    addFunction(L, "setY", setY);
-    addFunction(L, "setWidth", setWidth);
-    addFunction(L, "setHeight", setHeight);
-    
-    addFunction(L, "getX", getX);
-    addFunction(L, "getY", getY);
-    addFunction(L, "getWidth", getWidth);
-    addFunction(L, "getHeight", getHeight);
-    
-    addFunction(L, "setColor", setColor);
-    addFunction(L, "setText", setText);
-    addFunction(L, "onClick", onClick);
-    
-    
-    addVariable(L, "BOX_TYPE", GUI_TYPE::BOX_TYPE);
-    addVariable(L, "BUTTON_TYPE", GUI_TYPE::BUTTON_TYPE);
-    addVariable(L, "LABEL_TYPE", GUI_TYPE::LABEL_TYPE);
-    addVariable(L, "WINDOW_TYPE", GUI_TYPE::WINDOW_TYPE);
-    addVariable(L, "IMAGE_TYPE", GUI_TYPE::IMAGE_TYPE);
-
-    setColorInit(L);
-
-    addFunction(L, "readFile", readFile);
-    addFunction(L, "writeFile", writeFile);
-
-    if (luaL_loadstring(L, data.c_str()) == 0) {
-        if (lua_pcall(L, 0, LUA_MULTRET, 0) == 0) {
-            // Lua script executed successfully, and output is captured in luaOutput.
-        } else {
-            print("Error executing Lua script: " + std::string(lua_tostring(L, -1)));
+    // Load our lua file
+    if (!luaL_loadstring(L, data.c_str())) {
+        if (lua_pcall(L, 0, LUA_MULTRET, 0)) {
+            printf("Error executing Lua script: %s", lua_tostring(L, -1));
             return;
         }
     } else {
         printf("Error loading Lua script");
+        return;
     }
 
-    data="";
+    // Execute our lua app
+    execute_lua(L, LUA_MAIN_FUNCTION);
 
-    runLuaFunction(L, "run");
-
-    while(!home_button.pressed())
-    {
-        gui[0]->updateAll();
-
-        for (int i = 0; i < events.size(); i++)
-        {
-            if(((events[i].obj)->*(events[i].func))())
-            {
-                runLuaFunction(L, events[i].callback);
+    // Also checks that a window has been set!
+    while(!home_button.pressed() && current_root != nullptr) {
+        current_root->updateAll();
+        for (LuaEvent event : events) {
+            if(event.ref->isTouched()){
+                lua_rawgeti(L, LUA_REGISTRYINDEX, event.callback_ref);
+                lua_call(L, 0, 0);
             }
-        }
+       }
     }
 
+    // LUA_GC will take care of memory!
     lua_close(L);
 
-    for (int i = 0; i < gui.size(); i++)
-    {
-        if(gui[i]->parent == nullptr)
-            delete gui[i];
-    }
-
-    gui.clear();
+    // Resets our vars
+    current_root = nullptr;
     events.clear();
-
-    data = "";
+    data.clear();
 }
 
-int LuaInterpreter::luaNewObject(lua_State* L)
-{
-    for (int i = 0; i < lua_gettop(L); i++)
-        if (!lua_isnumber(L, i+1))
-            return luaL_error(L, "invalid");
-
-    uint type = lua_tonumber(L, 1);
-    uint x = lua_tonumber(L, 2);
-    uint y = lua_tonumber(L, 3);
-    uint w = lua_tonumber(L, 4);
-    uint h = lua_tonumber(L, 5);
-
-    if(type==GUI_TYPE::WINDOW_TYPE)
-    {
-        gui.push_back(new Window("lua app"));
-    }else if(type==GUI_TYPE::BOX_TYPE)
-    {
-        gui.push_back(new Box(x,y,w,h));
-        gui[idcounter]->enabledBackground = true;
-        gui[idcounter]->setBackgroundColor(COLOR_EXTRA_LIGHT);
-    }else if(type==GUI_TYPE::LABEL_TYPE)
-    {
-        gui.push_back(new Label(x,y,w,h));
-    }else if(type==GUI_TYPE::BUTTON_TYPE)
-    {
-        gui.push_back(new Button(x,y,w,h));
+// Fills metatable for GUI components
+// Function also needs to set stack in the same state as the caller gave it!
+// Extra is here in order to add extra bindings if needed.
+void LuaInterpreter::fill_gui_metatable(lua_State* L, const char* table_name, lua_CFunction f, const luaL_Reg *extra = nullptr){
+    // Add all of our GUI functions that can be used for each component
+    lua_newtable(L);
+    int table = lua_gettop(L);
+    if(extra != nullptr) {
+        for (const luaL_Reg* ptr = extra; ptr->name != NULL; ptr++) {
+            lua_pushcfunction(L, ptr->func);
+            lua_setfield(L, -2, ptr->name);
+        }
     }
+    for (const luaL_Reg* ptr = gui_common_binds; ptr->name != NULL; ptr++) {
+        lua_pushcfunction(L, ptr->func);
+	    lua_setfield(L, -2, ptr->name);
+    }
+    // Add garbage collector to delete object
+    luaL_getmetatable(L, table_name);
+    // GC function provided
+    lua_pushstring(L, GARBAGE_COLLECT);
+    lua_pushcfunction(L, f);
+    lua_settable(L, -3);
+    // Adding all of our common gui functions
+    lua_pushstring(L, INDEX_METATABLE);
+	lua_pushvalue(L, table);
+	lua_settable(L, -3);
+    // Finally remove both tables from stack
+    lua_pop(L, 2);
+    return;
+}
+
+// Instantiate a window element
+int LuaInterpreter::window(lua_State* L) {
+    if (lua_gettop(L) != 1 && !lua_isstring(L, 1)) return luaL_error(L, LUA_FUNC_ERR);
+    string title = lua_tostring(L, 1);
+
+    // Allocate our userdata and assign our metatable
+    Window **w = static_cast<Window **>(lua_newuserdata(L, sizeof *w)); 
+    luaL_getmetatable(L, METATABLE_WIN_GUI);
+    lua_setmetatable(L, -2);
+
+    // Fill metatable
+    fill_gui_metatable(L, METATABLE_WIN_GUI, [](lua_State* L) {
+        Window **parent = static_cast<Window **>(lua_touserdata(L, -1));
+        delete *parent;
+        return 0;
+    });
+
+    // Instance of window
+    *w = new Window(title);
+    return 1;
+}
+
+// Set the primary window
+int LuaInterpreter::setWindow(lua_State* L) {
+    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
+    luaL_argcheck(L, parent != NULL, 1, "Window gui expected!");
+    current_root = (*parent);
+    return 0;
+}
+
+// Gets the current window shown
+int LuaInterpreter::getWindow(lua_State* L) {
+    if(current_root != nullptr) {
+        Window **w = static_cast<Window **>(lua_newuserdata(L, sizeof *w));
+        luaL_getmetatable(L, METATABLE_WIN_GUI);
+        lua_setmetatable(L, -2);
+        *w = current_root;
+        return 1;
+    }
+    return luaL_error(L, LUA_WINDOW_ERR);
+}
+
+// TODO: Check userdata later to avoid surprises
+// Signature of box: parent -> x -> y -> w -> h -> pgui
+int LuaInterpreter::box(lua_State* L) {
+    if (lua_gettop(L) != 5 && !lua_isnumber(L, 2)
+                           && !lua_isnumber(L, 3)
+                           && !lua_isnumber(L, 4)
+                           && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
+    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
+    luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
+    uint x         = lua_tonumber(L, 2);
+    uint y         = lua_tonumber(L, 3);
+    uint w         = lua_tonumber(L, 4);
+    uint h         = lua_tonumber(L, 5);
+
+    // Allocate our userdata and assign our metatable
+    Box **b = static_cast<Box **>(lua_newuserdata(L, sizeof *b));
+    luaL_getmetatable(L, METATABLE_BOX_GUI);
+    lua_setmetatable(L, -2);
+
+    // Fill metatable
+    fill_gui_metatable(L, METATABLE_BOX_GUI, [](lua_State* L) {
+        Box **b = static_cast<Box **>(lua_touserdata(L, -1));
+        delete *b;
+        return 0;
+    });
+
+    // Instance of box
+    *b = new Box(x, y, w, h);
+    (*b)->enabledBackground = true;
+    (*b)->setBackgroundColor(COLOR_EXTRA_LIGHT);
+    (*parent)->addChild(*b);
+    return 1;
+}
+
+int LuaInterpreter::label(lua_State* L) {
+    if (lua_gettop(L) != 5 && !lua_isnumber(L, 2)
+                           && !lua_isnumber(L, 3)
+                           && !lua_isnumber(L, 4)
+                           && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
+    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
+    luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
+    uint x         = lua_tonumber(L, 2);
+    uint y         = lua_tonumber(L, 3);
+    uint w         = lua_tonumber(L, 4);
+    uint h         = lua_tonumber(L, 5);
+
+    // Allocate our userdata and assign our metatable
+    Label **l = static_cast<Label **>(lua_newuserdata(L, sizeof *l));
+    luaL_getmetatable(L, METATABLE_LABEL_GUI);
+    lua_setmetatable(L, -2);
     
-    if(lua_gettop(L)==6) // has parent
-    {
-        uint id = lua_tonumber(L, 6);
-        gui[id]->addChild(gui[idcounter]);
-    }
-    
-    lua_pushinteger(L, idcounter);
-    idcounter++;
+    // Fill metatable
+    fill_gui_metatable(L, METATABLE_LABEL_GUI, [](lua_State* L) {
+        Label **l = static_cast<Label **>(lua_touserdata(L, -1));
+        delete *l;
+        return 0;
+    });
+
+    // Instance of label
+    *l = new Label(x, y, w, h);
+    (*parent)->addChild(*l);
     return 1;
 }
 
-void LuaInterpreter::setColorInit(lua_State* L)
-{
-    addVariable(L, "COLOR_LIGHT", COLOR_LIGHT);
-    addVariable(L, "COLOR_BLACK", COLOR_BLACK);
-    addVariable(L, "COLOR_PRIMARY", COLOR_PRIMARY);
-    addVariable(L, "COLOR_SUCCESS", COLOR_SUCCESS);
-    addVariable(L, "COLOR_WHITE", COLOR_WARNING);
-    addVariable(L, "COLOR_WHITE", COLOR_BLUE);
-}
+int LuaInterpreter::button(lua_State* L) {
+    if (lua_gettop(L) != 5 && !lua_isnumber(L, 2)
+                           && !lua_isnumber(L, 3)
+                           && !lua_isnumber(L, 4)
+                           && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
+    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
+    luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
+    uint x         = lua_tonumber(L, 2);
+    uint y         = lua_tonumber(L, 3);
+    uint w         = lua_tonumber(L, 4);
+    uint h         = lua_tonumber(L, 5);
 
-int LuaInterpreter::setX(lua_State* L)
-{
-    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
-        return luaL_error(L, "invalid");
-        
-    Gui* g = gui[lua_tointeger(L, 1)];
-    uint16_t xPos = lua_tointeger(L, 2);
-    g->setX(xPos);
-    return 0;
-}
+    // Allocate our userdata and assign our metatable
+    Button **b = static_cast<Button **>(lua_newuserdata(L, sizeof *b));
+    luaL_getmetatable(L, METATABLE_BTN_GUI);
+    lua_setmetatable(L, -2);
 
-int LuaInterpreter::setY(lua_State* L)
-{
-    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
-        return luaL_error(L, "invalid");
+    // Fill metatable
+    fill_gui_metatable(L, METATABLE_BTN_GUI, [](lua_State* L) {
+        Button **b = static_cast<Button **>(lua_touserdata(L, -1));
+        delete *b;
+        return 0;
+    });
 
-    Gui* g = gui[lua_tointeger(L, 1)];
-    uint16_t yPos = lua_tointeger(L, 2);
-    g->setY(yPos);
-    return 0;
-}
-
-int LuaInterpreter::setWidth(lua_State* L)
-{
-    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    uint16_t width = lua_tointeger(L, 2);
-    g->setWidth(width);
-    return 0;
-}
-
-int LuaInterpreter::setHeight(lua_State* L)
-{
-    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    uint16_t height = lua_tointeger(L, 2);
-    g->setHeight(height);
-    return 0;
-}
-
-int LuaInterpreter::getX(lua_State* L)
-{
-    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    lua_pushnumber(L, g->getX());
+    // Instance of button
+    *b = new Button(x, y, w, h);
+    (*parent)->addChild(*b);
     return 1;
 }
 
-int LuaInterpreter::getY(lua_State* L)
-{
-    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    lua_pushnumber(L, g->getY());
-    return 1;
-}
-
-int LuaInterpreter::getWidth(lua_State* L)
-{
-    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    lua_pushnumber(L, g->getWidth());
-    return 1;
-}
-
-int LuaInterpreter::getHeight(lua_State* L)
-{
-    if (lua_gettop(L) != 1 || !lua_isnumber(L, 1))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    lua_pushnumber(L, g->getHeight());
-    return 1;
-}
-
-int LuaInterpreter::setColor(lua_State* L)
-{
-    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isnumber(L, 2))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    uint color = lua_tointeger(L, 2);
-    g->setBackgroundColor(color);
+int LuaInterpreter::setX(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -2);
+    gui->setX(lua_tointeger(L, -1));
     return 0;
 }
 
-int LuaInterpreter::setText(lua_State* L)
-{
-    if (lua_gettop(L) != 2 || !lua_isnumber(L, 1) || !lua_isstring(L, 2))
-        return luaL_error(L, "invalid");
-
-    Gui* g = gui[lua_tointeger(L, 1)];
-    //string text = lua_tostring(L, 2);
-
-
-    if(g->getType() == GUI_TYPE::LABEL_TYPE || g->getType() == GUI_TYPE::BUTTON_TYPE)
-    {
-        reinterpret_cast<Label*>(g)->setText(lua_tostring(L, 2));
-    }
+int LuaInterpreter::setY(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -2);
+    gui->setY(lua_tointeger(L, -1));
     return 0;
 }
 
-int LuaInterpreter::onClick(lua_State* L)
-{
-    //print("onClick");
-    Gui* g = gui[lua_tointeger(L, 1)];
-    string text = lua_tostring(L, 2);
-    LuaEvent event;
-    event.callback = text;
-    event.func = &Gui::isTouched;
-    event.obj = g;
+int LuaInterpreter::setWidth(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -2);
+    gui->setWidth(lua_tointeger(L, -1));
+    return 0;
+}
+
+int LuaInterpreter::setHeight(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -2);
+    gui->setHeight(lua_tointeger(L, -1));
+    return 0;
+}
+
+int LuaInterpreter::getX(lua_State* L) {
+    if (lua_gettop(L) != 1) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -1);
+    lua_pushnumber(L, gui->getX());
+    return 1;
+}
+
+int LuaInterpreter::getY(lua_State* L) {
+    if (lua_gettop(L) != 1) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -1);
+    lua_pushnumber(L, gui->getY());
+    return 1;
+}
+
+int LuaInterpreter::getWidth(lua_State* L) {
+    if (lua_gettop(L) != 1) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -1);
+    lua_pushnumber(L, gui->getWidth());
+    return 1;
+}
+
+int LuaInterpreter::getHeight(lua_State* L) {
+    if (lua_gettop(L) != 1) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -1);
+    lua_pushnumber(L, gui->getHeight());
+    return 1;
+}
+
+// Maybe introduce later on a userdata for colors?
+int LuaInterpreter::setColor(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+
+    Gui* gui       = get_checked_gui(L, -2);
+    uint16_t color = lua_tointeger(L, -1);
+    gui->setBackgroundColor(color);
+    return 0;
+}
+
+int LuaInterpreter::setText(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -2);
+    if(dynamic_cast<Label*>(gui) != nullptr)
+        reinterpret_cast<Label*>(gui)->setText(lua_tostring(L, -1));
+    return 0;
+}
+
+// Setup callback functions
+int LuaInterpreter::onClick(lua_State* L) {
+    if(!(lua_gettop(L) == 2) && !lua_isfunction(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *parent = get_checked_gui(L, -2);
+    int callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    LuaEvent event = {parent, callback_ref};
     events.push_back(event);
     return 0;
 }
 
-int LuaInterpreter::readFile(lua_State* L)
-{
+int LuaInterpreter::readFile(lua_State* L) {
     Storage::LFile file(dir + "/" + lua_tostring(L, 1));
     file.open();
-    lua_pushstring(L, file.read().c_str());
+    std::string readed = file.read();
+    lua_pushstring(L, readed.c_str());
     file.close();
     return 1;
 }
 
-int LuaInterpreter::writeFile(lua_State* L)
-{
+int LuaInterpreter::writeFile(lua_State* L) {
     Storage::LFile file(dir + "/" + lua_tostring(L, 1), Storage::LFile::W);
     file.open();
     file.write(lua_tostring(L, 2));
     file.close();
     return 0;
+}
+
+// Paxo sleep!
+// Add non blocking sleep that allows other thread to work!
+int LuaInterpreter::special_sleep(lua_State* L) {
+    if(lua_gettop(L) != 1 || !luaL_checknumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    // sleep(lua_tonumber(L, -1) * 1000);
+    printf("Should be sleeping now?!");
+    return 0;
+}
+
+// Easy checks for good pointer
+Gui *get_checked_gui(lua_State* L, int idx) {
+    Gui **p = static_cast<Gui **>(lua_touserdata(L, idx));
+    luaL_argcheck(L, p != NULL, 1, "Parent gui expected!");
+    return *p;
+}
+
+// Custom allocator
+void* custom_allocator(void *ud, void *ptr, size_t osize, size_t nsize) {
+    if (nsize == 0) {
+        // Free the block
+        if (ptr != NULL) {
+            free(ptr);
+        }
+        return NULL;
+    } else {
+        // Allocate or resize the block
+        #ifdef BUILD_PAXO
+            return ps_realloc(ptr, nsize);
+        #else
+            return realloc(ptr, nsize);
+        #endif
+    }
+}
+
+void execute_lua(lua_State* L, const std::string& functionName) {
+    lua_getglobal(L, functionName.c_str());
+    if(!lua_isfunction(L, -1)) std::cerr << "Lua function '" << functionName << "' not found." << std::endl;
+    if(!lua_pcall(L, 0, LUA_MULTRET, 0) == 0) std::cerr << "Error executing Lua function '" << functionName << "': " << lua_tostring(L, -1) << std::endl;
 }
