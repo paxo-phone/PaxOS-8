@@ -1,73 +1,79 @@
-How to use lua:
+# The Lua programming language for PaxOS
+## Application in Lua
+We use lua to produce applications compatible with PaxOS.
+Applications require the following layout:
 
-the lua app is defined in a folder called with the name of the app:
+ - app/
+	 - 	**main.lua**
+	 - conf.txt
+	 - logo.png (42x42)
 
-app/
-    conf.txt
-    main.lua
-    logo.png -> 42x42
-
-
-at the startup of the lua app, the run() function is called:
+Each application requires a '**run**' function in order to be executed:
 
 ```lua
 function run()
-    print("Running app")
+    print("Hello world!")
 end
 ```
 
-to create an object, call the function Gui(type, x, y, w, h, parent)
+Here's a simple example program to show you what an application looks like.
 
 ```lua
-obj = Gui(WINDOW_TYPE)
-obj = Gui(BOX_TYPE, x, y, w, h, parent)
-obj = Gui(BUTTON_TYPE, x, y, w, h, parent)
-obj = Gui(LABEL_TYPE, x, y, w, h, parent)
-obj = Gui(IMAGE_TYPE, x, y, w, h, parent, filename)
-```
-
-you can edit the gui objects using the following function
-
-```lua
-setText(obj, "text")
-setX(obj, value)
-setY(obj, value)
-setWidth(obj, value)
-setHeight(obj, value)
-```
-
-edit the color:
-
-```lua
-setColor(obj, COLOR)
-```
-
-you can choose between:
-    COLOR_LIGHT
-    COLOR_BLACK
-    COLOR_PRIMARY
-    COLOR_SUCCESS
-    COLOR_WHITE
-    COLOR_WHITE
-
-
-On gui objects, you can add events:
-
-```lua
-function foo()
-    print(pressed)
-end
+p = require('paxolib')
 
 function run()
-    onClick(obj, "foo")
+	local window  = p.window("My Application")
+	local button  = p.button(window, 100, 150, 100, 100)
+	local label   = p.label(window, 50, 10, 200, 100)
+	local counter = 0
+	
+	p.setWindow(window)
+	button:setText("Click me!")
+	button:onClick(function ()
+			counter = counter + 1
+			label:setText("Clicked " .. tostring(counter) .. " times")
+		end)
 end
 ```
+This is what we get:
 
-You can also read and write files:
+![My Application](preview.png)
+
+## Documentation
+The following documentation summarizes the functions currently available. Currently, we have three gui components in the form of userdata.
 ```lua
-str = readFile("path")
-
-writeFile("path", "hello world")
+window = paxlib.window("Title")
+box    = paxlib.box(window, x, y, width, height)
+label  = paxlib.label(window, x, y, width, height)
+button = paxlib.button(window, x, y, width, height)
 ```
+Each of these functions has a table that can be accessed via an OOP style. They all contain more or less the same methods, such as the following:
 
+```lua
+gui:setX(0)
+gui:setY(0)
+gui:getX()
+gui:getY()
+gui:setWidth(0)
+gui:setHeight(0)
+gui:getWidth()
+gui:getHeight()
+gui:setText("Hello World!")
+gui:onClick(function () print("Hello World!") end)
+gui:setColor(paxlib.COLOR_SUCCESS)
+```
+Colors are currently represented as integers and are likely to change in the future and become userdata.
+The following colors are available:
+  - COLOR_LIGHT
+  - COLOR_BLACK
+  - COLOR_PRIMARY
+  - COLOR_SUCCESS
+  - COLOR_WHITE
+
+Finally, we are also able to read and write files in the directory allocated to the application.
+```lua
+path   = "conf.txt"
+string = paxlib.readFile(path)
+paxlib.writeFile(path, "[" .. string .. "]")
+```
 Note: the path is relative to the app folder
