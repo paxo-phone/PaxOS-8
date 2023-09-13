@@ -77,6 +77,7 @@ public:
         float textFactor = 1.0; // *factor to convert to virtual screen and /factor to convert to physical screen (>1)
 
     Keyboard* key = nullptr;
+    bool editable = false;
     bool linked = false;
     void link(Keyboard* keyboard){this->key = keyboard;}
 };

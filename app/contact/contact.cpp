@@ -63,6 +63,7 @@ uint Contact::contactPage()
             label->setRadius(0);
             label->fontHeight=29;
             win.addChild(label);
+            label->editable=true; // just for testing
 
         std::vector<Gui*> contactList;
 

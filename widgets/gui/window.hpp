@@ -2,6 +2,7 @@
 #define WINDOW_GUI
 
 #include "box.hpp"
+#include "keyboard.hpp"
 
 class Window : public Gui
 {
@@ -69,6 +70,10 @@ class Window : public Gui
             else
                 battLevel[i]->disable();
         }
+
+        keyboard = new Keyboard();
+        keyboard->disable();
+        addChild(keyboard);
 
         updateEventId = setInterval(new CallbackMethod<Window>(this, &Window::updateModules), 1000);
     }
@@ -146,6 +151,17 @@ class Window : public Gui
         {
             this->verticalSlide = true;
         }
+        if(widgetPressed != nullptr)
+        {
+            if(widgetPressed->getType()==LABEL_TYPE && reinterpret_cast<Label*>(widgetPressed)->editable)
+            {
+                keyboard->link(reinterpret_cast<Label*>(widgetPressed));
+            }else if (widgetPressed->getType()==KEYBOARD_TYPE)
+            {
+                keyboard->link(nullptr);
+            }
+        }
+        
     }
 
     std::string title = "";
@@ -158,6 +174,8 @@ class Window : public Gui
     int OldnetQual = 0;
     int OldbattLevel = 0;
     std::string oldhourString = "";
+
+    Keyboard* keyboard = nullptr;
 };
 
 
