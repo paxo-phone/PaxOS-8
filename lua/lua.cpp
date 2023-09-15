@@ -289,8 +289,17 @@ int LuaInterpreter::setColor(lua_State* L) {
 int LuaInterpreter::setText(lua_State* L) {
     if (lua_gettop(L) != 2 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
     Gui *gui = get_checked_gui(L, -2);
-    if(dynamic_cast<Label*>(gui) != nullptr)
-        reinterpret_cast<Label*>(gui)->setText(lua_tostring(L, -1));
+    // Cast to derived class before doing anything
+    switch (gui->getType()) {
+        case GUI_TYPE::LABEL_TYPE:
+            reinterpret_cast<Label*>(gui)->setText(lua_tostring(L, -1));
+            break;
+        case GUI_TYPE::BUTTON_TYPE:
+            reinterpret_cast<Button*>(gui)->setText(lua_tostring(L, -1));
+            break;
+        default:
+            break; // Nothing to do here
+    }
     return 0;
 }
 
