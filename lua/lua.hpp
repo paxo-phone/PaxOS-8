@@ -113,7 +113,7 @@ static const luaL_Reg paxolib[] = {
     {NULL, NULL}
 };
 
-static const map<std::string, int> color_bindings = {
+static const std::map<std::string, int> color_bindings = {
     {"COLOR_LIGHT",     COLOR_LIGHT},
     {"COLOR_BLACK",     COLOR_BLACK},
     {"COLOR_PRIMARY",   COLOR_PRIMARY},
