@@ -220,6 +220,36 @@ int LuaInterpreter::button(lua_State* L) {
     return 1;
 }
 
+int LuaInterpreter::canvas(lua_State* L) {
+    if (lua_gettop(L) != 5 && !lua_isnumber(L, 2)
+                           && !lua_isnumber(L, 3)
+                           && !lua_isnumber(L, 4)
+                           && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
+    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
+    luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
+    uint x         = lua_tonumber(L, 2);
+    uint y         = lua_tonumber(L, 3);
+    uint w         = lua_tonumber(L, 4);
+    uint h         = lua_tonumber(L, 5);
+
+    // Allocate our userdata and assign our metatable
+    Canvas **b = static_cast<Canvas **>(lua_newuserdata(L, sizeof *b));
+    luaL_getmetatable(L, METATABLE_BTN_GUI);
+    lua_setmetatable(L, -2);
+
+    // Fill metatable
+    fill_gui_metatable(L, METATABLE_BTN_GUI, [](lua_State* L) {
+        Canvas **b = static_cast<Canvas **>(lua_touserdata(L, -1));
+        delete *b;
+        return 0;
+    });
+
+    // Instance of button
+    *b = new Canvas(x, y, w, h);
+    (*parent)->addChild(*b);
+    return 1;
+}
+
 int LuaInterpreter::setX(lua_State* L) {
     if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
     Gui *gui = get_checked_gui(L, -2);
@@ -297,6 +327,37 @@ int LuaInterpreter::setText(lua_State* L) {
         case GUI_TYPE::BUTTON_TYPE:
             reinterpret_cast<Button*>(gui)->setText(lua_tostring(L, -1));
             break;
+        default:
+            break; // Nothing to do here
+    }
+    return 0;
+}
+
+int LuaInterpreter::fillRect(lua_State* L) {
+    if (lua_gettop(L) != 6) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, 1);
+    // Cast to derived class before doing anything
+    switch (gui->getType()) {
+        case GUI_TYPE::CANVAS_TYPE:
+            reinterpret_cast<Canvas*>(gui)->l_tft.fillRect(lua_tointeger(L, 2), lua_tointeger(L, 3), lua_tointeger(L, 4), lua_tointeger(L, 5), lua_tointeger(L, 6));
+            break;
+        default:
+            break; // Nothing to do here
+    }
+    return 0;
+}
+
+int LuaInterpreter::push(lua_State* L) {
+    if (lua_gettop(L) != 1) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, 1);
+    // Cast to derived class before doing anything
+    switch (gui->getType()) {
+        case GUI_TYPE::CANVAS_TYPE:
+            {
+            Canvas* c = reinterpret_cast<Canvas*>(gui);
+            c->l_tft.pushSprite(&tft_root, c->getAbsoluteX(), c->getAbsoluteY());
+            break;
+            }
         default:
             break; // Nothing to do here
     }

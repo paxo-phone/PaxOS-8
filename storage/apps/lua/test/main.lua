@@ -2,9 +2,22 @@ p = require('paxolib')
 state = false;
 
 function run()
-   local window = p.window("Mon application")
-   local label  = p.button(window, 10, 150, 100, 100)
-   local box    = p.box(window, 10, 10, 100, 100)
+    local i = 0
+
+    print("Starting")
+
+    while (i < 10000) do
+      i = i + 1
+    end
+
+    print("done")
+
+    local window = p.window("Mon application")
+    local label  = p.button(window, 10, 150, 100, 100)
+    local box    = p.box(window, 10, 10, 100, 100)
+
+    canvas = p.canvas(window, 150, 10, 100, 100)
+    canvas:onClick(function () canvas:fillRect(10, 10, 10, 10, COLOR_BLACK) canvas:push() end)
 	
     p.setWindow(window)
 	
@@ -23,7 +36,7 @@ function run()
     leftButton = p.button(window, 10, 300, 40, 40)
     leftButton:setText("<")
     leftButton:onClick(function () box:setX(box:getX() - 10) end)
-    
+
     zoomInButton = p.button(window, 130, 300, 40, 40)
     zoomInButton:setText("+")
     zoomInButton:onClick(function ()

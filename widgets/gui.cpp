@@ -207,7 +207,7 @@ void Gui::renderAll()
     
     if(!rendered)   // render if not already rendered
     {
-        if(getType() != IMAGE_TYPE || children.size()!=0)
+        if(getType() != IMAGE_TYPE && getType() != CANVAS_TYPE || children.size()!=0)
         {
             l_tft.deleteSprite();
             l_tft.setPsram(true);

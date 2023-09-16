@@ -56,6 +56,7 @@ class LuaInterpreter {
         static int box(lua_State* L);
         static int label(lua_State* L);
         static int button(lua_State* L);
+        static int canvas(lua_State* L);
 
         static int setX(lua_State* L);
         static int setY(lua_State* L);
@@ -67,6 +68,8 @@ class LuaInterpreter {
         static int getHeight(lua_State* L);
         static int setColor(lua_State* L);
         static int setText(lua_State* L);
+        static int fillRect(lua_State* L);
+        static int push(lua_State* L);
         static int onClick(lua_State* L);
 
         static int readFile(lua_State* L);
@@ -89,6 +92,8 @@ static const luaL_Reg gui_common_binds[] = {
     {"getHeight",  LuaInterpreter::getHeight},
     {"setColor",   LuaInterpreter::setColor},
     {"setText",    LuaInterpreter::setText},
+    {"fillRect",   LuaInterpreter::fillRect},
+    {"push",       LuaInterpreter::push},
     {"onClick",    LuaInterpreter::onClick},
     {NULL, NULL}
 };
@@ -101,6 +106,7 @@ static const luaL_Reg paxolib[] = {
     {"box",        LuaInterpreter::box},
     {"label",      LuaInterpreter::label},
     {"button",     LuaInterpreter::button},
+    {"canvas",     LuaInterpreter::canvas},
     {"sleep",      LuaInterpreter::special_sleep},
     {"readFile",   LuaInterpreter::readFile},
     {"writeFile",  LuaInterpreter::writeFile},

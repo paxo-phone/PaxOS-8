@@ -41,7 +41,8 @@ enum GUI_TYPE
     WINDOW_TYPE,
     SWITCH_TYPE,
     LIST_TYPE,
-    WINDOW_BAR_TYPE
+    WINDOW_BAR_TYPE,
+    CANVAS_TYPE
 };
 
 #define AUTO -1
@@ -187,6 +188,8 @@ class Gui // widget system
     int16_t scroolX, scroolY = 0;          // scrool position
     bool rendered = false;
 
+    LGFX_Sprite l_tft;
+
     protected:
 
     bool lockedSlide = false;
@@ -203,7 +206,6 @@ class Gui // widget system
     uint8_t objectPressState = 0;
     static bool isScreenAlreadyPressed; // used for locking touch events for other widgets
     static Gui* widgetPressed;
-    LGFX_Sprite l_tft;
 
     bool noMargin = false;
     
@@ -254,5 +256,6 @@ Gui* Gui::widgetPressed = nullptr;
 #include "gui/window.hpp"
 #include "gui/keyboard.hpp"
 #include "gui/back.hpp"
+#include "gui/canvas.hpp"
 
 #endif /* GUI_HPP */
