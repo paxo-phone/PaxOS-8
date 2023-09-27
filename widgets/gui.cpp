@@ -202,6 +202,11 @@ void Gui::renderAll()
     if(!isEnabled()) // don't render if the object is disabled
         return;
 
+    if(parent!=nullptr && (getRelativeY() + getHeight() < 0 || getRelativeY() > parent->getHeight()))
+    {
+        return;
+    }
+
     if(upFromDrawAll==nullptr) // if it's the first call of drawAll, define himself as the root
         upFromDrawAll=this;
     
@@ -261,6 +266,18 @@ void Gui::renderAll()
     #ifdef BUILD_EMU
         *shouldUS = true;
     #endif
+}
+
+void Gui::afterRender()
+{
+    uint16_t maxH = getLowestY();
+    uint16_t windowSize = getHeight() - CONTROL_BAR_SIZE;
+    uint16_t slideBarSize = windowSize*windowSize / maxH;
+    
+    if(maxH > getHeight() && verticalSlide)
+    {
+        l_tft.fillRoundRect(getWidth()-2-6, 2 + (windowSize)*(-scroolY)/maxH, 6, slideBarSize, 3, COLOR_GREY);
+    }
 }
 
 bool Gui::updateAll()

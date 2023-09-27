@@ -10,6 +10,7 @@ class Browser : public CppAppContainer
     void main()
     {
         Window win("browser");
+        win.setMarginX(0);
 
         std::string html = "<!DOCTYPE html>"
                            "<html>"
@@ -25,8 +26,8 @@ class Browser : public CppAppContainer
         storage::LFile file("apps/browser/data.html", storage::OPEN_MODE::READ);
         html = file.read();
         file.close();
-                           
-        Iframe* iframe = new Iframe(html, 0, 0, 300, 300);
+
+        Iframe* iframe = new Iframe(html, 0, 0, 310, 480-CONTROL_BAR_SIZE-win.getMarginY());
         win.addChild(iframe);
 
 

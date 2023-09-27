@@ -72,7 +72,7 @@ class Gui // widget system
 
     void renderAll();           // genere un rendu de tous les enfants
     virtual void draw() = 0;    // draw objet
-    virtual void afterRender() {};
+    virtual void afterRender();
 
     bool updateAll();       // update all children and itself 
     virtual bool update();  // update objet

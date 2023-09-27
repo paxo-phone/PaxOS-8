@@ -7,7 +7,7 @@ using namespace std;
 
 #define DEFAULT_LINE_SPACING 5
 
-const GFXfont *allFronts[3][4][4] = {
+/*const GFXfont *allFronts[3][4][4] = {
 {
     {&FreeSans9pt7b, &FreeSans12pt7b, &FreeSans18pt7b, &FreeSans24pt7b},
     {&FreeSansOblique9pt7b, &FreeSansOblique12pt7b, &FreeSansOblique18pt7b, &FreeSansOblique24pt7b},
@@ -25,6 +25,26 @@ const GFXfont *allFronts[3][4][4] = {
     {&FreeSerifItalic9pt7b, &FreeSerifItalic12pt7b, &FreeSerifItalic18pt7b, &FreeSerifItalic24pt7b},
     {&FreeSerifBold9pt7b, &FreeSerifBold12pt7b, &FreeSerifBold18pt7b, &FreeSerifBold24pt7b},
     {&FreeSerifBoldItalic9pt7b, &FreeSerifBoldItalic12pt7b, &FreeSerifBoldItalic18pt7b, &FreeSerifBoldItalic24pt7b}
+}};*/
+
+const lgfx::U8g2font *allFronts[3][4][4] = {
+{
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
+},
+{
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
+},
+{
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
 }};
 
 // /paxo/system/fronts/roboto.vlw
@@ -60,7 +80,7 @@ public:
 
     // font
     string frontName = "mono";
-    const GFXfont *front;
+    const lgfx::U8g2font *front;
     uint8_t fontHeight;
     uint8_t lineSpacing = DEFAULT_LINE_SPACING;
     unsigned int textWidth = 0;

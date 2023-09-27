@@ -32,13 +32,18 @@ class Iframe : public Gui
 };
 
 Iframe::Iframe() : Gui()
-{}
+{
+    verticalSlide = true;
+}
 
 Iframe::Iframe(int16_t x, int16_t y, int16_t width, int16_t height) : Gui(x, y, width, height)
-{}
+{
+    verticalSlide = true;
+}
 
 Iframe::Iframe(const std::string& html, int16_t x, int16_t y, int16_t width, int16_t height) : Gui(x, y, width, height)
 {
+    verticalSlide = true;
     this->loadhtml(html);
 }
 

@@ -133,11 +133,10 @@ class Window : public Gui
         uint16_t windowSize = WINDOW_HEIGHT - CONTROL_BAR_SIZE;
         uint16_t slideBarSize = windowSize*windowSize / maxH;
         
-        if(maxH > WINDOW_HEIGHT)
+        if(maxH > WINDOW_HEIGHT && verticalSlide)
         {
             l_tft.fillRoundRect(WINDOW_WIDTH-2-6, CONTROL_BAR_SIZE + 2 + (windowSize)*(-scroolY)/maxH, 6, slideBarSize, 3, COLOR_GREY);
         }
-
     }
 
     void virtual_update()
