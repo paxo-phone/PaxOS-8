@@ -1,12 +1,13 @@
 OS:
 	charles
 	antho +
+	Raphaël Goutmann
 
 PCB:
 	gabriel
 	anthony +
 
 SITE:
-	raphael
+	Raphaël Goutmann
 	supermax
 	welpike

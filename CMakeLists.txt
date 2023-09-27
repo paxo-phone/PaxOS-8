@@ -3,12 +3,10 @@ project(PaxOS8)
 
 if (WIN32)
     message("> Building for Windows")
+elseif(APPLE)
+    message("> Building for macOS")
 else()
-    if (__APPLE__)
-        message("> Building for macOS")
-    else()
-        message("> Building for Linux")
-    endif()
+    message("> Building for Linux")
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
@@ -32,9 +30,12 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
         src/*.c
 )
 
+file(GLOB_RECURSE nepersrc ./widgets/gui/iframe/Neper/*.cpp)
+
+
 add_definitions(-DLGFX_SDL)
 
-add_executable(PaxOS8 ${src})
+add_executable(PaxOS8 ${src} ${nepersrc})
 
 target_include_directories(PaxOS8 PUBLIC "interface/LovyanGFX")
 

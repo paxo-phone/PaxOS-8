@@ -42,7 +42,8 @@ enum GUI_TYPE
     SWITCH_TYPE,
     LIST_TYPE,
     WINDOW_BAR_TYPE,
-    CANVAS_TYPE
+    CANVAS_TYPE,
+    IFRAME_TYPE
 };
 
 #define AUTO -1

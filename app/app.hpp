@@ -72,6 +72,8 @@ class LuaApp : public App
 #include "2048/2048.hpp"
 #include "settings/settings.cpp"
 #include "snake/snake.hpp"
+#include "browser/browser.hpp"
+
 
 void initializeApplications()
 {
@@ -84,6 +86,7 @@ void initializeApplications()
     App::appList.push_back(new CppApp<Map>("map"));
     App::appList.push_back(new CppApp<Game_2048>("2048"));
     App::appList.push_back(new CppApp<Snake>("snake"));
+    App::appList.push_back(new CppApp<Browser>("browser"));
     //App::appList.push_back(new CppApp<Minecraft>("minecraft"));
 
 
