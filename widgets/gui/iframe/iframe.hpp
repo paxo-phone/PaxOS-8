@@ -117,7 +117,8 @@ void Iframe::set_positions_and_dimensions(Gui* root)
     {
 
         /* Il faudrait ici déterminer automatiquement la hauteur du label */
-        height = ((Label*)root)->fontHeight + ((Label*)root)->lineSpacing;
+        ((Label*)root)->updateSizes();
+        height = ((Label*)root)->finalHeight;
     }
 
     root->setHeight(height);
