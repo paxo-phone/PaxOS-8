@@ -3,41 +3,68 @@
 
 #include "../../widgets/gui/iframe/iframe.hpp"
 #include "../../interface/memory.hpp"
+#include "../../web/web.hpp"
+
 
 class Browser : public CppAppContainer
 {
     public:
     void main()
     {
-        Window win("browser");
-        win.setMarginX(0);
+        bool exit = false;
+        bool mode = false;
+        std::string url = "http://paxo.fr";
 
-        std::string html = "<!DOCTYPE html>"
-                           "<html>"
-                           "    <head>"
-                           "        <title>Page title</title>"
-                           "    </head>"
-                           "    <body>"
-                           "        <h1>My title</h1>"
-                           "        <p>Lorem ipsum</p>"
-                           "    </body>"
-                           "</html>";
-
-        storage::LFile file("apps/browser/data.html", storage::OPEN_MODE::READ);
-        html = file.read();
-        file.close();
-
-        Iframe* iframe = new Iframe(html, 0, 0, 310, 480-CONTROL_BAR_SIZE-win.getMarginY());
-        win.addChild(iframe);
-
-
-        while (!home_button.pressed())
+        while (!exit)
         {
-            win.updateAll();
-            #ifdef BUILD_EMU
-                SDL_Delay(20);
-            #endif
+            Window win("browser");
+            win.setMarginX(0);
+
+            Button* buttonData = new Button(10, 0, 100, 30, "files"); win.addChild(buttonData);
+            Button* buttonInternet = new Button(320-10-100, 0, 100, 30, "internet"); win.addChild(buttonInternet);
+            if(!mode)
+                buttonData->setBackgroundColor(COLOR_SUCCESS);
+            else
+                buttonInternet->setBackgroundColor(COLOR_SUCCESS);
+
+            std::string html;
+
+            if(mode)
+            {
+                HttpClient client;
+                html = client.get("https://www.textise.net/showText.aspx?strURL=" + url);
+            }
+            else
+            {
+                storage::LFile file("apps/browser/data.html", storage::OPEN_MODE::READ);
+                html = file.read();
+                file.close();
+            }
+
+            Iframe* iframe = new Iframe(html, 0, 50, 310, 480-CONTROL_BAR_SIZE-win.getMarginY()-50);
+            win.addChild(iframe);
+
+            while (!home_button.pressed())
+            {
+                win.updateAll();
+                #ifdef BUILD_EMU
+                    SDL_Delay(20);
+                #endif
+
+                if(buttonData->isTouched())
+                {
+                    mode=false;
+                    break;
+                }
+
+                if(buttonInternet->isTouched())
+                {
+                    mode=true;
+                    break;
+                }
+            }
         }
+        
     }
 };
 
