@@ -9,7 +9,7 @@ class App
 {
     public:
     static std::vector<App*> appList;
-    uint id;
+    uint16_t id;
     std::string name;
     std::string icon;
 

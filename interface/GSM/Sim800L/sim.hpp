@@ -94,12 +94,12 @@ class GSM
     void getNetworkQuality();
     void askNetworkQuality();
     void parseNetworkQuality();
-    uint quality = 0;
+    uint16_t quality = 0;
 
     void getBatteryLevel();
     void askBatteryLevel();
     void parseBatteryLevel();
-    uint batteryLevel = 4;
+    uint16_t batteryLevel = 4;
 
     void (*saveMessages)(std::vector<Message>) = nullptr;
     void (*getCall)(std::string number) = nullptr;
@@ -107,7 +107,7 @@ class GSM
     bool call = false;
     std::string numberiscalling = "";
 
-    uint seconds, minutes, hours, days, months, years = 0;
+    uint16_t seconds, minutes, hours, days, months, years = 0;
     NetworkState network_state = NetworkState::UNAVAILABLE;
 
     // end
@@ -117,7 +117,7 @@ class GSM
     std::string data;
     std::vector<std::vector<void (GSM::*)(void)>> requests;
     std::vector<Key> keys;
-    uint actual_cmd_count = 0;
+    uint16_t actual_cmd_count = 0;
     bool break_ = false;
 };
 

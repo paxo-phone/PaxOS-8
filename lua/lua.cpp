@@ -135,10 +135,10 @@ int LuaInterpreter::box(lua_State* L) {
                            && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
     luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
-    uint x         = lua_tonumber(L, 2);
-    uint y         = lua_tonumber(L, 3);
-    uint w         = lua_tonumber(L, 4);
-    uint h         = lua_tonumber(L, 5);
+    uint16_t x         = lua_tonumber(L, 2);
+    uint16_t y         = lua_tonumber(L, 3);
+    uint16_t w         = lua_tonumber(L, 4);
+    uint16_t h         = lua_tonumber(L, 5);
 
     // Allocate our userdata and assign our metatable
     Box **b = static_cast<Box **>(lua_newuserdata(L, sizeof *b));
@@ -167,10 +167,10 @@ int LuaInterpreter::label(lua_State* L) {
                            && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
     luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
-    uint x         = lua_tonumber(L, 2);
-    uint y         = lua_tonumber(L, 3);
-    uint w         = lua_tonumber(L, 4);
-    uint h         = lua_tonumber(L, 5);
+    uint16_t x         = lua_tonumber(L, 2);
+    uint16_t y         = lua_tonumber(L, 3);
+    uint16_t w         = lua_tonumber(L, 4);
+    uint16_t h         = lua_tonumber(L, 5);
 
     // Allocate our userdata and assign our metatable
     Label **l = static_cast<Label **>(lua_newuserdata(L, sizeof *l));
@@ -197,10 +197,10 @@ int LuaInterpreter::button(lua_State* L) {
                            && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
     luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
-    uint x         = lua_tonumber(L, 2);
-    uint y         = lua_tonumber(L, 3);
-    uint w         = lua_tonumber(L, 4);
-    uint h         = lua_tonumber(L, 5);
+    uint16_t x         = lua_tonumber(L, 2);
+    uint16_t y         = lua_tonumber(L, 3);
+    uint16_t w         = lua_tonumber(L, 4);
+    uint16_t h         = lua_tonumber(L, 5);
 
     // Allocate our userdata and assign our metatable
     Button **b = static_cast<Button **>(lua_newuserdata(L, sizeof *b));
@@ -227,10 +227,10 @@ int LuaInterpreter::canvas(lua_State* L) {
                            && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
     luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
-    uint x         = lua_tonumber(L, 2);
-    uint y         = lua_tonumber(L, 3);
-    uint w         = lua_tonumber(L, 4);
-    uint h         = lua_tonumber(L, 5);
+    uint16_t x         = lua_tonumber(L, 2);
+    uint16_t y         = lua_tonumber(L, 3);
+    uint16_t w         = lua_tonumber(L, 4);
+    uint16_t h         = lua_tonumber(L, 5);
 
     // Allocate our userdata and assign our metatable
     Canvas **b = static_cast<Canvas **>(lua_newuserdata(L, sizeof *b));

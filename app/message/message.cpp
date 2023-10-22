@@ -6,7 +6,7 @@ void Message::main()
 {
     while(!home_button.pressed())
     {
-        uint contactIndex = Contact::contactPage();
+        uint16_t contactIndex = Contact::contactPage();
         if(contactIndex == -1)
             break;
 
@@ -140,7 +140,7 @@ void Message::main()
 
 void Message::saveMessage(std::vector<GSM::Message> messages)
 {
-    for (uint i = 0; i < messages.size(); i++)
+    for (uint16_t i = 0; i < messages.size(); i++)
     {
         std::string number = messages[i].number.substr(messages[i].number.length()-9, 9);
 

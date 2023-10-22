@@ -4,7 +4,7 @@
 #include "thread.hpp"
 
 #ifdef WIN32
-#define uint unsigned int
+#define uint16_t unsigned int
 #endif
 
 class CallbackClass
@@ -229,7 +229,7 @@ void addEventListener(CallbackClass* callback, ConditionClass* condition, bool a
 void removeEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* pEventHandler = &eventHandler) // OK
 {
     //print("removeEventListener: " + std::to_string(pEventHandler->events.size()));
-    for (uint i = 0; i < pEventHandler->events.size(); i++)
+    for (uint16_t i = 0; i < pEventHandler->events.size(); i++)
     {
         if(pEventHandler->events[i]->callback->getPtr() == callback->getPtr() && pEventHandler->events[i]->condition->getPtr() == condition->getPtr())
         {
@@ -243,7 +243,7 @@ void removeEventListener(CallbackClass* callback, ConditionClass* condition, Eve
     delete condition;
 }
 
-uint setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventHandler = &eventHandler) // OK
+uint16_t setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventHandler = &eventHandler) // OK
 {
     Timeout* ntimeout = new Timeout(callback, timeout);
     pEventHandler->timeouts.push_back(ntimeout);
@@ -252,7 +252,7 @@ uint setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventH
 
 void removeTimeout(uint32_t id, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    for (uint i = 0; i < pEventHandler->timeouts.size(); i++)
+    for (uint16_t i = 0; i < pEventHandler->timeouts.size(); i++)
     {
         if(pEventHandler->timeouts[i]->id == id)
         {
@@ -264,7 +264,7 @@ void removeTimeout(uint32_t id, EventHandler* pEventHandler = &eventHandler) // 
 }
 
 /// Add a reccruring task to pEventHandler, returns its id in pEventHandler.
-uint setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler = &eventHandler) // OK
+uint16_t setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler = &eventHandler) // OK
 {
     Interval* ninterval = new Interval(callback, interval);
     pEventHandler->intervals.push_back(ninterval);
@@ -275,7 +275,7 @@ uint setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEven
 /// Remove a reccuring task from pEventHandler with its id.
 void removeInterval(uint32_t id, EventHandler* pEventHandler = &eventHandler) // OK
 {
-    for (uint i = 0; i < pEventHandler->intervals.size(); i++)
+    for (uint16_t i = 0; i < pEventHandler->intervals.size(); i++)
     {
         if(pEventHandler->intervals[i]->id == id)
         {

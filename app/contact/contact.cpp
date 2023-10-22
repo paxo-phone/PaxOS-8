@@ -46,7 +46,7 @@ void Contact::main()
         showContact(contactPage());
 }
 
-uint Contact::contactPage()
+uint16_t Contact::contactPage()
 {
     while (true)
     {
@@ -112,7 +112,7 @@ uint Contact::contactPage()
     }
 }
 
-void Contact::showContact(uint index)
+void Contact::showContact(uint16_t index)
 {
     if(index == -1)
         return;
@@ -190,7 +190,7 @@ void Contact::showContact(uint index)
     
 }
 
-void Contact::editContact(bool create, uint index)
+void Contact::editContact(bool create, uint16_t index)
 {
     if(index == -1 && !create)
         return;

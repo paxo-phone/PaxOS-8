@@ -71,7 +71,7 @@ class Phone : public CppAppContainer
 
             if (numberLabel->isTouched())
             {
-                uint contactIndex = Contact::contactPage();
+                uint16_t contactIndex = Contact::contactPage();
                 if(contactIndex != -1)
                     numberLabel->setText(Contact::contacts[contactIndex].number);
             }

@@ -76,7 +76,7 @@ public:
     color_t textColor;
     void setTextColor(color_t color){textColor = color;}
     color_t getTextColor(){return textColor;}
-    uint getTextWidth();
+    uint16_t getTextWidth();
 
     // font
     string frontName = "mono";

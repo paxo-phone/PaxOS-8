@@ -14,10 +14,10 @@ void launcher()
     win.setMarginX(0);
     win.setMarginY(CONTROL_BAR_SIZE);
 
-    uint day_ = gsm.days;
-    uint day = gsm.days;
-    uint month = gsm.months;
-    uint year = gsm.years;
+    uint16_t day_ = gsm.days;
+    uint16_t day = gsm.days;
+    uint16_t month = gsm.months;
+    uint16_t year = gsm.years;
     std::string dayName = daysOfWeek[(day+=month<3?year--:year-2,23*month/9+day+4+year/4-year/100+year/400)%7];
     std::string monthName = daysOfMonth[month==0?1:(month-1)];
 

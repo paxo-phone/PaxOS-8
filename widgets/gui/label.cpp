@@ -210,11 +210,11 @@ LGFX_Sprite* Label::selfDetermination()
     return renderBuffer;
 }
 
-uint Label::getTextWidth()
+uint16_t Label::getTextWidth()
 {
     LGFX_Sprite* renderBuffer = new LGFX_Sprite(&l_tft);
     delete selfDetermination();
-    uint textWidth = renderBuffer->textWidth((getText()).c_str()) / textFactor;
+    uint16_t textWidth = renderBuffer->textWidth((getText()).c_str()) / textFactor;
     delete renderBuffer;
     return textWidth;
 }

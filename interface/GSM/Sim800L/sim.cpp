@@ -144,7 +144,7 @@ void GSM::add_request(std::vector<void (GSM::*)(void)> requests, bool priority)
         this->requests.insert(this->requests.begin()+1, requests);
     } else {
         // Si la priorité est fausse, nous vérifions d'abord si la requête existe déjà
-        for (uint i = 0; i < this->requests.size(); i++) {
+        for (uint16_t i = 0; i < this->requests.size(); i++) {
             if (this->requests[i][0] == requests[0])
                 return; // La requête existe déjà, nous ne l'ajoutons pas à nouveau
         }

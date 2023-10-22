@@ -25,7 +25,7 @@ class HomeButton
     void clear();
     bool pressed();
 
-    uint state = 0;
+    uint16_t state = 0;
 
     private:
     unsigned int button_chrono = 0;

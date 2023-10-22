@@ -177,7 +177,7 @@ void Gui::determineSize()
                 setY(0);
             else
             {
-                uint i = 0;
+                uint16_t i = 0;
                 for(; i<parent->children.size() && parent->children[i] != this; i++);
                 setY(parent->children[i-1]->getY() + parent->children[i-1]->getHeight() + 10);
             }
