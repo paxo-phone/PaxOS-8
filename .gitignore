@@ -1,16 +1,28 @@
+# Visual Studio Code
 .vscode
-.DS_Store
 paxos_8.code-workspace
+
+# Build
+build/
 a.out
-/CMakeFiles/
 PaxOS8
+
+# MacOS
+.DS_Store
+PaxOS8.xcodeproj
+
+# CMake
+/CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
-CMakeLists.txt
 CMakeScripts
-Debug
-PaxOS8.xcodeproj
-build
+
+# JetBrain
 .idea
+
+# PaxOS
 storage/apps/message/chats/
+
+# Other
+Debug
