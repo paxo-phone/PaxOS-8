@@ -16,28 +16,28 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif()
 
 file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
-        *.cpp
-        interface/LovyanGFX/LGFX_SDL.cpp
-        interface/LovyanGFX/lgfx/Fonts/efont/*.c
-        interface/LovyanGFX/lgfx/Fonts/IPA/*.c
-        interface/LovyanGFX/lgfx/utility/*.c
-        interface/LovyanGFX/lgfx/v1/*.cpp
-        interface/LovyanGFX/lgfx/v1/misc/*.cpp
-        interface/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp
-        interface/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
-        interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
-        interface/LovyanGFX/LGFX_SDL.cpp
-        src/*.c
+        src/*.cpp
+        src/lib/lua/*.c
+        src/interface/LovyanGFX/LGFX_SDL.cpp
+        src/interface/LovyanGFX/lgfx/Fonts/efont/*.c
+        src/interface/LovyanGFX/lgfx/Fonts/IPA/*.c
+        src/interface/LovyanGFX/lgfx/utility/*.c
+        src/interface/LovyanGFX/lgfx/v1/*.cpp
+        src/interface/LovyanGFX/lgfx/v1/misc/*.cpp
+        src/interface/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp
+        src/interface/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
+        src/interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
+        src/interface/LovyanGFX/LGFX_SDL.cpp
 )
 
-file(GLOB_RECURSE nepersrc ./widgets/gui/iframe/Neper/*.cpp)
+file(GLOB_RECURSE nepersrc ./src/widgets/gui/iframe/Neper/*.cpp)
 
 
 add_definitions(-DLGFX_SDL)
 
 add_executable(PaxOS8 ${src} ${nepersrc})
 
-target_include_directories(PaxOS8 PUBLIC "interface/LovyanGFX")
+target_include_directories(PaxOS8 PUBLIC "src/interface/LovyanGFX")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(SDL2 REQUIRED SDL2)
@@ -48,10 +48,10 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
     target_link_libraries(PaxOS8 PRIVATE m)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-    target_include_directories(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2-2.28.2/include")
+    target_include_directories(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/include")
 
-    target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2-2.28.2/lib/x64/SDL2main.lib")
-    target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
+    target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
+    target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2main.lib")
 
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
@@ -71,7 +71,7 @@ ENDIF ()
 target_compile_features(PaxOS8 PUBLIC cxx_std_17)
 
 if (WIN32)
-    include_directories(lib/dirent-1.23.2/include)
+    include_directories(src/lib/dirent-1.23.2/include)
 endif()
 
 file(COPY resources/storage DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

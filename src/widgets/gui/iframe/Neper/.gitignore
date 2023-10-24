@@ -1,0 +1,10 @@
+# MacOS 
+*.DS_Store
+
+# vscode
+.vscode
+
+# Folders 
+build/
+tests/
+obj/
