@@ -82,9 +82,8 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
         print ("waiting connection");
     }
 
-    HttpClient client;
-
-    print("get: " + client.get("http://example.com"));
+    // HttpClient client;
+    // print("get: " + client.get("http://example.com"));
 
     launcher();
 }

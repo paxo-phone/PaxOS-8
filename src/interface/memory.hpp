@@ -199,6 +199,29 @@ namespace storage
                 #endif
             }
 
+            string readline(void)
+            {
+                #ifdef BUILD_EMU
+                    string line;
+                    getline(*(this->stream), line);
+                    return line;
+                #endif /* BUILD_EMU */
+
+                #ifdef BUILD_PAXO
+                    string line = "";
+ 
+                    char c = file.read();
+                    while(c != -1 && c != '\n')
+                    {
+                        line += c;
+                        c = file.read();
+                    }
+
+                    return line;
+
+                #endif /* BUILD_PAXO */
+            }
+
             char readChr()
             {
                 #ifdef BUILD_EMU
