@@ -85,6 +85,32 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
     // HttpClient client;
     // print("get: " + client.get("http://example.com"));
 
+    storage::LFile output;
+    output.open("system/file.txt", storage::WRITE);
+
+    output << "This is my first line" << "\n";
+    output << "This is my second line";
+    output.close();
+
+    storage::LFile input;
+    input.open("system/file.txt", storage::READ);
+
+    std::string word_1;
+    std::string word_2;
+
+    input >> word_1 >> word_2;
+    std::cout << "word_1 -> " << word_1 << std::endl;
+    std::cout << "word_2 -> " << word_2 << std::endl;
+
+    input.close();
+
+    /*
+        output:
+        word_1 -> This
+        word_2 -> is
+    */
+
+
     launcher();
 }
 

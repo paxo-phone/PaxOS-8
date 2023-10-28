@@ -222,7 +222,34 @@ namespace storage
                 #endif /* BUILD_PAXO */
             }
 
-            char readChr()
+            string readword(void)
+            {
+                #ifdef BUILD_EMU
+                    string word;
+                    *(this->stream) >> word;
+                    return word;
+                #endif /* BUILD_EMU */
+
+                #ifdef BUILD_PAXO
+                    string word = "";
+ 
+                    char c = file.read();
+                    while(c != -1 && c != '\n'
+                                  && c != '\t'
+                                  && c != ' ')
+                    {
+                        line += c;
+                        c = file.read();
+                    }
+
+                    return line;
+
+                #endif /* BUILD_PAXO */
+            }
+
+            
+
+            char readChr(void)
             {
                 #ifdef BUILD_EMU
                     return (this->stream)->get();
@@ -262,6 +289,9 @@ namespace storage
                 #endif
             }
 
+            friend LFile& operator<<(LFile& stream, const std::string& text);
+            friend LFile& operator>>(LFile& stream, std::string& buff);
+
         private:
 
             #ifdef BUILD_EMU
@@ -272,6 +302,18 @@ namespace storage
                 File file;
             #endif
     };
+
+    LFile& operator<<(LFile& stream, const string& text)
+    {
+        stream.write(text);
+        return stream; // fun to allow this kind of syntax file << str1 << str2 << "\n"
+    }
+
+    LFile& operator>>(LFile& stream, string& buff)
+    {
+        buff = stream.readword();
+        return stream; // fun to allow this kind of syntax file >> word1 >> word2 << "\n"
+    }
 
     void init()
     {
