@@ -1,5 +1,5 @@
-#ifndef __STORAGE_HPP__
-#define __STORAGE_HPP__
+#ifndef __FILE_STREAM__
+#define __FILE_STREAM__
 
 #include <cstdio>
 #include <vector>
@@ -291,4 +291,4 @@ namespace storage
     }
 }
 
-#endif /* __STORAGE_HPP__*/
+#endif /* __FILE_STREAM__*/
