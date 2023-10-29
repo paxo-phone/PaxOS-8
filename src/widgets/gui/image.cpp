@@ -1,5 +1,5 @@
 #include "image.hpp"
-#include "../../interface/memory.hpp"
+#include "../../interface/filestream.hpp"
 #include "../../interface/shell.hpp"
 
 #include <string>
@@ -9,7 +9,7 @@ using namespace std;
 
 bool Image::parsePngHeader(std::string filename, int16_t* width, int16_t* height)
 {
-    storage::LFile file(filename, storage::READ);
+    storage::FileStream file(filename, storage::READ);
     
     if (!file.is_open()) // error during oppening
     {
@@ -36,7 +36,7 @@ bool Image::parsePngHeader(std::string filename, int16_t* width, int16_t* height
 
 bool Image::parseBmpHeader(std::string filename, int16_t* width, int16_t* height)
 {
-    storage::LFile file(filename, storage::READ);
+    storage::FileStream file(filename, storage::READ);
     
     if (!file.is_open()) // error during oppening
     {
@@ -61,7 +61,7 @@ bool Image::parseBmpHeader(std::string filename, int16_t* width, int16_t* height
 
 bool Image::parseJpgHeader(std::string filename, int16_t *width, int16_t *height)
 {
-    storage::LFile file(filename, storage::READ);
+    storage::FileStream file(filename, storage::READ);
     
     if (!file.is_open()) // error during oppening
     {

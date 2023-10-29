@@ -5,7 +5,7 @@ LuaInterpreter::LuaInterpreter(string dir) {
 }
 
 void LuaInterpreter::loadScript(std::string filename) {
-    storage::LFile file(filename, storage::OPEN_MODE::READ);
+    storage::FileStream file(filename, storage::OPEN_MODE::READ);
     data = file.read();
     file.close();
 }
@@ -375,7 +375,7 @@ int LuaInterpreter::onClick(lua_State* L) {
 }
 
 int LuaInterpreter::readFile(lua_State* L) {
-    Storage::LFile file(dir + "/" + lua_tostring(L, 1));
+    Storage::FileStream file(dir + "/" + lua_tostring(L, 1));
     file.open();
     std::string readed = file.read();
     lua_pushstring(L, readed.c_str());
@@ -384,7 +384,7 @@ int LuaInterpreter::readFile(lua_State* L) {
 }
 
 int LuaInterpreter::writeFile(lua_State* L) {
-    Storage::LFile file(dir + "/" + lua_tostring(L, 1), Storage::LFile::W);
+    Storage::FileStream file(dir + "/" + lua_tostring(L, 1), Storage::FileStream::W);
     file.open();
     file.write(lua_tostring(L, 2));
     file.close();

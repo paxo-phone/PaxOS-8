@@ -2,7 +2,7 @@
 #define BROWSER_HPP
 
 #include "../../widgets/gui/iframe/iframe.hpp"
-#include "../../interface/memory.hpp"
+#include "../../interface/filestream.hpp"
 #include "../../web/web.hpp"
 
 
@@ -36,7 +36,7 @@ class Browser : public CppAppContainer
             }
             else
             {
-                storage::LFile file("apps/browser/data.html", storage::OPEN_MODE::READ);
+                storage::FileStream file("apps/browser/data.html", storage::OPEN_MODE::READ);
                 html = file.read();
                 file.close();
             }

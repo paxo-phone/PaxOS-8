@@ -30,7 +30,7 @@ namespace Storage
         #endif
     };
 
-    class LFile
+    class FileStream
     {
         public:
         enum Mode
@@ -40,8 +40,8 @@ namespace Storage
             E   // erase and write
         };
 
-        LFile(std::string filename, Mode mode = R);
-        ~LFile() { close(); }
+        FileStream(std::string filename, Mode mode = R);
+        ~FileStream() { close(); }
 
         bool open();
         void close();

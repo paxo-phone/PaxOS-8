@@ -30,7 +30,7 @@ void Message::main()
             //print("apps/message/" + number + ".txt");
 
             std::string data = "";
-            storage::LFile file("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::READ);
+            storage::FileStream file("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::READ);
             if(file.is_open())
             {
                 data = file.read();
@@ -38,7 +38,7 @@ void Message::main()
                 notif = false;
             }else
             {
-                storage::LFile file("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::WRITE);
+                storage::FileStream file("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::WRITE);
                 file.close();
                 notif = false;
             }
@@ -124,7 +124,7 @@ void Message::main()
                 if (send->isTouched())
                 {
                     gsm.sendNewMessageMODE(Contact::contacts[contactIndex].number, text->getText());
-                    storage::LFile file("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::WRITE);
+                    storage::FileStream file("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::WRITE);
                     file.write(data + "~MO:" + text->getText() + "\n");
                     file.close();
                     actual_message="";
@@ -144,13 +144,13 @@ void Message::saveMessage(std::vector<GSM::Message> messages)
     {
         std::string number = messages[i].number.substr(messages[i].number.length()-9, 9);
 
-        storage::LFile filer("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::READ);
+        storage::FileStream filer("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::READ);
         std::string data = filer.read();
         filer.close();
 
         data += "~MI:" + messages[i].message + "\n";
 
-        storage::LFile filew("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::WRITE);
+        storage::FileStream filew("apps/message/chats/" + number + ".txt", storage::OPEN_MODE::WRITE);
         filew.write(data);
         filew.close();
     }

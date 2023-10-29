@@ -16,14 +16,14 @@ class CSV
     {
         this->filename = filename;
         
-        storage::LFile file(filename, storage::OPEN_MODE::READ);
+        storage::FileStream file(filename, storage::OPEN_MODE::READ);
         fileContent = file.read();
         file.close();
     }
 
     void save()
     {
-        storage::LFile file(filename, storage::OPEN_MODE::WRITE, true);
+        storage::FileStream file(filename, storage::OPEN_MODE::WRITE, true);
         file.write(fileContent);
         file.close();
     }

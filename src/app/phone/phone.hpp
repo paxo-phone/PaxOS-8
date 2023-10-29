@@ -2,7 +2,7 @@
 #define PHONE_HPP
 
 #include "../../widgets/gui.hpp"
-#include "../../interface/memory.hpp"
+#include "../../interface/filestream.hpp"
 #include "../contact/contact.hpp"
 
 class Phone : public CppAppContainer

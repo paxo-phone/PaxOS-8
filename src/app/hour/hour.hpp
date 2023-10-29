@@ -2,7 +2,7 @@
 #define HOUR_HPP
 
 #include "../../widgets/gui.hpp"
-#include "../../interface/memory.hpp"
+#include "../../interface/filestream.hpp"
 
 class Hour : public CppAppContainer
 {

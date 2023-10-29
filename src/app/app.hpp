@@ -2,7 +2,7 @@
 #define APPS_HPP
 
 #include "../widgets/gui.hpp"
-#include "../interface/memory.hpp"
+#include "../interface/filestream.hpp"
 #include "../lua/lua.hpp"
 
 class App

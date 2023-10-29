@@ -42,7 +42,7 @@ int shell::cmd_cat(const ArgList& args)
         print("Usage: cat filename");
         return ERROR;
     }
-    storage::LFile file(shell::currentDirectory+"/"+args[0], storage::OPEN_MODE::READ, false);
+    storage::FileStream file(shell::currentDirectory+"/"+args[0], storage::OPEN_MODE::READ, false);
     if(file.is_open() == false)
     {
         print("Error opening file: " + args[0]);

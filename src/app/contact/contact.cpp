@@ -5,7 +5,7 @@ void Contact::loadContacts(bool force)
     if(!force && contacts.size() != 0)
         return;
 
-    storage::LFile file("apps/contact/contact.txt", storage::OPEN_MODE::READ);
+    storage::FileStream file("apps/contact/contact.txt", storage::OPEN_MODE::READ);
     std::string data = file.read();
     file.close();
 
@@ -33,7 +33,7 @@ void Contact::saveContacts()
         buffer+="\""+contacts[i].name+"\":"+contacts[i].number+";\n";
     }
 
-    storage::LFile file("apps/contact/contact.txt", storage::OPEN_MODE::WRITE);
+    storage::FileStream file("apps/contact/contact.txt", storage::OPEN_MODE::WRITE);
     file.write(buffer);
     file.close();
 

@@ -85,14 +85,14 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
     // HttpClient client;
     // print("get: " + client.get("http://example.com"));
 
-    storage::LFile output;
+    storage::FileStream output;
     output.open("system/file.txt", storage::WRITE);
 
     output << "This is my first line" << "\n";
     output << "This is my second line";
     output.close();
 
-    storage::LFile input;
+    storage::FileStream input;
     input.open("system/file.txt", storage::READ);
 
     std::string word_1;

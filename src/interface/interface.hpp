@@ -26,7 +26,7 @@
   }
 #endif
 
-#include "memory.hpp"
+#include "filestream.hpp"
 #include "storage/storage.hpp"
 #include "shell.hpp"
 #include "GSM/GSM.hpp"

@@ -5,7 +5,7 @@
 #include <string>
 
 #include "../../widgets/gui.hpp"
-#include "../../interface/memory.hpp"
+#include "../../interface/filestream.hpp"
 
 class Calcul : public CppAppContainer
 {

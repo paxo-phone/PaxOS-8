@@ -2,7 +2,7 @@
 
 using namespace Storage;
 
-LFile::LFile(std::string filename, Mode mode) : mode(mode)
+FileStream::FileStream(std::string filename, Mode mode) : mode(mode)
 {
     #ifdef BUILD_PAXO
         this->filename = "/storage/"+filename;
@@ -11,7 +11,7 @@ LFile::LFile(std::string filename, Mode mode) : mode(mode)
     #endif
 }
 
-bool LFile::open()
+bool FileStream::open()
 {
     #ifdef ESP32
         if (mode == R)
@@ -38,7 +38,7 @@ bool LFile::open()
     #endif
 }
 
-void LFile::close()
+void FileStream::close()
 {
     #ifdef ESP32
         if (file)
@@ -53,7 +53,7 @@ void LFile::close()
     #endif
 }
 
-std::string LFile::read(int from, int to)
+std::string FileStream::read(int from, int to)
 {
     #ifdef ESP32
         if (!file)
@@ -105,7 +105,7 @@ std::string LFile::read(int from, int to)
     #endif
 }
 
-void LFile::setCursor(int pos)
+void FileStream::setCursor(int pos)
 {
     #ifdef ESP32
         if (file && pos >= 0)
@@ -121,7 +121,7 @@ void LFile::setCursor(int pos)
     
 }
 
-void LFile::write(std::string data)
+void FileStream::write(std::string data)
 {
     #ifdef ESP32
         if (file)
