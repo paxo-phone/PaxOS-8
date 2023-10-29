@@ -1,0 +1,3 @@
+/home/gabriel/Bureau/paxos_8_re/CMakeFiles/PaxOS8.dir
+/home/gabriel/Bureau/paxos_8_re/CMakeFiles/edit_cache.dir
+/home/gabriel/Bureau/paxos_8_re/CMakeFiles/rebuild_cache.dir

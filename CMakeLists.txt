@@ -17,26 +17,51 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc") # Enable exceptions for CLang
 endif()
 
-file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
-        *.cpp
-        interface/LovyanGFX/LGFX_SDL.cpp
-        interface/LovyanGFX/lgfx/Fonts/efont/*.c
-        interface/LovyanGFX/lgfx/Fonts/IPA/*.c
-        interface/LovyanGFX/lgfx/utility/*.c
-        interface/LovyanGFX/lgfx/v1/*.cpp
-        interface/LovyanGFX/lgfx/v1/misc/*.cpp
-        interface/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp
-        interface/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
-        interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
-        interface/LovyanGFX/LGFX_SDL.cpp
-        src/*.c
-)
+#----------------------
 
 add_definitions(-DLGFX_SDL)
 
-add_executable(PaxOS8 ${src})
+file(GLOB srcLov RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
+    src/*.cpp
+    src/drivers/screen/LovyanGFX/LGFX_SDL.cpp
+    src/drivers/screen/LovyanGFX/lgfx/Fonts/efont/*.c
+    src/drivers/screen/LovyanGFX/lgfx/Fonts/IPA/*.c
+    src/drivers/screen/LovyanGFX/lgfx/utility/*.c
+    src/drivers/screen/LovyanGFX/lgfx/v1/*.cpp
+    src/drivers/screen/LovyanGFX/lgfx/v1/misc/*.cpp
+    src/drivers/screen/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp
+    src/drivers/screen/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
+    src/drivers/screen/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
 
-target_include_directories(PaxOS8 PUBLIC "interface/LovyanGFX")
+
+    src/apps/2048/*.cpp
+    src/apps/calcul/*.cpp
+    src/apps/contact/*.cpp
+    src/apps/hour/*.cpp
+    src/apps/map/*.cpp
+    src/apps/map/*.cpp
+    src/apps/message/*.cpp
+    src/apps/phone/*.cpp
+    src/apps/settings/*.cpp
+    src/apps/snake/*.cpp
+    src/apps/*.cpp
+    src/drivers/button/*.cpp
+    src/drivers/GSM/Sim800L/*.cpp
+    src/drivers/lights/*.cpp
+    src/drivers/storage/storage/*.cpp
+    src/lib/lua/*.cpp
+    src/modules/lua/*.cpp
+    src/modules/shell/*.cpp
+    src/modules/tasks/*.cpp
+    src/modules/web/*.cpp
+    src/modules/widgets/*.cpp
+    src/modules/widgets/gui/*.cpp)
+
+add_executable(PaxOS8 main.cpp ${srcLov})
+target_include_directories(PaxOS8 PUBLIC "src/drivers/screen/LovyanGFX")
+
+#----------------------
+
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(SDL2 REQUIRED SDL2)
