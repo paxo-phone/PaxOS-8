@@ -32,16 +32,25 @@ using namespace std;
 
 namespace storage
 {
+    /** 
+     * Enumeration for different file open modes.
+     */
     enum OPEN_MODE
     {
-        READ,   // 0
-        WRITE   // 1
+        READ,   /**< Read mode */
+        WRITE   /**< Write mode */
     };
 
+    /** 
+     * A class to handle file stream operations
+     */
     class FileStream
     {
         public:
 
+            /** 
+              * Default constructor.
+              */
             FileStream()
             {
                 #ifdef BUILD_EMU
@@ -49,6 +58,12 @@ namespace storage
                 #endif
             }
 
+            /** 
+              * Constructor to open a file stream with specified parameters.
+              * @param path Path to the file
+              * @param mode File open mode (READ/WRITE)
+              * @param erase Flag to truncate/erase existing file content
+              */
             FileStream(const string& path, OPEN_MODE mode, bool erase = false)
             {
                 #ifdef BUILD_EMU
@@ -98,6 +113,9 @@ namespace storage
                 #endif
             }
 
+            /** 
+              * Destructor to clean up resources.
+              */
             ~FileStream()
             {
                 #ifdef BUILD_EMU
@@ -108,6 +126,12 @@ namespace storage
                 #endif
             }
             
+            /** 
+             * Opens a file with specified parameters.
+             * @param path Path to the file
+             * @param mode File open mode (READ/WRITE)
+             * @param erase Flag to truncate/erase existing file content
+             */
             void open(const string& path, OPEN_MODE mode, bool erase = false)
             {
                 #ifdef BUILD_EMU
@@ -145,6 +169,9 @@ namespace storage
                 #endif
             }
 
+            /** 
+              * Closes the opened file.
+              */
             void close(void)
             {
                 #ifdef BUILD_EMU
@@ -155,6 +182,10 @@ namespace storage
                 #endif
             }
 
+            /** 
+             * Reads the entire content of the file and returns as a string.
+             * @return Content of the file as a string
+             */
             string read(void)
             {
                 #ifdef BUILD_EMU
@@ -174,6 +205,10 @@ namespace storage
                 #endif
             }
 
+            /** 
+             * Reads a line from the file and returns as a string.
+             * @return A line from the file as a string
+             */
             string readline(void)
             {
                 #ifdef BUILD_EMU
@@ -197,6 +232,10 @@ namespace storage
                 #endif /* BUILD_PAXO */
             }
 
+            /** 
+             * Reads a word from the file and returns as a string.
+             * @return A word from the file as a string
+             */
             string readword(void)
             {
                 #ifdef BUILD_EMU
@@ -223,8 +262,11 @@ namespace storage
             }
 
             
-
-            char readChr(void)
+            /** 
+             * Reads a single character from the file.
+             * @return A character read from the file
+             */
+            char readchar(void)
             {
                 #ifdef BUILD_EMU
                     return (this->stream)->get();
@@ -234,6 +276,10 @@ namespace storage
                 #endif
             }
 
+            /** 
+             * Writes a string to the file.
+             * @param str String to be written to the file
+             */
             void write(const string& str)
             {
                 #ifdef BUILD_EMU
@@ -244,6 +290,11 @@ namespace storage
                 #endif
             }
 
+
+            /** 
+             * Writes a character to the file.
+             * @param c Character to be written to the file
+             */
             void write(const char& c)
             {
                 #ifdef BUILD_EMU
@@ -254,6 +305,10 @@ namespace storage
                 #endif
             }
 
+            /** 
+             * Checks if the file is open.
+             * @return True if the file is open, false otherwise
+             */
             bool is_open(void)
             {
                 #ifdef BUILD_EMU

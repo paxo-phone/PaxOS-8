@@ -15,4 +15,3 @@
 #include "./widgets/gui.cpp"
 #include "./widgets/touchManager.cpp"
 #include "./lua/lua.cpp"
-#include "./interface/storage/storage.cpp"

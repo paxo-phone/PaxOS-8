@@ -31,6 +31,9 @@ using namespace std;
 
 namespace storage
 {
+    /**
+     * @brief Initialize the storage system (specific to BUILD_PAXO).
+     */
     void init()
     {
         #ifdef BUILD_PAXO
@@ -68,6 +71,12 @@ namespace storage
     #endif /* BUILD_EMU */
 
 
+    /**
+     * @brief List directories and files in the specified path.
+     * @param path The path to the directory.
+     * @param onlyDirs Flag to list only directories.
+     * @return A vector of strings containing directory and file names.
+     */
     vector<string> listdir(string path, bool onlyDirs = false)
     {
         vector<string> list;
@@ -113,6 +122,11 @@ namespace storage
         return list;
     }
 
+    /**
+     * @brief Check if a file or directory exists at the provided path.
+     * @param path The path to the file or directory.
+     * @return True if the file or directory exists, False otherwise.
+     */
     bool exists(const string& path)
     {
         #ifdef BUILD_EMU
@@ -128,6 +142,11 @@ namespace storage
         #endif
     }
     
+    /**
+     * @brief Check if the provided path corresponds to a file.
+     * @param filepath The path to the file.
+     * @return True if the path is a file, False otherwise.
+     */
     bool isfile(const string& filepath)
     {
         #ifdef BUILD_EMU
@@ -157,6 +176,11 @@ namespace storage
         
     }
 
+    /**
+     * @brief Check if the provided path corresponds to a directory.
+     * @param dirpath The path to the directory.
+     * @return True if the path is a directory, False otherwise.
+     */
     bool isdir(const string& dirpath)
     {
         #ifdef BUILD_EMU
@@ -196,6 +220,11 @@ namespace storage
 
     // work for files AND directory
 
+    /**
+     * @brief Create a new directory at the specified path.
+     * @param dirpath The path for the new directory.
+     * @return True if the directory creation was successful, False otherwise.
+     */
     bool newdir(const string& dirpath)
     {
         #ifdef BUILD_EMU
@@ -214,6 +243,11 @@ namespace storage
         #endif
     }
 
+    /**
+     * @brief Create a new file at the specified path.
+     * @param filepath The path for the new file.
+     * @return True if the file creation was successful, False otherwise.
+     */
     bool newfile(const string& filepath)
     {
         #ifdef BUILD_EMU
@@ -237,6 +271,11 @@ namespace storage
         #endif
     }
     
+    /**
+     * @brief Remove the file or directory at the specified path.
+     * @param path The path to the file or directory for removal.
+     * @return True if the removal was successful, False otherwise.
+     */
     bool remove(const string& path)
     {
         #ifdef BUILD_EMU
@@ -251,6 +290,12 @@ namespace storage
         #endif
     }
     
+    /**
+     * @brief Rename a file or directory from 'from' path to 'to' path.
+     * @param from The original path of the file or directory.
+     * @param to The new path for the file or directory.
+     * @return True if the renaming was successful, False otherwise.
+     */
     bool rename(const string& from, const string& to)
     {
         #ifdef BUILD_EMU

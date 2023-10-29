@@ -21,7 +21,7 @@ bool Image::parsePngHeader(std::string filename, int16_t* width, int16_t* height
 
     for (int i = 0; i < 32; i++) // add available later !!!
     {
-        table[i] = file.readChr();
+        table[i] = file.readchar();
     }
 
     *width=table[16]*256*256*256+table[17]*256*256+table[18]*256+table[19];
@@ -48,7 +48,7 @@ bool Image::parseBmpHeader(std::string filename, int16_t* width, int16_t* height
 
     for (int i = 0; i < 32; i++)
     {
-        table[i] = file.readChr();
+        table[i] = file.readchar();
     }
 
     *width=table[15]*256*256*256+table[16]*256*256+table[17]*256+table[18];
@@ -74,15 +74,15 @@ bool Image::parseJpgHeader(std::string filename, int16_t *width, int16_t *height
 
     for(;;) {
         int marker;
-        while((marker = file.readChr()) != 0xFF);
-        while((marker = file.readChr()) == 0xFF);
+        while((marker = file.readchar()) != 0xFF);
+        while((marker = file.readchar()) == 0xFF);
 
         if (marker ==  0xC0 || marker == 0xC2) {
             file.read();
             file.read();
             file.read();
-            *height = (file.readChr() << 8) + file.readChr();
-            *width = (file.readChr() << 8) + file.readChr();
+            *height = (file.readchar() << 8) + file.readchar();
+            *width = (file.readchar() << 8) + file.readchar();
             return true;
         }
     }

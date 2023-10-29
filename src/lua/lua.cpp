@@ -1,11 +1,12 @@
 #include "lua.hpp"
+#include "../interface/filestream.hpp"
 
 LuaInterpreter::LuaInterpreter(string dir) {
     LuaInterpreter::dir = dir;
 }
 
 void LuaInterpreter::loadScript(std::string filename) {
-    storage::FileStream file(filename, storage::OPEN_MODE::READ);
+    storage::FileStream file(filename, storage::READ);
     data = file.read();
     file.close();
 }
@@ -375,8 +376,7 @@ int LuaInterpreter::onClick(lua_State* L) {
 }
 
 int LuaInterpreter::readFile(lua_State* L) {
-    Storage::FileStream file(dir + "/" + lua_tostring(L, 1));
-    file.open();
+    storage::FileStream file(dir + "/" + lua_tostring(L, 1), storage::READ);
     std::string readed = file.read();
     lua_pushstring(L, readed.c_str());
     file.close();
@@ -384,8 +384,7 @@ int LuaInterpreter::readFile(lua_State* L) {
 }
 
 int LuaInterpreter::writeFile(lua_State* L) {
-    Storage::FileStream file(dir + "/" + lua_tostring(L, 1), Storage::FileStream::W);
-    file.open();
+    storage::FileStream file(dir + "/" + lua_tostring(L, 1), storage::WRITE);
     file.write(lua_tostring(L, 2));
     file.close();
     return 0;
