@@ -245,7 +245,7 @@ namespace storage
                 #endif /* BUILD_EMU */
 
                 #ifdef BUILD_PAXO
-                    string word = "";
+                    string line = "";
  
                     char c = file.read();
                     while(c != -1 && c != '\n'

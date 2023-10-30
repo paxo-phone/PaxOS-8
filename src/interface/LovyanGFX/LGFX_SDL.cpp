@@ -1,3 +1,5 @@
+#ifdef BUILD_EMU
+
 #include <thread>
 
 #define LGFX_USE_V1
@@ -52,3 +54,6 @@ int main(int, char**)
     SDL_Delay(5);
   }
 }
+
+
+#endif

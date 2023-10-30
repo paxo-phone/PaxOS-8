@@ -17,7 +17,7 @@
 #endif
 #ifdef BUILD_PAXO
     #define LGFX_USE_V1
-    #include <LovyanGFX.hpp>
+    #include "../interface/LovyanGFX/LovyanGFX.hpp"
     #include "../interface/LovyanGFX/lovyangfx_config.hpp"
     LGFX tft_root;
 #endif
