@@ -23,6 +23,7 @@ CMakeScripts
 
 # PaxOS
 storage/apps/message/chats/
+storage/apps/contact/contact.txt
 
 # Other
 Debug

@@ -1,4 +1,4 @@
-/*#include "main.hpp"
+#include "main.hpp"
 #include "./app/calcul/calcul.cpp"
 #include "./app/contact/contact.cpp"
 #include "./app/launcher.cpp"
@@ -14,4 +14,4 @@
 #include "./widgets/gui/label.cpp"
 #include "./widgets/gui.cpp"
 #include "./widgets/touchManager.cpp"
-#include "./lua/lua.cpp"*/
+#include "./lua/lua.cpp"

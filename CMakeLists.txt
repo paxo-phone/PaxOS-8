@@ -33,6 +33,7 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 file(GLOB_RECURSE nepersrc ./src/widgets/gui/iframe/Neper/*.cpp)
 
 add_definitions(-DLGFX_SDL)
+add_definitions(-DBUILD_EMU)
 
 add_executable(PaxOS8 ${src} ${nepersrc})
 
