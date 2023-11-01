@@ -1,14 +1,15 @@
+//#define OLD_PAXO
+
+#ifndef OLD_PAXO
+    #define NEW_PAXO
+#endif
+
 #ifdef ESP32
     #define BUILD_PAXO 1
 #endif
 
-//#define OLD_PAXO
-#define NEW_PAXO
 
 #include <iterator>
-#ifndef BUILD_PAXO
-    #define BUILD_EMU 1
-#endif
 
 #ifdef BUILD_PAXO
 #include "soc/rtc_wdt.h"
