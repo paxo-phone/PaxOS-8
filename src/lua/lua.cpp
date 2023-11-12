@@ -2,6 +2,10 @@
 #include "../interface/filestream.hpp"
 #include "../interface/interface.hpp"
 
+Window* LuaInterpreter::current_root = nullptr;
+vector<LuaEvent> LuaInterpreter::events;
+std::string LuaInterpreter::dir;
+
 LuaInterpreter::LuaInterpreter(string dir) {
     LuaInterpreter::dir = dir;
 }
@@ -429,4 +433,16 @@ void execute_lua(lua_State* L, const std::string& functionName) {
     lua_getglobal(L, functionName.c_str());
     if(!lua_isfunction(L, -1)) std::cerr << "Lua function '" << functionName << "' not found." << std::endl;
     if(!lua_pcall(L, 0, LUA_MULTRET, 0) == 0) std::cerr << "Error executing Lua function '" << functionName << "': " << lua_tostring(L, -1) << std::endl;
+}
+
+LUAMOD_API int luaopen_paxolib(lua_State* L){
+    // Our datatypes!
+    for (const char* name : METATABLES_GUI) luaL_newmetatable(L, name);
+    luaL_newlib(L, paxolib);
+    // Saving colors
+    for (auto const &x : color_bindings) {
+        lua_pushinteger(L, x.second);
+        lua_setfield(L, -2, x.first.c_str());
+    }
+    return 1;
 }

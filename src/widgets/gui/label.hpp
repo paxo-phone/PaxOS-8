@@ -29,29 +29,11 @@ using namespace std;
     {&FreeSerifBoldItalic9pt7b, &FreeSerifBoldItalic12pt7b, &FreeSerifBoldItalic18pt7b, &FreeSerifBoldItalic24pt7b}
 }};*/
 
-const lgfx::U8g2font *allFronts[3][4][4] = {
-{
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
-},
-{
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
-},
-{
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
-    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
-}};
+extern const lgfx::U8g2font *allFonts[3][4][4];
 
 // /paxo/system/fronts/roboto.vlw
 
-string allFrontsNames[] = {"sans", "mono", "serif"};
+extern string allFontsNames[];
 
 class Keyboard;
 

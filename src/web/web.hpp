@@ -57,8 +57,6 @@ class Webdriver
     Mode mode = Mode::AUTO_WIFI;
 };
 
-Webdriver webdriver;
-
 #include "http/http.hpp"
 
 #endif

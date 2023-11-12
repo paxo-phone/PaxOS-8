@@ -7,6 +7,8 @@
 
 using namespace std;
 
+std::vector<image_header> imagesLoaded;
+
 bool Image::parsePngHeader(std::string filename, int16_t* width, int16_t* height)
 {
     storage::FileStream file(filename, storage::READ);

@@ -13,6 +13,4 @@ class Message : public CppAppContainer
     static bool notif;
 };
 
-bool Message::notif = false;
-
 #endif

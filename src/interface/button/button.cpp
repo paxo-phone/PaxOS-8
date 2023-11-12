@@ -65,4 +65,5 @@ bool HomeButton::needStandbyMod()
     return timer_delay + timer < millis(); 
 }
 
+HomeButton home_button;
 #endif

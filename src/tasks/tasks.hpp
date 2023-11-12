@@ -84,8 +84,8 @@ class EventHandler
     void update();
 };
 
-EventHandler eventHandler;
-EventHandler graphicalEventHandler;
+extern EventHandler eventHandler;
+extern EventHandler graphicalEventHandler;
 
 class Event
 {

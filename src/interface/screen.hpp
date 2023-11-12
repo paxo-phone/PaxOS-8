@@ -9,13 +9,13 @@
     #include "LovyanGFX/LovyanGFX.hpp"
     #include "LovyanGFX/LGFX_AUTODETECT.hpp"
     //#include "../sdl_main.cpp"
-    LGFX tft_root(WIDTH, HEIGHT);
+    extern LGFX tft_root;
 #endif
 #ifdef BUILD_PAXO
     #define LGFX_USE_V1
     #include <LovyanGFX.hpp>
     #include "LovyanGFX/lovyangfx_config.hpp"
-    LGFX tft_root;
+    extern LGFX tft_root;
 #endif
 
 #endif

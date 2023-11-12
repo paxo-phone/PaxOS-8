@@ -8,8 +8,8 @@
 #include "../../../tasks/tasks.hpp"
 #include "sim.hpp"
 
-const char *daysOfWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" };
-const char *daysOfMonth[12] = { "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Novembre", "Decembre"};
+extern const char *daysOfWeek[7];
+extern const char *daysOfMonth[12];
 
 #include "encoder.hpp"
 
@@ -37,7 +37,7 @@ enum NetworkState
 class GSM
 {
     public:
-    
+        
     struct Message
     {
         std::string number;
@@ -121,6 +121,6 @@ class GSM
     bool break_ = false;
 };
 
-GSM gsm;
+inline GSM gsm;
 
 #endif

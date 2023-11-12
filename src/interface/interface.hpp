@@ -5,26 +5,13 @@
   #include <chrono>
   #include <cstdlib>
 
-  uint64_t micros() {
-    using namespace std::chrono;
-    return duration_cast<microseconds>(system_clock::now().time_since_epoch()).count() - 1677588060000000;
-  }
+  uint64_t micros();
 
-  uint64_t millis() {
-    using namespace std::chrono;
-    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() - 1677588060000;
-  }
+  uint64_t millis();
 
-  void delay(uint64_t ms)
-  {
-    uint64_t start = millis();
-    while (millis() - start < ms);
-  }
+  void delay(uint64_t ms);
 
-  int random(int i, int j)
-  {
-    return (rand()%(j-i))-i;
-  }
+  int random(int i, int j);
 #endif
 
 #include "filestream.hpp"

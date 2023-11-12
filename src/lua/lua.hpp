@@ -76,9 +76,6 @@ class LuaInterpreter {
         static int writeFile(lua_State* L);
         static int special_sleep(lua_State* L);
 };
-Window* LuaInterpreter::current_root = nullptr;
-vector<LuaEvent> LuaInterpreter::events;
-std::string LuaInterpreter::dir;
 
 // Gui commands bindings
 static const luaL_Reg gui_common_binds[] = {
@@ -128,16 +125,6 @@ static const std::map<std::string, int> color_bindings = {
 };
 
 // Making our own primitives available to lua by adding it as a library.
-LUAMOD_API int luaopen_paxolib(lua_State* L){
-    // Our datatypes!
-    for (const char* name : METATABLES_GUI) luaL_newmetatable(L, name);
-    luaL_newlib(L, paxolib);
-    // Saving colors
-    for (auto const &x : color_bindings) {
-        lua_pushinteger(L, x.second);
-        lua_setfield(L, -2, x.first.c_str());
-    }
-    return 1;
-}
+LUAMOD_API int luaopen_paxolib(lua_State* L);
 
 #endif

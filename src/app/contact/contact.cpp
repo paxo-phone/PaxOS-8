@@ -2,6 +2,8 @@
 
 #include "../../interface/interface.hpp"
 
+std::vector<Contact::OneContact> Contact::contacts = {};
+
 void Contact::loadContacts(bool force)
 {
     if(!force && contacts.size() != 0)

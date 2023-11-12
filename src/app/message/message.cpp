@@ -3,6 +3,8 @@
 #include "../contact/contact.hpp"
 #include "../../interface/interface.hpp"
 
+bool Message::notif = false;
+
 void Message::main()
 {
     while(!home_button.pressed())

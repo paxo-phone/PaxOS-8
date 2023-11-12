@@ -180,6 +180,23 @@ bool TouchManager::validTouch()
     return state;
 }
 
+TouchManager touch;
+
+TouchZone::TouchZone(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
+{
+    this->x=x;
+    this->y=y;
+    this->width=width;
+    this->height=height;
+}
+
+bool TouchZone::isTouch()
+{
+    uint16_t xx = touch.getX();
+    uint16_t yy = touch.getY();
+    return x<xx && xx<x+width && y<yy && yy<y+height;
+}
+
 bool Touched(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
     uint16_t xx = touch.getX();

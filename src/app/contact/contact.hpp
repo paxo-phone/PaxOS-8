@@ -25,7 +25,4 @@ class Contact : public CppAppContainer
     static std::vector<OneContact> contacts;
 };
 
-std::vector<Contact::OneContact> Contact::contacts = {};
-
-
 #endif

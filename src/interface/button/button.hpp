@@ -33,6 +33,6 @@ class HomeButton
     bool needStandbyMod();
 };
 
-HomeButton home_button;
+extern HomeButton home_button;
 
 #endif

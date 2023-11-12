@@ -6,6 +6,9 @@
 #include "../interface/interface.hpp"
 #include <vector>
 
+EventHandler eventHandler;
+EventHandler graphicalEventHandler;
+
 Timeout::Timeout(CallbackClass* callback, uint32_t timeout)
 {
     this->callback = callback;

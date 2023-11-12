@@ -53,6 +53,8 @@ void flushScreen()
 #include "web/web.hpp"
 #include "app/message/message.hpp"
 
+Webdriver webdriver;
+
 #ifdef BUILD_PAXO
 
 #include "esp_task_wdt.h"
