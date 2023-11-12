@@ -4,6 +4,7 @@
 #include "2048.hpp"
 #include "../../interface/screen.hpp"
 #include "../../interface/interface.hpp"
+#include "../app.hpp"
 
 #include <cstdint>
 

@@ -12,6 +12,7 @@
 void new_thread(bool core, void(*func)(void*), void* arg)
 {
     std::thread myThread(func, arg);
+    myThread.detach();
 }
 
 #endif

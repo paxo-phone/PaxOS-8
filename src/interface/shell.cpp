@@ -303,6 +303,7 @@ void thread_shell(void* data)
             Serial.println((String)"psram:" + pnh);
         }*/
     }
+    std::cout << "exit" << std::endl;
 }
 
 uint64_t heap = 0;

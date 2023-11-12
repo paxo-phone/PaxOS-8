@@ -6,6 +6,7 @@
 //  
 
 #include "settings.hpp"
+#include "../app.hpp"
 
 class Settings : public CppAppContainer
 {

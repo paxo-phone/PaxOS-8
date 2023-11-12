@@ -76,7 +76,8 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
     screenUZ = screenUpdateZones;
 #endif
     Gui::initScreen();
-    shell::init(); new_thread(CORE_BACK, thread_shell, nullptr);
+    shell::init(); 
+     new_thread(CORE_BACK, thread_shell, nullptr);
     storage::init();
     screen_light.init();
     gsm.init();

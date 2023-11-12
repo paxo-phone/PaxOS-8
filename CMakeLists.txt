@@ -28,28 +28,51 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
         src/interface/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
         src/interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
         src/interface/LovyanGFX/LGFX_SDL.cpp
-        src/app/calcul/calcul.cpp
-        src/app/contact/contact.cpp
-        src/app/launcher.cpp
-        src/app/message/message.cpp
-        src/app/phone/phone.cpp
-        src/app/snake/snake.hpp
-        src/app/2048/2048.cpp
-        src/app/snake/snake.cpp
-        src/app/app.cpp
-        src/interface/button/button.cpp
-        src/interface/GSM/Sim800L/sim.cpp
-        src/interface/shell.cpp
-        src/widgets/gui.cpp
-        src/widgets/gui/label.cpp
-        src/widgets/gui/back.cpp
-        src/widgets/gui/button.cpp
-        src/widgets/gui/image.cpp
-        src/widgets/gui/keyboard.cpp
-        src/widgets/gui/window.cpp
-        src/widgets/touchManager.cpp
-        src/tasks/tasks.cpp
-        src/lua/lua.cpp
+
+        ./src/tasks/thread.cpp
+        ./src/tasks/tasks.cpp
+        ./src/widgets/touchManager.cpp
+        ./src/widgets/gui/keyboard.cpp
+        ./src/widgets/gui/canvas.cpp
+        ./src/widgets/gui/image.cpp
+        ./src/widgets/gui/box.cpp
+        ./src/widgets/gui/window.cpp
+        ./src/widgets/gui/label.cpp
+        ./src/widgets/gui/button.cpp
+        ./src/widgets/gui/back.cpp
+        ./src/widgets/gui/iframe/Neper/src/neper.cpp
+        ./src/widgets/gui/iframe/Neper/src/dom/src/attributeList.cpp
+        ./src/widgets/gui/iframe/Neper/src/dom/src/node.cpp
+        ./src/widgets/gui/iframe/Neper/src/dom/src/styleList.cpp
+        ./src/widgets/gui/iframe/Neper/src/dom/src/style.cpp
+        ./src/widgets/gui/iframe/Neper/src/dom/src/attribute.cpp
+        ./src/widgets/gui/iframe/Neper/src/html/src/parser.cpp
+        ./src/widgets/gui/iframe/Neper/src/utils/src/unordered_map.cpp
+        ./src/widgets/gui/iframe/Neper/src/utils/src/math.cpp
+        ./src/widgets/gui/iframe/Neper/src/utils/src/string.cpp
+        ./src/widgets/gui.cpp
+        ./src/widgets/color.cpp
+        ./src/app/settings/settings.cpp
+        ./src/app/2048/2048.cpp
+        ./src/app/message/message.cpp
+        ./src/app/snake/snake.cpp
+        ./src/app/launcher.cpp
+        ./src/app/app.cpp
+        ./src/app/phone/phone.cpp
+        ./src/app/calcul/calcul.cpp
+        ./src/app/contact/contact.cpp
+        #./src/app/minecraft/SimplexNoise.cpp
+        ./src/interface/screen.cpp
+        ./src/interface/GSM/Sim800L/encoder.cpp
+        ./src/interface/GSM/Sim800L/sim.cpp
+        ./src/interface/filetree.cpp
+        ./src/interface/lights.cpp
+        ./src/interface/FileStream.cpp
+        ./src/interface/button/button.cpp
+        ./src/interface/interface.cpp
+        ./src/interface/shell.cpp
+        ./src/lua/lua.cpp
+        ./src/main.cpp
 )
 
 file(GLOB_RECURSE nepersrc ./src/widgets/gui/iframe/Neper/*.cpp)
