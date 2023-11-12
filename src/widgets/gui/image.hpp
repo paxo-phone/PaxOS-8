@@ -47,8 +47,4 @@ class Image : public Gui
     uint8_t imageFormat;
 };
 
-
-
-std::vector<image_header> imagesLoaded;
-
 #endif

@@ -40,9 +40,9 @@ enum GUI_TYPE
 
 #define BASE_FONT_SIZE 16
 
-LGFX_Sprite tft(&tft_root);
+inline LGFX_Sprite tft(&tft_root);
 
-bool reload_afterunlocked = false;
+inline bool reload_afterunlocked = false;
 
 class Gui // widget system
 {
@@ -229,10 +229,7 @@ class Gui // widget system
     friend class Back;*/
 };
 
-Gui *upFromDrawAll = nullptr;
-Gui *mainWindow = nullptr;
-bool drawing = false;
-bool Gui::isScreenAlreadyPressed = false;
-Gui* Gui::widgetPressed = nullptr;
-
+inline Gui *upFromDrawAll = nullptr;
+inline Gui *mainWindow = nullptr;
+inline bool drawing = false;
 #endif

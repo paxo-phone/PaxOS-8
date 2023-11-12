@@ -3,6 +3,9 @@
 #include "../../interface.hpp"
 #include "../../../app/phone/phone.hpp"
 
+const char *daysOfWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" };
+const char *daysOfMonth[12] = { "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Novembre", "Decembre"};
+
 void GSM::init()
 {
     #ifdef BUILD_PAXO

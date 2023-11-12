@@ -16,7 +16,6 @@ class App
     virtual void run() = 0;
 };
 
-std::vector<App*> App::appList;
 
 class CppAppContainer
 {

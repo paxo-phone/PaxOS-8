@@ -1,5 +1,27 @@
 #include "label.hpp"
 
+const lgfx::U8g2font *allFonts[3][4][4] = {
+{
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
+},
+{
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
+},
+{
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24},
+    {&lgfxJapanGothicP_8, &lgfxJapanGothicP_12, &lgfxJapanGothicP_16, &lgfxJapanGothicP_24}
+}};
+
+string allFontsNames[] = {"sans", "mono", "serif"};
+
 Label::Label() : Gui(0, 0, 0, 0)
 {
     this->fontHeight = BASE_FONT_SIZE;
@@ -133,16 +155,16 @@ LGFX_Sprite* Label::selfDetermination()
 
     for (int i = 0; i < 3; i++) 
     {
-        if(allFrontsNames[i] == frontName)
+        if(allFontsNames[i] == frontName)
             frontIndex = i;
     }
 
     for(int i = 0; i < 4; i++)
     {
-        renderBuffer->setFont(allFronts[frontIndex][bold*2+italic][i]);
+        renderBuffer->setFont(allFonts[frontIndex][bold*2+italic][i]);
         if(renderBuffer->fontHeight()>fontHeight)
         {
-            front = allFronts[frontIndex][bold*2+italic][i];
+            front = allFonts[frontIndex][bold*2+italic][i];
             break;
         }
     }

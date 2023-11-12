@@ -45,24 +45,13 @@ class TouchManager
     unsigned long timerUpdate;
 };
 
-TouchManager touch;
+extern TouchManager touch;
 
-class touchZone
+class TouchZone
 {
     public:
-    touchZone(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
-    {
-        this->x=x;
-        this->y=y;
-        this->width=width;
-        this->height=height;
-    }
-    bool isTouch()
-    {
-        uint16_t xx = touch.getX();
-        uint16_t yy = touch.getY();
-        return x<xx && xx<x+width && y<yy && yy<y+height;
-    }
+    TouchZone(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
+    bool isTouch();
     private:
     uint16_t x, y, width, height;
 };

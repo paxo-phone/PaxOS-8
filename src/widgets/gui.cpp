@@ -8,6 +8,9 @@
 void flushScreen();
 #endif
 
+bool Gui::isScreenAlreadyPressed = false;
+Gui* Gui::widgetPressed = nullptr;
+
 Gui::Gui()
 {
     this->x = 0;

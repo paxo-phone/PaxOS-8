@@ -15,6 +15,8 @@
 #include "snake/snake.hpp"
 #include "browser/browser.hpp"
 
+std::vector<App*> App::appList;
+
 void initializeApplications()
 {
     // cpp
