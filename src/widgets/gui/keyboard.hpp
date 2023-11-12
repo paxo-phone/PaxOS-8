@@ -7,6 +7,9 @@
 #define COLOR_NOT_PRESS 0x29A6
 #define COLOR_BACKGROUND 0xFFFF
 
+class Box;
+class Label;
+
 class Keyboard : public Gui
 {
 public:
@@ -26,27 +29,7 @@ public:
 
     void setMode(uint8_t mode){ this->mode = mode;}
 
-    void link(Label* label)
-    {
-        Label* oldlabel = this->label;
-        if(oldlabel!=nullptr)
-            oldlabel->linked=false;
-        this->label = label;
-
-        if(label != nullptr)
-        {
-            label->linked=true;
-            label->rendered=false;
-            enable();
-        }else
-        {
-            disable();
-        }
-        if(oldlabel!=nullptr)
-        {
-            oldlabel->rendered=false;
-        }
-    }
+    void link(Label* label);
 
 private:
     std::string alphabet[4][3] =

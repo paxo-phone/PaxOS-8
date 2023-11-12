@@ -3,6 +3,8 @@
 
 #include "../../widgets/gui.hpp"
 #include "../../interface/filestream.hpp"
+#include "../app.hpp"
+
 
 class Map : public CppAppContainer
 {

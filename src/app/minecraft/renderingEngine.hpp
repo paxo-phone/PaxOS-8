@@ -1,4 +1,4 @@
-#ifndef _3D_MINECRAFT_HPP
+#ifdef _3D_MINECRAFT_HPP // on purpose
 #define _3D_MINECRAFT_HPP
 
 /*

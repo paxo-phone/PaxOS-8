@@ -1,10 +1,13 @@
 #ifndef Keyboard_CPP
 #define Keyboard_CPP
 
+#include "../gui_class.hpp"
+
 #include "label.hpp"
 #include "box.hpp"
 #include "image.hpp"
 #include "keyboard.hpp"
+#include "../../interface/interface.hpp"
 
 Keyboard::Keyboard() : Gui(15, 323, 290, 157)
 {
@@ -202,6 +205,28 @@ void Keyboard::virtual_update()
 
         delay(10);
         return;
+    }
+}
+
+void Keyboard::link(Label* label)
+{
+    Label* oldlabel = this->label;
+    if(oldlabel!=nullptr)
+        oldlabel->linked=false;
+    this->label = label;
+
+    if(label != nullptr)
+    {
+        label->linked=true;
+        label->rendered=false;
+        enable();
+    }else
+    {
+        disable();
+    }
+    if(oldlabel!=nullptr)
+    {
+        oldlabel->rendered=false;
     }
 }
 

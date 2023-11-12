@@ -1,6 +1,9 @@
 #ifndef IMAGE_HPP
 #define IMAGE_HPP
 
+#include <string>
+#include "../gui_class.hpp"
+
 class Image;
 
 struct image_header

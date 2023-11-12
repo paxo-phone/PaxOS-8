@@ -28,6 +28,28 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
         src/interface/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp
         src/interface/LovyanGFX/lgfx/v1/platforms/sdl/*.cpp
         src/interface/LovyanGFX/LGFX_SDL.cpp
+        src/app/calcul/calcul.cpp
+        src/app/contact/contact.cpp
+        src/app/launcher.cpp
+        src/app/message/message.cpp
+        src/app/phone/phone.cpp
+        src/app/snake/snake.hpp
+        src/app/2048/2048.cpp
+        src/app/snake/snake.cpp
+        src/app/app.cpp
+        src/interface/button/button.cpp
+        src/interface/GSM/Sim800L/sim.cpp
+        src/interface/shell.cpp
+        src/widgets/gui.cpp
+        src/widgets/gui/label.cpp
+        src/widgets/gui/back.cpp
+        src/widgets/gui/button.cpp
+        src/widgets/gui/image.cpp
+        src/widgets/gui/keyboard.cpp
+        src/widgets/gui/window.cpp
+        src/widgets/touchManager.cpp
+        src/tasks/tasks.cpp
+        src/lua/lua.cpp
 )
 
 file(GLOB_RECURSE nepersrc ./src/widgets/gui/iframe/Neper/*.cpp)

@@ -3,6 +3,7 @@
 
 #include "touchManager.hpp"
 #include "gui.hpp"
+#include "../interface/interface.hpp"
 
 void TouchManager::update()
 {

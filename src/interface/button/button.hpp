@@ -8,19 +8,12 @@
     #define HOME_BUTTON 32
 #endif
 
-#include "../../tasks/tasks.hpp"
-#include "../../widgets/gui.hpp"
+#include "../interface.hpp"
 
 class HomeButton
 {
     public:
-    void init()
-    {
-        #ifdef BUILD_PAXO
-        pinMode(HOME_BUTTON, INPUT_PULLUP);
-        #endif
-        setInterval(new CallbackMethod<HomeButton>(this, &HomeButton::update), 10);
-    }
+    void init();
     void update();
     void clear();
     bool pressed();
@@ -36,14 +29,8 @@ class HomeButton
     uint64_t timer = 0;
     uint32_t timer_delay = 30000; // milliseconds
 
-    void resetStandbyMod() { timer = millis(); }
-    bool needStandbyMod() 
-    {
-        #ifndef BUILD_PAXO
-            return false;
-        #endif
-        return timer_delay + timer < millis(); 
-    }
+    void resetStandbyMod();
+    bool needStandbyMod();
 };
 
 HomeButton home_button;

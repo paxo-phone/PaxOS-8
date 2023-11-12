@@ -1,9 +1,7 @@
 #include "sim.hpp"
 
-/*#ifndef localtime_r
-// Can be undefined, so we use "localtime_s" in replacement
-#define localtime_r(timer, buf) localtime_s((tm *const) timer, (const time_t *const) buf)
-#endif*/
+#include "../../interface.hpp"
+#include "../../../app/phone/phone.hpp"
 
 void GSM::init()
 {

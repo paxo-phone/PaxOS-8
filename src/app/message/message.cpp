@@ -1,6 +1,7 @@
 #include "message.hpp"
 
 #include "../contact/contact.hpp"
+#include "../../interface/interface.hpp"
 
 void Message::main()
 {

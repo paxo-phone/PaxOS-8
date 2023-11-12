@@ -3,12 +3,23 @@
 
 #include "button.hpp"
 
+#include "../../tasks/tasks.hpp"
+#include "../../widgets/gui.hpp"
+#include "../interface.hpp"
+
+void HomeButton::init()
+{
+    #ifdef BUILD_PAXO
+    pinMode(HOME_BUTTON, INPUT_PULLUP);
+    #endif
+    setInterval(new CallbackMethod<HomeButton>(this, &HomeButton::update), 10);
+}
+
 void HomeButton::update()
 {
     #ifdef BUILD_PAXO
     bool input = !digitalRead(HOME_BUTTON);
-    #endif
-    #ifdef BUILD_EMU
+    #else
     bool input = false;
     #endif
 
@@ -40,4 +51,18 @@ void HomeButton::clear()
 {
     state = 0;
 }
+
+void HomeButton::resetStandbyMod() 
+{
+    timer = millis();
+}
+
+bool HomeButton::needStandbyMod() 
+{
+    #ifndef BUILD_PAXO
+        return false;
+    #endif
+    return timer_delay + timer < millis(); 
+}
+
 #endif

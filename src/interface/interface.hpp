@@ -3,6 +3,7 @@
 
 #ifdef BUILD_EMU
   #include <chrono>
+  #include <cstdlib>
 
   uint64_t micros() {
     using namespace std::chrono;

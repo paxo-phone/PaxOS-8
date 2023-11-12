@@ -2,6 +2,8 @@
 #define CONTACT_HPP
 
 #include <vector>
+#include "../app.hpp"
+
 
 class Contact : public CppAppContainer
 {

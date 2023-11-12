@@ -4,6 +4,9 @@
 #include "../../widgets/gui.hpp"
 #include "../../interface/filestream.hpp"
 #include "../contact/contact.hpp"
+#include "../../interface/interface.hpp"
+#include "../app.hpp"
+
 
 class Phone : public CppAppContainer
 {

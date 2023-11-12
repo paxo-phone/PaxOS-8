@@ -1,0 +1,19 @@
+#ifdef BUILD_EMU
+    /*#include "main.hpp"
+    #include "./app/calcul/calcul.cpp"
+    #include "./app/contact/contact.cpp"
+    #include "./app/launcher.cpp"
+    #include "./app/message/message.cpp"
+    #include "./app/phone/phone.cpp"
+    #include "./app/snake/snake.hpp"
+    #include "./interface/button/button.cpp"
+    #include "./interface/GSM/Sim800L/sim.cpp"
+    #include "./interface/shell.cpp"
+    #include "./widgets/gui/button.cpp"
+    #include "./widgets/gui/image.cpp"
+    #include "./widgets/gui/keyboard.cpp"
+    #include "./widgets/gui/label.cpp"
+    #include "./widgets/gui.cpp"
+    #include "./widgets/touchManager.cpp"
+    #include "./lua/lua.cpp"*/
+#endif

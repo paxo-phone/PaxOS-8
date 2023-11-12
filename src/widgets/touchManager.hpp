@@ -11,6 +11,8 @@
 
 #define timeToWait 10
 
+#include "../interface/interface.hpp"
+
 class TouchManager
 {
     public:
@@ -35,12 +37,12 @@ class TouchManager
     
     uint16_t tx, ty;
     bool stateTouch;
-    double lastClick = millis();
+    double lastClick;
     bool isPreviousTouch = 0;
     unsigned long timerSlider;
     
     uint16_t fx, fy = 0;
-    unsigned long timerUpdate = millis();
+    unsigned long timerUpdate;
 };
 
 TouchManager touch;

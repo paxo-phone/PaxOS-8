@@ -2,6 +2,11 @@
 #define GUI_CPP
 
 #include "gui.hpp"
+#include "../../interface/interface.hpp"
+
+#ifdef BUILD_EMU
+void flushScreen();
+#endif
 
 Gui::Gui()
 {
@@ -264,7 +269,7 @@ void Gui::renderAll()
 
     screen_light.ON();
     #ifdef BUILD_EMU
-        *shouldUS = true;
+        flushScreen();
     #endif
 }
 

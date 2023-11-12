@@ -1,6 +1,8 @@
 #ifndef COLOR_HPP
 #define COLOR_HPP
 
+#include "../interface/screen.hpp"
+
 typedef uint16_t color_t;
 
 /*###############################################*/

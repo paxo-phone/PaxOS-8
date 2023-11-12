@@ -2,6 +2,8 @@
 #define Label_HPP
 
 #include <string.h>
+#include "../gui_class.hpp"
+#include "../../interface/screen.hpp"
 
 using namespace std;
 

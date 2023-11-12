@@ -1,5 +1,7 @@
 #include "contact.hpp"
 
+#include "../../interface/interface.hpp"
+
 void Contact::loadContacts(bool force)
 {
     if(!force && contacts.size() != 0)

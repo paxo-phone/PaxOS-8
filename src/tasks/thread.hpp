@@ -10,7 +10,7 @@
 
 void new_thread(bool core, void(*func)(void*), void* arg)
 {
-    new thread(func, arg);
+    std::thread myThread(func, arg);
 }
 
 #endif

@@ -1,5 +1,6 @@
 #include "lua.hpp"
 #include "../interface/filestream.hpp"
+#include "../interface/interface.hpp"
 
 LuaInterpreter::LuaInterpreter(string dir) {
     LuaInterpreter::dir = dir;

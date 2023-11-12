@@ -1,7 +1,11 @@
 #include "tinyexpr.h"
 
-
 #include "calcul.hpp"
+#include "../../widgets/gui.hpp"
+#include "../../interface/filestream.hpp"
+#include "../../interface/interface.hpp"
+#include <algorithm>
+#include <string>
 
 void Calcul::launch()
 {
@@ -181,4 +185,30 @@ void Calcul::processExpression(std::string &expression)
         if(expression[expression.length()-1]=='.')
             expression.erase(expression.length()-1);
     }
+}
+
+void Calcul::addChar(App *app, Gui* objectPrt, void* data)
+{
+    std::string chr = reinterpret_cast<Label*>(objectPrt)->getText();
+    Label* label = reinterpret_cast<Label*>(data);
+    std::string currentInput = label->getText();
+    if (currentInput.empty())
+    {
+        if (chr == "*" || chr == "/" || chr == "%" || chr == "^")
+        {
+            return;
+        }
+    } else
+    {
+        const char lastChar = currentInput[currentInput.size() - 1];
+        if (strchr("+-*/%^", lastChar) && (chr == "*" || chr == "/" || chr == "%" || chr == "^"))
+        {
+            return;
+        }
+        if (strchr("+-", lastChar) && (chr == "+" || chr == "-"))
+        {
+            return;
+        }
+    }
+    label->setText(label->getText()+chr);
 }

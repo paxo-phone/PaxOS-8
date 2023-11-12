@@ -1,4 +1,4 @@
-#ifndef MINECRAFT_HPP
+#ifdef MINECRAFT_HPP // on purpose
 #define MINECRAFT_HPP
 
 #include <vector>
