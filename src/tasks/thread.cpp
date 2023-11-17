@@ -24,9 +24,9 @@ void new_thread(bool core, void(*func)(void*), void* arg)
     xTaskCreate(func,
               "new_thread",
               50000,
-              NULL,
+              nullptr,
               0,
-              NULL);
+              nullptr);
 }
 
 #endif

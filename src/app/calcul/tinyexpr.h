@@ -1,12 +1,12 @@
 #ifndef CALCUL_P
 #define CALCUL_P
 
-#include <iostream>
-#include <cstdlib>
-#include <cctype>
-#include <cstring>
-#include <math.h> 
- 
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <math.h>
+
 #define PI 3.14159265358979323846 
 
 enum types { DELIMITER = 1, VARIABLE, NUMBER, FUNCTION };

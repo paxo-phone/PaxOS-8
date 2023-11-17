@@ -1,23 +1,6 @@
-//#define OLD_PAXO
-
-#ifndef OLD_PAXO
-    #define NEW_PAXO
-#endif
-
-#ifdef ESP32
-    #define BUILD_PAXO 1
-#endif
-
+#include "includes.h"
 
 #include <iterator>
-
-#ifdef BUILD_PAXO
-#include "soc/rtc_wdt.h"
-#include "esp_heap_caps.h"
-#include <esp_task_wdt.h>
-#include <Arduino.h>
-#endif
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <string>
@@ -26,24 +9,27 @@
 using namespace std;
 
 #ifdef BUILD_EMU
-#include <atomic>
+    #include <atomic>
 
-struct Rectangle {
-    uint16_t x;
-    uint16_t y;
-    uint16_t width;
-    uint16_t height;
-};
+    struct Rectangle {
+        uint16_t x;
+        uint16_t y;
+        uint16_t width;
+        uint16_t height;
+    };
 
-bool *shouldUS;
-Rectangle* *screenUZ;
+    bool *shouldUS;
+    Rectangle* *screenUZ;
 
-void flushScreen()
-{
-    *shouldUS = true;
-}
-
+    void flushScreen()
+    {
+        *shouldUS = true;
+    }
 #endif
+
+/*
+    HEADERS OF THE PAXOS_8
+*/
 
 #include "interface/interface.hpp"
 #include "widgets/gui.hpp"
@@ -53,35 +39,33 @@ void flushScreen()
 #include "web/web.hpp"
 #include "app/message/message.hpp"
 
-Webdriver webdriver;
+// cette partie est simplement pour activer les processus qui different entre arduino / pc
 
 #ifdef BUILD_PAXO
-
-#include "esp_task_wdt.h"
-
 void setup() // initialize paxos v8
 {
     //esp_task_wdt_init(10000, 0);
     esp_task_wdt_init(30, true);
-  
-  // Disable the task watchdog timer
-  esp_task_wdt_deinit();
+
+    // Disable the task watchdog timer
+    esp_task_wdt_deinit();
 #endif
     
 #ifdef BUILD_EMU
-    
 void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initialize paxos v8
     {
     shouldUS = shouldUpdateScreen;
     screenUZ = screenUpdateZones;
 #endif
+
+
     Gui::initScreen();
-    shell::init(); 
-     new_thread(CORE_BACK, thread_shell, nullptr);
+    shell::init();
+        new_thread(CORE_BACK, thread_shell, nullptr);
     storage::init();
     screen_light.init();
     gsm.init();
-    gsm.saveMessages = Message::saveMessage;
+        gsm.saveMessages = Message::saveMessage;
     home_button.init();
 
     /*LuaInterpreter lua;

@@ -1,6 +1,8 @@
 #ifndef ASYNC_SIM
 #define ASYNC_SIM
 
+#include "../../../includes.h"
+
 #include <string>
 #include <vector>
 
@@ -15,7 +17,7 @@ extern const char *daysOfMonth[12];
 
 #ifdef BUILD_PAXO
     #include <SoftwareSerial.h>
-    SoftwareSerial SIM800Serial(26, 27);
+    extern SoftwareSerial SIM800Serial;
 #endif
 
 class GSM;

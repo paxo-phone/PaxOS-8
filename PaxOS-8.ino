@@ -1,2 +1,3 @@
-// PAXO
-// #include "src/main.hpp"
+// PAXOS 8
+
+#define BUILD_PAXO 1

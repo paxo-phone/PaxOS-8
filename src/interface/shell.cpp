@@ -1,6 +1,6 @@
 #include "shell.hpp"
 
-#include "../interface.hpp"
+#include "interface.hpp"
 #include "GSM/GSM.hpp"
 
 void print(string str) { command_shell.print(str + "\n" + shell::currentDirectory + "$ ", false); }

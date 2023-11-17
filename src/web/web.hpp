@@ -1,6 +1,8 @@
 #ifndef WEBDRIVER_HPP
 #define WEBDRIVER_HPP
 
+#include "../includes.h"
+
 #ifdef BUILD_PAXO
 
 #include <HTTPClient.h>
@@ -11,41 +13,11 @@
 class Webdriver
 {
     public:
-    void connect()
-    {
-        #ifdef BUILD_PAXO
-        WiFi.begin("Fairphone Gab", "bonjourbonjour");
-        #endif
-    }
-
-    void disconnect()
-    {
-        #ifdef BUILD_PAXO
-        WiFi.disconnect();
-        #endif
-    }
-
-    void powerOff()
-    {
-        #ifdef BUILD_PAXO
-        WiFi.mode(WIFI_OFF);
-        #endif
-    }
-
-    void powerOn()
-    {
-        #ifdef BUILD_PAXO
-        WiFi.mode(WIFI_STA);
-        #endif
-    }
-
-    bool isConnected()
-    {
-        #ifdef BUILD_PAXO
-        return WiFi.status() == WL_CONNECTED;
-        #endif
-        return true;
-    }
+    void connect();
+    void disconnect();
+    void powerOff();
+    void powerOn();
+    bool isConnected();
 
     enum Mode
     {
@@ -56,6 +28,8 @@ class Webdriver
 
     Mode mode = Mode::AUTO_WIFI;
 };
+
+extern Webdriver webdriver;
 
 #include "http/http.hpp"
 

@@ -2,7 +2,7 @@
 #define GUI_CPP
 
 #include "gui.hpp"
-#include "../../interface/interface.hpp"
+#include "../interface/interface.hpp"
 
 #ifdef BUILD_EMU
 void flushScreen();

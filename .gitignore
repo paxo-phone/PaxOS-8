@@ -6,6 +6,7 @@ paxos_8.code-workspace
 build/
 a.out
 PaxOS8
+Arduino/
 
 # MacOS
 .DS_Store

@@ -1,6 +1,8 @@
 #ifndef SHELL_HPP
 #define SHELL_HPP
 
+#include "../includes.h"
+
 #include <iostream>
 #include <string>
 #include <vector>

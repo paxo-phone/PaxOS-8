@@ -6,6 +6,10 @@
 const char *daysOfWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" };
 const char *daysOfMonth[12] = { "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Novembre", "Decembre"};
 
+#ifdef BUILD_PAXO
+    SoftwareSerial SIM800Serial(26, 27);
+#endif
+
 void GSM::init()
 {
     #ifdef BUILD_PAXO

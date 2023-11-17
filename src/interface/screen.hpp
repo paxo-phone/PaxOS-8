@@ -1,6 +1,8 @@
 #ifndef SCREEN_HEADER
 #define SCREEN_HEADER
 
+#include "../includes.h"
+
 #define WIDTH 320
 #define HEIGHT 480
 
@@ -13,7 +15,8 @@
 #endif
 #ifdef BUILD_PAXO
     #define LGFX_USE_V1
-    #include <LovyanGFX.hpp>
+    //#include <LovyanGFX.hpp>
+    #include "LovyanGFX/LovyanGFX.hpp"
     #include "LovyanGFX/lovyangfx_config.hpp"
     extern LGFX tft_root;
 #endif

@@ -1,6 +1,8 @@
 #ifndef LUA_HPP
 #define LUA_HPP
 
+#include "../includes.h"
+
 #include "../lib/lua/lua.hpp"
 #include <stdlib.h>
 #include <string>

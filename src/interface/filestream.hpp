@@ -1,6 +1,8 @@
 #ifndef __FILE_STREAM__
 #define __FILE_STREAM__
 
+#include "../includes.h"
+
 #include <cstdio>
 #include <vector>
 #include <string>

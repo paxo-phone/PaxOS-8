@@ -1,3 +1,6 @@
+#include "../../includes.h"
+#include "../web.hpp"
+
 #ifdef BUILD_PAXO
 
 #include <HTTPClient.h>
@@ -8,7 +11,7 @@ class HttpClient {
 public:
     std::string get(const std::string& url) {
         if (!webdriver.isConnected()) {
-            print("Not connected to Internet");
+            //print("Not connected to Internet");
             return "";
         }
 
@@ -22,7 +25,7 @@ public:
             http.end();
             return payload;
         } else {
-            print("HTTP request failed with error code " + to_string(httpCode));
+            //print("HTTP request failed with error code " + to_string(httpCode));
             http.end();
             return "";
         }

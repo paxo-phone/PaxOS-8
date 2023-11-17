@@ -1,6 +1,8 @@
 #ifndef GUI_CLASS
 #define GUI_CLASS
 
+#include "../includes.h"
+
 #include <vector>
 
 #define WIDTH 320

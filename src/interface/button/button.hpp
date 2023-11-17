@@ -1,12 +1,7 @@
 #ifndef BUTTON_HARD_HPP
 #define BUTTON_HARD_HPP
 
-#ifdef NEW_PAXO
-    #define HOME_BUTTON 33
-#endif
-#ifdef OLD_PAXO
-    #define HOME_BUTTON 32
-#endif
+#include "../../includes.h"
 
 #include "../interface.hpp"
 

@@ -73,6 +73,7 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
         ./src/interface/shell.cpp
         ./src/lua/lua.cpp
         ./src/main.cpp
+        ./src/web/web.cpp
 )
 
 file(GLOB_RECURSE nepersrc ./src/widgets/gui/iframe/Neper/*.cpp)
