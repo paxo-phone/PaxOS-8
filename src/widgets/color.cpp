@@ -1,10 +1,3 @@
-//
-//  color.cpp
-//  PaxOS8
-//
-//  Created by Antoine Bollengier on 12.11.2023.
-//
-
 #include "color.hpp"
 
 color_t theme_color[][3]=

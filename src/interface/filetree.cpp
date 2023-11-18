@@ -1,10 +1,3 @@
-//
-//  filetree.cpp
-//  PaxOS8
-//
-//  Created by Antoine Bollengier on 12.11.2023.
-//
-
 #include "filetree.hpp"
 
 void storage::init()

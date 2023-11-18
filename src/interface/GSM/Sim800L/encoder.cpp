@@ -1,10 +1,3 @@
-//
-//  encoder.cpp
-//  PaxOS8
-//
-//  Created by Antoine Bollengier on 12.11.2023.
-//
-
 #include "encoder.hpp"
 
 std::string Encoder::convertEncodedCharToChar(int chr)
