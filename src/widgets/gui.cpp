@@ -270,7 +270,7 @@ void Gui::renderAll()
     }
     
 
-    screen_light.ON();
+    light::turnOn();
     #ifdef BUILD_EMU
         flushScreen();
     #endif

@@ -69,7 +69,7 @@ void launcher()
         if(home_button.pressed())
         {
             // standby mode
-            screen_light.OFF();
+            light::turnOff();
 
             home_button.clear();
 
@@ -103,7 +103,7 @@ void launcher()
 
             home_button.clear();
 
-            screen_light.ON();
+            light::turnOn();
         }
         #ifdef BUILD_EMU
             SDL_Delay(20);

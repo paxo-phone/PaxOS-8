@@ -1,25 +1,41 @@
+/**
+ * @file lights.hpp
+ * @brief Fichier d'en tête définissant les fonctions et constantes relatives au contrôle de la DEL.
+ */
+
 #ifndef LIGHT_HPP
 #define LIGHT_HPP
 
-#define PWM1_Ch    0
-#define PWM1_Res   8
-#define PWM1_Freq  1000
+#include <stdint.h>
 
-#define SCREEN_LED 25
-
-class ScreenLight
+namespace light
 {
-    private:
-    int STATE_LIGHT = 0;
+    /**
+     * @brief Initialise la DEL
+    */
+    void init(void);
     
-    public:
-    void analog(int state);
+    /**
+     * @brief Fixe l'état de la DEL
+     * @param state Un entier compris entre -1 (minimum) et 255 (maximum) représentant l'état de la DEL.
+    */
+    void setAnalogState(int16_t state);
 
-    void ON();
-    void OFF();
-    void init();
-};
+    /**
+     * @brief Allume la DEL (équivalent à setAnalogState(255))
+    */
+    void turnOn(void);
 
-extern ScreenLight screen_light;
+    /**
+     * @brief Éteint la DEL (équivalent à setAnalogState(-1))
+    */
+    void turnOff(void);
 
-#endif
+    /**
+     * @brief Fixe un état binaire (allumé ou éteint) à la DEL. 
+     * @param state Une valeur boléenne représentant l'état de la DEL (true = Allumé, false = Éteint)
+    */
+    void setState(bool state);
+}
+    
+#endif /* LIGHT_HPP */

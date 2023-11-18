@@ -63,7 +63,7 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
     shell::init();
         new_thread(CORE_BACK, thread_shell, nullptr);
     storage::init();
-    screen_light.init();
+    light::init();
     gsm.init();
         gsm.saveMessages = Message::saveMessage;
     home_button.init();

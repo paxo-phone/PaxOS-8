@@ -1,43 +1,64 @@
-#include "interface.hpp"
+#include <stdint.h>
 
-void ScreenLight::analog(int state)
+#include "lights.hpp"
+
+namespace light
 {
-    if (state < STATE_LIGHT)
+    #define LED_PIN 25
+
+    #define PWM1_CH    0
+    #define PWM1_RES   8
+    #define PWM1_FREQ  1000
+
+    #define ANALOG_STATE_MAX 255
+    #define ANALOG_STATE_MIN -1
+
+    void init(void)
     {
-        while (STATE_LIGHT > state)
-        {
-            #ifdef BUILD_PAXO
-                ledcWrite(PWM1_Ch, STATE_LIGHT--);
-                delay(1);
-            #else
-                STATE_LIGHT--;
-            #endif
-        }
-        return;
+        #ifdef BUILD_PAXO
+            ledcSetup(PWM1_CH, PWM1_FREQ, PWM1_RES);
+            ledcAttachPin(LED_PIN, PWM1_CH);
+        #endif
     }
-    if (state > STATE_LIGHT)
+
+    void setAnalogState(int16_t targetState)
     {
-        while (STATE_LIGHT < state)
+        #ifdef BUILD_PAXO
+        
+        static int16_t currentState = 0;
+
+        if (currentState > targetState)
         {
-            #ifdef BUILD_PAXO
-                ledcWrite(PWM1_Ch, STATE_LIGHT++);
+            while (currentState > targetState)
+            {
+                ledcWrite(PWM1_CH, currentState--);
                 delay(1);
-            #else
-                STATE_LIGHT++;
-            #endif
+            }
         }
-        return;
+        else
+        {
+            while (currentState < targetState)
+            {
+                ledcWrite(PWM1_CH, currentState++);
+                delay(1);
+            }
+        }
+
+        #endif /* BUILD_PAXO */
+    }
+
+    void turnOn(void) 
+    { 
+        setAnalogState(ANALOG_STATE_MAX); 
+    }
+
+    void turnOff(void) 
+    { 
+        setAnalogState(ANALOG_STATE_MIN); 
+    }
+
+    void setState(bool state)
+    {
+        state == true ? turnOn() : turnOff();
     }
 }
-
-void ScreenLight::ON() { analog(255); }
-void ScreenLight::OFF() { analog(-1); }
-void ScreenLight::init()
-{
-    #ifdef BUILD_PAXO
-        ledcSetup(PWM1_Ch, PWM1_Freq, PWM1_Res);
-        ledcAttachPin(SCREEN_LED, PWM1_Ch);
-    #endif
-}
-
-ScreenLight screen_light;
