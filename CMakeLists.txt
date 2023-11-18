@@ -73,6 +73,8 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
         ./src/interface/button/button.cpp
         ./src/interface/interface.cpp
         ./src/interface/shell.cpp
+        ./src/interface/random.cpp
+        ./src/interface/time.cpp
         ./src/lua/lua.cpp
         ./src/main.cpp
         ./src/web/web.cpp
@@ -81,7 +83,7 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 file(GLOB_RECURSE nepersrc ./src/widgets/gui/iframe/Neper/*.cpp)
 
 add_definitions(-DLGFX_SDL)
-add_definitions(-DBUILD_EMU)
+#add_definitions(-DBUILD_EMU) // pour bien afficher les erreurs sur arduino au niveau de build_emu/paxo
 
 add_executable(PaxOS8 ${src} ${nepersrc})
 

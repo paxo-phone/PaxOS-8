@@ -1,6 +1,8 @@
 #ifndef TIME_HPP
 #define TIME_HPP
 
+#include "../includes.h"
+
 #ifdef BUILD_EMU
 
 #include <chrono>

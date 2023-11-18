@@ -1,6 +1,7 @@
 #ifndef TOUCH_MANAGER_CPP
 #define TOUCH_MANAGER_CPP
 
+#include "../interface/time.hpp"
 #include "touchManager.hpp"
 #include "gui.hpp"
 #include "../interface/interface.hpp"

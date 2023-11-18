@@ -16,6 +16,8 @@
 
 #ifdef ESP32
     #define BUILD_PAXO 1
+#else
+    #define BUILD_EMU 1
 #endif
 
 #ifdef BUILD_PAXO
