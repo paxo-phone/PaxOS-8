@@ -67,6 +67,8 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
         ./src/interface/GSM/Sim800L/sim.cpp
         ./src/interface/filetree.cpp
         ./src/interface/lights.cpp
+        ./src/interface/random.cpp
+        ./src/interface/time.cpp
         ./src/interface/FileStream.cpp
         ./src/interface/button/button.cpp
         ./src/interface/interface.cpp
