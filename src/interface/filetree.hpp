@@ -1,6 +1,7 @@
 #ifndef __FILE_TREE__
 #define __FILE_TREE__
 
+#include "../includes.h"
 #include <cstdio>
 #include <vector>
 #include <string>

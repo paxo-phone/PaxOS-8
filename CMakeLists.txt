@@ -38,6 +38,7 @@ file(GLOB src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
         ./src/widgets/gui/box.cpp
         ./src/widgets/gui/window.cpp
         ./src/widgets/gui/label.cpp
+        ./src/widgets/gui/label2.cpp
         ./src/widgets/gui/button.cpp
         ./src/widgets/gui/back.cpp
         ./src/widgets/gui/iframe/Neper/src/neper.cpp

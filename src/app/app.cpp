@@ -31,10 +31,10 @@ void initializeApplications()
     App::appList.push_back(new CppApp<Browser>("browser"));
     //App::appList.push_back(new CppApp<Minecraft>("minecraft"));
 
-
+    print("init");
     // lua
     vector<string> list = storage::listdir("apps/lua", true);
-    for (auto app : list)
+    for (string app : list)
     {
         print(app);
         App::appList.push_back(new LuaApp(app));

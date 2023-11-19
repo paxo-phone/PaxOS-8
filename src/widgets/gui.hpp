@@ -13,5 +13,6 @@
 #include "gui/keyboard.hpp"
 #include "gui/back.hpp"
 #include "gui/canvas.hpp"
+#include "gui/label2.hpp"
 
 #endif /* GUI_HPP */
