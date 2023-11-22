@@ -1,3 +1,6 @@
 [submodule "src/widgets/gui/iframe/Neper"]
 	path = src/widgets/gui/iframe/Neper
 	url = https://github.com/paxo-phone/Neper-Light.git
+[submodule "src/lib/PaxoINI"]
+	path = src/lib/PaxoINI
+	url = https://github.com/paxo-phone/PaxoINI.git
