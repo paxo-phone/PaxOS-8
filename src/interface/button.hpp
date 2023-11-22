@@ -1,9 +1,19 @@
 #ifndef BUTTON_HARD_HPP
 #define BUTTON_HARD_HPP
 
-#include "../../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
 
-#include "../interface.hpp"
+#include <stdint.h>
+#include <string.h>
+
+#include "interface.hpp"
+
+#define HOME_BUTTON_PIN 33 // 32 pour l'ancien modèle
 
 class HomeButton
 {

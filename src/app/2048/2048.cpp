@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void flushScreen();
 #endif
 
@@ -67,7 +67,7 @@ void Game_2048::launch()
             if (slide)
                 break;
             
-            #ifdef BUILD_EMU
+            #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                 SDL_Delay(20);
             #endif
         }
@@ -215,7 +215,7 @@ void Game_2048::draw()
     S.drawCenterString(std::to_string(score).c_str(), 160, 400, &fonts::Font4);
     S.pushSprite(&tft_root, 0, 25);
     
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         void flushScreen();
     #endif
 }

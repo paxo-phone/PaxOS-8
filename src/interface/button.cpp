@@ -9,16 +9,16 @@
 
 void HomeButton::init()
 {
-    #ifdef BUILD_PAXO
-    pinMode(HOME_BUTTON, INPUT_PULLUP);
+    #ifdef ESP32
+    pinMode(HOME_BUTTON_PIN, INPUT_PULLUP);
     #endif
     setInterval(new CallbackMethod<HomeButton>(this, &HomeButton::update), 10);
 }
 
 void HomeButton::update()
 {
-    #ifdef BUILD_PAXO
-    bool input = !digitalRead(HOME_BUTTON);
+    #ifdef ESP32
+    bool input = !digitalRead(HOME_BUTTON_PIN);
     #else
     bool input = false;
     #endif
@@ -59,11 +59,11 @@ void HomeButton::resetStandbyMod()
 
 bool HomeButton::needStandbyMod() 
 {
-    #ifndef BUILD_PAXO
+    #ifndef ESP32
         return false;
     #endif
     return timer_delay + timer < millis(); 
 }
 
-HomeButton home_button;
+HomeButton HOME_BUTTON_PIN;
 #endif

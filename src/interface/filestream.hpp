@@ -1,7 +1,15 @@
 #ifndef __FILE_STREAM__
 #define __FILE_STREAM__
 
-#include "../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
+
+#include <stdint.h>
+#include <string.h>
 
 #include <cstdio>
 #include <vector>
@@ -9,7 +17,7 @@
 
 using namespace std;
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     #include <filesystem>
     #include <fstream>
     #include <cstdio>
@@ -22,7 +30,7 @@ using namespace std;
         #include <direct.h>
     #endif
 #endif
-#ifdef BUILD_PAXO
+#ifdef ESP32
     #define SD_CS 4
     #include "FS.h"
     #include "SD.h"
@@ -130,11 +138,11 @@ namespace storage
 
         private:
 
-            #ifdef BUILD_EMU
+            #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                 fstream* stream;
             #endif
 
-            #ifdef BUILD_PAXO
+            #ifdef ESP32
                 File file;
             #endif
     };

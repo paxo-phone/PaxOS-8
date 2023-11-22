@@ -1,7 +1,15 @@
 #ifndef SHELL_HPP
 #define SHELL_HPP
 
-#include "../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
+
+#include <stdint.h>
+#include <string.h>
 
 #include <iostream>
 #include <string>
@@ -21,14 +29,14 @@ class CommandShell : public SerialIO
     public:
     void print(string str, bool newLine = true)
     {
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             std::cout << str;
             if (newLine)
             {
                 std::cout<<std::endl;
             }
         #endif
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
             for (int i = 0; i < str.size(); i++)
                 Serial.print(str[i]);
             if(newLine)
@@ -38,10 +46,10 @@ class CommandShell : public SerialIO
 
     void print(char str)
     {
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             std::cout << str;
         #endif
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
             Serial.print(str);
         #endif
     }
@@ -50,11 +58,11 @@ class CommandShell : public SerialIO
     {
         string line;
 
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             cout << ">> ";
             getline(cin, line);
         #endif
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
             while (!Serial.available())
                 delay(10);
             String str = Serial.readString();

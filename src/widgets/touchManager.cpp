@@ -12,14 +12,14 @@ void TouchManager::update()
     {
         uint16_t z = tft_root.getTouchRaw(&tx, &ty);
         
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
             tft_root.convertRawXY(&tx, &ty);
 
             tx = tx*320/340;
             ty = ty*480/460;
-            #ifdef OLD_PAXO
-            ty = 480-ty;
-            #endif
+            // #ifdef OLD_PAXO
+            // ty = 480-ty;
+            // #endif
         #endif
 
         //tft_root.drawCircle(tx, ty, 3, 0x0000);
@@ -54,7 +54,7 @@ void TouchManager::update()
         {
             tx = 0; ty = 0;
         }
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
             //ty = 480 - ty;
         #endif
         timerUpdate=millis();

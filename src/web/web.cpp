@@ -2,35 +2,35 @@
 
 void Webdriver::connect()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     WiFi.begin("Fairphone Gab", "bonjourbonjour");
     #endif
 }
 
 void Webdriver::disconnect()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     WiFi.disconnect();
     #endif
 }
 
 void Webdriver::powerOff()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     WiFi.mode(WIFI_OFF);
     #endif
 }
 
 void Webdriver::powerOn()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     WiFi.mode(WIFI_STA);
     #endif
 }
 
 bool Webdriver::isConnected()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     return WiFi.status() == WL_CONNECTED;
     #endif
     return true;

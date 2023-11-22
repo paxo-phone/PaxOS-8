@@ -32,7 +32,7 @@ void Phone::during_calling(std::string number)
 
         home_button.resetStandbyMod();
 
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }
@@ -71,7 +71,7 @@ void Phone::get_a_call()
             during_calling(number);
             break;
         }
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }

@@ -4,7 +4,7 @@
 #include "gui.hpp"
 #include "../interface/interface.hpp"
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void flushScreen();
 #endif
 
@@ -149,25 +149,26 @@ Gui::~Gui()
 
 void Gui::initScreen()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         //uint16_t calibrationData[] = {370, 3950, 273, 239, 3848, 3949, 3872, 302};
 
         uint16_t calibrationData[] = {316, 194, 307, 3778+300, 3771-200, 204, 3740-200, 3750+300};
 
         tft_root.setTouchCalibrate(calibrationData);
 
-        #ifdef NEW_PAXO
+        // #ifdef NEW_PAXO
             pinMode(14, OUTPUT); // 22 for new and 14 for old
             digitalWrite(14, 1);
             pinMode(22, OUTPUT); // 25 for new and 22 for old
             digitalWrite(22, 1);
-        #endif
-        #ifdef OLD_PAXO
-            pinMode(22, OUTPUT); // 22 for new and 14 for old
-            digitalWrite(22, 1);
-            pinMode(25, OUTPUT); // 25 for new and 22 for old
-            digitalWrite(25, 1);
-        #endif
+        // #endif
+        
+        // #ifdef OLD_PAXO
+        //     pinMode(22, OUTPUT); // 22 for new and 14 for old
+        //     digitalWrite(22, 1);
+        //     pinMode(25, OUTPUT); // 25 for new and 22 for old
+        //     digitalWrite(25, 1);
+        // #endif
     #endif
     
     tft_root.init();
@@ -271,7 +272,7 @@ void Gui::renderAll()
     
 
     light::turnOn();
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         flushScreen();
     #endif
 }

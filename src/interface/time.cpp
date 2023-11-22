@@ -1,6 +1,6 @@
 #include "time.hpp"
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
 #include <chrono>
 #include <cstdint>
@@ -23,4 +23,4 @@ void delay(uint64_t ms)
     while (millis() - start < ms);
 }
 
-#endif /* BUILD_EMU */
+#endif /* #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__) */

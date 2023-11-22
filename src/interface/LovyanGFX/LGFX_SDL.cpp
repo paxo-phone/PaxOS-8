@@ -1,6 +1,14 @@
-#include "../../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
 
-#ifdef BUILD_EMU
+#include <stdint.h>
+#include <string.h>
+
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
 #include <thread>
 

@@ -1,6 +1,6 @@
 #include "thread.hpp"
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
 void new_thread(bool core, void(*func)(void*), void* arg)
 {
@@ -10,7 +10,7 @@ void new_thread(bool core, void(*func)(void*), void* arg)
 
 #endif
 
-#ifdef BUILD_PAXO
+#ifdef ESP32
 
 void new_thread(bool core, void(*func)(void*), void* arg)
 {

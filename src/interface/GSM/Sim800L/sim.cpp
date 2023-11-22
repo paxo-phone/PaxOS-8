@@ -6,13 +6,13 @@
 const char *daysOfWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" };
 const char *daysOfMonth[12] = { "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Novembre", "Decembre"};
 
-#ifdef BUILD_PAXO
+#ifdef ESP32
     SoftwareSerial SIM800Serial(26, 27);
 #endif
 
 void GSM::init()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         pinMode(32, OUTPUT);
         if(SIM800Serial)
             SIM800Serial.end();
@@ -29,7 +29,7 @@ void GSM::init()
 
 bool GSM::moduleCheck()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     while(SIM800Serial.available())
     {
         char c = SIM800Serial.read();
@@ -57,7 +57,7 @@ bool GSM::moduleCheck()
         else
             return false;
     #endif
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     return true;
     #endif
 
@@ -66,7 +66,7 @@ bool GSM::moduleCheck()
 
 void GSM::initRequests()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     delay(100);
     SIM800Serial.print(F("AT+CMGF=1\r\n"));
     delay(100);
@@ -165,7 +165,7 @@ void GSM::add_key(Key key)
 
 void GSM::write(char c)
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     SIM800Serial.write(c);
     Serial.write(c);
     #endif
@@ -179,7 +179,7 @@ void GSM::gsm_print(std::string s)
 
 void GSM::get_data()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     while(SIM800Serial.available())
     {
         char c = SIM800Serial.read();
@@ -191,14 +191,14 @@ void GSM::get_data()
 
 void GSM::askForMessages()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     add_request({&GSM::getNewMessagesMODE, &GSM::getNewMessagesGET, &GSM::getNewMessagesPARSE, &GSM::getNewMessagesClear});
     #endif
 }
 
 void GSM::askForMessagesPrio()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     add_request({&GSM::getNewMessagesMODE, &GSM::getNewMessagesGET, &GSM::getNewMessagesPARSE, &GSM::getNewMessagesClear}, 1);
     #endif
 }
@@ -283,7 +283,7 @@ void GSM::getNewMessagesClear()
 
 void GSM::sendNewMessageMODE(std::string number, std::string message)
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         print("[GSM] I: message to " + number);
         locked = true;
         this->number_buffer = number;
@@ -298,7 +298,7 @@ void GSM::sendNewMessageMODE(std::string number, std::string message)
 
 void GSM::sendNewMessageRequest()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         data="";
 
         this->gsm_print("AT+CMGF=1\r\n");
@@ -415,17 +415,17 @@ void GSM::makeCall(string number)
 
 void GSM::getHour()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     add_request({&GSM::askForHour, &GSM::parseHour});
     #endif
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     time_t nowTime = time(0);
     parseHourFromComputer(&nowTime);
     #endif
     print("getHour");
 }
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void GSM::parseHourFromComputer(time_t* time) {
     struct tm* formattedTime;
     formattedTime = gmtime(time);
@@ -469,10 +469,10 @@ void GSM::parseHour()
 
 void GSM::getNetworkQuality()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     add_request({&GSM::askNetworkQuality, &GSM::parseNetworkQuality});
     #endif
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     quality = 4;
     #endif
 }
@@ -498,10 +498,10 @@ void GSM::parseNetworkQuality()
 
 void GSM::getBatteryLevel()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     add_request({&GSM::askBatteryLevel, &GSM::parseBatteryLevel});
     #endif
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     batteryLevel = 4;
     #endif
 }

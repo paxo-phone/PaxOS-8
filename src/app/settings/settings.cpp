@@ -11,7 +11,7 @@ class Settings : public CppAppContainer
         while (!home_button.pressed())
         {
             win.updateAll();
-            #ifdef BUILD_EMU
+            #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                 SDL_Delay(20);
             #endif
         }

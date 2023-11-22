@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     #include <atomic>
 
     struct Rectangle {
@@ -41,7 +41,7 @@ using namespace std;
 
 // cette partie est simplement pour activer les processus qui different entre arduino / pc
 
-#ifdef BUILD_PAXO
+#ifdef ESP32
 void setup() // initialize paxos v8
 {
     //esp_task_wdt_init(10000, 0);
@@ -51,7 +51,7 @@ void setup() // initialize paxos v8
     esp_task_wdt_deinit();
 #endif
     
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initialize paxos v8
     {
     shouldUS = shouldUpdateScreen;

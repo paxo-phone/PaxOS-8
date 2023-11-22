@@ -1,9 +1,17 @@
 #ifndef WEBDRIVER_HPP
 #define WEBDRIVER_HPP
 
-#include "../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
 
-#ifdef BUILD_PAXO
+#include <stdint.h>
+#include <string.h>
+
+#ifdef ESP32
 
 #include <HTTPClient.h>
 #include <WiFi.h>
