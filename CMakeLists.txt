@@ -52,7 +52,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(CURL REQUIRED) # Add this line to find cURL
 
     include_directories(${SDL2_INCLUDE_DIRS})
-    target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl) # Link to cURL
+    target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl -lstdc++fs) # Link to cURL
 
     target_link_libraries(PaxOS8 PRIVATE m)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
