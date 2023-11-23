@@ -7,6 +7,9 @@
 #include "../../widgets/gui.hpp"
 #include "../interface.hpp"
 
+#define HOME_BUTTON_PIN 33 // 32 pour l'ancien modèle
+
+
 void HomeButton::init()
 {
     #ifdef ESP32
@@ -65,5 +68,5 @@ bool HomeButton::needStandbyMod()
     return timer_delay + timer < millis(); 
 }
 
-HomeButton HOME_BUTTON_PIN;
+HomeButton home_button;
 #endif

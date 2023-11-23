@@ -13,7 +13,6 @@
 
 #include "interface.hpp"
 
-#define HOME_BUTTON_PIN 33 // 32 pour l'ancien modèle
 
 class HomeButton
 {
