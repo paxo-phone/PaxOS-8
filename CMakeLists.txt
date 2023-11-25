@@ -28,7 +28,7 @@ file(GLOB_RECURSE ignored_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEP
 
 list(REMOVE_ITEM src ${ignored_src})
 
-file(GLOB_RECURSE gfx_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
+file(GLOB gfx_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
     "./src/interface/LovyanGFX/LGFX_SDL.cpp"
     "./src/interface/LovyanGFX/lgfx/Fonts/efont/*.c"
     "./src/interface/LovyanGFX/lgfx/Fonts/IPA/*.c"
