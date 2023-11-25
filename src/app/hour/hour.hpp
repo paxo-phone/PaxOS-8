@@ -17,6 +17,7 @@ class Hour : public CppAppContainer
         label->setBorderSize(5);
         label->setRadius(20);
         label->setFontSize(15);
+        label->setVerticalAlignment(DOWN_ALIGNMENT);
         label->setItalic(true);
         label->setBold(true);
         label->setHorizontalAlignment(RIGHT_ALIGNMENT);

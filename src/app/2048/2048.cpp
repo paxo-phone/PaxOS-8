@@ -104,6 +104,10 @@ void Game_2048::launch()
 
         draw();
 
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
+            void flushScreen();
+        #endif
+
         while(touch.isTouch()) touch.update();
     }
 
@@ -214,10 +218,6 @@ void Game_2048::draw()
     S.setTextColor(0x0000);
     S.drawCenterString(std::to_string(score).c_str(), 160, 400, &fonts::Font4);
     S.pushSprite(&tft_root, 0, 25);
-    
-    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
-        void flushScreen();
-    #endif
 }
 
 #endif

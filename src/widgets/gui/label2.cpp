@@ -195,7 +195,9 @@ void Label2::draw()
         renderBuffer->print(line.c_str());
         renderBuffer->pushRotateZoomWithAA(&l_tft,
                                         getWidth()/2,
-                                        getRadius()/2 + getBorderSize() + renderBuffer->fontHeight()/2 + (renderBuffer->fontHeight() + m_lineHeightSpacing) * i,
+                                        getRadius()/2 + getBorderSize() + renderBuffer->fontHeight()/2 + (renderBuffer->fontHeight() + m_lineHeightSpacing) * i
+                                            + ((this->getVerticalAlignment() == CENTER_ALIGNMENT) ? (getUsableHeight()/2 - (toRealConverter(renderBuffer->fontHeight() + m_lineHeightSpacing) * lines.size())/2) : (0))
+                                            + ((this->getVerticalAlignment() == DOWN_ALIGNMENT) ? (getUsableHeight() - (toRealConverter(renderBuffer->fontHeight() + m_lineHeightSpacing) * lines.size())) : (0)),
                                         0,
                                         1/m_factor,
                                         1/m_factor,
