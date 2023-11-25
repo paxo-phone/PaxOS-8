@@ -25,8 +25,8 @@ Window::Window(std::string title) : Gui(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
     addChild(bar);
     
     hourLabel = new Label(110, 0, 100, CONTROL_BAR_SIZE, ((gsm.hours>9)?("0"):("")) + to_string(gsm.hours) + ":" + ((gsm.minutes>9)?("0"):("")) + to_string(gsm.minutes));
-        hourLabel->fontHeight = 20;
-        hourLabel->bold = true;
+        hourLabel->setFontSize(20);
+        hourLabel->setBold(true);
         hourLabel->setTextColor(COLOR_BLACK);
         hourLabel->setHorizontalAlignment(CENTER_ALIGNMENT);
         hourLabel->setVerticalAlignment(CENTER_ALIGNMENT);
@@ -149,7 +149,7 @@ void Window::virtual_update()
     }
     if(widgetPressed != nullptr)
     {
-        if(widgetPressed->getType()==LABEL_TYPE && reinterpret_cast<Label*>(widgetPressed)->editable)
+        if(widgetPressed->getType()==LABEL_TYPE && reinterpret_cast<Label*>(widgetPressed)->canBeEdited())
         {
             keyboard->link(reinterpret_cast<Label*>(widgetPressed));
         }else if (widgetPressed->getType()==KEYBOARD_TYPE)

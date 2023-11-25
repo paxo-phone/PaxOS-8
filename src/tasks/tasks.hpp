@@ -128,6 +128,7 @@ class Interval
 
     ~Interval()
     {
+        if(callback != nullptr)
         delete callback;
     }
 };
@@ -140,12 +141,12 @@ void addEventListener(CallbackClass* callback, ConditionClass* condition, bool a
 
 void removeEventListener(CallbackClass* callback, ConditionClass* condition, EventHandler* pEventHandler = &eventHandler);
 
-uint16_t setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventHandler = &eventHandler);
+uint32_t setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventHandler = &eventHandler);
 
 void removeTimeout(uint32_t id, EventHandler* pEventHandler = &eventHandler);
 
 /// Add a reccruring task to pEventHandler, returns its id in pEventHandler.
-uint16_t setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler = &eventHandler);
+uint32_t setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler = &eventHandler);
 
 
 /// Remove a reccuring task from pEventHandler with its id.

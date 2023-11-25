@@ -12,8 +12,8 @@ class Contact : public CppAppContainer
     
     static void loadContacts(bool force = false);
     static void saveContacts();
-    static uint16_t contactPage();
-    static void editContact(bool create = false, uint16_t index = -1);
+    static int16_t contactPage();
+    static void editContact(bool create = false, int16_t index = -1);
     static void showContact(int16_t index);
 
     struct OneContact

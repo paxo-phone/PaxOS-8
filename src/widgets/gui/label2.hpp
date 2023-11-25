@@ -1,60 +1,89 @@
-#ifndef __LABEL_HPP__
-#define __LABEL_HPP__
+#ifndef Label_HPP
+#define Label_HPP
 
 #include <string.h>
 #include "../gui_class.hpp"
 #include "../../interface/screen.hpp"
 
+using namespace std;
+
 #define DEFAULT_LINE_SPACING 5
 
-extern const GFXfont *fontsList[3][4][4];
-extern string fontsNamesList[];
+/*const GFXfont *allFronts[3][4][4] = {
+{
+    {&FreeSans9pt7b, &FreeSans12pt7b, &FreeSans18pt7b, &FreeSans24pt7b},
+    {&FreeSansOblique9pt7b, &FreeSansOblique12pt7b, &FreeSansOblique18pt7b, &FreeSansOblique24pt7b},
+    {&FreeSansBold9pt7b, &FreeSansBold12pt7b, &FreeSansBold18pt7b, &FreeSansBold24pt7b},
+    {&FreeSansBoldOblique9pt7b, &FreeSansBoldOblique12pt7b, &FreeSansBoldOblique18pt7b, &FreeSansBoldOblique24pt7b}
+},
+{
+    {&FreeMono9pt7b, &FreeMono12pt7b, &FreeMono18pt7b, &FreeMono24pt7b},
+    {&FreeMonoOblique9pt7b, &FreeMonoOblique12pt7b, &FreeMonoOblique18pt7b, &FreeMonoOblique24pt7b},
+    {&FreeMonoBold9pt7b, &FreeMonoBold12pt7b, &FreeMonoBold18pt7b, &FreeMonoBold24pt7b},
+    {&FreeMonoBoldOblique9pt7b, &FreeMonoBoldOblique12pt7b, &FreeMonoBoldOblique18pt7b, &FreeMonoBoldOblique24pt7b}
+},
+{
+    {&FreeSerif9pt7b, &FreeSerif12pt7b, &FreeSerif18pt7b, &FreeSerif24pt7b},
+    {&FreeSerifItalic9pt7b, &FreeSerifItalic12pt7b, &FreeSerifItalic18pt7b, &FreeSerifItalic24pt7b},
+    {&FreeSerifBold9pt7b, &FreeSerifBold12pt7b, &FreeSerifBold18pt7b, &FreeSerifBold24pt7b},
+    {&FreeSerifBoldItalic9pt7b, &FreeSerifBoldItalic12pt7b, &FreeSerifBoldItalic18pt7b, &FreeSerifBoldItalic24pt7b}
+}};*/
+
+extern const lgfx::U8g2font *allFonts[3][4][4];
+
+// /paxo/system/fronts/roboto.vlw
+
+extern string allFontsNames[];
 
 class Keyboard;
 
 class Label2 : public Gui
 {
-    public:
+public:
+    GUI_TYPE getType(){return LABEL_TYPE;}
 
-        GUI_TYPE getType(){return LABEL_TYPE;}
+    Label2();
+    Label2(int16_t x, int16_t y, int16_t width, int16_t height, std::string text = "");
 
-        Label2();
-        Label2(int16_t x, int16_t y, std::string text = "");
-        Label2(int16_t x, int16_t y, int16_t width, int16_t height, std::string text = "");
+    void draw();
+    void free(){}
 
-        ~Label2();
+    LGFX_Sprite* selfDetermination();
+    void updateSizes() { delete selfDetermination(); }
 
-        void draw(void);
-        void free(void){}
+    // text
+    string text;
+    void setText(string text){this->text = text; rendered=false; }
+    string getText(){return this->text;}
 
-        uint16_t getUsableWidth(void); // retourne la largeur réelle maximale utilisée par le texte (sans les marge bordure etc...)
-        uint16_t getUsableHeight(void);
-        LGFX_Sprite* getSprite(void); // retourne un sprite déjà paramètré pour le rendu
+    // text color
+    color_t textColor;
+    void setTextColor(color_t color){textColor = color;}
+    color_t getTextColor(){return textColor;}
+    uint16_t getTextWidth();
 
-        void setTextColor(color_t color);
-        void setBold(bool bold);
-        void setItalic(bool italic);
-        void setFontSize(uint8_t s);
+    // font
+    string frontName = "mono";
+    const lgfx::U8g2font *front;
+    uint8_t fontHeight;
+    uint8_t lineSpacing = DEFAULT_LINE_SPACING;
+    unsigned int textWidth = 0;
+    bool bold = false;
+    bool italic = false;
 
-    private:
+        // self determination
+        uint16_t halfRadius = 0;
+        uint16_t finalHeight = 0;
+        uint16_t totalMarginX = 0;
+        uint16_t totalMarginY = 0;
+        uint16_t totalTextWidth = 0;
+        uint16_t autoMarginYForText = 0;
+        float textFactor = 1.0; // *factor to convert to virtual screen and /factor to convert to physical screen (>1)
 
-        std::vector<std::string> parse(void); // découpe le texte en lignes
-        uint16_t toSpriteConverter(uint16_t s); // convertir une taille réelle sur l'écran en équivalent dans le buffer de rendu
-        uint16_t toRealConverter(uint16_t s); // convertir une taille du buffer de rendu en équivalent sur l'écran physique
-
-        float m_factor; // facteur entre le buffer de rendu et les mesures réelles sur l'écran
-
-        std::string m_fontName;
-        uint8_t m_fontHeight;
-        uint16_t m_lineHeightSpacing;
-        bool m_bold;
-        bool m_italic;
-        GFXfont *m_font;
-
-        color_t m_textColor;
-        bool m_linked;
-        std::string m_text;
-        LGFX_Sprite* renderBuffer;
+    Keyboard* key = nullptr;
+    bool editable = false;
+    bool linked = false;
+    void link(Keyboard* keyboard){this->key = keyboard;}
 };
 
 #endif

@@ -121,7 +121,7 @@ void removeEventListener(CallbackClass* callback, ConditionClass* condition, Eve
     delete condition;
 }
 
-uint16_t setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventHandler) // OK
+uint32_t setTimeout(CallbackClass* callback, uint32_t timeout, EventHandler* pEventHandler) // OK
 {
     Timeout* ntimeout = new Timeout(callback, timeout);
     pEventHandler->timeouts.push_back(ntimeout);
@@ -142,7 +142,7 @@ void removeTimeout(uint32_t id, EventHandler* pEventHandler) // OK
 }
 
 /// Add a reccruring task to pEventHandler, returns its id in pEventHandler.
-uint16_t setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler) // OK
+uint32_t setInterval(CallbackClass* callback, uint32_t interval, EventHandler* pEventHandler) // OK
 {
     Interval* ninterval = new Interval(callback, interval);
     pEventHandler->intervals.push_back(ninterval);
@@ -153,12 +153,13 @@ uint16_t setInterval(CallbackClass* callback, uint32_t interval, EventHandler* p
 /// Remove a reccuring task from pEventHandler with its id.
 void removeInterval(uint32_t id, EventHandler* pEventHandler) // OK
 {
-    for (uint16_t i = 0; i < pEventHandler->intervals.size(); i++)
+    for (uint32_t i = 0; i < pEventHandler->intervals.size(); i++)
     {
         if(pEventHandler->intervals[i]->id == id)
         {
-            pEventHandler->intervals.erase(pEventHandler->intervals.begin() + i);
             delete pEventHandler->intervals[i];
+            pEventHandler->intervals.erase(pEventHandler->intervals.begin() + i);
+            return;
         }
     }
 }
