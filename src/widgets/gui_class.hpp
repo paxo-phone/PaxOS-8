@@ -13,9 +13,6 @@
 
 #include <vector>
 
-#define WIDTH 320
-#define HEIGHT 480
-
 #include "../interface/screen.hpp"
 
 #include "color.hpp"

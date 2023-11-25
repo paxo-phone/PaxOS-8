@@ -9,5 +9,6 @@
 #include "GSM/GSM.hpp"
 #include "button.hpp"
 #include "lights.hpp"
+#include "screen.hpp"
 
 #endif
