@@ -36,7 +36,7 @@ std::string shell::cmd_str[] = { "echo",
     "help",
     "reboot",
     "messages",
-    "phb",
+    "home",
     "newmsg" };
 
 shell::ArgList shell::tokenize(const string& line, char delimiter)

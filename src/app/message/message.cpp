@@ -9,7 +9,7 @@ void Message::main()
 {
     while(!home_button.pressed())
     {
-        uint16_t contactIndex = Contact::contactPage();
+        int16_t contactIndex = Contact::contactPage();
         if(contactIndex == -1)
             break;
 

@@ -15,7 +15,7 @@ class Phone : public CppAppContainer
     {
         Window win("phone");
 
-        Box* numberBox = new Box(AUTO, AUTO, AUTO, 60);
+        Box* numberBox = new Box(AUTO, 0, AUTO, 60);
             win.addChild(numberBox);
             numberBox->setBorderSize(1); numberBox->setBorderColor(0);
 
@@ -74,7 +74,7 @@ class Phone : public CppAppContainer
 
             if (numberLabel->isTouched())
             {
-                uint16_t contactIndex = Contact::contactPage();
+                int16_t contactIndex = Contact::contactPage();
                 if(contactIndex != -1)
                     numberLabel->setText(Contact::contacts[contactIndex].number);
             }

@@ -116,7 +116,7 @@ uint16_t Contact::contactPage()
     }
 }
 
-void Contact::showContact(uint16_t index)
+void Contact::showContact(int16_t index)
 {
     if(index == -1)
         return;
