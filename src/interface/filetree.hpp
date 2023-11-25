@@ -1,14 +1,22 @@
 #ifndef __FILE_TREE__
 #define __FILE_TREE__
 
-#include "../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
+
+#include <stdint.h>
+#include <string.h>
 #include <cstdio>
 #include <vector>
 #include <string>
 
 using namespace std;
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     #include <filesystem>
     #include <fstream>
     #include <cstdio>
@@ -21,7 +29,7 @@ using namespace std;
         #include <direct.h>
     #endif
 #endif
-#ifdef BUILD_PAXO
+#ifdef ESP32
     #define SD_CS 4
     #include "FS.h"
     #include "SD.h"
@@ -33,18 +41,18 @@ using namespace std;
 namespace storage
 {
     /**
-     * @brief Initialize the storage system (specific to BUILD_PAXO).
+     * @brief Initialize the storage system (specific to ESP32).
      */
     void init();
 
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
         /// Get the absolute path of a relative path that is inside the paxos folder.
         ///
         /// Needed only on macOS because if PaxOS's emulator is compiled and ran in Xcode, the binary that would be running is in a `Debug/` or `Release/` directory instead of directly in the project's directory.
         string getMacOSPath(const string& basePath);
         #endif
-    #endif /* BUILD_EMU */
+    #endif /* #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__) */
 
 
     /**

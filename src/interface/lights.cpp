@@ -15,7 +15,7 @@ namespace light
 
     void init(void)
     {
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
             ledcSetup(PWM1_CH, PWM1_FREQ, PWM1_RES);
             ledcAttachPin(LED_PIN, PWM1_CH);
         #endif
@@ -23,7 +23,7 @@ namespace light
 
     void setAnalogState(int16_t targetState)
     {
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
         
         static int16_t currentState = 0;
 
@@ -44,7 +44,7 @@ namespace light
             }
         }
 
-        #endif /* BUILD_PAXO */
+        #endif /* ESP32 */
     }
 
     void turnOn(void) 

@@ -7,7 +7,7 @@
 #include "../../interface/filestream.hpp"
 #include "../../interface/interface.hpp"
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void flushScreen();
 #endif
 
@@ -109,7 +109,7 @@ bool Snake::start() // Returns a boolean indicating whether to restart the game 
             }
 
             snakeTimer = millis();
-            #ifdef BUILD_EMU
+            #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                 flushScreen();
             #endif
         }
@@ -149,7 +149,7 @@ bool Snake::start() // Returns a boolean indicating whether to restart the game 
         if(home_button.pressed())
             return false;
         
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }
@@ -164,7 +164,7 @@ bool Snake::gameOver() // Returns a boolean indicating whether to restart the ga
     tft_root.setCursor(0, 0);
     tft_root.write("\n\n        Click anywhere on the screen to restart");
     
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         flushScreen();
     #endif
     while(true)
@@ -175,7 +175,7 @@ bool Snake::gameOver() // Returns a boolean indicating whether to restart the ga
         if(home_button.pressed())
             return false;
         
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }

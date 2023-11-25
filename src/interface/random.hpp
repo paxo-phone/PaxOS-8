@@ -1,9 +1,17 @@
 #ifndef RANDOM_HPP
 #define RANDOM_HPP
 
-#include "../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
 
-#ifdef BUILD_EMU
+#include <stdint.h>
+#include <string.h>
+
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
 #include <cstdint>
 #include <cstdlib>
@@ -18,6 +26,6 @@
 
 int16_t random(const int16_t start, const int16_t end);
 
-#endif /* BUILD_EMU */
+#endif /* #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__) */
 
 #endif /* RANDOM_HPP */

@@ -122,7 +122,7 @@ void parser::eval_exp3(double &result)
             result = result / temp;
             break;
         case '%':
-            result = std::fmod(result,temp);
+            result = fmod(result,temp);
             break;
         }
     }

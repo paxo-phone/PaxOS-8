@@ -207,7 +207,7 @@ void Minecraft::main()
             touch.resetScrollVertical();
         }
                 
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }
@@ -254,7 +254,7 @@ void Minecraft::processChunks(LGFX_Sprite* output)
         renderChunk(chunks_indexs[chunks_indexs.size()+i-1], output);
     //renderChunk(chunks_indexs[chunks_indexs.size()-1], &output);
     
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         *shouldUS = true;
     #endif
 }

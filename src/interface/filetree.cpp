@@ -2,14 +2,14 @@
 
 void storage::init()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         pinMode(15, OUTPUT);
         digitalWrite(15, 1);
         SD.begin(SD_CS);
     #endif
 }
 
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     #ifdef __APPLE__
     /// Get the absolute path of a relative path that is inside the paxos folder.
     ///
@@ -34,13 +34,13 @@ void storage::init()
         return basePath;
     }
     #endif
-#endif /* BUILD_EMU */
+#endif /* #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__) */
 
 vector<string> storage::listdir(string path, bool onlyDirs)
 {
     vector<string> list;
 
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         path="storage/"+path;
         #ifdef __APPLE__
             path = getMacOSPath(path);
@@ -58,7 +58,7 @@ vector<string> storage::listdir(string path, bool onlyDirs)
             return r;
     #endif
 
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         File dir = SD.open(("/storage/"+path).c_str());
         if(dir)
         {
@@ -83,7 +83,7 @@ vector<string> storage::listdir(string path, bool onlyDirs)
 
 bool storage::exists(const string& path)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     struct stat s;
         #ifdef __APPLE__
             return stat(getMacOSPath(path).c_str(), &s) == 0;
@@ -91,14 +91,14 @@ bool storage::exists(const string& path)
             return stat(path.c_str(), &s) == 0;
         #endif
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         return SD.exists(("/storage/"+path).c_str());
     #endif
 }
 
 bool storage::isfile(const string& filepath)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
     fstream file(storage::getMacOSPath(filepath), ios::in);
         #else
@@ -106,7 +106,7 @@ bool storage::isfile(const string& filepath)
         #endif
         return file.good();
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         File file = SD.open(("/storage/"+filepath).c_str());
         if(file)
         {
@@ -127,7 +127,7 @@ bool storage::isfile(const string& filepath)
 
 bool storage::isdir(const string& dirpath)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         if( isfile(dirpath) )
             return false;
 
@@ -144,7 +144,7 @@ bool storage::isdir(const string& dirpath)
                 return false;
         #endif
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         File file = SD.open(("/storage/"+dirpath).c_str());
         if(file)
         {
@@ -164,7 +164,7 @@ bool storage::isdir(const string& dirpath)
 
 bool storage::newdir(const string& dirpath)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     #ifdef WIN32
         return _mkdir(dirpath.c_str()) == 0;
     #else
@@ -175,14 +175,14 @@ bool storage::newdir(const string& dirpath)
         #endif
     #endif
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         return SD.mkdir(("/storage/"+dirpath).c_str());
     #endif
 }
 
 bool storage::newfile(const string& filepath)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
             std::ofstream file(getMacOSPath(filepath), std::ios::out);
         #else
@@ -190,7 +190,7 @@ bool storage::newfile(const string& filepath)
         #endif
         return file.is_open();
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         File file = SD.open(("/storage/"+filepath).c_str(), FILE_WRITE);
         if(file)
         {
@@ -205,28 +205,28 @@ bool storage::newfile(const string& filepath)
 
 bool storage::remove(const string& path)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
             return ::remove(getMacOSPath(path).c_str()); // from cstdio
         #else
             return ::remove(path.c_str()); // from cstdio
         #endif
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         return SD.remove(("/storage/"+path).c_str());
     #endif
 }
 
 bool storage::rename(const string& from, const string& to)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
             return ::rename(getMacOSPath(from).c_str(), getMacOSPath(to).c_str()); // from cstdio
         #else
             return ::rename(from.c_str(), to.c_str()); // from cstdio
         #endif
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         return SD.rename(("/storage/"+from).c_str(), ("/storage/"+to).c_str());
     #endif
 }

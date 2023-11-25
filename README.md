@@ -55,10 +55,10 @@ The emulator should then open in a window.
 
 Troubleshooting :
 - If you get the message `ld: warning: ignoring file /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib': found architecture 'arm64', required architecture 'x86_64'` followed by an error you can do:
-  1. `cp lib/SDL2-2.28.2/libSDL2-2.0.0-2.dylib /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib`
+  1. `cp src/lib/SDL2-2.28.2/libSDL2-2.0.0-2.dylib /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib`
   2. Disable the quarantine for the file: `xattr -dr com.apple.quarantine /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib`
 - If you get the message ` Could not find a package configuration file provided by "SDL2" with any of the following names:`:
-  1. Add `-DCMAKE_PREFIX_PATH=lib/SDL2-2.28.2/` to your cmake command.
+  1. Add `-DCMAKE_PREFIX_PATH=src/lib/SDL2-2.28.2/` to your cmake command.
 
 # License
 This project is distributed under the CC0 1.0 Universal License. See [LICENSE](/LICENSE) for more information.

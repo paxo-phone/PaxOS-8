@@ -2,7 +2,7 @@
 
 storage::FileStream::FileStream()
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         this->stream = new fstream();
     #endif
 }
@@ -10,7 +10,7 @@ storage::FileStream::FileStream()
 
 storage::FileStream::FileStream(const string& path, OPEN_MODE mode, bool erase)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
     #ifdef WIN32
         if(mode == READ)
@@ -45,7 +45,7 @@ storage::FileStream::FileStream(const string& path, OPEN_MODE mode, bool erase)
 
     #endif
 
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         if(mode == READ)
             file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_READ);
 
@@ -59,17 +59,17 @@ storage::FileStream::FileStream(const string& path, OPEN_MODE mode, bool erase)
 
 storage::FileStream::~FileStream()
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         delete stream;
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         file.close();
     #endif
 }
 
 void storage::FileStream::open(const string& path, OPEN_MODE mode, bool erase)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
         #ifdef __APPLE__
             if(mode == READ)
@@ -92,7 +92,7 @@ void storage::FileStream::open(const string& path, OPEN_MODE mode, bool erase)
         #endif
     #endif
 
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         if(mode == READ)
             file = SD.open(const_cast<char*>(("/storage/"+path).c_str()), FILE_READ);
 
@@ -106,10 +106,10 @@ void storage::FileStream::open(const string& path, OPEN_MODE mode, bool erase)
 
 void storage::FileStream::close(void)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         this->stream->close();
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         file.close();
     #endif
 }
@@ -117,7 +117,7 @@ void storage::FileStream::close(void)
 
 string storage::FileStream::read(void)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         string o;
         
         string line;
@@ -126,7 +126,7 @@ string storage::FileStream::read(void)
 
         return o;
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         string o = "";
         while (file.available())
             o+=file.read();
@@ -136,13 +136,13 @@ string storage::FileStream::read(void)
 
 string storage::FileStream::readline(void)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         string line;
         getline(*(this->stream), line);
         return line;
-    #endif /* BUILD_EMU */
+    #endif /* #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__) */
 
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         string line = "";
 
         char c = file.read();
@@ -154,7 +154,7 @@ string storage::FileStream::readline(void)
 
         return line;
 
-    #endif /* BUILD_PAXO */
+    #endif /* ESP32 */
 }
 
 /**
@@ -163,13 +163,13 @@ string storage::FileStream::readline(void)
  */
 string storage::FileStream::readword(void)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         string word;
         *(this->stream) >> word;
         return word;
-    #endif /* BUILD_EMU */
+    #endif /* #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__) */
 
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         string line = "";
 
         char c = file.read();
@@ -183,7 +183,7 @@ string storage::FileStream::readword(void)
 
         return line;
 
-    #endif /* BUILD_PAXO */
+    #endif /* ESP32 */
 }
 
 
@@ -193,10 +193,10 @@ string storage::FileStream::readword(void)
  */
 char storage::FileStream::readchar(void)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         return (this->stream)->get();
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         return file.read();
     #endif
 }
@@ -207,10 +207,10 @@ char storage::FileStream::readchar(void)
  */
 void storage::FileStream::write(const string& str)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         *(this->stream) << str;
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         file.print(const_cast<char*>(str.c_str()));
     #endif
 }
@@ -222,10 +222,10 @@ void storage::FileStream::write(const string& str)
  */
 void storage::FileStream::write(const char& c)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         *(this->stream) << c;
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         file.write(c);
     #endif
 }
@@ -236,10 +236,10 @@ void storage::FileStream::write(const char& c)
  */
 bool storage::FileStream::is_open(void)
 {
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         return this->stream->is_open();
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         return file;
     #endif
 }

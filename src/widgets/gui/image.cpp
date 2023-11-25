@@ -97,14 +97,14 @@ bool Image::parseJpgHeader(std::string filename, int16_t *width, int16_t *height
 void drawImageFromStorage(LGFX_Sprite* sprite, std::string filename, Image::ImageFormat format)
 {
     //print("drawing image from storage...");
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
             filename = storage::getMacOSPath("storage/" + filename);
         #else
             filename = "storage/" + filename;
         #endif
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         filename = "/storage/" + filename;
     #endif
 

@@ -153,7 +153,7 @@ void Calcul::buildGui()
             }
             actualCalculLabel->setText(currentInput);
         }
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }

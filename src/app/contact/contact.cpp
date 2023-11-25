@@ -109,7 +109,7 @@ uint16_t Contact::contactPage()
             {
                 return -1;
             }
-            #ifdef BUILD_EMU
+            #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                 SDL_Delay(20);
             #endif
         }
@@ -186,7 +186,7 @@ void Contact::showContact(int16_t index)
             if(home_button.pressed())
                 return;
             
-            #ifdef BUILD_EMU
+            #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                 SDL_Delay(20);
             #endif
         }
@@ -272,7 +272,7 @@ void Contact::editContact(bool create, uint16_t index)
         if(home_button.pressed() || back->isTouched())
             return;
         
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }

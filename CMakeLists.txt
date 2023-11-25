@@ -30,7 +30,7 @@ file(GLOB_RECURSE ignored_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEP
 
 list(REMOVE_ITEM src ${ignored_src})
 
-file(GLOB_RECURSE gfx_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
+file(GLOB gfx_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
     "./src/interface/LovyanGFX/LGFX_SDL.cpp"
     "./src/interface/LovyanGFX/lgfx/Fonts/efont/*.c"
     "./src/interface/LovyanGFX/lgfx/Fonts/IPA/*.c"
@@ -54,7 +54,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(CURL REQUIRED) # Add this line to find cURL
 
     include_directories(${SDL2_INCLUDE_DIRS})
-    target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl) # Link to cURL
+    target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl -lstdc++fs) # Link to cURL
 
     target_link_libraries(PaxOS8 PRIVATE m)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")

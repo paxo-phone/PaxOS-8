@@ -7,7 +7,7 @@
 #include "filetree.hpp"
 #include "shell.hpp"
 #include "GSM/GSM.hpp"
-#include "button/button.hpp"
+#include "button.hpp"
 #include "lights.hpp"
 
 #endif

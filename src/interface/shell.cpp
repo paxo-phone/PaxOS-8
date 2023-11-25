@@ -11,7 +11,7 @@ CommandShell command_shell;
 
 void shell::init()
 {
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
         Serial.begin(115200);
     #endif
 }
@@ -243,10 +243,10 @@ int shell::cmd_help(const ArgList& args)
 int shell::cmd_reboot(const ArgList& args)
 {
     // to fill
-    #ifdef BUILD_EMU
+    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     abort();
     #endif
-    #ifdef BUILD_PAXO
+    #ifdef ESP32
     ESP.restart();
     #endif
     
@@ -284,7 +284,7 @@ void thread_shell(void* data)
     while(true)
     {
         std::string data = input();
-        #ifdef BUILD_PAXO
+        #ifdef ESP32
             shell::execute(data.substr(0, data.length()-1));
         #else
             shell::execute(data);

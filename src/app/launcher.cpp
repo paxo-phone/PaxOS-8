@@ -73,12 +73,12 @@ void launcher()
 
             home_button.clear();
 
-            #ifdef OLD_PAXO
-                pinMode(22, OUTPUT); // 22 for new and 14 for old
-                digitalWrite(22, 1);
-            #endif
+            // #ifdef OLD_PAXO
+            //     pinMode(22, OUTPUT); // 22 for new and 14 for old
+            //     digitalWrite(22, 1);
+            // #endif
 
-            #ifdef BUILD_PAXO
+            #ifdef ESP32
                 setCpuFrequencyMhz(40);
                 Serial.end();
                 Serial.begin(115200);
@@ -89,12 +89,12 @@ void launcher()
             {
                 eventHandler.update();
                 home_button.resetStandbyMod();
-                #ifdef BUILD_EMU
+                #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                     SDL_Delay(1);
                 #endif
             }
 
-            #ifdef BUILD_PAXO
+            #ifdef ESP32
                 setCpuFrequencyMhz(240);
                 Serial.end();
                 Serial.begin(115200);
@@ -105,7 +105,7 @@ void launcher()
 
             light::turnOn();
         }
-        #ifdef BUILD_EMU
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
         #endif
     }

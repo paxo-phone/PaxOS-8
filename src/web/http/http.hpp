@@ -1,7 +1,15 @@
-#include "../../includes.h"
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
+
+#include <stdint.h>
+#include <string.h>
 #include "../web.hpp"
 
-#ifdef BUILD_PAXO
+#ifdef ESP32
 
 #include <HTTPClient.h>
 #include <WiFi.h>
@@ -33,7 +41,7 @@ public:
 };
 
 #endif
-#ifdef BUILD_EMU
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
 #include <iostream>
 #include <string>
