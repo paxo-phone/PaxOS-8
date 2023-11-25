@@ -51,7 +51,7 @@ void launcher()
             {
                 App::appList[i]->run(); // launch application
                 
-                home_button.clear(); // clear the exit of the application
+                // home_button::clear(); // clear the exit of the application
             }
         }
 
@@ -66,12 +66,12 @@ void launcher()
             label->setText(dayName + "\n" + to_string(gsm.days) + " " + monthName);
         }
 
-        if(home_button.pressed())
+        if(home_button::isPressed())
         {
             // standby mode
             light::turnOff();
 
-            home_button.clear();
+            // home_button::clear();
 
             // #ifdef OLD_PAXO
             //     pinMode(22, OUTPUT); // 22 for new and 14 for old
@@ -85,10 +85,10 @@ void launcher()
                 gsm.init();
             #endif
 
-            while (!home_button.pressed())
+            while (!home_button::isPressed())
             {
                 eventHandler.update();
-                home_button.resetStandbyMod();
+                // home_button::resetStandbyMod();
                 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                     SDL_Delay(1);
                 #endif
@@ -101,7 +101,7 @@ void launcher()
                 gsm.init();
             #endif
 
-            home_button.clear();
+            // home_button::clear();
 
             light::turnOn();
         }

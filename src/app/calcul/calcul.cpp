@@ -82,7 +82,7 @@ void Calcul::buildGui()
     {
         window.updateAll();
 
-        if(home_button.pressed())
+        if(home_button::isPressed())
         {
             window.removechildren();
             return;

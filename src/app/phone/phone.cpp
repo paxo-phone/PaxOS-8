@@ -24,13 +24,13 @@ void Phone::during_calling(std::string number)
     {
         win.updateAll();
 
-        if (home_button.pressed() || hangOff->isTouched())
+        if (home_button::isPressed() || hangOff->isTouched())
         {
             gsm.answerCall(false); // hang off
             break;
         }
 
-        home_button.resetStandbyMod();
+        // home_button::resetStandbyMod();
 
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);
@@ -60,7 +60,7 @@ void Phone::get_a_call()
     {
         win.updateAll();
 
-        if (home_button.pressed() || hangOff->isTouched())
+        if (home_button::isPressed() || hangOff->isTouched())
         {
             gsm.answerCall(false); // hang off
             break;

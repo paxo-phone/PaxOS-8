@@ -59,8 +59,8 @@ int main(int, char**)
   std::thread sub_thread(loopThread);
   for (;;)
   {
-      std::this_thread::yield();
-      lgfx::Panel_sdl::sdl_event_handler(&shouldUpdateScreen);
+    std::this_thread::yield();
+    lgfx::Panel_sdl::sdl_event_handler(&shouldUpdateScreen);
     SDL_Delay(5);
   }
 }

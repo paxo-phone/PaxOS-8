@@ -1,5 +1,5 @@
-#ifndef BUTTON_HARD_HPP
-#define BUTTON_HARD_HPP
+#ifndef HOME_BUTTON_HPP
+#define HOME_BUTTON_HPP
 
 #ifdef ESP32
     #include <Arduino.h>
@@ -8,35 +8,18 @@
     #include <esp_task_wdt.h>
 #endif
 
-#include <stdint.h>
-#include <string.h>
-
-#include "interface.hpp"
-
-
-class HomeButton
+namespace home_button
 {
-    public:
-    void init();
-    void update();
-    void clear();
-    bool pressed();
+    /**
+     * @brief Initialise le bouton home
+    */
+    void init(void);
 
-    uint16_t state = 0;
+    /**
+     * @brief Vérifie si le bouton home est pressé
+     * @return Vrai si le bouton home est pressé, faux sinon
+    */
+    bool isPressed(void);
+}
 
-    private:
-    unsigned int button_chrono = 0;
-
-    public:
-    // standby mod
-
-    uint64_t timer = 0;
-    uint32_t timer_delay = 30000; // milliseconds
-
-    void resetStandbyMod();
-    bool needStandbyMod();
-};
-
-extern HomeButton home_button;
-
-#endif
+#endif /* HOME_BUTTON_HPP */

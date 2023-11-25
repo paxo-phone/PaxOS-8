@@ -31,13 +31,13 @@ void TouchManager::update()
         if (z && lastClick + timeToWait > millis())
         {
             lastClick = millis();
-            home_button.resetStandbyMod();
+            // home_button::resetStandbyMod();
             stateTouch = 1;
         }
         if (z)
         {
             lastClick = millis();
-            home_button.resetStandbyMod();
+            // home_button::resetStandbyMod();
             stateTouch = 1;
         }
         if (!z && lastClick + timeToWait < millis())
@@ -145,7 +145,7 @@ bool TouchManager::isTouchRead() // simple detector
 
     if (z)
     {
-        home_button.resetStandbyMod();
+        // home_button::resetStandbyMod();
     }
     
     if(tx<0 || tx>320 || ty<0 || ty>480)

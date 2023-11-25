@@ -23,7 +23,7 @@ class Hour : public CppAppContainer
         label->enabledBackground = true;
         win.addChild(label);
 
-        while (!home_button.pressed())
+        while (!home_button::isPressed())
         {
             win.updateAll();
             #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)

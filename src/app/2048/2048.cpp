@@ -48,7 +48,7 @@ void Game_2048::launch()
         uint8_t slide = 0; // 1 right, 2 left, 3 up, 4 down
         while (true)
         {
-            if(home_button.pressed())
+            if(home_button::isPressed())
             {
                 S.deleteSprite();
                 return;

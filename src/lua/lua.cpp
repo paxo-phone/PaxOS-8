@@ -39,7 +39,7 @@ void LuaInterpreter::runApp() {
     execute_lua(L, LUA_MAIN_FUNCTION);
 
     // Also checks that a window has been set!
-    while(!home_button.pressed() && current_root != nullptr) {
+    while(!home_button::isPressed() && current_root != nullptr) {
         current_root->updateAll();
         for (LuaEvent event : events) {
             if(event.ref->isTouched()){

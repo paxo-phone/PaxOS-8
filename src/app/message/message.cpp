@@ -7,7 +7,7 @@ bool Message::notif = false;
 
 void Message::main()
 {
-    while(!home_button.pressed())
+    while(!home_button::isPressed())
     {
         uint16_t contactIndex = Contact::contactPage();
         if(contactIndex == -1)
@@ -24,7 +24,7 @@ void Message::main()
 
         bool reload = false;
 
-        while(reload==false && !home_button.pressed())
+        while(reload==false && !home_button::isPressed())
         {
             Window win("message");
             win.setMarginX(0);
@@ -113,7 +113,7 @@ void Message::main()
                     }
                 }
 
-                if (home_button.pressed())
+                if (home_button::isPressed())
                 {
                     reload = true;
                     break;

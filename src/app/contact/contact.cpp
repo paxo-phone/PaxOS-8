@@ -46,7 +46,7 @@ void Contact::saveContacts()
 
 void Contact::main()
 {
-    while(!home_button.pressed())
+    while(!home_button::isPressed())
         showContact(contactPage());
 }
 
@@ -105,7 +105,7 @@ uint16_t Contact::contactPage()
                 break; // reload page
             }
 
-            if(home_button.pressed())
+            if(home_button::isPressed())
             {
                 return -1;
             }
@@ -183,7 +183,7 @@ void Contact::showContact(uint16_t index)
                 return;
             }
 
-            if(home_button.pressed())
+            if(home_button::isPressed())
                 return;
             
             #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
@@ -269,7 +269,7 @@ void Contact::editContact(bool create, uint16_t index)
             return;
         }
 
-        if(home_button.pressed() || back->isTouched())
+        if(home_button::isPressed() || back->isTouched())
             return;
         
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)

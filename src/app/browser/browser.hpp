@@ -44,7 +44,7 @@ class Browser : public CppAppContainer
             Iframe* iframe = new Iframe(html, 0, 50, 310, 480-CONTROL_BAR_SIZE-win.getMarginY()-50);
             win.addChild(iframe);
 
-            while (!home_button.pressed())
+            while (!home_button::isPressed())
             {
                 win.updateAll();
                 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
