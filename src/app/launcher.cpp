@@ -18,10 +18,11 @@ void launcher()
     std::string dayName = daysOfWeek[(day+=month<3?year--:year-2,23*month/9+day+4+year/4-year/100+year/400)%7];
     std::string monthName = daysOfMonth[month==0?1:(month-1)];
 
-    Label* label = new Label(AUTO, 31, AUTO, 55, dayName + "\n" + to_string(gsm.days) + " " + monthName);
+    Label* label = new Label(AUTO, 31, AUTO, AUTO, dayName + "\n" + to_string(gsm.days) + " " + monthName);
     label->setHorizontalAlignment(CENTER_ALIGNMENT);
-    label->fontHeight = 25;
-    label->setColor(COLOR_GREY);
+    label->setFontSize(25);
+    label->setFontName("sans");
+    label->setColor(COLOR_BLACK);
     label->setBackgroundColor(COLOR_LIGHT);
     win.addChild(label);
 

@@ -1,10 +1,3 @@
-#ifdef ESP32
-    #include <Arduino.h>
-    #include "soc/rtc_wdt.h"
-    #include "esp_heap_caps.h"
-    #include <esp_task_wdt.h>
-#endif
-
 #include <stdint.h>
 #include <string.h>
 
@@ -57,10 +50,11 @@ static void loopThread(void)
 int main(int, char**)
 {
   std::thread sub_thread(loopThread);
-  for (;;)
+  while (true)
   {
     std::this_thread::yield();
-    lgfx::Panel_sdl::sdl_event_handler(&shouldUpdateScreen);
+    bool s = true;
+    lgfx::Panel_sdl::sdl_event_handler(&s);
     SDL_Delay(5);
   }
 }

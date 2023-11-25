@@ -12,7 +12,7 @@ void Phone::during_calling(std::string number)
     Window win("calling");
 
     Label* number_label = new Label(AUTO, AUTO, AUTO, AUTO, number);
-    number_label->fontHeight = 30;
+    number_label->setFontSize(30);
     number_label->setHorizontalAlignment(CENTER_ALIGNMENT);
     win.addChild(number_label);
 
@@ -44,7 +44,7 @@ void Phone::get_a_call()
     Window win("calling");
 
     Label* number_label = new Label(AUTO, AUTO, AUTO, AUTO, number);
-    number_label->fontHeight = 30;
+    number_label->setFontSize(30);
     number_label->setHorizontalAlignment(CENTER_ALIGNMENT);
     win.addChild(number_label);
 

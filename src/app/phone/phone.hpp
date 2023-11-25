@@ -15,17 +15,20 @@ class Phone : public CppAppContainer
     {
         Window win("phone");
 
-        Box* numberBox = new Box(AUTO, AUTO, AUTO, 60);
+        Box* numberBox = new Box(AUTO, 0, AUTO, 70);
+            numberBox->hasEvent = true;
             win.addChild(numberBox);
             numberBox->setBorderSize(1); numberBox->setBorderColor(0);
 
             Label* numberLabel = new Label(AUTO, AUTO, AUTO, AUTO, "+33");
                 numberBox->addChild(numberLabel);
-                numberLabel->fontHeight=30;
+                numberLabel->setFontSize(30);
+                numberLabel->hasEvent = false;
                 numberLabel->setHorizontalAlignment(CENTER_ALIGNMENT);
             Label* clicktogetcontact = new Label(AUTO, 42, AUTO, AUTO, "click to see contacts");
                 numberBox->addChild(clicktogetcontact);
-                clicktogetcontact->fontHeight=15;
+                clicktogetcontact->setFontSize(15);
+                clicktogetcontact->hasEvent = false;
                 clicktogetcontact->setHorizontalAlignment(CENTER_ALIGNMENT);
 
         Box* keyboardnumber = new Box(30, 106, 235, 320);
@@ -41,7 +44,7 @@ class Phone : public CppAppContainer
                 button->setRadius(32);
                 button->setBorderSize(0);
                 button->setTextColor(COLOR_BLACK);
-                button->fontHeight=20;
+                button->setFontSize(20);
                 button->setBackgroundColor(COLOR_EXTRA_LIGHT);
                 button->setHorizontalAlignment(CENTER_ALIGNMENT);
                 button->setVerticalAlignment(CENTER_ALIGNMENT);
@@ -72,9 +75,9 @@ class Phone : public CppAppContainer
                 }
             }
 
-            if (numberLabel->isTouched())
+            if (numberBox->isTouched())
             {
-                uint16_t contactIndex = Contact::contactPage();
+                int16_t contactIndex = Contact::contactPage();
                 if(contactIndex != -1)
                     numberLabel->setText(Contact::contacts[contactIndex].number);
             }

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.18)
 project(PaxOS8)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
 if (WIN32)
     message("> Building for Windows")
 elseif(APPLE)

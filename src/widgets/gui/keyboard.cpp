@@ -37,8 +37,8 @@ Keyboard::Keyboard() : Gui(15, 323, 290, 157)
     space_label->setRadius(0); space_label->setBorderSize(0); space_label->enabledBackground=true; space_label->setBackgroundColor(COLOR_LIGHT); space_label->setTextColor(COLOR_BLACK);
     return_label->setRadius(0); return_label->setBorderSize(0); return_label->enabledBackground=true; return_label->setBackgroundColor(COLOR_LIGHT); return_label->setTextColor(COLOR_BLACK);
 
-    space_label->fontHeight = 17;
-    return_label->fontHeight = 17;
+    space_label->setFontSize(17);
+    return_label->setFontSize(17);
 
     space_label->setHorizontalAlignment(CENTER_ALIGNMENT);
     return_label->setHorizontalAlignment(CENTER_ALIGNMENT);
@@ -212,12 +212,12 @@ void Keyboard::link(Label* label)
 {
     Label* oldlabel = this->label;
     if(oldlabel!=nullptr)
-        oldlabel->linked=false;
+        oldlabel->m_linked=false;
     this->label = label;
 
     if(label != nullptr)
     {
-        label->linked=true;
+        label->m_linked=true;
         label->rendered=false;
         enable();
     }else

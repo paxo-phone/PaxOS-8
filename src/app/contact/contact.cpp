@@ -50,7 +50,7 @@ void Contact::main()
         showContact(contactPage());
 }
 
-uint16_t Contact::contactPage()
+int16_t Contact::contactPage()
 {
     while (true)
     {
@@ -65,9 +65,9 @@ uint16_t Contact::contactPage()
             label->setHorizontalAlignment(CENTER_ALIGNMENT);
             label->setBorderSize(0);
             label->setRadius(0);
-            label->fontHeight=29;
+            label->setFontSize(29);
             win.addChild(label);
-            label->editable=true; // just for testing
+            label->setCanBeEdited(true); // just for testing
 
         std::vector<Gui*> contactList;
 
@@ -77,8 +77,8 @@ uint16_t Contact::contactPage()
             label->enabledBackground=true;
             label->setBorderSize(0);
             label->setRadius(0);
-            label->fontHeight=20;
-            label->bold=true;
+            label->setFontSize(20);
+            label->setBold(true);
             contactList.push_back(label);
             win.addChild(label);
         }
@@ -116,7 +116,7 @@ uint16_t Contact::contactPage()
     }
 }
 
-void Contact::showContact(uint16_t index)
+void Contact::showContact(int16_t index)
 {
     if(index == -1)
         return;
@@ -133,15 +133,15 @@ void Contact::showContact(uint16_t index)
         Label *name = new Label(75, 59, 210, 38, contacts[index].name);
         name->enabledBackground=false;
         name->setTextColor(COLOR_BLACK);
-        name->fontHeight=20;
-        name->bold = true;
+        name->setFontSize(20);
+        name->setBold(true);
         win.addChild(name);
 
         Label *number = new Label(75, 119, 210, 28, contacts[index].number);
         number->enabledBackground=false;
         number->setTextColor(COLOR_BLACK);
-        number->fontHeight=20;
-        number->bold = true;
+        number->setFontSize(20);
+        number->setBold(true);
         win.addChild(number);
 
         Image* contactImage = new Image("apps/contact/con_name.png", 45, 66);
@@ -191,10 +191,9 @@ void Contact::showContact(uint16_t index)
             #endif
         }
     }
-    
 }
 
-void Contact::editContact(bool create, uint16_t index)
+void Contact::editContact(bool create, int16_t index)
 {
     if(index == -1 && !create)
         return;
@@ -207,16 +206,16 @@ void Contact::editContact(bool create, uint16_t index)
     name->setBackgroundColor(COLOR_LIGHT);
     name->enabledBackground=true;
     name->setTextColor(COLOR_BLACK);
-    name->fontHeight=20;
-    name->bold = true;
+    name->setFontSize(20);
+    name->setBold(true);
     win.addChild(name);
 
     Label *number = new Label(75, 119, 210, 28, (create)?("+33"):(contacts[index].number));
     number->setBackgroundColor(COLOR_LIGHT);
     number->enabledBackground=true;
     number->setTextColor(COLOR_BLACK);
-    number->fontHeight=20;
-    number->bold = true;
+    number->setFontSize(20);
+    number->setBold(true);
     win.addChild(number);
 
     Image* contactImage = new Image("apps/contact/con_name.png", 45, 66);

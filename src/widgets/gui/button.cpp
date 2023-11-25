@@ -7,8 +7,8 @@
 
 Button::Button() : Label()
 {
-    this->fontHeight = 20;
-    this->bold = true;
+    this->setFontSize(20);
+    this->setBold(true);
     enabledBackground=true;
     
     setBackgroundColor(COLOR_PRIMARY);
@@ -21,8 +21,8 @@ Button::Button() : Label()
 
 Button::Button(int16_t x, int16_t y, int16_t width, int16_t height, std::string text) : Label(x, y, width, height, text)
 {
-    this->fontHeight = 20;
-    this->bold = true;
+    this->setFontSize(20);
+    this->setBold(true);
     enabledBackground=true;
     
     setBackgroundColor(COLOR_PRIMARY);

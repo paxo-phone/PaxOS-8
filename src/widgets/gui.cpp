@@ -191,6 +191,9 @@ void Gui::determineSize()
                 setY(parent->children[i-1]->getY() + parent->children[i-1]->getHeight() + 10);
             }
         }
+
+        if(getType() == LABEL_TYPE && autoH)
+            setHeight((reinterpret_cast<Label*>(this)->getTextHeight()));
         
         if(autoW)
             width=parent->getWidth()-getRelativeX()*2;
