@@ -146,7 +146,7 @@ bool Snake::start() // Returns a boolean indicating whether to restart the game 
         }
         else if(interprete == 2)
             interprete = 0;
-        if(home_button.pressed())
+        if(home_button::isPressed())
             return false;
         
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
@@ -172,7 +172,7 @@ bool Snake::gameOver() // Returns a boolean indicating whether to restart the ga
         touch.update();
         if(touch.isTouch())
             break;
-        if(home_button.pressed())
+        if(home_button::isPressed())
             return false;
         
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)

@@ -87,7 +87,7 @@ class Phone : public CppAppContainer
                 make_a_call(numberLabel->getText());
             }
 
-            if (home_button.pressed())
+            if (home_button::isPressed())
             {
                 break;
             }

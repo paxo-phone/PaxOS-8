@@ -13,7 +13,7 @@ class Map : public CppAppContainer
     {
         Window win("map");
 
-        while (!home_button.pressed())
+        while (!home_button::isPressed())
         {
             win.updateAll();
             #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)

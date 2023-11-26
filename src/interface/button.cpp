@@ -1,72 +1,39 @@
-#ifndef BUTTON_HARD_CPP
-#define BUTTON_HARD_CPP
-
 #include "button.hpp"
 
-#include "../../tasks/tasks.hpp"
-#include "../../widgets/gui.hpp"
-#include "../interface.hpp"
-
-#define HOME_BUTTON_PIN 33 // 32 pour l'ancien modèle
-
-
-void HomeButton::init()
-{
-    #ifdef ESP32
-    pinMode(HOME_BUTTON_PIN, INPUT_PULLUP);
-    #endif
-    setInterval(new CallbackMethod<HomeButton>(this, &HomeButton::update), 10);
-}
-
-void HomeButton::update()
-{
-    #ifdef ESP32
-    bool input = !digitalRead(HOME_BUTTON_PIN);
-    #else
-    bool input = false;
-    #endif
-
-    if ((!input && state == 1) || needStandbyMod())
-    {
-        state = 2;
-        resetStandbyMod();
-        return;
-    }
-
-    if (input && state == 0)
-    {
-        state = 1;
-        return;
-    }
-
-    if (input && state == 1);
-    {
-        // do nothing
-    }
-}
-
-bool HomeButton::pressed()
-{
-    return state == 2;
-}
-
-void HomeButton::clear()
-{
-    state = 0;
-}
-
-void HomeButton::resetStandbyMod() 
-{
-    timer = millis();
-}
-
-bool HomeButton::needStandbyMod() 
-{
-    #ifndef ESP32
-        return false;
-    #endif
-    return timer_delay + timer < millis(); 
-}
-
-HomeButton home_button;
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
 #endif
+
+namespace home_button
+{
+    #define HOME_BUTTON_PIN 33 // 32 pour l'ancien modèle
+
+    void init(void)
+    {
+        #ifdef ESP32
+            pinMode(HOME_BUTTON_PIN, INPUT_PULLUP);
+        #endif
+    }
+
+    bool isPressed(void)
+    {
+        #ifdef ESP32
+            return (HIGH == digitalRead(HOME_BUTTON_PIN));
+        #endif
+
+        #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
+            /*
+                Peut être mettre en place un event handler
+                avec sdl pour pouvoir utiliser le home button
+                sur l'émulateur
+            */  
+            return false;
+        #endif
+
+        return false;
+    }
+
+}

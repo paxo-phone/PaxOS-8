@@ -24,7 +24,6 @@ int (*shell::cmd_func[])(const ArgList &) = { &shell::cmd_echo,
     &shell::cmd_help,
     &shell::cmd_reboot,
     &shell::cmd_getMessages,
-    &shell::cmd_pressHomeButton,
     &shell::addMessage };
 string shell::currentDirectory = "/";
 
@@ -36,7 +35,6 @@ std::string shell::cmd_str[] = { "echo",
     "help",
     "reboot",
     "messages",
-    "home",
     "newmsg" };
 
 shell::ArgList shell::tokenize(const string& line, char delimiter)
@@ -256,12 +254,6 @@ int shell::cmd_reboot(const ArgList& args)
 int shell::cmd_getMessages(const ArgList& args)
 {
     gsm.getNewMessagesMODE();
-    return SUCCESS;
-}
-
-int shell::cmd_pressHomeButton(const ArgList& args)
-{
-    home_button.state = 2;
     return SUCCESS;
 }
 

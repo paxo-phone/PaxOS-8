@@ -143,7 +143,7 @@ void Minecraft::main()
     processChunks(&output);
     processChunks(&output);
             
-    while (!home_button.pressed())
+    while (!home_button::isPressed())
     {
         keys.updateAll();
         
