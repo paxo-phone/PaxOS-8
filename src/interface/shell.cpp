@@ -24,7 +24,8 @@ int (*shell::cmd_func[])(const ArgList &) = { &shell::cmd_echo,
     &shell::cmd_help,
     &shell::cmd_reboot,
     &shell::cmd_getMessages,
-    &shell::addMessage };
+    &shell::addMessage,
+    &shell::cmd_pressHomeButton };
 string shell::currentDirectory = "/";
 
 std::string shell::cmd_str[] = { "echo",
@@ -35,7 +36,8 @@ std::string shell::cmd_str[] = { "echo",
     "help",
     "reboot",
     "messages",
-    "newmsg" };
+    "newmsg",
+    "home" };
 
 shell::ArgList shell::tokenize(const string& line, char delimiter)
 {
@@ -267,6 +269,16 @@ int shell::addMessage(const ArgList& args)
     GSM::Message msg = {args[0], encoder.HexStringToString(args[1]), "10/11/2006"};
     msgs.push_back(msg);
     gsm.saveMessages(msgs);
+
+    return SUCCESS;
+}
+
+int shell::cmd_pressHomeButton(const ArgList& args)
+{
+    if(args.size()!=0)
+        return ERROR;
+
+    // @raphael!!! tu finis la gestion du bouton home!!
 
     return SUCCESS;
 }
