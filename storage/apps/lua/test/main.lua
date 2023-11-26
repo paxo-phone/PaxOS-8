@@ -4,14 +4,6 @@ state = false;
 function run()
     local i = 0
 
-    print("Starting")
-
-    while (i < 10000) do
-      i = i + 1
-    end
-
-    print("done")
-
     local window = p.window("Mon application")
     local label  = p.button(window, 10, 150, 100, 100)
     local box    = p.box(window, 10, 10, 100, 100)

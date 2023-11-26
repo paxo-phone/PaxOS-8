@@ -4,7 +4,54 @@
 
 Window* LuaInterpreter::current_root = nullptr;
 vector<LuaEvent> LuaInterpreter::events;
+vector<LuaEventInterval*> LuaInterpreter::intervals;
+vector<LuaEventTimeOut*> LuaInterpreter::timeOuts;
+LuaEventTimeOut* LuaInterpreter::timeOutToRemove = nullptr;
+uint64_t LuaInterpreter::timerFromStart;
 std::string LuaInterpreter::dir;
+
+LuaEventInterval::LuaEventInterval(lua_State *L, int callback_ref, int interval)
+{
+    this->callback_ref = callback_ref;
+    this->L = L;
+    this->id = setInterval(new CallbackMethod<LuaEventInterval>(this, &LuaEventInterval::call), interval);
+}
+LuaEventInterval::~LuaEventInterval()
+{
+    removeInterval(this->id);
+}
+void LuaEventInterval::call(void)
+{
+    lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+    if (lua_pcall(L, 0, 0, 0) != 0) {
+        // Gestion des erreurs en cas d'échec de l'appel
+        print(lua_tostring(L, -1));
+        // Faites quelque chose avec l'erreur...
+        lua_pop(L, 1);  // Nettoyez le message d'erreur de la pile
+    }
+}
+
+LuaEventTimeOut::LuaEventTimeOut(lua_State *L, int callback_ref, int timer)
+{
+    this->callback_ref = callback_ref;
+    this->L = L;
+    this->id = setTimeout(new CallbackMethod<LuaEventTimeOut>(this, &LuaEventTimeOut::call), timer);
+}
+LuaEventTimeOut::~LuaEventTimeOut()
+{
+    removeTimeout(this->id);
+}
+void LuaEventTimeOut::call(void)
+{
+    lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+    if (lua_pcall(L, 0, 0, 0) != 0) {
+        // Gestion des erreurs en cas d'échec de l'appel
+        print(lua_tostring(L, -1));
+        // Faites quelque chose avec l'erreur...
+        lua_pop(L, 1);  // Nettoyez le message d'erreur de la pile
+    }
+    LuaInterpreter::timeOutToRemove = this;
+}
 
 LuaInterpreter::LuaInterpreter(string dir) {
     LuaInterpreter::dir = dir;
@@ -17,24 +64,26 @@ void LuaInterpreter::loadScript(std::string filename) {
 }
 
 void LuaInterpreter::runApp() {
+    
     // Creating lua state and adding base libraries and our own library
     lua_State* L = luaL_newstate();
     lua_setallocf(L, custom_allocator, NULL);
     luaL_openlibs(L);
     luaL_requiref(L, "paxolib", luaopen_paxolib, 1);
     lua_pop(L, 1); // Remove the library from the stack
-
     // Load our lua file
     if (!luaL_loadstring(L, data.c_str())) {
         if (lua_pcall(L, 0, LUA_MULTRET, 0)) {
-            printf("Error executing Lua script: %s", lua_tostring(L, -1));
+            print("Error executing Lua script: " + std::string(lua_tostring(L, -1)));
             return;
         }
     } else {
-        printf("Error loading Lua script");
+        print("Error loading Lua script");
         return;
     }
+    print("LuaInterpreter");
 
+    timerFromStart = millis();
     // Execute our lua app
     execute_lua(L, LUA_MAIN_FUNCTION);
 
@@ -47,6 +96,18 @@ void LuaInterpreter::runApp() {
                 lua_call(L, 0, 0);
             }
        }
+       if(timeOutToRemove != nullptr)
+       {
+            for (uint i = 0; i < timeOuts.size(); i++)
+            {
+                if (timeOuts[i] == timeOutToRemove)
+                {
+                    delete timeOuts[i];
+                    timeOuts.erase(timeOuts.begin() + i);
+                    break;
+                }
+            }
+       }
     }
 
     // LUA_GC will take care of memory!
@@ -56,6 +117,14 @@ void LuaInterpreter::runApp() {
     current_root = nullptr;
     events.clear();
     data.clear();
+
+    for (uint i = 0; i < intervals.size(); i++)
+        delete intervals[i];
+    intervals.clear();
+
+    for (uint i = 0; i < timeOuts.size(); i++)
+        delete timeOuts[i];
+    timeOuts.clear();
 }
 
 // Fills metatable for GUI components
@@ -402,6 +471,39 @@ int LuaInterpreter::special_sleep(lua_State* L) {
     // sleep(lua_tonumber(L, -1) * 1000);
     printf("Should be sleeping now?!");
     return 0;
+}
+
+int LuaInterpreter::setInterval(lua_State* L)
+{
+    if(!(lua_gettop(L) == 2) || !lua_isfunction(L, 1) || !lua_isinteger(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    int timer = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    int ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    print("timer: " + to_string(timer));
+    LuaEventInterval* event = new LuaEventInterval(L, ref, timer);
+    intervals.push_back(event);
+    return 0;
+}
+
+int LuaInterpreter::setTimeOut(lua_State* L)
+{
+    if(!(lua_gettop(L) == 2) || !lua_isfunction(L, 1) || !lua_isinteger(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    int timer = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    int ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    print("timer: " + to_string(timer));
+    LuaEventTimeOut* event = new LuaEventTimeOut(L, ref, timer);
+    timeOuts.push_back(event);
+    return 0;
+}
+
+int LuaInterpreter::monotonic(lua_State* L) {
+    if(!(lua_gettop(L) == 0))
+        return luaL_error(L, LUA_FUNC_ERR);
+    
+    lua_pushnumber(L, millis()-timerFromStart);
+
+    return 1;
 }
 
 // Easy checks for good pointer

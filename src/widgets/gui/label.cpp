@@ -233,8 +233,6 @@ void Label::draw()
 
     std::vector<std::string> lines = parse();
 
-    std::cout << m_factor << " " << int(m_fontHeight) << " " << m_fontName << std::endl;
-
     for (int i = 0; i < lines.size(); i++)
     {
         std::string line;

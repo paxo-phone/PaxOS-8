@@ -45,12 +45,37 @@ typedef struct LuaEvent {
     int callback_ref;
 } LuaEvent;
 
+class LuaEventInterval
+{
+    public:
+    LuaEventInterval(lua_State *L, int callback_ref, int interval);
+    ~LuaEventInterval();
+    int id;
+    int callback_ref;
+    lua_State *L;
+    void call(void);
+};
+
+class LuaEventTimeOut
+{
+    public:
+    LuaEventTimeOut(lua_State *L, int callback_ref, int timer);
+    ~LuaEventTimeOut();
+    int id;
+    int callback_ref;
+    lua_State *L;
+    void call(void);
+};
+
 class LuaInterpreter {
     private:
         static Window* current_root;
         std::string data = "";
         static std::string dir;
         static vector<LuaEvent> events;
+        static vector<LuaEventInterval*> intervals;
+        static vector<LuaEventTimeOut*> timeOuts;
+        static uint64_t timerFromStart;
         static void fill_gui_metatable(lua_State* L, const char* table_name, lua_CFunction f, const luaL_Reg *l);
 
     public:
@@ -85,6 +110,11 @@ class LuaInterpreter {
         static int readFile(lua_State* L);
         static int writeFile(lua_State* L);
         static int special_sleep(lua_State* L);
+        static int setInterval(lua_State* L);
+        static int setTimeOut(lua_State* L);
+        static int monotonic(lua_State* L);
+
+        static LuaEventTimeOut* timeOutToRemove;
 };
 
 // Gui commands bindings
@@ -117,12 +147,16 @@ static const luaL_Reg paxolib[] = {
     {"sleep",      LuaInterpreter::special_sleep},
     {"readFile",   LuaInterpreter::readFile},
     {"writeFile",  LuaInterpreter::writeFile},
+    {"setInterval",LuaInterpreter::setInterval},
+    {"setTimeOut", LuaInterpreter::setTimeOut},
+    {"monotonic",  LuaInterpreter::monotonic},
     /* placeholders */
     {"COLOR_LIGHT",     NULL},
     {"COLOR_BLACK",     NULL},
     {"COLOR_PRIMARY",   NULL},
     {"COLOR_SUCCESS",   NULL},
     {"COLOR_WHITE",     NULL},
+    //{"AUTO",            NULL},
     {NULL, NULL}
 };
 
@@ -131,7 +165,8 @@ static const std::map<std::string, int> color_bindings = {
     {"COLOR_BLACK",     COLOR_BLACK},
     {"COLOR_PRIMARY",   COLOR_PRIMARY},
     {"COLOR_SUCCESS",   COLOR_SUCCESS},
-    {"COLOR_WHITE",     COLOR_BLUE}
+    {"COLOR_WHITE",     COLOR_BLUE},
+    {"AUTO",            AUTO}
 };
 
 // Making our own primitives available to lua by adding it as a library.
