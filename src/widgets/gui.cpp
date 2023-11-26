@@ -438,7 +438,7 @@ bool Gui::update()
 
             EventOnReleased();
 
-            print ("released");
+            // print ("released");
 
             if(onreleased!=nullptr)
             {

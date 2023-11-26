@@ -43,11 +43,11 @@ bool GSM::moduleCheck()
             if(data.find("SMS Ready") != std::string::npos)
             {
                 data="";
-                print ("module ok");
+                console.log("module ok");
                 return true;
             }
             else
-                print ("not responding...:" + data);
+                console.log("not responding...:" + data);
             timer = millis();
             
             //SIM800Serial.end();
@@ -109,17 +109,17 @@ void GSM::update()
     {
         if (actual_cmd_count==0 || data.find("OK")!=std::string::npos || data.find("ERROR")!=std::string::npos || timeout+10000 < millis())
         {
-            // print("Request: 1/" + to_string(requests.size()));
+            // console.log("Request: 1/" + to_string(requests.size()));
             if(((data.find("ERROR")==std::string::npos && data.find("OK")!=std::string::npos) && timeout+10000 > millis() && requests[0].size()!=actual_cmd_count && !break_) || actual_cmd_count==0)
             {
                 (this->*requests[0][actual_cmd_count])();
                 timeout=millis();
                 data="";
                 actual_cmd_count++;
-                print("   func " + to_string(actual_cmd_count) + "/" + to_string(requests[0].size()));
+                console.log("   func " + to_string(actual_cmd_count) + "/" + to_string(requests[0].size()));
             }else
             {
-                print("Request ended");
+                console.log("Request ended");
 
                 requests.erase(requests.begin());
                 actual_cmd_count = 0;
@@ -132,7 +132,7 @@ void GSM::update()
                     {
                         keys[i].isDetected = false;
                         (this->*keys[i].func)();
-                        print("key detected: " + keys[i].key);
+                        console.log("key detected: " + keys[i].key);
                     }
                 }
 
@@ -206,27 +206,27 @@ void GSM::askForMessagesPrio()
 void GSM::getNewMessagesMODE()
 {
     this->gsm_print("AT+CMGF=1\r\n");
-    print("getNewMessagesMODE");
+    console.log("getNewMessagesMODE");
     
 }
 
 void GSM::getNewMessagesGET()
 {
     this->gsm_print("AT+CMGL=\"REC UNREAD\"\r\n");
-    print("getNewMessagesGET");
+    console.log("getNewMessagesGET");
 }
 
 void GSM::getNewMessagesPARSE()
 {
     std::vector<Message> messages;
 
-    print("==={\n"+data+"}===");
+    console.log("==={\n"+data+"}===");
 
     for (int64_t i = 0; i < data.size();) {
         std::string number, message, date;
         int64_t j = data.find("+CMGL:", i);
 
-        print("id: " + to_string(j));
+        console.log("id: " + to_string(j));
 
         if (j == std::string::npos)
         {
@@ -260,18 +260,18 @@ void GSM::getNewMessagesPARSE()
         if(saveMessages != nullptr)
         {
             saveMessages(messages);
-            print("[GSM] I: " + to_string(messages.size()) + " messages saved");
+            console.log("[GSM] I: " + to_string(messages.size()) + " messages saved");
         }
         else
         {
-            print("[GSM] E: Can't save messages because no function was provided");
-            print("[GSM] I: " + to_string(messages.size()) + " messages received");
+            console.log("[GSM] E: Can't save messages because no function was provided");
+            console.log("[GSM] I: " + to_string(messages.size()) + " messages received");
         }
         this->gsm_print("AT+CMGDA=\"DEL ALL\"\r\n");
     }
     else
     {
-        print("[GSM] I: No message received");
+        console.log("[GSM] I: No message received");
         break_ = true;
     }
 }
@@ -284,13 +284,13 @@ void GSM::getNewMessagesClear()
 void GSM::sendNewMessageMODE(std::string number, std::string message)
 {
     #ifdef ESP32
-        print("[GSM] I: message to " + number);
+        console.log("[GSM] I: message to " + number);
         locked = true;
         this->number_buffer = number;
         this->message_buffer = message;
         add_request({&GSM::sendNewMessageRequest}, true);
     #else
-        print("[GSM EMU] I: message to " + number);
+        console.log("[GSM EMU] I: message to " + number);
         Message messageToSend = {number, message, std::to_string(days) + "/" + std::to_string(months) + "/" + std::to_string(years)};
         gsm.saveMessages({messageToSend});
     #endif
@@ -308,18 +308,18 @@ void GSM::sendNewMessageRequest()
 
         if(data.find("\nERROR")!=std::string::npos)
         {
-            print("[GSM] E: Can't send message");
+            console.log("[GSM] E: Can't send message");
             data="";
             return;
         }
         
-        print("[GSM] I: sending number to module...");
+        console.log("[GSM] I: sending number to module...");
         data="";
         this->gsm_print("AT+CMGS=\"" + this->number_buffer + "\"\r");
 
         delay(10);
 
-        print("[GSM] I: sending message to module...");
+        console.log("[GSM] I: sending message to module...");
         
         data="";
 
@@ -330,9 +330,9 @@ void GSM::sendNewMessageRequest()
         
 
         if(data.find("\nOK")!=std::string::npos)
-            print("[GSM] I: Message sent!");
+            console.log("[GSM] I: Message sent!");
         else
-            print("[GSM] I: Message not sent...");
+            console.log("[GSM] I: Message not sent...");
     #endif
 }
 
@@ -368,7 +368,7 @@ void GSM::showCall()
         data="";
     }
 
-    print("number " + number + "is calling...");
+    console.log("number " + number + "is calling...");
 
     numberiscalling=number;
     
@@ -409,7 +409,7 @@ bool GSM::callEnded()
 void GSM::makeCall(string number)
 {
     this->gsm_print("ATD" + number + ";\r\n");
-    print("ATD" + number + ";");
+    console.log("ATD" + number + ";");
     call=true;
 }
 
@@ -422,7 +422,7 @@ void GSM::getHour()
     time_t nowTime = time(0);
     parseHourFromComputer(&nowTime);
     #endif
-    print("getHour");
+    console.log("getHour");
 }
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
@@ -449,7 +449,7 @@ void GSM::askForHour()
 
 void GSM::parseHour()
 {
-    print("parseHour");
+    console.log("parseHour");
     if(data.find("\"") == std::string::npos)
     {
         data = "";
@@ -457,14 +457,14 @@ void GSM::parseHour()
     }
     std::string data2 = data.substr(data.find("\"") + 1, data.find_last_of("\"") - 1 - data.find("\"") - 1);
 
-    print("data:" + data2);
+    console.log("data:" + data2);
     years = atoi(data2.substr(0, 2).c_str());
     months = atoi(data2.substr(3, 5-3).c_str());
     days = atoi(data2.substr(6, 8-6).c_str());
     hours = atoi(data2.substr(9, 11-9).c_str());
     minutes = atoi(data2.substr(12, 14-12).c_str());
     seconds = atoi(data2.substr(15, 17-15).c_str());
-    print(to_string(years) + " " + to_string(months) + " " + to_string(days) + " " + to_string(hours) + " " + to_string(minutes) + " " + to_string(seconds));
+    console.log(to_string(years) + " " + to_string(months) + " " + to_string(days) + " " + to_string(hours) + " " + to_string(minutes) + " " + to_string(seconds));
 }
 
 void GSM::getNetworkQuality()

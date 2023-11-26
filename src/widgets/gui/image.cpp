@@ -1,6 +1,6 @@
 #include "image.hpp"
 #include "../../interface/filestream.hpp"
-#include "../../interface/shell.hpp"
+#include "../../interface/console.hpp"
 
 #include <string>
 #include "stdint.h"
@@ -173,7 +173,7 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h) :
     this->width = w;
     this->height = h;
 
-    print (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
+    // print (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
 }
 
 Image::~Image()

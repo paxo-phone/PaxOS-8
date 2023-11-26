@@ -2,7 +2,7 @@
 #define ENCODER_HPP
 
 #include <string>
-#include "../../shell.hpp"
+#include "../../console.hpp"
 
 class Encoder
 {

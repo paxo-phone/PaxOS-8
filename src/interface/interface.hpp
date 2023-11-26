@@ -5,10 +5,13 @@
 #include "time.hpp"
 #include "filestream.hpp"
 #include "filetree.hpp"
-#include "shell.hpp"
+#include "console.hpp"
 #include "GSM/GSM.hpp"
 #include "button.hpp"
 #include "lights.hpp"
 #include "screen.hpp"
+
+#include "shell.hpp"
+#include "console.hpp"
 
 #endif

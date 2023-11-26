@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 
-#include "../../shell.hpp"
+#include "../../console.hpp"
 #include "../../../tasks/tasks.hpp"
 #include "sim.hpp"
 

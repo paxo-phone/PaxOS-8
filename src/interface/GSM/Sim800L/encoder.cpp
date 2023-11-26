@@ -2,7 +2,7 @@
 
 std::string Encoder::convertEncodedCharToChar(int chr)
 {
-    print(std::to_string(chr));
+    console.log(std::to_string(chr));
     switch (chr)
     {
         case 225: return "a";
@@ -143,16 +143,16 @@ int Encoder::HexCharToDecimal(char chr)
 std::string Encoder::HexStringToString(std::string str)
 {
     std::string result = "";
-    print("analyze...");
+    console.log("analyze...");
 
-    print(str);
+    console.log(str);
 
     for(int i=0; i<str.length(); i++)
     {
         result+=convertEncodedCharToChar(str[i]);
     }
 
-    print(result);
+    console.log(result);
 
     str=result;
     result="";
@@ -164,7 +164,7 @@ std::string Encoder::HexStringToString(std::string str)
 
     for (int i = 0; i + 3 < str.length(); i+=4)
     {
-        print(str.substr(i, 3));
+        console.log(str.substr(i, 3));
         if(str.substr(i, 3) == "D83") // emoj detected for the next 8 characters
         {
             result+=str.substr(i, 8);
@@ -172,7 +172,7 @@ std::string Encoder::HexStringToString(std::string str)
         }else
         {
             int chr = int((HexCharToDecimal(str[i])*16*16*16)+(HexCharToDecimal(str[i+1])*16*16)+(HexCharToDecimal(str[i+2])*16)+HexCharToDecimal(str[i+3]));
-            print("char " + std::to_string(i/4) + " : " + char(str[i]) + char(str[i+1])+char(str[i+2])+char(str[i+3]) + " : " + char(HexCharToDecimal(str[i])) + "," + char(HexCharToDecimal(str[i+1])) + "," + char(HexCharToDecimal(str[i+2])) + "," + char(HexCharToDecimal(str[i+3])) + " : " + char(chr));
+            console.log("char " + std::to_string(i/4) + " : " + char(str[i]) + char(str[i+1])+char(str[i+2])+char(str[i+3]) + " : " + char(HexCharToDecimal(str[i])) + "," + char(HexCharToDecimal(str[i+1])) + "," + char(HexCharToDecimal(str[i+2])) + "," + char(HexCharToDecimal(str[i+3])) + " : " + char(chr));
             if(chr>31&&chr<127) // valid ascii character
             {
                 result+=char(chr);

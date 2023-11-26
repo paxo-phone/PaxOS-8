@@ -15,7 +15,7 @@ void Message::main()
 
         std::string number = Contact::contacts[contactIndex].number;
         std::string actual_message = "";
-        print (number);
+        console.log(number);
         try
         {
             number = number.substr(number.length()-9, 9);

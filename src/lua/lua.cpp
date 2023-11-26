@@ -1,6 +1,7 @@
 #include "lua.hpp"
 #include "../interface/filestream.hpp"
 #include "../interface/interface.hpp"
+#include "../interface/console.hpp"
 
 Window* LuaInterpreter::current_root = nullptr;
 vector<LuaEvent> LuaInterpreter::events;
@@ -25,7 +26,7 @@ void LuaEventInterval::call(void)
     lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
     if (lua_pcall(L, 0, 0, 0) != 0) {
         // Gestion des erreurs en cas d'échec de l'appel
-        print(lua_tostring(L, -1));
+        console.log(lua_tostring(L, -1));
         // Faites quelque chose avec l'erreur...
         lua_pop(L, 1);  // Nettoyez le message d'erreur de la pile
     }
@@ -46,7 +47,7 @@ void LuaEventTimeOut::call(void)
     lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
     if (lua_pcall(L, 0, 0, 0) != 0) {
         // Gestion des erreurs en cas d'échec de l'appel
-        print(lua_tostring(L, -1));
+        console.log(lua_tostring(L, -1));
         // Faites quelque chose avec l'erreur...
         lua_pop(L, 1);  // Nettoyez le message d'erreur de la pile
     }
@@ -74,14 +75,14 @@ void LuaInterpreter::runApp() {
     // Load our lua file
     if (!luaL_loadstring(L, data.c_str())) {
         if (lua_pcall(L, 0, LUA_MULTRET, 0)) {
-            print("Error executing Lua script: " + std::string(lua_tostring(L, -1)));
+            console.log("Error executing Lua script: " + std::string(lua_tostring(L, -1)));
             return;
         }
     } else {
-        print("Error loading Lua script");
+        console.log("Error loading Lua script");
         return;
     }
-    print("LuaInterpreter");
+    console.log("LuaInterpreter");
 
     timerFromStart = millis();
     // Execute our lua app
@@ -479,7 +480,7 @@ int LuaInterpreter::setInterval(lua_State* L)
     int timer = lua_tointeger(L, -1);
     lua_pop(L, 1);
     int ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    print("timer: " + to_string(timer));
+    console.log("timer: " + to_string(timer));
     LuaEventInterval* event = new LuaEventInterval(L, ref, timer);
     intervals.push_back(event);
     return 0;
@@ -491,7 +492,7 @@ int LuaInterpreter::setTimeOut(lua_State* L)
     int timer = lua_tointeger(L, -1);
     lua_pop(L, 1);
     int ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    print("timer: " + to_string(timer));
+    console.log("timer: " + to_string(timer));
     LuaEventTimeOut* event = new LuaEventTimeOut(L, ref, timer);
     timeOuts.push_back(event);
     return 0;
