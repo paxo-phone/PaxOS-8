@@ -10,8 +10,7 @@
 #include "button.hpp"
 #include "lights.hpp"
 #include "screen.hpp"
-
-#include "shell.hpp"
 #include "console.hpp"
+// #include "shell.hpp"
 
 #endif

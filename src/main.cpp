@@ -58,7 +58,7 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
 
 
     Gui::initScreen();
-    new_thread(CORE_BACK, shell::thread_shell, nullptr);
+    // new_thread(CORE_BACK, shell::thread_shell, nullptr);
     storage::init();
     light::init();
     gsm.init();
