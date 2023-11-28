@@ -344,7 +344,7 @@ bool Gui::update()
     if (widgetPressed != nullptr && widgetPressed != this)
         return false;
     
-    bool focused = isFocuced();
+    bool focused = isFocused();
     bool screenTouched = touch.isTouch();
 
     bool returnValue = false;
@@ -468,7 +468,7 @@ void Gui::reload()
     renderAll();
 }
 
-bool Gui::isFocuced()
+bool Gui::isFocused()
 {
     return Touched(getAbsoluteX(), getAbsoluteY(), width, height); 
 }

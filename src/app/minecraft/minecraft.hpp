@@ -171,29 +171,29 @@ void Minecraft::main()
             processChunks(&output);
         }
         
-        if(right->isFocuced())
+        if(right->isFocused())
         {
             render->cameraX+=rotate(speed, 0, render->cameraRY, 0);
             render->cameraY+=rotate(speed, 0, render->cameraRY, 1);
         }
-        if(left->isFocuced())
+        if(left->isFocused())
         {
             render->cameraX+=rotate(-speed, 0, render->cameraRY, 0);
             render->cameraY+=rotate(-speed, 0, render->cameraRY, 1);
         }
-        if(front->isFocuced())
+        if(front->isFocused())
         {
             render->cameraX+=rotate(0, speed, render->cameraRY, 0);
             render->cameraY+=rotate(0, speed, render->cameraRY, 1);
         }
-        if(back->isFocuced())
+        if(back->isFocused())
         {
             render->cameraX+=rotate(0, -speed, render->cameraRY, 0);
             render->cameraY+=rotate(0, -speed, render->cameraRY, 1);
         }
-        if(up->isFocuced())
+        if(up->isFocused())
             render->cameraZ+=0.4;
-        if(down->isFocuced())
+        if(down->isFocused())
             render->cameraZ-=0.4;
         
         if(touch.isSlidingHorizontally())

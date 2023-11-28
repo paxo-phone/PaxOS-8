@@ -409,6 +409,25 @@ int LuaInterpreter::setText(lua_State* L) {
     return 0;
 }
 
+int LuaInterpreter::getText(lua_State* L) {
+    if (lua_gettop(L) != 1) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -1);
+    // Cast to derived class before doing anything
+    switch (gui->getType()) {
+        case GUI_TYPE::LABEL_TYPE:
+            lua_pushstring(L, (reinterpret_cast<Label*>(gui))->getText().c_str());
+            break;
+        case GUI_TYPE::BUTTON_TYPE:
+            lua_pushstring(L, (reinterpret_cast<Button*>(gui))->getText().c_str());
+            break;
+        default:
+            luaL_error(L, LUA_FUNC_ERR);
+            break; // Nothing to do here
+    }
+    return 1;
+}
+
+
 int LuaInterpreter::fillRect(lua_State* L) {
     if (lua_gettop(L) != 6) return luaL_error(L, LUA_FUNC_ERR);
     Gui *gui = get_checked_gui(L, 1);
@@ -503,6 +522,75 @@ int LuaInterpreter::monotonic(lua_State* L) {
         return luaL_error(L, LUA_FUNC_ERR);
     
     lua_pushnumber(L, millis()-timerFromStart);
+
+    return 1;
+}
+
+int LuaInterpreter::getTime(lua_State* L) {
+    if(!(lua_gettop(L) == 0))
+        return luaL_error(L, LUA_FUNC_ERR);
+        
+    lua_newtable(L);
+
+    lua_pushinteger(L, gsm.hours);
+    lua_rawseti(L, -2, 1);
+
+    lua_pushinteger(L, gsm.minutes);
+    lua_rawseti(L, -2, 2);
+
+    lua_pushinteger(L, gsm.seconds);
+    lua_rawseti(L, -2, 3);
+
+    lua_pushinteger(L, gsm.days);
+    lua_rawseti(L, -2, 4);
+
+    lua_pushinteger(L, gsm.months);
+    lua_rawseti(L, -2, 5);
+
+    lua_pushinteger(L, gsm.years);
+    lua_rawseti(L, -2, 6);
+
+
+    return 1;
+}
+
+int LuaInterpreter::setEditable(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isboolean(L, -1))
+        return luaL_error(L, LUA_FUNC_ERR);
+
+    Gui* gui       = get_checked_gui(L, -2);
+
+    if(gui->getType() != LABEL_TYPE)
+        return luaL_error(L, LUA_FUNC_ERR);
+    
+    bool isEditable = lua_toboolean(L, -1);
+    reinterpret_cast<Label*>(gui)->setCanBeEdited(isEditable);
+
+    return 0;
+}
+
+int LuaInterpreter::setFontSize(lua_State* L) {
+    if (lua_gettop(L) != 2 || !lua_isinteger(L, -1))
+        return luaL_error(L, LUA_FUNC_ERR);
+
+    Gui* gui       = get_checked_gui(L, -2);
+
+    if(gui->getType() != LABEL_TYPE)
+        return luaL_error(L, LUA_FUNC_ERR);
+    
+    uint8_t fontSize = lua_tointeger(L, -1);
+    reinterpret_cast<Label*>(gui)->setFontSize(fontSize);
+
+    return 0;
+}
+
+int LuaInterpreter::isFocused(lua_State* L) {
+    if (lua_gettop(L) != 1)
+        return luaL_error(L, LUA_FUNC_ERR);
+
+    Gui* gui       = get_checked_gui(L, -1);
+
+    lua_pushboolean(L, gui->isFocused());
 
     return 1;
 }

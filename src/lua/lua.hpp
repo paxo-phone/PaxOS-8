@@ -94,9 +94,10 @@ class LuaInterpreter {
         static int canvas(lua_State* L);
 
         static int setText(lua_State* L);   // Label
-        /*static int setFontSize(lua_State* L);
+        static int getText(lua_State* L);
+        static int setEditable(lua_State* L);
         static int setFontSize(lua_State* L);
-        static int setFontSize(lua_State* L);*/
+        /*static int setFontSize(lua_State* L);*/
 
         static int fillRect(lua_State* L); // Canvas
         static int push(lua_State* L);
@@ -110,6 +111,7 @@ class LuaInterpreter {
         static int getWidth(lua_State* L);
         static int getHeight(lua_State* L);
         static int setColor(lua_State* L);
+        static int isFocused(lua_State* L);
 
         static int onClick(lua_State* L); // Gui event
 
@@ -119,6 +121,7 @@ class LuaInterpreter {
         static int setInterval(lua_State* L);
         static int setTimeOut(lua_State* L);
         static int monotonic(lua_State* L);
+        static int getTime(lua_State* L);
 
         static LuaEventTimeOut* timeOutToRemove;
 };
@@ -138,6 +141,10 @@ static const luaL_Reg gui_common_binds[] = {
     {"fillRect",   LuaInterpreter::fillRect},
     {"push",       LuaInterpreter::push},
     {"onClick",    LuaInterpreter::onClick},
+    {"setEditable",LuaInterpreter::setEditable},
+    {"getText",    LuaInterpreter::getText},
+    {"setFontSize",LuaInterpreter::setFontSize},
+    {"isFocused",  LuaInterpreter::isFocused},
     {NULL, NULL}
 };
 
@@ -156,6 +163,8 @@ static const luaL_Reg paxolib[] = {
     {"setInterval",LuaInterpreter::setInterval},
     {"setTimeOut", LuaInterpreter::setTimeOut},
     {"monotonic",  LuaInterpreter::monotonic},
+    {"getTime",    LuaInterpreter::getTime},
+    
     /* placeholders */
     {"COLOR_LIGHT",     NULL},
     {"COLOR_BLACK",     NULL},

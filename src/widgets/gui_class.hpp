@@ -77,7 +77,7 @@ class Gui // widget system
     void reloadWidget();
 
 
-    virtual bool isFocuced();   // return true if is touched    
+    virtual bool isFocused();   // return true if is touched    
     virtual bool isTouched(); // clique relaché sur l'élément
 
 
