@@ -150,8 +150,7 @@ char Keyboard::getKey()
         return ' ';
     }
 
-    if (widgetPressed == this)
-    {
+    {   // doit être toujours verrifié
         for (uint8_t j = 0; j < 3; j++)
         {
             for (uint8_t i = 0; i < 10; i++)
@@ -183,14 +182,14 @@ char Keyboard::getKey()
             }
         }
     }
-
+    
     return 0;
 }
 
-void Keyboard::virtual_update()
+bool Keyboard::update()
 {
-    if(label==nullptr)
-        return;
+    if(label==nullptr || !isEnabled())
+        return false;
 
     char chr = getKey();
 
@@ -204,8 +203,9 @@ void Keyboard::virtual_update()
             label->setText(label->getText() + chr);
 
         delay(10);
-        return;
+        return true;
     }
+    return false;
 }
 
 void Keyboard::link(Label* label)

@@ -136,7 +136,7 @@ void Window::afterRender()
     }
 }
 
-void Window::virtual_update()
+void Window::background_update()
 {
     if(mainWindow!=this)
     {
@@ -152,12 +152,12 @@ void Window::virtual_update()
         if(widgetPressed->getType()==LABEL_TYPE && reinterpret_cast<Label*>(widgetPressed)->canBeEdited())
         {
             keyboard->link(reinterpret_cast<Label*>(widgetPressed));
-        }else if (widgetPressed->getType()==KEYBOARD_TYPE)
+        }else
         {
-            keyboard->link(nullptr);
+            if(widgetPressed->getParent()==nullptr || widgetPressed->getParent()->getType()!=KEYBOARD_TYPE)
+                keyboard->link(nullptr);
         }
     }
-    
 }
 
 #endif

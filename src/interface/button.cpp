@@ -19,7 +19,7 @@ namespace home_button
         RELEASED
     };
 
-    uint8_t status = RELEASED;
+    uint8_t status = NOT_PRESSED;
 
     void init(void)
     {

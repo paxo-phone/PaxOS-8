@@ -93,7 +93,15 @@ class LuaInterpreter {
         static int button(lua_State* L);
         static int canvas(lua_State* L);
 
-        static int setX(lua_State* L);
+        static int setText(lua_State* L);   // Label
+        /*static int setFontSize(lua_State* L);
+        static int setFontSize(lua_State* L);
+        static int setFontSize(lua_State* L);*/
+
+        static int fillRect(lua_State* L); // Canvas
+        static int push(lua_State* L);
+
+        static int setX(lua_State* L);      // style
         static int setY(lua_State* L);
         static int setWidth(lua_State* L);
         static int setHeight(lua_State* L);
@@ -102,10 +110,8 @@ class LuaInterpreter {
         static int getWidth(lua_State* L);
         static int getHeight(lua_State* L);
         static int setColor(lua_State* L);
-        static int setText(lua_State* L);
-        static int fillRect(lua_State* L);
-        static int push(lua_State* L);
-        static int onClick(lua_State* L);
+
+        static int onClick(lua_State* L); // Gui event
 
         static int readFile(lua_State* L);
         static int writeFile(lua_State* L);

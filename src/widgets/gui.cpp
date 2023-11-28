@@ -302,7 +302,7 @@ bool Gui::updateAll()
         eventHandler.update();
         touch.update();
     }
-    virtual_update();
+    background_update();
 
     if(rendered == false)
     {
@@ -314,9 +314,19 @@ bool Gui::updateAll()
 
     bool children_updated = false;
     
+    for (int i = 0; i < children.size(); i++) // Keyboard doit être update en premier car est au premier plan
+    {
+        if(children[i] != nullptr && children[i]->getType() == KEYBOARD_TYPE)
+            if(children[i]->updateAll())
+            {
+                children_updated=true;
+                console.log("keyboard update");
+            }
+    }
+
     for (int i = 0; i < children.size(); i++)
     {
-        if(children[i] != nullptr)
+        if(children[i] != nullptr && children[i]->getType() != KEYBOARD_TYPE)
             if(children[i]->updateAll()) 
                 children_updated=true;
     }
@@ -343,6 +353,7 @@ bool Gui::update()
     {
         if (widgetPressed == nullptr) // first object pressed
         {
+            console.log("Gui::update: " + std::to_string(getType()));
             widgetPressed = this;
             objectPressState = PRESSED;
             

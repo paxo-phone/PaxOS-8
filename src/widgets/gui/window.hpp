@@ -15,6 +15,7 @@ class Window : public Gui
     int updateEventId;
 
     Window(std::string title);
+    GUI_TYPE getType() { return WINDOW_TYPE; }
 
     ~Window();
 
@@ -24,7 +25,7 @@ class Window : public Gui
 
     void afterRender();
 
-    void virtual_update();
+    void background_update();
 
     std::string title = "";
     Box* bar = nullptr;

@@ -61,7 +61,7 @@ class Gui // widget system
 
     static void initScreen(); // initialise l'ecran (tft_root)
     
-    virtual GUI_TYPE getType() { return BASIC_TYPE; };  // retourne le type de l'objet selon GUI_TYPE
+    virtual GUI_TYPE getType() = 0;  // retourne le type de l'objet selon GUI_TYPE
 
     void renderAll();           // genere un rendu de tous les enfants
     virtual void draw() = 0;    // draw objet
@@ -69,7 +69,7 @@ class Gui // widget system
 
     bool updateAll();       // update all children and itself 
     virtual bool update();  // update objet
-    virtual void virtual_update() {};
+    virtual void background_update() {};
 
     virtual void reload();
     virtual void updateSizes() {}

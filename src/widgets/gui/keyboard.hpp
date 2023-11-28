@@ -19,7 +19,7 @@ public:
 
     void clear(color_t color) { tft.fillRect(0, 320, 322, 200, color); }
     void free(){}
-    void virtual_update();
+    bool update(); // seulement pour les widgets inférieurs
 
     char getKey();
 
