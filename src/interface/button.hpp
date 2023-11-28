@@ -19,6 +19,7 @@ namespace home_button
      * @brief Vérifie si le bouton home est pressé
      * @return Vrai si le bouton home est pressé, faux sinon
     */
+    void update(void);
     bool isPressed(void);
 }
 
