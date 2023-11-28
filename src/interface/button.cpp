@@ -13,9 +13,11 @@
 namespace home_button
 {
     #define HOME_BUTTON_PIN 33 // 32 pour l'ancien modèle
-
-    #define RELEASED 0
-    #define PRESSED  1
+    enum {
+        NOT_PRESSED,
+        PRESSED,
+        RELEASED
+    };
 
     uint8_t status = RELEASED;
 
@@ -29,8 +31,12 @@ namespace home_button
 
     void update(void)
     {
+        if(status == RELEASED)
+            return;
+        
+        bool pressed = false;
         #ifdef ESP32
-            status = (digitalRead(HOME_BUTTON_PIN) == HIGH);
+            pressed = !(digitalRead(HOME_BUTTON_PIN) == HIGH); // HIGH corresponds au bouton relaché (PULLUP)
         #endif
 
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
@@ -38,14 +44,22 @@ namespace home_button
                 Peut être mettre en place un event handler
                 avec sdl pour pouvoir utiliser le home button
                 sur l'émulateur
-            */  
-            status = RELEASED;
+            */
+            pressed = false;
         #endif
+
+        if (!pressed && status == PRESSED)
+            status = RELEASED;
+            
+        if(pressed && status == NOT_PRESSED)
+            status = PRESSED;
     }
 
     bool isPressed(void)
     {
-        return status;
+        bool s = (status == RELEASED);
+        if(s)
+            status = NOT_PRESSED;
+        return s;
     }
-
 }
