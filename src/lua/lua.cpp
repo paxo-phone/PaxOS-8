@@ -326,6 +326,56 @@ int LuaInterpreter::canvas(lua_State* L) {
     return 1;
 }
 
+int LuaInterpreter::image(lua_State* L) {
+    if ((lua_gettop(L) != 6 && !lua_isnumber(L, 3)
+                           && !lua_isnumber(L, 4)
+                           && !lua_isnumber(L, 5)
+                           && !lua_isnumber(L, 6)
+                           && !lua_isstring(L, 2))
+        && (lua_gettop(L) != 4 && !lua_isnumber(L, 2)
+                           && !lua_isnumber(L, 3)
+                           && !lua_isnumber(L, 4)
+                           && !lua_isstring(L, 2)))
+
+        return luaL_error(L, LUA_FUNC_ERR);
+    
+    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
+    luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
+    uint16_t x         = lua_tonumber(L, 3);
+    uint16_t y         = lua_tonumber(L, 4);
+
+    uint16_t w         = AUTO;
+    uint16_t h         = AUTO;
+
+    if (lua_gettop(L)==6)
+    {
+        w         = lua_tonumber(L, 5);
+        h         = lua_tonumber(L, 6);
+    }
+    
+    std:string path    = dir+lua_tostring(L, 2);
+
+    // Allocate our userdata and assign our metatable
+    Image **b = static_cast<Image **>(lua_newuserdata(L, sizeof *b));
+    luaL_getmetatable(L, METATABLE_BTN_GUI);
+    lua_setmetatable(L, -2);
+
+    // Fill metatable
+    fill_gui_metatable(L, METATABLE_BTN_GUI, [](lua_State* L) {
+        Image **b = static_cast<Image **>(lua_touserdata(L, -1));
+        delete *b;
+        return 0;
+    });
+
+    console.log(path);
+
+    // Instance of button
+    *b = new Image(path, x, y, w, h);
+    (*b)->load();
+    (*parent)->addChild(*b);
+    return 1;
+}
+
 int LuaInterpreter::setX(lua_State* L) {
     if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
     Gui *gui = get_checked_gui(L, -2);

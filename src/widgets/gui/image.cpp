@@ -135,19 +135,6 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h) :
     if(filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos)
         imageFormat = ImageFormat::JPG;
 
-    for (int i = 0; i < imagesLoaded.size(); i++)
-    {
-        if (imagesLoaded[i].path == this->filename)
-        {
-            this->width = imagesLoaded[i].width;
-            this->height = imagesLoaded[i].height;
-
-            autoW = false;
-            autoH = false;
-
-            return;
-        }
-    }
     
     switch (imageFormat) // image size with right format
     {
@@ -162,6 +149,20 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h) :
         break;
     }
 
+    for (int i = 0; i < imagesLoaded.size(); i++)
+    {
+        if (imagesLoaded[i].path == this->filename && ((w != AUTO && imagesLoaded[i].width == w && imagesLoaded[i].height == h) || (w == AUTO && imagesLoaded[i].width == oW && imagesLoaded[i].height == oH)))
+        {
+            this->width = imagesLoaded[i].width;
+            this->height = imagesLoaded[i].height;
+
+            autoW = false;
+            autoH = false;
+
+            return;
+        }
+    }
+
     if(w == AUTO)
         w = oW;
     if(h == AUTO)
@@ -173,7 +174,7 @@ Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h) :
     this->width = w;
     this->height = h;
 
-    // print (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
+     console.log (to_string(oW) + " " + to_string(oH) + " " + to_string(width) + " " + to_string(height));
 }
 
 Image::~Image()

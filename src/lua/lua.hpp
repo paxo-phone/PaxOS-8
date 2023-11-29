@@ -28,7 +28,8 @@
 #define METATABLE_BOX_GUI    "boxgui"
 #define METATABLE_LABEL_GUI  "labelgui"
 #define METATABLE_BTN_GUI    "btngui"
-#define METATABLES_GUI {METATABLE_WIN_GUI, METATABLE_BOX_GUI, METATABLE_LABEL_GUI, METATABLE_BTN_GUI}
+#define METATABLE_IMG_GUI    "imggui"
+#define METATABLES_GUI {METATABLE_WIN_GUI, METATABLE_BOX_GUI, METATABLE_LABEL_GUI, METATABLE_BTN_GUI, METATABLE_IMG_GUI}
 
 using namespace std;
 
@@ -92,6 +93,7 @@ class LuaInterpreter {
         static int label(lua_State* L);
         static int button(lua_State* L);
         static int canvas(lua_State* L);
+        static int image(lua_State* L);
 
         static int setText(lua_State* L);   // Label
         static int getText(lua_State* L);
@@ -157,6 +159,7 @@ static const luaL_Reg paxolib[] = {
     {"label",      LuaInterpreter::label},
     {"button",     LuaInterpreter::button},
     {"canvas",     LuaInterpreter::canvas},
+    {"image",      LuaInterpreter::image},
     {"sleep",      LuaInterpreter::special_sleep},
     {"readFile",   LuaInterpreter::readFile},
     {"writeFile",  LuaInterpreter::writeFile},
