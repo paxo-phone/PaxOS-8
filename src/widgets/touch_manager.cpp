@@ -1,8 +1,5 @@
-#ifndef TOUCH_MANAGER_CPP
-#define TOUCH_MANAGER_CPP
-
 #include "../interface/time.hpp"
-#include "touchManager.hpp"
+#include "touch_manager.hpp"
 #include "gui.hpp"
 #include "../interface/interface.hpp"
 
@@ -183,21 +180,6 @@ bool TouchManager::validTouch()
 
 TouchManager touch;
 
-TouchZone::TouchZone(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
-{
-    this->x=x;
-    this->y=y;
-    this->width=width;
-    this->height=height;
-}
-
-bool TouchZone::isTouch()
-{
-    uint16_t xx = touch.getX();
-    uint16_t yy = touch.getY();
-    return x<xx && xx<x+width && y<yy && yy<y+height;
-}
-
 bool Touched(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
     uint16_t xx = touch.getX();
@@ -205,5 +187,3 @@ bool Touched(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 
     return x<xx && xx<x+width && y<yy && yy<y+height;
 }
-
-#endif // TOUCH_MANAGER
