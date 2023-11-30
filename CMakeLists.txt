@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-project(PaxOS8)
+project(PaxOS)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
@@ -45,23 +45,23 @@ file(GLOB gfx_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 
 add_definitions(-DLGFX_SDL)
 
-add_executable(PaxOS8 ${src} ${gfx_src})
+add_executable(PaxOS ${src} ${gfx_src})
 
-target_include_directories(PaxOS8 PUBLIC "src/interface/LovyanGFX")
+target_include_directories(PaxOS PUBLIC "src/interface/LovyanGFX")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(SDL2 REQUIRED SDL2)
     find_package(CURL REQUIRED) # Add this line to find cURL
 
     include_directories(${SDL2_INCLUDE_DIRS})
-    target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl -lstdc++fs) # Link to cURL
+    target_link_libraries(PaxOS PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl -lstdc++fs) # Link to cURL
 
-    target_link_libraries(PaxOS8 PRIVATE m)
+    target_link_libraries(PaxOS PRIVATE m)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-    target_include_directories(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/include")
+    target_include_directories(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/include")
 
-    target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
-    target_link_libraries(PaxOS8 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2main.lib")
+    target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
+    target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2main.lib")
 
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
@@ -71,14 +71,14 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
     find_package(CURL REQUIRED) # Add this line to find cURL
 
-    target_link_libraries(PaxOS8 PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl) # Link to cURL
+    target_link_libraries(PaxOS PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl) # Link to cURL
 
-    target_link_libraries(PaxOS8 PRIVATE SDL2::SDL2)
+    target_link_libraries(PaxOS PRIVATE SDL2::SDL2)
 
-    target_link_libraries(PaxOS8 PRIVATE m)
+    target_link_libraries(PaxOS PRIVATE m)
 ENDIF ()
 
-target_compile_features(PaxOS8 PUBLIC cxx_std_17)
+target_compile_features(PaxOS PUBLIC cxx_std_17)
 
 if (WIN32)
     include_directories(src/lib/dirent-1.23.2/include)

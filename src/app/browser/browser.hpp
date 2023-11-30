@@ -3,7 +3,7 @@
 
 #include "../../widgets/gui/iframe/iframe.hpp"
 #include "../../interface/filestream.hpp"
-#include "../../web/web.hpp"
+#include "../../network/network.hpp"
 
 
 class Browser : public CppAppContainer
@@ -31,7 +31,7 @@ class Browser : public CppAppContainer
 
             if(mode)
             {
-                HttpClient client;
+                network::HttpClient client;
                 html = client.get("https://www.textise.net/showText.aspx?strURL=" + url);
             }
             else

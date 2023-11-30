@@ -34,7 +34,7 @@ using namespace std;
 #include "tasks/tasks.hpp"
 #include "lua/lua.hpp"
 #include "app/app.hpp"
-#include "web/web.hpp"
+#include "network/network.hpp"
 #include "app/message/message.hpp"
 
 // cette partie est simplement pour activer les processus qui different entre arduino / pc
@@ -59,11 +59,17 @@ void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initializ
 
     Gui::initScreen();
     // new_thread(CORE_BACK, shell::thread_shell, nullptr);
+    
     storage::init();
     light::init();
-    gsm.init();
-        gsm.saveMessages = Message::saveMessage;
     home_button::init();
+
+    std::string test_ssid = "Fairphone Gab";
+    std::string test_passwd = "bonjourbonjour";
+    network::connect(test_ssid, test_passwd);
+    
+    gsm.init();
+    gsm.saveMessages = Message::saveMessage;
 
 
     launcher();
