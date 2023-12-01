@@ -47,15 +47,6 @@ class TouchManager
 
 extern TouchManager touch;
 
-class TouchZone
-{
-    public:
-    TouchZone(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
-    bool isTouch();
-    private:
-    uint16_t x, y, width, height;
-};
-
 bool Touched(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
 
 #endif // TOUCH_MANAGER

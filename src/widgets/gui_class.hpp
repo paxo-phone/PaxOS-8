@@ -16,7 +16,7 @@
 #include "../interface/screen.hpp"
 
 #include "color.hpp"
-#include "touchManager.hpp"
+#include "touch_manager.hpp"
 #include "../tasks/tasks.hpp"
 
 class App;
