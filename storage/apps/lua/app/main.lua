@@ -12,7 +12,7 @@ function show(text)
 end
 
 function run()
-    print(p.getWeb("http://example.com"))
+    --print(p.getWeb("http://example.com"))
     
     if (window_run == nil) then
         window_run = p.window("Mon application")
@@ -23,6 +23,9 @@ function run()
 
         label:setText("Click here")
         label:onClick(function() show("hello world") end)
+
+        local button = p.button(window_run, p.AUTO, 150, p.AUTO, 100)
+        button:setText("Click here")
     end
 
     p.setWindow(window_run)

@@ -11,9 +11,9 @@ Button::Button() : Label()
     this->setBold(true);
     enabledBackground=true;
     
-    setBackgroundColor(COLOR_PRIMARY);
+    setBackgroundColor(COLOR_BLACK);
     setTextColor(COLOR_LIGHT);
-    setRadius(10);
+    setRadius(19);
     setHorizontalAlignment(CENTER_ALIGNMENT);
     setVerticalAlignment(CENTER_ALIGNMENT);
     setBorderSize(0);
@@ -25,9 +25,9 @@ Button::Button(int16_t x, int16_t y, int16_t width, int16_t height, std::string 
     this->setBold(true);
     enabledBackground=true;
     
-    setBackgroundColor(COLOR_PRIMARY);
+    setBackgroundColor(COLOR_BLACK);
     setTextColor(COLOR_LIGHT);
-    setRadius(10);
+    setRadius(19);
     setHorizontalAlignment(CENTER_ALIGNMENT);
     setVerticalAlignment(CENTER_ALIGNMENT);
     setBorderSize(0);

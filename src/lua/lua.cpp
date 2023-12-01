@@ -1,6 +1,6 @@
 #include "lua.hpp"
 #include "../interface/filestream.hpp"
-#include "../web/web.hpp"
+#include "../network/network.hpp"
 #include "../interface/interface.hpp"
 #include "../interface/console.hpp"
 
@@ -732,7 +732,7 @@ int LuaInterpreter::getWeb(lua_State* L) {
     if (lua_gettop(L) != 1 || !lua_isstring(L, 1))
         return luaL_error(L, LUA_FUNC_ERR);
 
-    HttpClient client;
+    network::HttpClient client;
     lua_pushstring(L, client.get(lua_tostring(L, 1)).c_str());
 
     return 1;

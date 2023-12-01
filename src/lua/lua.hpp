@@ -202,7 +202,7 @@ static const std::map<std::string, int> color_bindings = {
     {"COLOR_BLACK",     COLOR_BLACK},
     {"COLOR_PRIMARY",   COLOR_PRIMARY},
     {"COLOR_SUCCESS",   COLOR_SUCCESS},
-    {"COLOR_WHITE",     COLOR_BLUE},
+    {"COLOR_WHITE",     COLOR_LIGHT},
     {"AUTO",            AUTO}
 };
 
