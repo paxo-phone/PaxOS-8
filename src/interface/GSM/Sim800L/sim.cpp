@@ -4,7 +4,8 @@
 #include "../../../app/phone/phone.hpp"
 
 const char *daysOfWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" };
-const char *daysOfMonth[12] = { "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Novembre", "Decembre"};
+const char *daysOfMonth[12] = { "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"};
+
 
 #ifdef ESP32
     SoftwareSerial SIM800Serial(26, 27);
@@ -422,7 +423,6 @@ void GSM::getHour()
     time_t nowTime = time(0);
     parseHourFromComputer(&nowTime);
     #endif
-    console.log("getHour");
 }
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
@@ -434,9 +434,9 @@ void GSM::parseHourFromComputer(time_t* time) {
 
     // https://cplusplus.com/reference/ctime/tm/
     years = formattedTime->tm_year + 1900;
-    months = formattedTime->tm_mon + 1; // 0-11
-    days = formattedTime->tm_mday + 1; // 0-6
-    hours = formattedTime->tm_hour; // 0-23
+    months = formattedTime->tm_mon + 1;
+    days = formattedTime->tm_mday;
+    hours = formattedTime->tm_hour;
     minutes = formattedTime->tm_min; // 0-59
     seconds = formattedTime->tm_sec; // 0-60 "tm_sec is generally 0-59. The extra range is to accommodate for leap seconds in certain systems."
 }

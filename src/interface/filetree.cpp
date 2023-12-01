@@ -86,9 +86,9 @@ bool storage::exists(const string& path)
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     struct stat s;
         #ifdef __APPLE__
-            return stat(getMacOSPath(path).c_str(), &s) == 0;
+            return stat(getMacOSPath("storage/"+path).c_str(), &s) == 0;
         #else
-            return stat(path.c_str(), &s) == 0;
+            return stat(("storage/"+path).c_str(), &s) == 0;
         #endif
     #endif
     #ifdef ESP32
@@ -100,11 +100,12 @@ bool storage::isfile(const string& filepath)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
-    fstream file(storage::getMacOSPath(filepath), ios::in);
+            std::filesystem::path filePath("storage/" + filepath);
+            return std::filesystem::is_regular_file(filePath);
         #else
-            fstream file(filepath, ios::in);
+            std::filesystem::path filePath("storage/" + filepath);
+            return std::filesystem::is_regular_file(filePath);
         #endif
-        return file.good();
     #endif
     #ifdef ESP32
         File file = SD.open(("/storage/"+filepath).c_str());
@@ -133,12 +134,12 @@ bool storage::isdir(const string& dirpath)
 
         struct stat s;
         #ifdef __APPLE__
-            if (stat(getMacOSPath(dirpath).c_str(), &s) == 0)
+            if (stat(getMacOSPath("storage/"+dirpath).c_str(), &s) == 0)
                 return (s.st_mode & S_IFDIR) != 0;
             else
                 return false;
         #else
-            if (stat(dirpath.c_str(), &s) == 0)
+            if (stat(("storage/"+dirpath).c_str(), &s) == 0)
                 return (s.st_mode & S_IFDIR) != 0;
             else
                 return false;
@@ -166,12 +167,12 @@ bool storage::newdir(const string& dirpath)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
     #ifdef WIN32
-        return _mkdir(dirpath.c_str()) == 0;
+        return _mkdir(("storage/"+dirpath).c_str()) == 0;
     #else
         #ifdef __APPLE__
-            return mkdir(getMacOSPath(dirpath).c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+            return mkdir(getMacOSPath(("storage/"+dirpath)).c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
         #else
-            return mkdir(dirpath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
+            return mkdir(("storage/"+dirpath).c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0;
         #endif
     #endif
     #endif
@@ -184,9 +185,9 @@ bool storage::newfile(const string& filepath)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
-            std::ofstream file(getMacOSPath(filepath), std::ios::out);
+            std::ofstream file(getMacOSPath(("storage/"+filepath)), std::ios::out);
         #else
-            std::ofstream file(filepath, std::ios::out);
+            std::ofstream file(("storage/"+filepath), std::ios::out);
         #endif
         return file.is_open();
     #endif
@@ -207,9 +208,9 @@ bool storage::remove(const string& path)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
-            return ::remove(getMacOSPath(path).c_str()); // from cstdio
+            return ::remove(getMacOSPath(("storage/"+path)).c_str()); // from cstdio
         #else
-            return ::remove(path.c_str()); // from cstdio
+            return std::remove(("storage/"+path).c_str()) == 0; // from cstdio
         #endif
     #endif
     #ifdef ESP32
@@ -221,9 +222,9 @@ bool storage::rename(const string& from, const string& to)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         #ifdef __APPLE__
-            return ::rename(getMacOSPath(from).c_str(), getMacOSPath(to).c_str()); // from cstdio
+            return ::rename(getMacOSPath(("storage/"+from)).c_str(), getMacOSPath(("storage/"+to)).c_str()) == 0; // from cstdio
         #else
-            return ::rename(from.c_str(), to.c_str()); // from cstdio
+            return ::rename(("storage/"+from).c_str(), ("storage/"+to).c_str()) == 0; // from cstdio
         #endif
     #endif
     #ifdef ESP32

@@ -1,9 +1,19 @@
+#define USE_TOUCH_RESISTIVE
+#define LGFX_USE_V1
+
+#include "LovyanGFX.hpp"
+
 class LGFX : public lgfx::LGFX_Device
 {
   lgfx::Panel_ILI9488     _panel_instance;
   lgfx::Bus_SPI       _bus_instance;   // SPIバスのインスタンス
   lgfx::Light_PWM     _light_instance;
+  #ifdef USE_TOUCH_RESISTIVE
   lgfx::Touch_XPT2046          _touch_instance;
+  #endif
+  #ifdef USE_TOUCH_CAPACITIVE
+  lgfx::Touch_FT5x06 _touch_instance;
+  #endif
 
 public:
   LGFX(void)
@@ -63,6 +73,7 @@ public:
       _panel_instance.setLight(&_light_instance);  // バックライトをパネルにセットします。
     }
     {
+      #ifdef USE_TOUCH_RESISTIVE
       auto cfg = _touch_instance.config();
 
       cfg.x_min      = 0;    // タッチスクリーンから得られる最小のX値(生の値)
@@ -79,7 +90,16 @@ public:
       cfg.pin_mosi = 23;     // MOSIが接続されているピン番号
       cfg.pin_miso = 19;     // MISOが接続されているピン番号
       cfg.pin_cs   =  21;     //   CSが接続されているピン番号
-
+      #endif
+      #ifdef USE_TOUCH_CAPACITIVE
+      auto cfg = _touch_instance.config();
+      cfg.i2c_port = 1;
+      cfg.i2c_addr = 0x38;
+      cfg.pin_sda  = 23;
+      cfg.pin_scl  = 32;  
+      _touch_instance.config(cfg);
+      #endif
+      
       _touch_instance.config(cfg);
       _panel_instance.setTouch(&_touch_instance);  // タッチスクリーンをパネルにセットします。
     }

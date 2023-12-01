@@ -6,6 +6,14 @@
 #ifndef LIGHT_HPP
 #define LIGHT_HPP
 
+#ifdef ESP32
+    #include <Arduino.h>
+    #include "soc/rtc_wdt.h"
+    #include "esp_heap_caps.h"
+    #include <esp_task_wdt.h>
+#endif
+
+
 #include <stdint.h>
 
 namespace light

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ../
+
 # Définit le nom du nouveau dossier
 newDir="Arduino"
 

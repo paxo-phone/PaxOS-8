@@ -58,13 +58,14 @@ void launcher()
 
         if(day_ != gsm.days)
         {
-            day_ = gsm.days;
-            day = gsm.days;
-            month = gsm.months;
+            /*day_ = gsm.days-1;
+            day = gsm.days-1;
+            month = gsm.months-1;
             year = gsm.years;
-            std::string dayName = daysOfWeek[(day+=month<3?year--:year-2,23*month/9+day+4+year/4-year/100+year/400)%7];
-            std::string monthName = daysOfMonth[month==0?1:(month-1)];
-            label->setText(dayName + "\n" + to_string(gsm.days) + " " + monthName);
+            std::string dayName = daysOfWeek[(day+=month<3?year--:year-2,23*month/9+day+4+year/4-year/100+year/400)%7];*/
+            std::string monthName = daysOfMonth[gsm.months==0?0:(gsm.months-1)];
+            Date d = {gsm.days, gsm.months, gsm.years};
+            label->setText(std::string(daysOfWeek[myWhatDay(d)]) + "\n" + to_string(gsm.days) + " " + monthName);
         }
 
         if(home_button::isPressed())

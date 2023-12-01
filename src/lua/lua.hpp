@@ -86,6 +86,7 @@ class LuaInterpreter {
 
         // Lua provided to lua    
         static int setWindow(lua_State* L);
+        static int delWindow(lua_State* L); // pas encore au point -> ne supprime pas les events associés pour le moment
         static int getWindow(lua_State* L);
         
         static int window(lua_State* L);
@@ -119,11 +120,20 @@ class LuaInterpreter {
 
         static int readFile(lua_State* L);
         static int writeFile(lua_State* L);
-        static int special_sleep(lua_State* L);
+        static int renameFile(lua_State* L);
+        static int deleteFile(lua_State* L);
+        static int newDir(lua_State* L);
+        static int renameDir(lua_State* L);
+        static int deleteDir(lua_State* L);
+        static int isDir(lua_State* L);
+        static int isFile(lua_State* L);
+        static int listDir(lua_State* L);
+        static int specialSleep(lua_State* L);
         static int setInterval(lua_State* L);
         static int setTimeOut(lua_State* L);
         static int monotonic(lua_State* L);
         static int getTime(lua_State* L);
+        static int getWeb(lua_State* L);
 
         static LuaEventTimeOut* timeOutToRemove;
 };
@@ -152,21 +162,31 @@ static const luaL_Reg gui_common_binds[] = {
 
 // Library bindings
 static const luaL_Reg paxolib[] = {
-    {"setWindow",  LuaInterpreter::setWindow},
-    {"getWindow",  LuaInterpreter::getWindow},
-    {"window",     LuaInterpreter::window},
-    {"box",        LuaInterpreter::box},
-    {"label",      LuaInterpreter::label},
-    {"button",     LuaInterpreter::button},
-    {"canvas",     LuaInterpreter::canvas},
-    {"image",      LuaInterpreter::image},
-    {"sleep",      LuaInterpreter::special_sleep},
-    {"readFile",   LuaInterpreter::readFile},
-    {"writeFile",  LuaInterpreter::writeFile},
-    {"setInterval",LuaInterpreter::setInterval},
-    {"setTimeOut", LuaInterpreter::setTimeOut},
-    {"monotonic",  LuaInterpreter::monotonic},
-    {"getTime",    LuaInterpreter::getTime},
+    {"setWindow",   LuaInterpreter::setWindow},
+    {"delWindow",   LuaInterpreter::delWindow},
+    {"getWindow",   LuaInterpreter::getWindow},
+    {"window",      LuaInterpreter::window},
+    {"box",         LuaInterpreter::box},
+    {"label",       LuaInterpreter::label},
+    {"button",      LuaInterpreter::button},
+    {"canvas",      LuaInterpreter::canvas},
+    {"image",       LuaInterpreter::image},
+    {"sleep",       LuaInterpreter::specialSleep},
+    {"readFile",    LuaInterpreter::readFile},
+    {"writeFile",   LuaInterpreter::writeFile},
+    {"newDir",      LuaInterpreter::newDir},
+    {"renameDir",   LuaInterpreter::renameDir},
+    {"deleteDir",   LuaInterpreter::deleteDir},
+    {"isDir",       LuaInterpreter::isDir},
+    {"isFile",      LuaInterpreter::isFile},
+    {"renameFile",  LuaInterpreter::renameFile},
+    {"deleteFile",  LuaInterpreter::deleteFile},
+    {"listDir",     LuaInterpreter::listDir},
+    {"setInterval", LuaInterpreter::setInterval},
+    {"setTimeOut",  LuaInterpreter::setTimeOut},
+    {"monotonic",   LuaInterpreter::monotonic},
+    {"getTime",     LuaInterpreter::getTime},
+    {"getWeb",      LuaInterpreter::getWeb},
     
     /* placeholders */
     {"COLOR_LIGHT",     NULL},
@@ -174,7 +194,6 @@ static const luaL_Reg paxolib[] = {
     {"COLOR_PRIMARY",   NULL},
     {"COLOR_SUCCESS",   NULL},
     {"COLOR_WHITE",     NULL},
-    //{"AUTO",            NULL},
     {NULL, NULL}
 };
 

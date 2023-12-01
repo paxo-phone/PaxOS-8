@@ -1,5 +1,6 @@
 #include "lua.hpp"
 #include "../interface/filestream.hpp"
+#include "../web/web.hpp"
 #include "../interface/interface.hpp"
 #include "../interface/console.hpp"
 
@@ -55,6 +56,11 @@ void LuaEventTimeOut::call(void)
 }
 
 LuaInterpreter::LuaInterpreter(string dir) {
+    if (dir.size() == 0)
+        return;
+    if(dir[dir.size() - 1] != '/')
+        dir += '/';
+    console.log("dir: " + dir);
     LuaInterpreter::dir = dir;
 }
 
@@ -187,6 +193,14 @@ int LuaInterpreter::setWindow(lua_State* L) {
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
     luaL_argcheck(L, parent != NULL, 1, "Window gui expected!");
     current_root = (*parent);
+    return 0;
+}
+
+int LuaInterpreter::delWindow(lua_State* L) {
+    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
+    luaL_argcheck(L, parent != NULL, 1, "Window gui expected!");
+    delete (*parent);
+    current_root = nullptr;
     return 0;
 }
 
@@ -520,7 +534,8 @@ int LuaInterpreter::onClick(lua_State* L) {
 }
 
 int LuaInterpreter::readFile(lua_State* L) {
-    storage::FileStream file(dir + "/" + lua_tostring(L, 1), storage::READ);
+    if(lua_gettop(L) != 1 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    storage::FileStream file(dir + lua_tostring(L, 1), storage::READ);
     std::string readed = file.read();
     lua_pushstring(L, readed.c_str());
     file.close();
@@ -528,15 +543,83 @@ int LuaInterpreter::readFile(lua_State* L) {
 }
 
 int LuaInterpreter::writeFile(lua_State* L) {
-    storage::FileStream file(dir + "/" + lua_tostring(L, 1), storage::WRITE);
+    if(lua_gettop(L) != 2 || !lua_isstring(L, 1) || !lua_isstring(L, 2)) return luaL_error(L, LUA_FUNC_ERR);
+    storage::FileStream file(dir + lua_tostring(L, 1), storage::WRITE);
     file.write(lua_tostring(L, 2));
     file.close();
     return 0;
 }
 
+int LuaInterpreter::renameFile(lua_State* L)
+{
+    if(lua_gettop(L) != 2 || !lua_isstring(L, 1) || !lua_isstring(L, 2)) return luaL_error(L, LUA_FUNC_ERR);
+    lua_pushboolean(L, storage::rename(dir+lua_tostring(L, 1), dir+lua_tostring(L, 2)));
+    return 1;
+}
+
+int LuaInterpreter::deleteFile(lua_State* L) {
+    if(lua_gettop(L) != 1 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    lua_pushboolean(L, storage::remove(dir+lua_tostring(L, 1)));
+    console.log("removing file: " + dir + lua_tostring(L, 1));
+    return 1;
+}
+
+int LuaInterpreter::newDir(lua_State* L) {
+    if(lua_gettop(L) != 1 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    lua_pushboolean(L, storage::newdir(dir + lua_tostring(L, 1)));
+    return 1;
+}
+
+int LuaInterpreter::renameDir(lua_State* L) {
+    if(lua_gettop(L) != 2 || !lua_isstring(L, 1) || !lua_isstring(L, 2)) return luaL_error(L, LUA_FUNC_ERR);
+    lua_pushboolean(L, storage::rename(dir+lua_tostring(L, 1), dir+lua_tostring(L, 2)));
+    return 1;
+}
+
+int LuaInterpreter::deleteDir(lua_State* L) {
+    if(lua_gettop(L) != 1 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    lua_pushboolean(L, storage::remove(dir+lua_tostring(L, 1)));
+    return 1;
+}
+
+int LuaInterpreter::isDir(lua_State* L) {
+    if(lua_gettop(L) != 1 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    lua_pushboolean(L, storage::isdir(dir+lua_tostring(L, 1)));
+    return 1;
+}
+
+int LuaInterpreter::isFile(lua_State* L) {
+    if(lua_gettop(L) != 1 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    lua_pushboolean(L, storage::isfile(dir+lua_tostring(L, 1)));
+    return 1;
+}
+
+int LuaInterpreter::listDir(lua_State* L)
+{
+    if (lua_gettop(L) != 1 || !lua_isstring(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+
+    std::vector<std::string> list = storage::listdir(dir + lua_tostring(L, 1));
+
+    lua_newtable(L);
+
+    for (size_t i = 0; i < list.size(); ++i) {
+        // Push the key (index starting from 1)
+        lua_pushinteger(L, i + 1);
+
+        // Push the value (string)
+        lua_pushstring(L, list[i].c_str());
+
+        // Set the key-value pair in the table
+        lua_settable(L, -3);
+    }
+
+    // Retournez la table
+    return 1;
+}
+
 // Paxo sleep!
 // Add non blocking sleep that allows other thread to work!
-int LuaInterpreter::special_sleep(lua_State* L) {
+int LuaInterpreter::specialSleep(lua_State* L) {
     if(lua_gettop(L) != 1 || !luaL_checknumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
     // sleep(lua_tonumber(L, -1) * 1000);
     printf("Should be sleeping now?!");
@@ -641,6 +724,16 @@ int LuaInterpreter::isFocused(lua_State* L) {
     Gui* gui       = get_checked_gui(L, -1);
 
     lua_pushboolean(L, gui->isFocused());
+
+    return 1;
+}
+
+int LuaInterpreter::getWeb(lua_State* L) {
+    if (lua_gettop(L) != 1 || !lua_isstring(L, 1))
+        return luaL_error(L, LUA_FUNC_ERR);
+
+    HttpClient client;
+    lua_pushstring(L, client.get(lua_tostring(L, 1)).c_str());
 
     return 1;
 }

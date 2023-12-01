@@ -1,25 +1,29 @@
 p = require('paxolib')
 
-function run()
-    local window = p.window("Mon application")
-    local label = p.label(window, 0, 0, 320, 100)
-    local image = p.image(window, "logo.png", 0, 100, 42, 42)
-    label:setColor(p.COLOR_SUCCESS)
-    label:setFontSize(30)
-
-    local h = p.getTime()
-
-    for i,v in ipairs(h) do
-        print(tostring(v))
+function show(text)
+    if (window_show == nil) then
+        window_show = p.window("Mon application")
+        local label = p.label(window_show, 0, 0, 320, 100)
+        label:setFontSize(30)
+        label:setText(text)
+        label:onClick(function() run() end)
     end
-    
-    p.setInterval(function ()
-        label:setText(tostring(p.monotonic()))
-        image:setX((image:getX() + 5)%320)
-        if (label:isFocused()) then
-            print("pressed")
-        end
-    end, 10)
+    p.setWindow(window_show)
+end
 
-    p.setWindow(window)
+function run()
+    print(p.getWeb("http://example.com"))
+    
+    if (window_run == nil) then
+        window_run = p.window("Mon application")
+        local label = p.label(window_run, 0, 0, 320, 100)
+        local image = p.image(window_run, "logo.png", 0, 100, 42, 42)
+        label:setColor(p.COLOR_SUCCESS)
+        label:setFontSize(30)
+
+        label:setText("Click here")
+        label:onClick(function() show("hello world") end)
+    end
+
+    p.setWindow(window_run)
 end
