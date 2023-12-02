@@ -185,6 +185,7 @@ int LuaInterpreter::window(lua_State* L) {
 
     // Instance of window
     *w = new Window(title);
+    (*w)->setMarginY(0);
     return 1;
 }
 
@@ -446,12 +447,31 @@ int LuaInterpreter::getHeight(lua_State* L) {
     return 1;
 }
 
+int LuaInterpreter::setVerticalAlignement(lua_State* L)
+{
+    if (lua_gettop(L) != 2) return luaL_error(L, LUA_FUNC_ERR);
+    Gui *gui = get_checked_gui(L, -2);
+    gui->setVerticalAlignment(lua_tointeger(L, 2));
+    return 0;
+}
+
+int LuaInterpreter::setHorizontalAlignement(lua_State* L)
+{
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 2)) return luaL_error(L, LUA_FUNC_ERR);
+
+    Gui* gui       = get_checked_gui(L, 1);
+    gui->setHorizontalAlignment(lua_tointeger(L, 2));
+    return 0;
+}
+
 // Maybe introduce later on a userdata for colors?
 int LuaInterpreter::setColor(lua_State* L) {
-    if (lua_gettop(L) != 2 || !lua_isnumber(L, -1)) return luaL_error(L, LUA_FUNC_ERR);
+    std::cout << "color cpp: " << std::endl;
+    if (lua_gettop(L) != 2 || !lua_isnumber(L, 2)) return luaL_error(L, LUA_FUNC_ERR);
 
-    Gui* gui       = get_checked_gui(L, -2);
-    uint16_t color = lua_tointeger(L, -1);
+    Gui* gui       = get_checked_gui(L, 1);
+    uint16_t color = lua_tointeger(L, 2);
+    std::cout << "color cpp: " << color << std::endl;
     gui->setBackgroundColor(color);
     return 0;
 }

@@ -17,11 +17,11 @@ Window::Window(std::string title) : Gui(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
     setMarginY(10 + CONTROL_BAR_SIZE);
 
     bar = new Box(0, 0, WINDOW_WIDTH, CONTROL_BAR_SIZE);
-        bar->setBackgroundColor(COLOR_EXTRA_LIGHT);
+        bar->setBackgroundColor(COLOR_LIGHT);
         bar->setRadius(0);
         bar->setBorderSize(0);
         bar->noMargin = true;
-        bar->enabledBackground=true;
+        bar->enabledBackground=false;
     addChild(bar);
     
     hourLabel = new Label(110, 0, 100, CONTROL_BAR_SIZE, ((gsm.hours>9)?("0"):("")) + to_string(gsm.hours) + ":" + ((gsm.minutes>9)?("0"):("")) + to_string(gsm.minutes));
