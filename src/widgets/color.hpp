@@ -5,10 +5,6 @@
 
 typedef uint16_t color_t;
 
-/*###############################################*/
-/*              theme configuration              */
-/*###############################################*/
-
 #define COLOR_BLACK 0x29A6
 #define COLOR_GREY 0xA514
 #define COLOR_SUCCESS 0x05D2
@@ -22,16 +18,6 @@ typedef uint16_t color_t;
 
 #define ALPHA_8B 254
 #define ALPHA_16B 0xF7BE
-
-#define THEME_BLACK 0
-#define THEME_BLUE 1
-#define THEME_GREEN 2
-#define THEME_RED 3
-#define THEME_YELLOW 4
-#define THEME_WHITE 5
-#define THEME_CONTRAST 6    // hight constrast
-
-extern color_t theme_color[][3];
 
 /*###############################################*/
 /*             alignement configuration          */
@@ -47,7 +33,6 @@ extern color_t theme_color[][3];
 /*             graphics configuration            */
 /*###############################################*/
 
-#define DEFAULT_THEME THEME_CONTRAST
 #define DEFAULT_BORDER_SIZE 1
 #define DEFAULT_H_ALIGNEMENT LEFT_ALIGNMENT
 #define DEFAULT_V_ALIGNEMENT UP_ALIGNMENT

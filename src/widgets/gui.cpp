@@ -771,14 +771,6 @@ int16_t Gui::getHighestY()
     return y;
 }
 
-void Gui::setTheme(uint8_t theme)
-{
-    color = theme_color[theme][0];
-    backgroundColor = theme_color[theme][1];
-    borderColor = theme_color[theme][2];
-    reloadWidget();
-}
-
 Gui* Gui::getParent()
 {
     return this->parent; // warning, can return nullptr

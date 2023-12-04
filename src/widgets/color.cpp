@@ -1,15 +1,6 @@
 #include "color.hpp"
 
-color_t theme_color[][3]=
-{   // color, background color, border color
-    {COLOR_LIGHT, COLOR_BLACK, COLOR_LIGHT},   // black
-    {COLOR_LIGHT, 0x22B5, 0x4800},   // blue
-    {COLOR_LIGHT, 0x3C42, 0x4800},   // green
-    {COLOR_LIGHT, 0xC861, 0x4800},   // red
-    {COLOR_BLACK, 0xFFC8, 0xEF37},   // yellow
-    {COLOR_BLACK, COLOR_LIGHT, 0xBDF7},   // white
-    {COLOR_BLACK, COLOR_LIGHT, COLOR_BLACK}    // contrast
-};
+// {COLOR_BLACK, COLOR_LIGHT, COLOR_BLACK}    // contrast
 
 color_t contrastColor(color_t color)
 {
