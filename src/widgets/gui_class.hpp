@@ -16,7 +16,7 @@
 #include "../interface/screen.hpp"
 
 #include "color.hpp"
-#include "alignement.hpp"
+#include "alignment.hpp"
 #include "default.hpp"
 
 #include "touch_manager.hpp"
