@@ -1,4 +1,5 @@
 #include "button.hpp"
+#include <LovyanGFX.hpp>
 
 #ifdef ESP32
     #include <Arduino.h>
@@ -40,12 +41,7 @@ namespace home_button
         #endif
 
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
-            /*
-                Peut être mettre en place un event handler
-                avec sdl pour pouvoir utiliser le home button
-                sur l'émulateur
-            */
-            pressed = false;
+            pressed = lgfx::gpio_in(HOME_BUTTON_PIN);
         #endif
 
         if (!pressed && status == PRESSED)
