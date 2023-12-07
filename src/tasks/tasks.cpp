@@ -63,7 +63,10 @@ void EventHandler::update()
     {
         if(events[i]->condition->check())
         {
+#if !defined(_WIN32) && !defined(_WIN64)
+            // FIXME: Crash on windows
             events[i]->callback->call();
+#endif
             if(events[i]->autoremove)
             {
                 delete events[i];
