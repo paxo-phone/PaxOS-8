@@ -54,6 +54,7 @@ You can then start the build instructions :
 5. Run the executable using `./PaxOS`
 
 The emulator should then open in a window.
+Press the 'Escape' key to emulate the 'Home' button.
 
 Troubleshooting :
 - If you get the message `ld: warning: ignoring file /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib': found architecture 'arm64', required architecture 'x86_64'` followed by an error you can do:

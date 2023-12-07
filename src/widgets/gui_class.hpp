@@ -16,6 +16,9 @@
 #include "../interface/screen.hpp"
 
 #include "color.hpp"
+#include "alignment.hpp"
+#include "default.hpp"
+
 #include "touch_manager.hpp"
 #include "../tasks/tasks.hpp"
 
@@ -149,8 +152,6 @@ class Gui // widget system
     int16_t getHighestY();
 
 
-    void setTheme(uint8_t theme);
-
     virtual void EventOnClick();
     virtual void EventOnLongClick();
     virtual void EventOnReleased();
@@ -212,9 +213,9 @@ class Gui // widget system
 
     int16_t inercie = 0;
 
-    color_t color = theme_color[DEFAULT_THEME][0];
-    color_t backgroundColor = theme_color[DEFAULT_THEME][1];
-    color_t borderColor = theme_color[DEFAULT_THEME][2];
+    color_t color = COLOR_BLACK;
+    color_t backgroundColor = COLOR_LIGHT;
+    color_t borderColor = COLOR_BLACK;
 
     int16_t borderSize = DEFAULT_BORDER_SIZE;
     int16_t radius = DEFAULT_RADIUS;

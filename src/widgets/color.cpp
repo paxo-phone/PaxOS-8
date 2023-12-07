@@ -1,15 +1,9 @@
 #include "color.hpp"
 
-color_t theme_color[][3]=
-{   // color, background color, border color
-    {COLOR_LIGHT, COLOR_BLACK, COLOR_LIGHT},   // black
-    {COLOR_LIGHT, 0x22B5, 0x4800},   // blue
-    {COLOR_LIGHT, 0x3C42, 0x4800},   // green
-    {COLOR_LIGHT, 0xC861, 0x4800},   // red
-    {COLOR_BLACK, 0xFFC8, 0xEF37},   // yellow
-    {COLOR_BLACK, COLOR_LIGHT, 0xBDF7},   // white
-    {COLOR_BLACK, COLOR_LIGHT, COLOR_BLACK}    // contrast
-};
+color_t rgb(uint8_t r, uint8_t g, uint8_t b)
+{
+    return lgfx::color565(r, g, b);
+}
 
 color_t contrastColor(color_t color)
 {
@@ -40,7 +34,7 @@ color_t darkenColor(color_t color)
     return lgfx::color565(r*2/3, g*2/3, b*2/3);
 }
 
-color_t exposureColor(color_t color, float exposure) // in %
+color_t exposureColor(color_t color, float exposure)
 {
     uint8_t r = ((((color >> 11) & 0x1F) * 527) + 23) >> 6;
     uint8_t g = ((((color >> 5) & 0x3F) * 259) + 33) >> 6;

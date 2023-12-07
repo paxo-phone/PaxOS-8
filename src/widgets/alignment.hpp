@@ -1,0 +1,10 @@
+#ifndef ALIGNMENT_HPP
+#define ALIGNMENT_HPP
+
+#define LEFT_ALIGNMENT 0
+#define RIGHT_ALIGNMENT 1
+#define CENTER_ALIGNMENT 2
+#define UP_ALIGNMENT 0
+#define DOWN_ALIGNMENT 1
+
+#endif /* ALIGNMENT_HPP */
