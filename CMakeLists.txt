@@ -59,9 +59,11 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     target_link_libraries(PaxOS PRIVATE m)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     target_include_directories(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/include")
+    target_include_directories(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/curl-8.5.0_1-win64-mingw/include")
 
     target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2main.lib")
     target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
+    target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/curl-8.5.0_1-win64-mingw/lib/libcurl.dll.a")
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
     find_package(SDL2 REQUIRED COMPONENTS SDL2)
 

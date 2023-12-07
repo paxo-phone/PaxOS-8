@@ -1,0 +1,749 @@
+commit eb8086cb6db4b7a943d7c7d02c9118f430a3a2e0 (HEAD, tag: v1.1.0, origin/main, origin/HEAD, main)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-26
+
+    Bump package and library versions
+
+commit c2c0c0a73ec4fbcc7a3e370ba55a5704a50a9528
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-26
+
+    Update AUTHORS
+
+commit 65b8c4f5ff48032c29994869d06b228e128f0dfb
+Merge: 7edc3d91 7bc02d7c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-25
+
+    Merge pull request #1023 from ngtcp2/fix-uninitialized-variable
+    
+    h09client: Fix uninitialized variable
+
+commit 7bc02d7c15b4350e97323e24cf12d19f9233c672
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-25
+
+    h09client: Fix uninitialized variable
+
+commit 7edc3d91d18a7cbd66b58e54ba338e38e2a39c8e
+Merge: 97a04e13 f930b3d9
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-25
+
+    Merge pull request #1022 from ngtcp2/wolfssl-build-options
+    
+    wolfSSL: Add more build options
+
+commit f930b3d982b993aba645a2aa26721e10fc87dc86
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-25
+
+    wolfSSL: Add more build options
+
+commit 97a04e13b24efaa5928f78c70354180136652d0b
+Merge: e110c1cd 6283d08e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-25
+
+    Merge pull request #1021 from ngtcp2/wolfssl-check-quic-if
+    
+    autotools: Check wolfSSL_is_quic is available
+
+commit 6283d08e33c6f585b0f196b4cf83551d1260c1a0
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-25
+
+    autotools: Check wolfSSL_is_quic is available
+
+commit e110c1cd965a9f684cd894c963320a9edfc0450e
+Merge: e3a59714 ff028adf
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-25
+
+    Merge pull request #1020 from ngtcp2/remove-strmq-nretrans
+    
+    Remove unused strmq_nretrans
+
+commit ff028adf2334b691f7c22da137cbb0db77700993
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-25
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-25
+
+    Remove unused strmq_nretrans
+
+commit e3a5971413493d462940900b3ba949c9c47508ec
+Merge: 6ab9164e 5084e56c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-24
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-24
+
+    Merge pull request #1019 from ngtcp2/rework-app-limited
+    
+    Rework app_limited
+
+commit 6ab9164e07526b90c27fa43ddfdcb2454e7140c3
+Merge: 0ca57a72 2a9bba2e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-24
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-24
+
+    Merge pull request #1018 from ngtcp2/revert-gh-432
+    
+    Revert ignoring loss signal during startup
+
+commit 5084e56cc5376de981a6441f9a2af16bec859bf1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-24
+
+    Rework app_limited
+    
+    Simply check packet size is 0 and cwnd utilization for now.
+
+commit 2a9bba2e4dbe3f24377b22c5becabbb17fc88b49
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-24
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-24
+
+    Revert ignoring loss signal during startup
+    
+    This commit reverts 1ba4cf1085c47f77d5949338a310c8501a0d16e1
+    The change is not easy to reason about now.
+
+commit 0ca57a72f75e4a3ebda4ed9ede2cd58a714f526a
+Merge: f370ad1f 8bc8d089
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-22
+
+    Merge pull request #1016 from ngtcp2/client-cleanup
+    
+    client: Optimize a bit
+
+commit 8bc8d0893b195b838ead1a77bf5a3a1b62efdf6e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-22
+
+    client: Optimize a bit
+
+commit f370ad1fa7a168b59ae843b62c71565a97519ac9
+Merge: 72d2cf68 5b63aa5e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-20
+
+    Merge pull request #1015 from ngtcp2/dependabot/github_actions/actions/github-script-7
+    
+    Bump actions/github-script from 6 to 7
+
+commit 5b63aa5e6b877e516cd24cb8493bac851523f0fc
+Author:     dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+AuthorDate: 2023-11-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-20
+
+    Bump actions/github-script from 6 to 7
+    
+    Bumps [actions/github-script](https://github.com/actions/github-script) from 6 to 7.
+    - [Release notes](https://github.com/actions/github-script/releases)
+    - [Commits](https://github.com/actions/github-script/compare/v6...v7)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/github-script
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 72d2cf683c16b775fc8c082d379f15c5ac0bbd9d
+Merge: 6d2d2caf 08e323d3
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-18
+
+    Merge pull request #1014 from ngtcp2/eliminate-fp
+    
+    Eliminate floating point computations
+
+commit 08e323d34cf223a1c971c8ea25afe09e48dd4ea3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-18
+
+    Eliminate floating point computations
+
+commit 6d2d2caf4c0b4fc70d6358063a820f0e256976ca
+Merge: cbff8a2a 12946c1e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-15
+
+    Merge pull request #1013 from ngtcp2/fix-assertion-failure
+    
+    Fix assertion failure
+
+commit 12946c1e4472b874748cb2a48f7999709740f948
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-15
+
+    Fix assertion failure
+    
+    Amend #1010
+
+commit cbff8a2a66a0d75a14ec2c03ff8182c1900b1478
+Merge: 80bc0db1 f4fce78f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-14
+
+    Merge pull request #1012 from ngtcp2/fix-doc
+    
+    Fix doc
+
+commit f4fce78fd4148f80a54c94508fc020eb85dc3d0b
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-14
+
+    Fix doc
+
+commit 80bc0db175094a10d818176756bf26733eda7801
+Merge: aed83595 c503b41f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-14
+
+    Merge pull request #1011 from ngtcp2/large-frame-type
+    
+    Make frame type of type uint64_t
+
+commit c503b41fb5534bb606cc3d93297dd07ec8c4f43c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-14
+
+    Make frame type of type uint64_t
+
+commit aed835953c054811e8406f0ae565b259c18882d3
+Merge: 82c95652 1ad52b93
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-14
+
+    Merge pull request #1010 from ngtcp2/limit-in-flight-new-conn-id
+    
+    Limit the number of NEW_CONNECTION_ID frames that are in-flight
+
+commit 1ad52b93a6f91c48c8c4e9539b323c11c0e8193e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-14
+
+    Limit the number of NEW_CONNECTION_ID frames that are in-flight
+
+commit 82c95652e31d36323e4a0baf24e0e3ba0110804d
+Merge: 78110b8d 1adaab94
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-12
+
+    Merge pull request #1009 from ngtcp2/varint-id-macros
+    
+    Define varint identifiers as macros
+
+commit 1adaab94130f7948d19a62b3b773610021534c81
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-12
+
+    Define varint identifiers as macros
+
+commit 78110b8db308e0347362fd35b2ae53f48be8839f
+Merge: 2822c7fc 6836d5a3
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-05
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-05
+
+    Merge pull request #1007 from ngtcp2/extend-max-local-streams-bidi
+    
+    examples: Rename extend_max_streams_bidi to extend_max_local_streams_bidi
+
+commit 6836d5a38a49f9a12f6ba54033906375d7b43df5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-03
+
+    examples: Rename extend_max_streams_bidi to extend_max_local_streams_bidi
+
+commit 2822c7fc71dcb27a6a4b5f93f05d85be22049042
+Merge: 7be779e1 a4fd9a6f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-03
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-03
+
+    Merge pull request #1006 from ngtcp2/unreachable-basename
+    
+    Use __FILE_NAME__ instead of __FILE__
+
+commit a4fd9a6fa5e8fa99e939a3d932a49dd60212ab2a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-03
+
+    Use __FILE_NAME__ instead of __FILE__
+    
+    Use __FILE_NAME__ instead of __FILE__ not to include a full source
+    file path.
+
+commit 7be779e1311568f303df260f9697113e68de08c3
+Merge: b560b9c3 03630639
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-02
+
+    Merge pull request #1002 from ngtcp2/cpp-ext
+    
+    Cpp ext
+
+commit 036306391eb63760cc4b0dcabd1daf57d37e1531
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-02
+
+    Update ax_cxx_compile_stdcxx.m4
+
+commit 19f18354cae63a782a816f7bb377f5227f9f7312
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-02
+
+    Do not require strict C++ mode
+
+commit b560b9c33d028af6879b2ff11e70c498381a5664
+Merge: 5a4b7166 6d4ff6cd
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-01
+
+    Merge pull request #1001 from ngtcp2/h09client-write-token
+    
+    h09client: Use util::write_token
+
+commit 5a4b7166d15ab29ed5cc2add8c2fb59d2cb17938
+Merge: 7aa8175d eef19ce0
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-01
+
+    Merge pull request #1000 from ngtcp2/ptls-support-hq
+    
+    ptlsclient, ptlsserver: Support hq
+
+commit 6d4ff6cd81a6f9c72388bc0ae658ea1b21cabe88
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-01
+
+    h09client: Use util::write_token
+
+commit eef19ce0d915d699f8c3448bb9456b8a021c8661
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-01
+
+    ptlsclient, ptlsserver: Support hq
+
+commit 7aa8175d3e92d3164afc8a1e4ee84f1ad4a5586d
+Merge: f9113057 247a506f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-01
+
+    Merge pull request #999 from ngtcp2/fix-windows-warnings
+    
+    windows: Fix warnings
+
+commit 247a506fc01a3b0d232a1e3445804027c35da5da
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-01
+
+    windows: Fix warnings
+
+commit f91130579986ab727e9960b3e48e785474255911
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-30
+
+    clang-format
+
+commit ea40b859cce917eb6853a9d6e9c14f6bbb3eee26
+Merge: 09710234 a9a4d80c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-30
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-30
+
+    Merge pull request #991 from mikeswhite1/ngtcp2_conn_write_datagram
+    
+    ngtcp2_conn_write_datagram conveniently accepts single buffer
+
+commit a9a4d80ca4caf016fa48cc32431efe711382bb7e
+Author:     Michael White <mike.s.white1@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    fix args
+    
+    Co-authored-by: Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+
+commit 09710234adc47226a119e0b2c9953c859692a7e2
+Merge: be9c5a0e e49c8c0b
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    Merge pull request #996 from ngtcp2/deprecate-NGTCP2_PROTO_VER_MIN_MAX
+    
+    Deprecate NGTCP2_PROTO_VER_MIN and NGTCP2_PROTO_VER_MAX
+
+commit e49c8c0bbd2f69d40c71f80c23f82f7c41b0a9e2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-29
+
+    Deprecate NGTCP2_PROTO_VER_MIN and NGTCP2_PROTO_VER_MAX
+
+commit be9c5a0e7b88c8f74c58155b8f00536a65a92ade
+Merge: 2a6fe601 8e36ce02
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    Merge pull request #995 from ngtcp2/bump-quictls
+    
+    Bump quictls to 3.1.4+quic
+
+commit 8e36ce021a6c7b31cc00b7b8b6857fece5264440
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-29
+
+    Bump quictls to 3.1.4+quic
+
+commit 2a6fe6011b73111b4f818df4f11c20753e98d1d2
+Merge: 024afbf9 aee92cb9
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    Merge pull request #994 from ngtcp2/bump-clang-format
+    
+    Bump clang-format to 15
+
+commit aee92cb9aa3582eaf8696bff6bd8d52964c4595a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-29
+
+    Bump clang-format to 15
+
+commit 024afbf903051a4662cbbab113e3c32326d5e81a
+Merge: ccd2553b 468217aa
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    Merge pull request #993 from ngtcp2/quictls-prefetch
+    
+    quictls: Prefetch objects to workaround 3.x perf regression
+
+commit 468217aa213dc0b34ab1726b17ca93785b365349
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-29
+
+    quictls: Prefetch objects to workaround 3.x perf regression
+
+commit ccd2553b8e71e7d0a3a9b41034d42a2dec34233b
+Merge: 038fbb89 baec74cd
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    Merge pull request #992 from ngtcp2/bump-clang
+    
+    Bump clang to 15
+
+commit baec74cd2f92a9115d7ed6cfe3ad89d7e1f9081e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-29
+
+    Bump clang to 15
+
+commit 699cde2454fbc9bed8b809f58b13277eeb2f6775
+Author:     Michael White <mike.s.white1@gmail.com>
+AuthorDate: 2023-10-27
+Commit:     Michael White <mike.s.white1@gmail.com>
+CommitDate: 2023-10-27
+
+    format
+
+commit ba1b5c0fb68ec247e0d69425c4aed4cc47c10602
+Author:     Michael White <mike.s.white1@gmail.com>
+AuthorDate: 2023-10-27
+Commit:     Michael White <mike.s.white1@gmail.com>
+CommitDate: 2023-10-27
+
+    ngtcp2_conn_write_datagram
+
+commit 038fbb8966d5c5be18b88194183a8a50f8c1c862
+Merge: 89efca97 1425c386
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-24
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-24
+
+    Merge pull request #987 from vszakats/fixup-1
+    
+    cmake: re-add two missing includes
+
+commit 1425c386ddd258ad88a2ab87b3cec1ffd55d3abd
+Author:     Viktor Szakats <commit@vsz.me>
+AuthorDate: 2023-10-23
+Commit:     Viktor Szakats <commit@vsz.me>
+CommitDate: 2023-10-23
+
+    cmake: re-add two missing includes
+    
+    Previously these were were included transitively via
+    `cmake/ExtractValidFlags.cmake`. #964 deleted that file. The
+    replacements it added pulled these includes after the local
+    code uses them.
+    
+    Re-add these includes into the `CMakeLists.txt` that uses them.
+    
+    Reported-by: fpliu
+    Fixes #979
+
+commit 89efca97db5e7a68166c093a69d81d4133982163
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-23
+
+    Bump library versions due to the patch release
+
+commit e93e5686916d6960eef8e54dddff7cb28174e33a
+Merge: 50f13473 707fc2cf
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-22
+
+    Merge pull request #985 from ngtcp2/fix-crypto-retry-token-aad
+    
+    crypto: Fix bug that retry token AAD does not include QUIC version
+
+commit 707fc2cf50b7f9858b48dce24f29eed106cc03bf
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-22
+
+    crypto: Fix bug that retry token AAD does not include QUIC version
+
+commit 50f13473e00f76cba5b51cc83f731c7eb01eeacf
+Merge: fc335918 7328dbcd
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-22
+
+    Merge pull request #984 from ngtcp2/remove-conn_resched_frames
+    
+    Remove unused ngtcp2_conn_resched_frames
+
+commit fc33591816d003fd73994063a434f43cce835ba4
+Merge: 7186ddb7 f1d8a2c0
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-22
+
+    Merge pull request #983 from ngtcp2/rename-reset-stream-flags
+    
+    Rename reset stream flags
+
+commit 7328dbcd8f564fb877784a7198cf0df44c4003ac
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-22
+
+    Remove unused ngtcp2_conn_resched_frames
+
+commit f1d8a2c0ac0194bfa28539842041943e14d485de
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-22
+
+    Rename NGTCP2_STRM_FLAG_RST_ACKED to NGTCP2_STRM_FLAG_RESET_STREAM_ACKED
+
+commit cfd962e3a50588bb992095dbb220c6534c2c70b8
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-22
+
+    Rename NGTCP2_STRM_FLAG_RECV_RST to NGTCP2_STRM_FLAG_RESET_STREAM_RECVED
+
+commit 4ff2c33bb3b13b812683a513e75628f11e613ae8
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-22
+
+    Rename NGTCP2_STRM_FLAG_SENT_RST to NGTCP2_STRM_FLAG_RESET_STREAM
+
+commit 7186ddb7c5f600c583ad4ac2f1539aef338a44e2
+Merge: 2314f43d 55113ccd
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-22
+
+    Merge pull request #982 from ngtcp2/fix-typo
+    
+    Fix typo
+
+commit 55113ccd4d6e7a349d7dad6f287d5000af0596f6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-22
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-22
+
+    Fix typo
+
+commit 2314f43d1a72459edb17749422929f778f90ed1d
+Merge: 96422552 4d69e176
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-22
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-22
+
+    Merge pull request #981 from ngtcp2/refactor-ringbuf
+    
+    Refactor ringbuf
+
+commit 4d69e176e7ac84ee9c085a420cdd61cab688daf8
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-21
+
+    Make custom __popcnt static
+
+commit f561119ce5152e14fc631ed8c812031168ad4617
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-21
+
+    ngtcp2_ringbuf: Store mask instead of nmemb
+
+commit 964225528eeb95b108d7ac3cf99b7750af9d4be0
+Merge: cbf8fe07 43d9bfd2
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-20
+
+    Merge pull request #980 from ngtcp2/frame-chain
+    
+    Extract ngtcp2_frame_chain to its own file
+
+commit 43d9bfd20478706b7ca31f7897934535b4188eac
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-20
+
+    Extract ngtcp2_frame_chain to its own file
+
+commit cbf8fe07787b0f4b6d0ae0d89bc6af1537840ef9
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-15
+
+    Bump package version
