@@ -26,6 +26,8 @@ file(GLOB_RECURSE src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 file(GLOB_RECURSE ignored_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
     "./src/interface/LovyanGFX/*.cpp"
     "./src/interface/LovyanGFX/*.c"
+    "./src/lib/curl-8.5.0_1-win64-mingw/*.cpp"
+    "./src/lib/curl-8.5.0_1-win64-mingw/*.c"
 )
 
 list(REMOVE_ITEM src ${ignored_src})
