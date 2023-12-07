@@ -49,9 +49,16 @@ void setup() // initialize paxos v8
     esp_task_wdt_deinit();
 #endif
     
-#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
+#if defined(__linux__) || defined(__APPLE__)
 void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initialize paxos v8
     {
+    shouldUS = shouldUpdateScreen;
+    screenUZ = screenUpdateZones;
+#elif defined(_WIN32) || defined(_WIN64)
+    // Conflict with winGDI.h Rectangle typedef from windows.h
+    // Import of windows.h is in dirent.h
+void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones) // initialize paxos v8
+{
     shouldUS = shouldUpdateScreen;
     screenUZ = screenUpdateZones;
 #endif
