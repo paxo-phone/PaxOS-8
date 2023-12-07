@@ -430,7 +430,11 @@ void GSM::parseHourFromComputer(time_t* time) {
     struct tm* formattedTime;
     formattedTime = gmtime(time);
 
+#if defined(_WIN32) || defined(_WIN64)
+    localtime_s((tm *) time, (const time_t *) formattedTime);
+#else
     localtime_r(time, formattedTime);
+#endif
 
     // https://cplusplus.com/reference/ctime/tm/
     years = formattedTime->tm_year + 1900;
