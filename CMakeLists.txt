@@ -60,12 +60,8 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     target_include_directories(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/include")
 
-    target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
     target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2main.lib")
-
-    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/Zc:__cplusplus>")
+    target_link_libraries(PaxOS PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/SDL2-2.28.2/lib/x64/SDL2.lib")
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
     find_package(SDL2 REQUIRED COMPONENTS SDL2)
 
