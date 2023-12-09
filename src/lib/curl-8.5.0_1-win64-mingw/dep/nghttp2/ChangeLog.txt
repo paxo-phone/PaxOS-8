@@ -1,0 +1,389 @@
+commit e2bc59bec9004bca47df961cbbad20664d7e53b2 (HEAD, tag: v1.58.0, origin/master, origin/HEAD, master)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-27
+
+    Update manual pages
+
+commit 28dc67e2c272d6ce5cd6428db83dc1f5c7d9ee92
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-27
+
+    Bump package and library versions
+
+commit f2beef8675a07ad68505af4b4dcdff43c93774e3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-27
+
+    Update AUTHORS
+
+commit c00452b6869d93db5fde753e92d6c2830798c12d
+Merge: 8e01a772 09832b96
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-27
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-27
+
+    Merge pull request #1985 from nghttp2/bump-neverbleed
+    
+    Bump neverbleed
+
+commit 09832b967244648b433bb329032e7f7a91fdaea5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-27
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-27
+
+    Bump neverbleed
+
+commit 8e01a772aee096e914d9c73dd835dbb037a6ff72
+Merge: d3e7e955 f8670c56
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-23
+
+    Merge pull request #1983 from nghttp2/bump-ngtcp2
+    
+    Bump ngtcp2
+
+commit f8670c565ce164363316bcb1c3e1b9979570dbde
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-23
+
+    Bump ngtcp2
+
+commit d3e7e9554c67c7de18353d53f51e4cffe6b25c58
+Merge: 54a5d271 35e15efd
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-20
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-20
+
+    Merge pull request #1981 from nghttp2/bump-neverbleed
+    
+    Bump neverbleed
+
+commit 35e15efd37776e3f41a20fcab62436cdebf8fa6c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-20
+
+    Bump neverbleed
+
+commit 54a5d271d3c1eb03048006cbd6a8177a58e8b214
+Merge: ba74559c c7536993
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-19
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-19
+
+    Merge pull request #1977 from nghttp2/fix-cygwin-build
+    
+    Prefer clock_gettime if __CYGWIN__ defined
+
+commit ba74559c046058c2aae7a5078992e0c4963671fe
+Merge: 3209a0b6 723f131f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-18
+
+    Merge pull request #1979 from nghttp2/fix-win-map-printf-warnings
+    
+    windows: Fix warnings
+
+commit 3209a0b6c78cfc6d75c4664d15c318dc95cb42e5
+Merge: c16e5ad4 164ebe22
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-18
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-18
+
+    Merge pull request #1978 from nghttp2/configure-cygwin
+    
+    Configure cygwin
+
+commit 723f131f7691921214521d7f629904e1e930d06d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-18
+
+    windows: Fix warnings
+
+commit 164ebe22bf7784e53f5d771132cb220290723963
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-18
+
+    Do not require strict c++ mode
+
+commit ec362f77e49545d61ef34014a77b8b7486c90b46
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-18
+
+    tests: Define NGHTTP2_STATICLIB
+
+commit c7536993cf3ab731bcfca8665aa4322920df05e7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-18
+
+    Prefer clock_gettime if __CYGWIN__ defined
+
+commit c16e5ad42e9b09c497f3ccd2f9642e6f349186ab
+Merge: 56b762fa 0117e7f6
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-17
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-17
+
+    Merge pull request #1973 from nghttp2/nghttpx-stricter-transfer-encoding-check
+    
+    nghttpx: Stricter transfer-encoding checks
+
+commit 56b762fa55e9aeea70c9e81325c158dbd9de5ce0
+Merge: 2a37feb1 d555153e
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-17
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-17
+
+    Merge pull request #1975 from nghttp2/refactor-char-comp
+    
+    Refactor character comparison
+
+commit 0117e7f6fc1d40e9e97b4766791e42bac441e07d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-17
+
+    nghttpx: Stricter transfer-encoding checks
+
+commit 2a37feb1eb69831e9c2d8992124a23bba36a5149
+Merge: e14ddc84 475c7ed2
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-17
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-17
+
+    Merge pull request #1974 from nghttp2/integration-servertester-h3
+    
+    Integration servertester h3
+
+commit 475c7ed2ebec25d73acf9349c5f0a49c1f7c4073
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-17
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-17
+
+    integration: Enable http3 test with cmake
+
+commit ee1ca9cd1048e0661c0a1674c8f4704b48742356
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-17
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-17
+
+    integration: Move serverTester http3 function to its own file
+
+commit d555153e515d1f773ff7bfa1e9cd30e1b00c0ab3
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-16
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-17
+
+    Refactor character comparison
+
+commit e14ddc840e59ba8430c90ff4413dd9bf12827ac0
+Merge: 4e9bca72 013e46b1
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-15
+
+    Merge pull request #1970 from nghttp2/bump-ngtcp2
+    
+    Bump ngtcp2
+
+commit 013e46b138895e7ddf7fb031e77cd05cf26f6b39
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-15
+
+    bbrv2 has been removed
+
+commit df5f1ee67be3396fb7c4afa932135a6c767b5f3d
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-15
+
+    Bump ngtcp2 and nghttp3
+
+commit 4e9bca7218b5194b51c33c952e00db28b470afe9
+Merge: e8bfe253 775e4f1b
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-15
+
+    Merge pull request #1956 from av223119/master
+    
+    ngtcp2 has merged BBR and BBRv2 under BBR (fixes issue #1955)
+
+commit e8bfe253aede68d0866d6d14869c19d7088788bb
+Merge: bd929025 9585d54b
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-15
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-15
+
+    Merge pull request #1969 from nghttp2/update-doc
+    
+    Update doc
+
+commit 9585d54b3194f31bea0a8fb249d604cb01cfcb21
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-15
+
+    We no longer make a release in every month
+
+commit b25f9cc7d41e359bb383e494caf27b04d59476c9
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-15
+
+    Update security procedure
+    
+    We sometimes cannot follow the current procedure for some reasons,
+    therefore remove the relevant portion of text.
+
+commit bd9290256090c1478fc09a1b6098172f31dbf534
+Merge: 3b82572b 10a77ce8
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-14
+
+    Merge pull request #1967 from vszakats/cmake-fast-warnopt-detection
+    
+    cmake: speed up warning option detection
+
+commit 10a77ce888f689fad860de6903ee055a2c6b67be
+Author:     Viktor Szakats <commit@vsz.me>
+AuthorDate: 2023-10-09
+Commit:     Viktor Szakats <commit@vsz.me>
+CommitDate: 2023-10-14
+
+    cmake: display WARNCXXFLAGS flags in summary
+
+commit 81c199dd9b5c539b7a248a47481f25a8445e17c7
+Author:     Viktor Szakats <commit@vsz.me>
+AuthorDate: 2023-10-09
+Commit:     Viktor Szakats <commit@vsz.me>
+CommitDate: 2023-10-14
+
+    cmake: speed up warning option detection
+
+commit 3b82572b9e84ab02f0d89774aef8f2795066fda4
+Merge: d0358c00 9d85ab41
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-14
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-14
+
+    Merge pull request #1965 from nghttp2/dependabot/go_modules/golang.org/x/net-0.17.0
+    
+    Bump golang.org/x/net from 0.15.0 to 0.17.0
+
+commit 9d85ab415faaab0d0282cbdb6c34fa2d81127dd7
+Author:     dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+AuthorDate: 2023-10-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-11
+
+    Bump golang.org/x/net from 0.15.0 to 0.17.0
+    
+    Bumps [golang.org/x/net](https://github.com/golang/net) from 0.15.0 to 0.17.0.
+    - [Commits](https://github.com/golang/net/compare/v0.15.0...v0.17.0)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: golang.org/x/net
+      dependency-type: direct:production
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit d0358c0063fa54fccabe4f08f7f60b140358c9c7
+Merge: 4262c901 e103726f
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-11
+
+    Merge pull request #1964 from nghttp2/nghttpx-h3-reset-stream
+    
+    nghttpx: Shutdown h3 stream write if reset by a remote endpoint
+
+commit e103726f4d39a6cbcd29381f10fb837a1361b3a5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-11
+
+    nghttpx: Shutdown h3 stream write if reset by a remote endpoint
+
+commit 4262c901481213d82e2a5ab0d33ce4b082572d72
+Merge: cccb6ad2 bf8f419c
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-11
+
+    Merge pull request #1963 from nghttp2/fix-build-error
+    
+    Fix build error when both clock_gettime and GetTickCount64 are available
+
+commit bf8f419ca9f2d8bce48591710aa25f08e3fc67f8
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-11
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-11
+
+    Fix build error when both clock_gettime and GetTickCount64 are available
+
+commit cccb6ad2c95474f19b10b219ba487e77720a409c
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-10
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-10
+
+    Bump package version
+
+commit 775e4f1bade1730fb7bc4a6ba42fc9d93a3e1277
+Author:     Alexandr Vlasov <avlasov@akamai.com>
+AuthorDate: 2023-09-29
+Commit:     Alexandr Vlasov <avlasov@akamai.com>
+CommitDate: 2023-09-29
+
+    ngtcp2 has merged BBR and BBRv2 under BBR

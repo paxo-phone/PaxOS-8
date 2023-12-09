@@ -1,0 +1,178 @@
+commit e5841909338adeb280a78da076f85f6a14b48419 (HEAD, tag: v1.1.0, origin/main, origin/HEAD, main)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-26
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-26
+
+    Bump package and library versions
+
+commit a70edb08e954d690e8fb2c1df999b5a056f8bf9f
+Merge: 9d46caf 7707d42
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-12
+
+    Merge pull request #179 from ngtcp2/fix-doc
+    
+    Fix doc
+
+commit 9d46caf4e16cda8ea3c56eb4a7e6a941e8f5b91e
+Merge: d8ad77d 5e7932a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-12
+
+    Merge pull request #178 from ngtcp2/varint-id-macros
+    
+    Define varint identifiers as macros
+
+commit 7707d4218732207d40d6dd8294d08a8460aba603
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-12
+
+    Fix doc
+
+commit 5e7932ac98c9b9c8d368d97d2bcc483dcd72c3aa
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-12
+
+    Define varint identifiers as macros
+
+commit d8ad77da8ef4db49dc5fbc4d26e16d0a438be88d
+Merge: 71bf1ef c284aec
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-05
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-05
+
+    Merge pull request #177 from ngtcp2/parse-priority
+    
+    Add nghttp3_pri_parse_priority
+
+commit c284aeceb8532fff49daa7c939d549d40db78783
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-05
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-05
+
+    Add nghttp3_pri_parse_priority
+
+commit 71bf1ef33ac34b70d7212a4e6ad471165279a46e
+Merge: 64cbbfc 9645295
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-03
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-03
+
+    Merge pull request #176 from ngtcp2/unreachable-basename
+    
+    Use __FILE_NAME__ instead of __FILE__
+
+commit 964529572dfdc36c434f14b588287411448246c5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-03
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-03
+
+    Use __FILE_NAME__ instead of __FILE__
+    
+    Use __FILE_NAME__ instead of __FILE__ not to include a full source
+    file path.
+
+commit 64cbbfc142eeb04bf477de434ab92c31a6fcea24
+Merge: e9264bc d15eb92
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-02
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-02
+
+    Merge pull request #175 from ngtcp2/cpp-ext
+    
+    Cpp ext
+
+commit d15eb924267419ebb6dfceb57a464e3cfbfc28dd
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-02
+
+    Update ax_cxx_compile_stdcxx.m4
+
+commit 7d50b1958ab95df354641bd91cbcd4a3db9f9aea
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-02
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-02
+
+    Do not require strict C++ mode
+
+commit e9264bc8d51bfdc51025e7b901dd4b1cbfad44f9
+Merge: 17521d7 6a3e1cf
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-11-01
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-11-01
+
+    Merge pull request #174 from ngtcp2/fix-windows-warnings
+    
+    windows: Fix warnings
+
+commit 6a3e1cf588e08805adc19501cf77e27320d3c35e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-11-01
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-11-01
+
+    windows: Fix warnings
+
+commit 17521d7dd6d47c1f28d8358f7702a9456b145f10
+Merge: d240bba ba7b48a
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    Merge pull request #172 from ngtcp2/bump-clang-format
+    
+    Bump clang-format to 15
+
+commit ba7b48a26507448d1cb33d2037ad3d4b0e422372
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-29
+
+    Bump clang-format to 15
+
+commit d240bba34848e861e4bf495b667e04b2dfe0a8d9
+Merge: 995738e c1a2bfa
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2023-10-29
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2023-10-29
+
+    Merge pull request #171 from ngtcp2/bump-clang
+    
+    Bump clang to 15
+
+commit c1a2bfa93d2bde79985ab247325641e59ae9a6fc
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-29
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-29
+
+    Bump clang to 15
+
+commit 995738eb20e9f9b0f3a8e71dc19a94cb05c734a4
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2023-10-15
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2023-10-15
+
+    Bump package version

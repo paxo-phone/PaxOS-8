@@ -4,6 +4,8 @@
 #include "../interface/interface.hpp"
 #include "../interface/console.hpp"
 
+#define uint unsigned int // Windows compatibility
+
 Window* LuaInterpreter::current_root = nullptr;
 vector<LuaEvent> LuaInterpreter::events;
 vector<LuaEventInterval*> LuaInterpreter::intervals;

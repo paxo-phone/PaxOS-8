@@ -19,6 +19,7 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 CMakeScripts
+cmake-build-debug-mingw
 
 # JetBrain
 .idea
