@@ -7,10 +7,8 @@ void launcher()
     initializeApplications();
 
     Window win("launcher");
+    win.enableToolbar();
     
-    win.setMarginX(0);
-    win.setMarginY(CONTROL_BAR_SIZE);
-
     uint16_t day_ = gsm.days;
     uint16_t day = gsm.days;
     uint16_t month = gsm.months;
@@ -51,19 +49,11 @@ void launcher()
             if(appBoxs[i]->isTouched())
             {
                 App::appList[i]->run(); // launch application
-                
-                // home_button::clear(); // clear the exit of the application
             }
         }
 
         if(day_ != gsm.days)
-        {
-            /*day_ = gsm.days-1;
-            day = gsm.days-1;
-            month = gsm.months-1;
-            year = gsm.years;
-            std::string dayName = daysOfWeek[(day+=month<3?year--:year-2,23*month/9+day+4+year/4-year/100+year/400)%7];*/
-            std::string monthName = daysOfMonth[gsm.months==0?0:(gsm.months-1)];
+        {std::string monthName = daysOfMonth[gsm.months==0?0:(gsm.months-1)];
             Date d = {gsm.days, gsm.months, gsm.years};
             label->setText(std::string(daysOfWeek[myWhatDay(d)]) + "\n" + to_string(gsm.days) + " " + monthName);
         }

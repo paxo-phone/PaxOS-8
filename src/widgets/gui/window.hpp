@@ -15,17 +15,15 @@ class Window : public Gui
     int updateEventId;
 
     Window(std::string title);
+    ~Window();
     GUI_TYPE getType() { return WINDOW_TYPE; }
 
-    ~Window();
-
     void updateModules();
-
     void draw();
-
-    void afterRender();
-
     void background_update();
+
+    void enableToolbar();
+    void disableToolbar();
 
     std::string title = "";
     Box* bar = nullptr;

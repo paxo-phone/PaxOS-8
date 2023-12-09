@@ -15,8 +15,6 @@ void Calcul::launch()
 void Calcul::buildGui()
 {
     Window window("");
-    window.setMarginX(0);
-    window.setMarginY(0);
     window.verticalSlide=false;
 
     std::string keys[] = {"^", "+/-", "%", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "0", ".", "AC", "="};

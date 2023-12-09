@@ -187,7 +187,6 @@ int LuaInterpreter::window(lua_State* L) {
 
     // Instance of window
     *w = new Window(title);
-    (*w)->setMarginY(0);
     return 1;
 }
 

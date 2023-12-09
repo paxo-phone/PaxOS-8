@@ -94,12 +94,6 @@ class Gui // widget system
     int16_t getWidth();        // get width
     int16_t getHeight();       // get height
 
-    void setMarginX(int16_t marginX); // set relative margin
-    void setMarginY(int16_t marginY); // set relative margin
-
-    int16_t getMarginX(); // get relative margin
-    int16_t getMarginY(); // get relative margin
-
     virtual int16_t getAbsoluteX();    // get absolute position on the screen
     virtual int16_t getAbsoluteY();
     virtual int16_t getAbsoluteFixX();
@@ -185,7 +179,7 @@ class Gui // widget system
 
     LGFX_Sprite l_tft;
 
-    bool noMargin = false;
+    bool motionless = false;
 
     protected:
 
@@ -207,9 +201,6 @@ class Gui // widget system
     int16_t x, y = 0;                      // position
     int16_t width, height = 0;             // sizes
     bool autoX, autoY, autoW, autoH = false;
-
-    int16_t marginX = 0;                   // marginX
-    int16_t marginY = 0;                   // marginY
 
     int16_t inercie = 0;
 

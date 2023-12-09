@@ -148,8 +148,8 @@ LGFX_Sprite* Label2::selfDetermination()
     uint8_t frontIndex = 0;
 
     // calculate sizes
-    totalMarginX = halfRadius + marginX;
-    totalMarginY = halfRadius + marginY;
+    totalMarginX = halfRadius;
+    totalMarginY = halfRadius;
 
     totalTextWidth = width - totalMarginX*2;
 

@@ -27,8 +27,6 @@ void Message::main()
         while(reload==false && !home_button::isPressed())
         {
             Window win("message");
-            win.setMarginX(0);
-            win.setMarginY(CONTROL_BAR_SIZE);
 
             //print("apps/message/" + number + ".txt");
 

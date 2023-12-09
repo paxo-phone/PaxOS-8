@@ -13,16 +13,16 @@ Window::Window(std::string title) : Gui(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
 {
     this->title = title;
     setBackgroundColor(COLOR_LIGHT);
-    setMarginX(10);
-    setMarginY(10 + CONTROL_BAR_SIZE);
 
     bar = new Box(0, 0, WINDOW_WIDTH, CONTROL_BAR_SIZE);
         bar->setBackgroundColor(COLOR_LIGHT);
         bar->setRadius(0);
         bar->setBorderSize(0);
-        bar->noMargin = true;
+        bar->motionless = true;
         bar->enabledBackground=false;
     addChild(bar);
+
+    bar->disable();
     
     hourLabel = new Label(110, 0, 100, CONTROL_BAR_SIZE, ((gsm.hours>9)?("0"):("")) + to_string(gsm.hours) + ":" + ((gsm.minutes>9)?("0"):("")) + to_string(gsm.minutes));
         hourLabel->setFontSize(20);
@@ -31,7 +31,7 @@ Window::Window(std::string title) : Gui(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
         hourLabel->setHorizontalAlignment(CENTER_ALIGNMENT);
         hourLabel->setVerticalAlignment(CENTER_ALIGNMENT);
         hourLabel->enabledBackground = true;
-        hourLabel->setBackgroundColor(COLOR_EXTRA_LIGHT);
+        hourLabel->setBackgroundColor(COLOR_LIGHT);
         hourLabel->setBorderSize(0);
         hourLabel->setRadius(0);
         bar->addChild(hourLabel);
@@ -122,10 +122,7 @@ void Window::draw()
         }
     }
     this->addChild(bar);
-}
 
-void Window::afterRender()
-{
     uint16_t maxH = getLowestY();
     uint16_t windowSize = WINDOW_HEIGHT - CONTROL_BAR_SIZE;
     uint16_t slideBarSize = windowSize*windowSize / maxH;
@@ -158,6 +155,16 @@ void Window::background_update()
                 keyboard->link(nullptr);
         }
     }
+}
+
+void Window::enableToolbar()
+{
+    bar->enable();
+}
+
+void Window::disableToolbar()
+{
+    bar->disable();
 }
 
 #endif
