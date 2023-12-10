@@ -1,8 +1,6 @@
-#ifndef GUI_CPP
-#define GUI_CPP
-
-#include "gui.hpp"
-#include "../interface/interface.hpp"
+#include "../../interface/interface.hpp"
+#include "gui_class.hpp"
+#include "../gui.hpp"
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void flushScreen();
@@ -791,5 +789,3 @@ bool Gui::EventOnScroll()
         renderAll();
     return mvtX || mvtY;
 }
-
-#endif

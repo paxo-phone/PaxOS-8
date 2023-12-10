@@ -1,7 +1,7 @@
 #ifndef BUTTON_CPP
 #define BUTTON_CPP
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 #include "button.hpp"
 #include "label.hpp"
 

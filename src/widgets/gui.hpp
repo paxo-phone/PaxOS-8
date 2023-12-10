@@ -1,8 +1,7 @@
 #ifndef GUI_HPP
 #define GUI_HPP
 
-#include "gui_class.hpp"
-
+#include "gui/gui_class.hpp"
 #include "gui/box.hpp"
 #include "gui/label.hpp"
 #include "gui/button.hpp"

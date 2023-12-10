@@ -2,7 +2,7 @@
 #define IMAGE_HPP
 
 #include <string>
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 
 class Image;
 

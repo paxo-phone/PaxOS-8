@@ -1,7 +1,7 @@
 #ifndef BOX_HPP
 #define BOX_HPP
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 
 class Box : public Gui
 {

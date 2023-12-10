@@ -13,14 +13,14 @@
 
 #include <vector>
 
-#include "../interface/screen.hpp"
+#include "../../interface/screen.hpp"
+#include "../../tasks/tasks.hpp"
 
-#include "color.hpp"
-#include "alignment.hpp"
-#include "default.hpp"
+#include "../color.hpp"
+#include "../alignment.hpp"
+#include "../default.hpp"
 
-#include "touch_manager.hpp"
-#include "../tasks/tasks.hpp"
+#include "../touch_manager.hpp"
 
 class App;
 typedef uint8_t Alignment;

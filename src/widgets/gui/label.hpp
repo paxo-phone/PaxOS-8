@@ -2,7 +2,7 @@
 #define __LABEL_HPP__
 
 #include <string.h>
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 #include "../../interface/screen.hpp"
 
 #define DEFAULT_LINE_SPACING 5

@@ -1,7 +1,7 @@
 #ifndef CANVAS_HPP
 #define CANVAS_HPP
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 
 class Canvas : public Gui
 {
