@@ -3,13 +3,13 @@ project(PaxOS)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
-if (WIN32)
-    message("> Building for Windows")
-elseif(APPLE)
-    message("> Building for macOS")
-else()
-    message("> Building for Linux")
-endif()
+# if (WIN32)
+#     message("> Building for Windows")
+# elseif(APPLE)
+#     message("> Building for macOS")
+# else()
+#     message("> Building for Linux")
+# endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
