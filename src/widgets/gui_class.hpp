@@ -62,8 +62,6 @@ class Gui // widget system
     
     virtual ~Gui(); // supprime le widget
 
-    static void initScreen(); // initialise l'ecran (tft_root)
-    
     virtual GUI_TYPE getType() = 0;  // retourne le type de l'objet selon GUI_TYPE
 
     void renderAll();           // genere un rendu de tous les enfants

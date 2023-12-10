@@ -152,23 +152,6 @@ Gui::~Gui()
     }
 }
 
-// Initialisation de l'écran, spécifique à la plateforme ESP32
-void Gui::initScreen()
-{
-    #ifdef ESP32
-        uint16_t calibrationData[] = {316, 194, 307, 3778+300, 3771-200, 204, 3740-200, 3750+300};
-
-        tft_root.setTouchCalibrate(calibrationData);
-
-        pinMode(14, OUTPUT);
-        digitalWrite(14, 1);
-        pinMode(22, OUTPUT);
-        digitalWrite(22, 1);
-    #endif
-    
-    tft_root.init();
-}
-
 // Méthode pour déterminer la taille de l'objet en fonction de son parent
 void Gui::determineSize()
 {
