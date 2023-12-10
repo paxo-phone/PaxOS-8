@@ -18,5 +18,3 @@ void Box::draw()
     if(enabledBackground)
         l_tft.drawRoundRectWithBorder(0, 0, getWidth(), getHeight(), getRadius(), getBorderSize(), getBackgroundColor(), getBorderColor());
 }
-
-void Box::free(){}

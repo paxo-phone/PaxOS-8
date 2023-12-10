@@ -25,7 +25,6 @@ class Label : public Gui
         ~Label();
 
         void draw(void);
-        void free(void){}
 
         uint16_t getUsableWidth(void); // retourne la largeur réelle maximale utilisée par le texte (sans les marge bordure etc...)
         uint16_t getUsableHeight(void);
