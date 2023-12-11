@@ -211,15 +211,6 @@ class Gui // widget system
     uint64_t timerPress = 0;
 
     bool enabled = true;
-
-    /*friend class Box;
-    friend class Label;
-    friend class Button;
-    friend class Image;
-    friend class Window;
-    friend class Keyboard;
-    friend class Keyboard;
-    friend class Back;*/
 };
 
 inline Gui *upFromDrawAll = nullptr;
