@@ -46,8 +46,6 @@ Gui::Gui()
 
     scroolX = 0; scroolY = 0;
 
-    inercie = 0;
-    
     enabled = true;
     autoSize = true;
     rendered = false;
@@ -114,8 +112,6 @@ Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
 
     scroolX = 0; scroolY = 0;
 
-    inercie = 0;
-    
     enabled = true;
     autoSize = true;
     rendered = false;

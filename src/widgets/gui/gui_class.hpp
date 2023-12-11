@@ -200,8 +200,6 @@ class Gui // widget system
     int16_t width, height = 0;             // sizes
     bool autoX, autoY, autoW, autoH = false;
 
-    int16_t inercie = 0;
-
     color_t color = COLOR_BLACK;
     color_t backgroundColor = COLOR_LIGHT;
     color_t borderColor = COLOR_BLACK;
