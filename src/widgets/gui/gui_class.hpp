@@ -52,8 +52,6 @@ enum GUI_TYPE
 
 inline LGFX_Sprite tft(&tft_root);
 
-inline bool reload_afterunlocked = false;
-
 class Gui // widget system
 {
     public:
