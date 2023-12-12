@@ -53,9 +53,11 @@ void launcher()
         }
 
         if(day_ != gsm.days)
-        {std::string monthName = daysOfMonth[gsm.months==0?0:(gsm.months-1)];
+        {
+            std::string monthName = daysOfMonth[gsm.months==0?0:(gsm.months-1)];
             Date d = {gsm.days, gsm.months, gsm.years};
             label->setText(std::string(daysOfWeek[myWhatDay(d)]) + "\n" + to_string(gsm.days) + " " + monthName);
+            day_ = gsm.days;
         }
 
         if(home_button::isPressed())

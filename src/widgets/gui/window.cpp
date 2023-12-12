@@ -129,6 +129,7 @@ void Window::draw()
     
     if(maxH > WINDOW_HEIGHT && verticalSlide)
     {
+        
         l_tft.fillRoundRect(WINDOW_WIDTH-2-6, CONTROL_BAR_SIZE + 2 + (windowSize)*(-scroolY)/maxH, 6, slideBarSize, 3, COLOR_GREY);
     }
 }
@@ -138,6 +139,7 @@ void Window::background_update()
     if(mainWindow!=this)
     {
         mainWindow=this;
+        reloadAlone();
         renderAll();
     }
     if (this->getLowestY() > this->getHeight())

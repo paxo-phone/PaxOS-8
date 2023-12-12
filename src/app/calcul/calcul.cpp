@@ -102,7 +102,7 @@ void Calcul::buildGui()
     
             if(actualCalculLabel->getFontSize() != oldFontAL)
             {
-                actualCalculLabel->rendered = false;
+                actualCalculLabel->reloadAlone();
                 actualCalculLabel->updateAll();
             }
         }
@@ -122,7 +122,7 @@ void Calcul::buildGui()
             }
             if(oldCalculLabel->getFontSize() != oldFontOL)
             {
-                oldCalculLabel->rendered = false;
+                oldCalculLabel->reloadAlone();
                 oldCalculLabel->updateAll();
             }
         }

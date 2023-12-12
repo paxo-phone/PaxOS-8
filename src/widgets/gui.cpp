@@ -53,6 +53,7 @@ Gui::Gui()
     enabled = true;
     autoSize = true;
     rendered = false;
+    drawn = false;
 
     color = COLOR_BLACK;
     backgroundColor = COLOR_LIGHT;
@@ -68,7 +69,7 @@ Gui::Gui()
 
     parent = nullptr;
 
-    reloadWidget();
+    reloadAlone();
 }
 
 // Constructeur surchargé de la classe Gui
@@ -120,7 +121,6 @@ Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
     
     enabled = true;
     autoSize = true;
-    rendered = false;
 
     color = COLOR_BLACK;
     backgroundColor = COLOR_LIGHT;
@@ -134,9 +134,12 @@ Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
 
     timerPress = 0;
 
+    rendered = false;
+    drawn = false;
+
     parent = nullptr;
 
-    reloadWidget();
+    reloadAlone();
 }
 
 // Destructeur de la classe Gui
@@ -202,6 +205,7 @@ void Gui::determineSize()
 void Gui::renderAll()
 {
     determineSize();
+    l_tft.setClipRect(0, 0, getWidth(), getHeight());
 
     if(parent!=nullptr)
     {
@@ -219,8 +223,9 @@ void Gui::renderAll()
     if(upFromDrawAll==nullptr)
         upFromDrawAll=this;
     
-    if(!rendered)
+    if(!rendered) // si des changement necessitent de refaire le rendu
     {
+        // faire le rendu
         if(getType() != IMAGE_TYPE && getType() != CANVAS_TYPE || children.size()!=0)
         {
             l_tft.deleteSprite();
@@ -246,17 +251,37 @@ void Gui::renderAll()
         for (int i = 0; i < children.size(); i++)
         {
             if(children[i] != nullptr)
+            {
+                l_tft.setClipRect(children[i]->getRelativeX(), children[i]->getRelativeY(), children[i]->getWidth(), children[i]->getHeight());
                 children[i]->renderAll();
+            }
         }
 
         afterRender();
 
-        rendered = true;
+        rendered = true; // le rendu a été effectué mais les modifications ne sont pas prises en compte sur l'écran
     }
-    else if(getType() == IMAGE_TYPE)
-        draw();
 
-    if(getType() != IMAGE_TYPE)
+    if ((!drawn || (parent!=nullptr && parent->rendered==false)) && getType() != IMAGE_TYPE)  // si des changements déja rendus necessitent d'être push sur l'écran ou le parent
+    {
+        if(parent != nullptr && parent->drawn == false)  // le parent demande le rendu
+        {   // alors push les modifications vers le parent
+            l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
+            console.log("on push to parent");
+        }else   // le parent ne demande pas de rendu ou le parent n'existe pas
+        {   // alors push les modifications vers l'écran
+            int x1 = getAbsoluteX();
+            int y1 = getAbsoluteY();
+            tft_root.setClipRect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+
+            l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
+            
+            childrenAreDrawn();
+            console.log("on push to screen");
+        }
+    }
+
+    /*if(getType() != IMAGE_TYPE)
     {
         if(upFromDrawAll==this)
         {
@@ -270,7 +295,7 @@ void Gui::renderAll()
         {
             l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
         }
-    }
+    }*/
     
     light::turnOn();
     #if defined(__linux__) || defined(_WIN32__) || defined(_WIN64__) || defined(__APPLE__)
@@ -304,7 +329,7 @@ bool Gui::updateAll()
     }
     background_update();
 
-    if(rendered == false)
+    if(drawn == false)
     {
         renderAll();
     }
@@ -459,10 +484,30 @@ bool Gui::update()
     return false;
 }
 
-// Méthode pour recharger l'objet courant
-void Gui::reload()
+void Gui::reloadAlone()
 {
-    renderAll();
+    this->drawn = false;
+    this->rendered = false;
+}
+
+void Gui::reloadParent()
+{
+    this->drawn = false;
+    if(parent != nullptr)
+    {
+        parent->rendered = false;
+    }
+}
+
+void Gui::childrenAreDrawn()
+{
+    for (int i = 0; i < children.size(); i++)
+    {
+        if(children[i] != nullptr)
+            children[i]->childrenAreDrawn();
+    }
+
+    drawn = true;
 }
 
 // Méthode pour vérifier si l'objet courant est focus
@@ -486,7 +531,7 @@ bool Gui::isTouched()
 void Gui::reloadWidget()
 {
     if(parent!=nullptr)
-        parent->reloadWidget();
+        parent->reloadAlone();
     rendered=false;
 }
 
@@ -575,25 +620,25 @@ int16_t Gui::getRelativeFixY()
 void Gui::setX(int16_t x)
 {
     this->x=x;
-    reloadWidget();
+    reloadParent();
 }                               
 
 void Gui::setY(int16_t y)
 {
     this->y=y;
-    reloadWidget();
+    reloadParent();
 }
 
 void Gui::setWidth(int16_t width)
 {
     this->width=width;
-    reloadWidget();
+    reloadParent();
 }
 
 void Gui::setHeight(int16_t height)
 {
     this->height=height;
-    reloadWidget();
+    reloadParent();
 }
 
 void Gui::addChild(Gui *child)
@@ -603,7 +648,7 @@ void Gui::addChild(Gui *child)
     children.push_back(child);
     child->setParent(this);
 
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::removechildren()
@@ -617,12 +662,14 @@ void Gui::removechildren()
     {
         children.erase(children.begin());
     }
+
+    reloadAlone();
 }
 
 void Gui::setParent(Gui *parent)
 {
     this->parent = parent;
-    reloadWidget();
+    reloadParent();
 }
 
 Gui* Gui::getMaster()
@@ -636,25 +683,25 @@ Gui* Gui::getMaster()
 void Gui::setColor(color_t color)
 {
     this->color=color;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setBackgroundColor(color_t backgroundColor)
 {
     this->backgroundColor=backgroundColor;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setBorderColor(color_t borderColor)
 {
     this->borderColor=borderColor;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setBorderSize(int16_t borderSize)
 {
     this->borderSize=borderSize;
-    reloadWidget();
+    reloadAlone();
 }
 
 color_t Gui::getColor()
@@ -680,13 +727,13 @@ int16_t Gui::getBorderSize()
 void Gui::setHorizontalAlignment(Alignment alignment)
 {
     this->H_alignment=alignment;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setVerticalAlignment(Alignment alignment)
 {
     this->V_alignment=alignment;
-    reloadWidget();
+    reloadAlone();
 }
 
 Alignment Gui::getHorizontalAlignment()
@@ -702,7 +749,7 @@ Alignment Gui::getVerticalAlignment()
 void Gui::setRadius(uint16_t radius)
 {
     this->radius=radius;
-    reloadWidget();
+    reloadParent();
 }
 
 int16_t Gui::getLowestX()
@@ -781,7 +828,7 @@ bool Gui::EventOnScroll()
     int16_t mvtY=touch.isSlidingVertically();
 
     if((mvtX && horizontalSlide) || (mvtY && verticalSlide))
-        reloadWidget(); // a optimiser
+        reloadAlone();
     
     if(mvtX && horizontalSlide)
     {

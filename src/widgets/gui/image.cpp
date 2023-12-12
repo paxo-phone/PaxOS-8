@@ -228,6 +228,7 @@ void Image::draw()
                         imagesLoaded[i].img->pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
                     else
                         imagesLoaded[i].img->pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY(), ALPHA_16B);
+                    childrenAreDrawn();
                 }
                 else
                 {

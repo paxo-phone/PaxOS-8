@@ -107,7 +107,7 @@ void Message::main()
                     {
                         //print("too much messages, resizing...");
                         box->scroolY = - bull->getRelativeY() - bull->getHeight() + box->getHeight();
-                        box->rendered=false;
+                        box->reloadAlone();
                     }
                 }
 

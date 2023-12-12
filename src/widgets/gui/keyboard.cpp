@@ -109,7 +109,7 @@ char Keyboard::getKey()
                 mode=2;
             break;
         }
-        reloadWidget();
+        reloadAlone();
         this->renderAll();
     }
 
@@ -130,7 +130,7 @@ char Keyboard::getKey()
                 mode=0;
             break;
         }
-        reloadWidget();
+        reloadAlone();
         this->renderAll();
     }
 
@@ -218,7 +218,7 @@ void Keyboard::link(Label* label)
     if(label != nullptr)
     {
         label->m_linked=true;
-        label->rendered=false;
+        label->reloadAlone();
         enable();
     }else
     {
@@ -226,7 +226,7 @@ void Keyboard::link(Label* label)
     }
     if(oldlabel!=nullptr)
     {
-        oldlabel->rendered=false;
+        oldlabel->reloadAlone();
     }
 }
 

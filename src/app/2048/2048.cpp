@@ -16,6 +16,9 @@ LGFX_Sprite S(&tft_root);
 
 void Game_2048::launch()
 {
+    Window window("");
+    canvas = new Canvas(0, 0, 320, 480);
+    window.addChild(canvas);
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
             {
@@ -23,9 +26,6 @@ void Game_2048::launch()
                 matrice2[i][j] = 0;
                 matrice3[i][j] = 0;
             }
-
-    S.setPsram(true);
-    S.createSprite(320, 480);
 
     score=0;
 
@@ -41,7 +41,6 @@ void Game_2048::launch()
         }
     }
     draw();
-    mainWindow=nullptr;
 
     while (true)
     {
@@ -50,11 +49,12 @@ void Game_2048::launch()
         {
             if(home_button::isPressed())
             {
-                S.deleteSprite();
+                delete canvas;
                 return;
             }
             eventHandler.update();
             touch.update();
+            
 
             if (touch.isSlidingHorizontally() > 30)
                 slide = 3;
@@ -86,7 +86,7 @@ void Game_2048::launch()
 
         if(!c)
         {
-            S.deleteSprite();
+            canvas->l_tft.deleteSprite();
             return;
         }
 
@@ -103,6 +103,8 @@ void Game_2048::launch()
         }
 
         draw();
+        canvas->push();
+        window.updateAll();
 
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             void flushScreen();
@@ -110,8 +112,6 @@ void Game_2048::launch()
 
         while(touch.isTouch()) touch.update();
     }
-
-    S.deleteSprite();
 }
 
 void Game_2048::move(uint8_t slide)
@@ -202,22 +202,21 @@ void Game_2048::move(uint8_t slide)
 
 void Game_2048::draw()
 {
-    S.fillSprite(0xFFFF);
+    canvas->l_tft.fillSprite(0xFFFF);
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
             if (matrice1[i][j])
             {
-                S.fillRoundRect(15 + i * 75, 50 + j * 75, 65, 65, 5, colors[0][matrice1[i][j]-1]);
-                S.setTextColor(0xFFFF);
-                S.drawCenterString(std::to_string(colors[1][matrice1[i][j]-1]).c_str(), 15 + i * 75 + 65 / 2, 50 + j * 75 + 65 / 4, &fonts::Font4);
+                canvas->l_tft.fillRoundRect(15 + i * 75, 50 + j * 75, 65, 65, 5, colors[0][matrice1[i][j]-1]);
+                canvas->l_tft.setTextColor(0xFFFF);
+                canvas->l_tft.drawCenterString(std::to_string(colors[1][matrice1[i][j]-1]).c_str(), 15 + i * 75 + 65 / 2, 50 + j * 75 + 65 / 4, &fonts::Font4);
             }
         }
     }
-    S.setTextColor(0x0000);
-    S.drawCenterString(std::to_string(score).c_str(), 160, 400, &fonts::Font4);
-    S.pushSprite(&tft_root, 0, 25);
+    canvas->l_tft.setTextColor(0x0000);
+    canvas->l_tft.drawCenterString(std::to_string(score).c_str(), 160, 400, &fonts::Font4);
 }
 
 #endif

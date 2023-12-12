@@ -74,7 +74,10 @@ class Gui // widget system
     virtual bool update();  // update objet
     virtual void background_update() {};
 
-    virtual void reload();
+    void reloadAlone();  // mise a jour sur les coordonées de l'objet
+    void reloadParent();  // mise a jour qui concerne le parent
+    void childrenAreDrawn();
+
     virtual void updateSizes() {}
     void determineSize();
     void reloadWidget();
@@ -134,8 +137,8 @@ class Gui // widget system
     uint16_t getRadius(){ return this->radius; } // retourne le rayan de l'objet
     
 
-    void enable(){this->enabled=true; reloadWidget(); }
-    void disable(){this->enabled=false; reloadWidget(); }
+    void enable(){this->enabled=true; reloadParent(); }
+    void disable(){this->enabled=false; reloadParent(); }
     bool isEnabled(){ return this->enabled; } // retourne l'état d'activation de l'objet
 
 
@@ -175,7 +178,9 @@ class Gui // widget system
 
     bool autoSize = true;
     int16_t scroolX, scroolY = 0;          // scrool position
-    bool rendered = false;
+
+    bool rendered = false; // le buffer local est a jour
+    bool drawn = false; // l'écran physique est a jour sur ces coordonées
 
     LGFX_Sprite l_tft;
 
