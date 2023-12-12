@@ -25,4 +25,9 @@
 
 extern LGFX tft_root;
 
+namespace screen
+{
+    void init(void);
+}
+
 #endif /* SCREEN_HPP */

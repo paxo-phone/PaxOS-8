@@ -1,8 +1,6 @@
-#ifndef GUI_CPP
-#define GUI_CPP
-
-#include "gui.hpp"
-#include "../interface/interface.hpp"
+#include "../../interface/interface.hpp"
+#include "gui_class.hpp"
+#include "../gui.hpp"
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void flushScreen();
@@ -48,8 +46,6 @@ Gui::Gui()
 
     scroolX = 0; scroolY = 0;
 
-    inercie = 0;
-    
     enabled = true;
     autoSize = true;
     rendered = false;
@@ -117,8 +113,6 @@ Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
 
     scroolX = 0; scroolY = 0;
 
-    inercie = 0;
-    
     enabled = true;
     autoSize = true;
 
@@ -153,23 +147,6 @@ Gui::~Gui()
             delete children[i];
         }
     }
-}
-
-// Initialisation de l'écran, spécifique à la plateforme ESP32
-void Gui::initScreen()
-{
-    #ifdef ESP32
-        uint16_t calibrationData[] = {316, 194, 307, 3778+300, 3771-200, 204, 3740-200, 3750+300};
-
-        tft_root.setTouchCalibrate(calibrationData);
-
-        pinMode(14, OUTPUT);
-        digitalWrite(14, 1);
-        pinMode(22, OUTPUT);
-        digitalWrite(22, 1);
-    #endif
-    
-    tft_root.init();
 }
 
 // Méthode pour déterminer la taille de l'objet en fonction de son parent
@@ -855,5 +832,3 @@ bool Gui::EventOnScroll()
         renderAll();
     return mvtX || mvtY;
 }
-
-#endif

@@ -21,7 +21,6 @@ class Iframe : public Gui
     void loadhtml(const std::string& html);
 
     void draw();
-    void free(){};
 
     private:
         

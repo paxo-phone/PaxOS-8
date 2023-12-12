@@ -64,7 +64,7 @@ void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones) // in
 #endif
 
 
-    Gui::initScreen();
+    screen::init();
     // new_thread(CORE_BACK, shell::thread_shell, nullptr);
     
     storage::init();

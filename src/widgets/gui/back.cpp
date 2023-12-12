@@ -1,6 +1,6 @@
 #include "back.hpp"
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 #include "box.hpp"
 #include "image.hpp"
 

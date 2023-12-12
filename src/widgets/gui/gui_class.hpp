@@ -13,14 +13,14 @@
 
 #include <vector>
 
-#include "../interface/screen.hpp"
+#include "../../interface/screen.hpp"
+#include "../../tasks/tasks.hpp"
 
-#include "color.hpp"
-#include "alignment.hpp"
-#include "default.hpp"
+#include "../color.hpp"
+#include "../alignment.hpp"
+#include "../default.hpp"
 
-#include "touch_manager.hpp"
-#include "../tasks/tasks.hpp"
+#include "../touch_manager.hpp"
 
 class App;
 typedef uint8_t Alignment;
@@ -52,8 +52,6 @@ enum GUI_TYPE
 
 inline LGFX_Sprite tft(&tft_root);
 
-inline bool reload_afterunlocked = false;
-
 class Gui // widget system
 {
     public:
@@ -62,8 +60,6 @@ class Gui // widget system
     
     virtual ~Gui(); // supprime le widget
 
-    static void initScreen(); // initialise l'ecran (tft_root)
-    
     virtual GUI_TYPE getType() = 0;  // retourne le type de l'objet selon GUI_TYPE
 
     void renderAll();           // genere un rendu de tous les enfants
@@ -207,8 +203,6 @@ class Gui // widget system
     int16_t width, height = 0;             // sizes
     bool autoX, autoY, autoW, autoH = false;
 
-    int16_t inercie = 0;
-
     color_t color = COLOR_BLACK;
     color_t backgroundColor = COLOR_LIGHT;
     color_t borderColor = COLOR_BLACK;
@@ -222,15 +216,6 @@ class Gui // widget system
     uint64_t timerPress = 0;
 
     bool enabled = true;
-
-    /*friend class Box;
-    friend class Label;
-    friend class Button;
-    friend class Image;
-    friend class Window;
-    friend class Keyboard;
-    friend class Keyboard;
-    friend class Back;*/
 };
 
 inline Gui *upFromDrawAll = nullptr;

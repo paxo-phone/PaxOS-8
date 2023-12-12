@@ -1,7 +1,7 @@
 #ifndef Keyboard_CPP
 #define Keyboard_CPP
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 
 #include "label.hpp"
 #include "box.hpp"

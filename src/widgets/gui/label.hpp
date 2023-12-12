@@ -2,7 +2,7 @@
 #define __LABEL_HPP__
 
 #include <string.h>
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 #include "../../interface/screen.hpp"
 
 #define DEFAULT_LINE_SPACING 5
@@ -25,7 +25,6 @@ class Label : public Gui
         ~Label();
 
         void draw(void);
-        void free(void){}
 
         uint16_t getUsableWidth(void); // retourne la largeur réelle maximale utilisée par le texte (sans les marge bordure etc...)
         uint16_t getUsableHeight(void);
