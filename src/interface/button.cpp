@@ -10,6 +10,8 @@
 #include <stdint.h>
 #include "../tasks/tasks.hpp"
 
+#include "../simulator/imgui/window_simulator.hpp"
+
 namespace home_button
 {
     #define HOME_BUTTON_PIN 33 // 32 pour l'ancien modèle
@@ -45,7 +47,7 @@ namespace home_button
                 avec sdl pour pouvoir utiliser le home button
                 sur l'émulateur
             */
-            pressed = false;
+            pressed = simulator::imgui::window::simulator::homeButtonPressed;
         #endif
 
         if (!pressed && status == PRESSED)

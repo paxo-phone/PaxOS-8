@@ -45,11 +45,24 @@ file(GLOB gfx_src RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
     "./src/interface/LovyanGFX/LGFX_SDL.cpp"
 )
 
+# ImGui sources
+file(GLOB imgui_src
+    "extern/imgui/*.cpp"
+    "extern/imgui/backends/imgui_impl_sdl2.cpp"
+    "extern/imgui/backends/imgui_impl_sdlrenderer2.cpp"
+)
+
 add_definitions(-DLGFX_SDL)
 
-add_executable(PaxOS ${src} ${gfx_src})
+add_executable(PaxOS ${src} ${gfx_src} ${imgui_src}
+        src/simulator/imgui/window_simulator.cpp
+        src/simulator/imgui/window_simulator.hpp)
 
 target_include_directories(PaxOS PUBLIC "src/interface/LovyanGFX")
+
+# ImGui includes
+target_include_directories(PaxOS PUBLIC "extern/imgui")
+target_include_directories(PaxOS PUBLIC "extern/imgui/backends")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(SDL2 REQUIRED SDL2)

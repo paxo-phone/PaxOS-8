@@ -28,6 +28,10 @@ Porting for SDL:
 #include <list>
 #include  <iostream>
 
+// ImGui implementation
+#include "../../../../../../simulator/imgui/simulator_imgui.hpp"
+#include "../../../../../../simulator/imgui/window_simulator.hpp"
+
 
 namespace lgfx
 {
@@ -127,6 +131,8 @@ namespace lgfx
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
+        simulator::imgui::forwardEvent(&event);
+
       if (event.type == SDL_KEYDOWN)
       {
         switch (event.key.keysym.sym)
@@ -647,8 +653,14 @@ namespace lgfx
 
   uint_fast8_t Panel_sdl::getTouchRaw(touch_point_t* tp, uint_fast8_t count)
   {
-    tp->x = monitor.touch_x / monitor.scaling_x;
-    tp->y = monitor.touch_y / monitor.scaling_y;
+      int x = monitor.touch_x / monitor.scaling_x;
+      int y = monitor.touch_y / monitor.scaling_y;
+
+      // Convert the click position with ImGui
+      simulator::imgui::window::simulator::offsetClick(&x, &y);
+
+    tp->x = static_cast<short>(x);
+    tp->y = static_cast<short>(y);
     tp->size = monitor.touched ? 1 : 0;
     tp->id = 0;
     return monitor.touched;
@@ -656,19 +668,23 @@ namespace lgfx
 
   void Panel_sdl::sdl_create(monitor_t * m)
   {
-    int flag = 0;
+    int flag = SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED;
 #if SDL_FULLSCREEN
     flag |= SDL_WINDOW_FULLSCREEN;
 #endif
     m->panel = this;
-    m->window = SDL_CreateWindow("Paxos 8 emulator",
-                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              _cfg.panel_width * m->scaling_x, _cfg.panel_height * m->scaling_y, flag);       /*last param. SDL_WINDOW_BORDERLESS to hide borders*/
+//    m->window = SDL_CreateWindow("Paxos 8 emulator",
+//                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+//                              _cfg.panel_width * m->scaling_x, _cfg.panel_height * m->scaling_y, flag);       /*last param. SDL_WINDOW_BORDERLESS to hide borders*/
+
+    m->window = SDL_CreateWindow("PaxOS 8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _cfg.panel_width, _cfg.panel_height, flag);
 
     m->renderer = SDL_CreateRenderer(m->window, -1, SDL_RENDERER_SOFTWARE);
     m->texture = SDL_CreateTexture(m->renderer,
                                 SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, _cfg.panel_width, _cfg.panel_height);
     SDL_SetTextureBlendMode(m->texture, SDL_BLENDMODE_NONE);
+
+    simulator::imgui::init(m->window, m->renderer);
   }
 
   void Panel_sdl::sdl_update(const monitor_t* const m)
@@ -678,12 +694,19 @@ namespace lgfx
       
     /*Update the renderer with the texture containing the rendered image*/
     SDL_RenderClear(m->renderer);
-    SDL_RenderCopy(m->renderer, m->texture, NULL, NULL);
+    simulator::imgui::beginDraw();
+
+    // SDL_RenderCopy(m->renderer, m->texture, NULL, NULL);
+    simulator::imgui::window::simulator::render(m->texture, m->panel->config().panel_width, m->panel->config().panel_height);
+
+    simulator::imgui::endDraw();
     SDL_RenderPresent(m->renderer);
   }
 
   void Panel_sdl::sdl_quit(void)
   {
+      simulator::imgui::shutdown();
+
     SDL_DestroyTexture(monitor.texture);
     SDL_DestroyRenderer(monitor.renderer);
     SDL_DestroyWindow(monitor.window);
