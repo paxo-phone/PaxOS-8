@@ -55,8 +55,6 @@ int16_t Contact::contactPage()
     while (true)
     {
         Window win("contact");
-        win.setMarginX(0);
-        win.setMarginY(CONTROL_BAR_SIZE);
 
         loadContacts();
 
@@ -124,8 +122,6 @@ void Contact::showContact(int16_t index)
     while (true)
     {
         Window win("new contact");
-        win.setMarginX(0);
-        win.setMarginY(CONTROL_BAR_SIZE);
         
         Back* back = new Back();
         win.addChild(back);
@@ -199,9 +195,7 @@ void Contact::editContact(bool create, int16_t index)
         return;
     
     Window win("new contact");
-    win.setMarginX(0);
-    win.setMarginY(CONTROL_BAR_SIZE);
-
+    
     Label *name = new Label(75, 59, 210, 38, (create)?(""):(contacts[index].name));
     name->setBackgroundColor(COLOR_LIGHT);
     name->enabledBackground=true;

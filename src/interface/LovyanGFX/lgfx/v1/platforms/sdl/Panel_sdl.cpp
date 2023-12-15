@@ -149,6 +149,9 @@ namespace lgfx
         case SDLK_UP:
           gpio_lo(36);
           break;
+        case SDLK_ESCAPE:
+          gpio_lo(33);
+        break;
         }
       }
       else if (event.type == SDL_KEYUP)
@@ -167,6 +170,9 @@ namespace lgfx
         case SDLK_UP:
           gpio_hi(36);
           break;
+        case SDLK_ESCAPE:
+          gpio_hi(33);
+        break;
         }
       }
       else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEMOTION)
@@ -691,7 +697,6 @@ namespace lgfx
   {
     // m->tft_fb array of pixels, m->panel->config().panel_width * sizeof(bgr888_t) = 320 * 3 = 960
     SDL_UpdateTexture(m->texture, NULL, m->tft_fb, m->panel->config().panel_width * sizeof(bgr888_t));
-      
     /*Update the renderer with the texture containing the rendered image*/
     SDL_RenderClear(m->renderer);
     simulator::imgui::beginDraw();

@@ -100,7 +100,6 @@ class LuaInterpreter {
         static int getText(lua_State* L);
         static int setEditable(lua_State* L);
         static int setFontSize(lua_State* L);
-        /*static int setFontSize(lua_State* L);*/
 
         static int fillRect(lua_State* L); // Canvas
         static int push(lua_State* L);
@@ -113,6 +112,8 @@ class LuaInterpreter {
         static int getY(lua_State* L);
         static int getWidth(lua_State* L);
         static int getHeight(lua_State* L);
+        static int setVerticalAlignement(lua_State* L);
+        static int setHorizontalAlignement(lua_State* L);
         static int setColor(lua_State* L);
         static int isFocused(lua_State* L);
 
@@ -157,6 +158,8 @@ static const luaL_Reg gui_common_binds[] = {
     {"getText",    LuaInterpreter::getText},
     {"setFontSize",LuaInterpreter::setFontSize},
     {"isFocused",  LuaInterpreter::isFocused},
+    {"setVerticalAlignement",   LuaInterpreter::setVerticalAlignement},
+    {"setHorizontalAlignement", LuaInterpreter::setHorizontalAlignement},
     {NULL, NULL}
 };
 
@@ -188,12 +191,6 @@ static const luaL_Reg paxolib[] = {
     {"getTime",     LuaInterpreter::getTime},
     {"getWeb",      LuaInterpreter::getWeb},
     
-    /* placeholders */
-    {"COLOR_LIGHT",     NULL},
-    {"COLOR_BLACK",     NULL},
-    {"COLOR_PRIMARY",   NULL},
-    {"COLOR_SUCCESS",   NULL},
-    {"COLOR_WHITE",     NULL},
     {NULL, NULL}
 };
 
@@ -203,7 +200,9 @@ static const std::map<std::string, int> color_bindings = {
     {"COLOR_PRIMARY",   COLOR_PRIMARY},
     {"COLOR_SUCCESS",   COLOR_SUCCESS},
     {"COLOR_WHITE",     COLOR_LIGHT},
-    {"AUTO",            AUTO}
+    {"CENTER_ALIGNMENT",CENTER_ALIGNMENT},
+    {"LEFT_ALIGNMENT",  LEFT_ALIGNMENT},
+    {"RIGHT_ALIGNMENT", RIGHT_ALIGNMENT}
 };
 
 // Making our own primitives available to lua by adding it as a library.

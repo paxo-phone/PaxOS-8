@@ -1,7 +1,7 @@
 #ifndef Keyboard_CPP
 #define Keyboard_CPP
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 
 #include "label.hpp"
 #include "box.hpp"
@@ -11,28 +11,28 @@
 
 Keyboard::Keyboard() : Gui(15, 323, 290, 157)
 {
-    noMargin = true;
+    motionless = true;
     enabled=false;
     this->label=nullptr;
     
-    Image* maj = new Image("system/keyboard/maj_"+to_string(mode)+".bmp", 8, 9);   // majuscule
+    Image* maj = new Image("system/keyboard/maj_"+to_string(mode)+".bmp", 10, 10, 15, 17);   // majuscule
     Image* type = new Image("system/keyboard/type_"+to_string(mode)+".bmp", 0, 2);   // type
-    Image* erase = new Image("system/keyboard/delete.bmp", 5, 10);   // erase char
+    Image* erase = new Image("system/keyboard/delete.bmp", 30, 10);   // erase char
 
     maj->load(); maj->hasEvent=false;
     type->load(); type->hasEvent=false;
     erase->load(); erase->hasEvent=false;
 
-    box_maj = new Box(0, 73, 28, 36);
-    box_type = new Box(0, 110, 28, 36);
-    box_erase = new Box(261, 73, 28, 36);
+    box_maj = new Box(0, 73, 58, 37);
+    box_type = new Box(0, 110, 88, 36);
+    box_erase = new Box(231, 73, 59, 36);
 
     box_maj->setBorderSize(0); box_maj->enabledBackground=false;
     box_type->setBorderSize(0); box_type->enabledBackground=false;
     box_erase->setBorderSize(0); box_erase->enabledBackground=false;
 
     space_label = new Label(88, 115, 112, 37);
-    return_label = new Label(237, 115, 57, 37);
+    return_label = new Label(200, 115, 90, 37);
 
     space_label->setRadius(0); space_label->setBorderSize(0); space_label->enabledBackground=true; space_label->setBackgroundColor(COLOR_LIGHT); space_label->setTextColor(COLOR_BLACK);
     return_label->setRadius(0); return_label->setBorderSize(0); return_label->enabledBackground=true; return_label->setBackgroundColor(COLOR_LIGHT); return_label->setTextColor(COLOR_BLACK);
@@ -109,7 +109,7 @@ char Keyboard::getKey()
                 mode=2;
             break;
         }
-        reloadWidget();
+        reloadAlone();
         this->renderAll();
     }
 
@@ -130,7 +130,7 @@ char Keyboard::getKey()
                 mode=0;
             break;
         }
-        reloadWidget();
+        reloadAlone();
         this->renderAll();
     }
 
@@ -218,7 +218,7 @@ void Keyboard::link(Label* label)
     if(label != nullptr)
     {
         label->m_linked=true;
-        label->rendered=false;
+        label->reloadAlone();
         enable();
     }else
     {
@@ -226,7 +226,7 @@ void Keyboard::link(Label* label)
     }
     if(oldlabel!=nullptr)
     {
-        oldlabel->rendered=false;
+        oldlabel->reloadAlone();
     }
 }
 

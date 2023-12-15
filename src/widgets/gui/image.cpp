@@ -126,6 +126,8 @@ void drawImageFromStorage(LGFX_Sprite* sprite, std::string filename, Image::Imag
 
 Image::Image(std::string filename, int16_t x, int16_t y, int16_t w, int16_t h) : Gui(x, y, w, h)
 {
+    setBorderSize(0);
+    setRadius(0);
     this->filename = filename;
 
     if(filename.find(".bmp") != std::string::npos) // parsing image format
@@ -226,6 +228,7 @@ void Image::draw()
                         imagesLoaded[i].img->pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
                     else
                         imagesLoaded[i].img->pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY(), ALPHA_16B);
+                    childrenAreDrawn();
                 }
                 else
                 {

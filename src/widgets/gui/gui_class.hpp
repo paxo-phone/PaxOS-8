@@ -13,11 +13,14 @@
 
 #include <vector>
 
-#include "../interface/screen.hpp"
+#include "../../interface/screen.hpp"
+#include "../../tasks/tasks.hpp"
 
-#include "color.hpp"
-#include "touch_manager.hpp"
-#include "../tasks/tasks.hpp"
+#include "../color.hpp"
+#include "../alignment.hpp"
+#include "../default.hpp"
+
+#include "../touch_manager.hpp"
 
 class App;
 typedef uint8_t Alignment;
@@ -49,8 +52,6 @@ enum GUI_TYPE
 
 inline LGFX_Sprite tft(&tft_root);
 
-inline bool reload_afterunlocked = false;
-
 class Gui // widget system
 {
     public:
@@ -59,8 +60,6 @@ class Gui // widget system
     
     virtual ~Gui(); // supprime le widget
 
-    static void initScreen(); // initialise l'ecran (tft_root)
-    
     virtual GUI_TYPE getType() = 0;  // retourne le type de l'objet selon GUI_TYPE
 
     void renderAll();           // genere un rendu de tous les enfants
@@ -71,7 +70,10 @@ class Gui // widget system
     virtual bool update();  // update objet
     virtual void background_update() {};
 
-    virtual void reload();
+    void reloadAlone();  // mise a jour sur les coordonées de l'objet
+    void reloadParent();  // mise a jour qui concerne le parent
+    void childrenAreDrawn();
+
     virtual void updateSizes() {}
     void determineSize();
     void reloadWidget();
@@ -90,12 +92,6 @@ class Gui // widget system
     int16_t getY();            // get relative y
     int16_t getWidth();        // get width
     int16_t getHeight();       // get height
-
-    void setMarginX(int16_t marginX); // set relative margin
-    void setMarginY(int16_t marginY); // set relative margin
-
-    int16_t getMarginX(); // get relative margin
-    int16_t getMarginY(); // get relative margin
 
     virtual int16_t getAbsoluteX();    // get absolute position on the screen
     virtual int16_t getAbsoluteY();
@@ -137,8 +133,8 @@ class Gui // widget system
     uint16_t getRadius(){ return this->radius; } // retourne le rayan de l'objet
     
 
-    void enable(){this->enabled=true; reloadWidget(); }
-    void disable(){this->enabled=false; reloadWidget(); }
+    void enable(){this->enabled=true; reloadParent(); }
+    void disable(){this->enabled=false; reloadParent(); }
     bool isEnabled(){ return this->enabled; } // retourne l'état d'activation de l'objet
 
 
@@ -148,8 +144,6 @@ class Gui // widget system
     int16_t getLowestY();
     int16_t getHighestY();
 
-
-    void setTheme(uint8_t theme);
 
     virtual void EventOnClick();
     virtual void EventOnLongClick();
@@ -180,11 +174,13 @@ class Gui // widget system
 
     bool autoSize = true;
     int16_t scroolX, scroolY = 0;          // scrool position
-    bool rendered = false;
+
+    bool rendered = false; // le buffer local est a jour
+    bool drawn = false; // l'écran physique est a jour sur ces coordonées
 
     LGFX_Sprite l_tft;
 
-    bool noMargin = false;
+    bool motionless = false;
 
     protected:
 
@@ -207,14 +203,9 @@ class Gui // widget system
     int16_t width, height = 0;             // sizes
     bool autoX, autoY, autoW, autoH = false;
 
-    int16_t marginX = 0;                   // marginX
-    int16_t marginY = 0;                   // marginY
-
-    int16_t inercie = 0;
-
-    color_t color = theme_color[DEFAULT_THEME][0];
-    color_t backgroundColor = theme_color[DEFAULT_THEME][1];
-    color_t borderColor = theme_color[DEFAULT_THEME][2];
+    color_t color = COLOR_BLACK;
+    color_t backgroundColor = COLOR_LIGHT;
+    color_t borderColor = COLOR_BLACK;
 
     int16_t borderSize = DEFAULT_BORDER_SIZE;
     int16_t radius = DEFAULT_RADIUS;
@@ -225,15 +216,6 @@ class Gui // widget system
     uint64_t timerPress = 0;
 
     bool enabled = true;
-
-    /*friend class Box;
-    friend class Label;
-    friend class Button;
-    friend class Image;
-    friend class Window;
-    friend class Keyboard;
-    friend class Keyboard;
-    friend class Back;*/
 };
 
 inline Gui *upFromDrawAll = nullptr;

@@ -90,19 +90,19 @@ Label::~Label()
 void Label::setBold(bool bold)
 {
     this->m_bold = bold;
-    this->rendered = false;
+    reloadAlone();
 }
 
 void Label::setItalic(bool italic)
 {
     this->m_italic = italic;
-    this->rendered = false;
+    reloadAlone();
 }
 
 void Label::setFontSize(uint8_t s)
 {
     this->m_fontHeight = s;
-    this->rendered = false;
+    reloadAlone();
 }
 
 uint8_t Label::getFontSize(void)
@@ -113,7 +113,7 @@ uint8_t Label::getFontSize(void)
 void Label::setText(std::string text)
 {
     this->m_text = text;
-    this->rendered = false;
+    reloadAlone();
 }
 
 std::string Label::getText(void)
@@ -172,7 +172,8 @@ void Label::updateBlinkingCursor(void)
         isCursorVisible = false;
     else
         isCursorVisible = true;
-    rendered=false;
+    
+    reloadAlone();
 }
 
 std::vector<std::string> Label::parse()
@@ -297,5 +298,5 @@ void Label::initSprite()
 void Label::setTextColor(color_t color)
 {
     this->m_textColor = color;
-    this->rendered = false;
+    reloadAlone();
 }

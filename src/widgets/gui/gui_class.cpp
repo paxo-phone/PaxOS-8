@@ -1,18 +1,19 @@
-#ifndef GUI_CPP
-#define GUI_CPP
-
-#include "gui.hpp"
-#include "../interface/interface.hpp"
+#include "../../interface/interface.hpp"
+#include "gui_class.hpp"
+#include "../gui.hpp"
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void flushScreen();
 #endif
 
+// Déclaration des variables statiques de la classe Gui
 bool Gui::isScreenAlreadyPressed = false;
 Gui* Gui::widgetPressed = nullptr;
 
+// Constructeur par défaut de la classe Gui
 Gui::Gui()
 {
+    // Initialisation des membres de la classe avec des valeurs par défaut
     this->x = 0;
     this->y = 0;
     this->width = 0;
@@ -43,14 +44,12 @@ Gui::Gui()
     isTouchedState = false;
     enabledBackground = true;
 
-    marginX = 0; marginY = 0;
     scroolX = 0; scroolY = 0;
 
-    inercie = 0;
-    
     enabled = true;
     autoSize = true;
     rendered = false;
+    drawn = false;
 
     color = COLOR_BLACK;
     backgroundColor = COLOR_LIGHT;
@@ -66,11 +65,13 @@ Gui::Gui()
 
     parent = nullptr;
 
-    reloadWidget();
+    reloadAlone();
 }
 
+// Constructeur surchargé de la classe Gui
 Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
 {
+    // Initialisation des membres de la classe avec les valeurs passées en paramètres
     this->x = x;
     this->y = y;
     this->width = width;
@@ -110,14 +111,10 @@ Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
     isTouchedState = false;
     enabledBackground = true;
 
-    marginX = 0; marginY = 0;
     scroolX = 0; scroolY = 0;
 
-    inercie = 0;
-    
     enabled = true;
     autoSize = true;
-    rendered = false;
 
     color = COLOR_BLACK;
     backgroundColor = COLOR_LIGHT;
@@ -131,13 +128,18 @@ Gui::Gui(int16_t x, int16_t y, int16_t width, int16_t height)
 
     timerPress = 0;
 
+    rendered = false;
+    drawn = false;
+
     parent = nullptr;
 
-    reloadWidget();
+    reloadAlone();
 }
 
+// Destructeur de la classe Gui
 Gui::~Gui()
 {
+    // Libération de la mémoire allouée pour les enfants de l'objet
     for(int i = 0; i < children.size(); i++)
     {
         if(children[i] != nullptr)
@@ -147,33 +149,7 @@ Gui::~Gui()
     }
 }
 
-void Gui::initScreen()
-{
-    #ifdef ESP32
-        //uint16_t calibrationData[] = {370, 3950, 273, 239, 3848, 3949, 3872, 302};
-
-        uint16_t calibrationData[] = {316, 194, 307, 3778+300, 3771-200, 204, 3740-200, 3750+300};
-
-        tft_root.setTouchCalibrate(calibrationData);
-
-        // #ifdef NEW_PAXO
-            pinMode(14, OUTPUT); // 22 for new and 14 for old
-            digitalWrite(14, 1);
-            pinMode(22, OUTPUT); // 25 for new and 22 for old
-            digitalWrite(22, 1);
-        // #endif
-        
-        // #ifdef OLD_PAXO
-        //     pinMode(22, OUTPUT); // 22 for new and 14 for old
-        //     digitalWrite(22, 1);
-        //     pinMode(25, OUTPUT); // 25 for new and 22 for old
-        //     digitalWrite(25, 1);
-        // #endif
-    #endif
-    
-    tft_root.init();
-}
-
+// Méthode pour déterminer la taille de l'objet en fonction de son parent
 void Gui::determineSize()
 {
     if(parent!=nullptr)
@@ -193,7 +169,7 @@ void Gui::determineSize()
         }
 
         if(getType() == LABEL_TYPE && autoH)
-            setHeight((reinterpret_cast<Label*>(this)->getTextHeight()));
+            setHeight(reinterpret_cast<Label*>(this)->getTextHeight());
         
         if(autoW)
             width=parent->getWidth()-getRelativeX()*2;
@@ -202,16 +178,18 @@ void Gui::determineSize()
     }
 }
 
+// Méthode pour rendre tous les éléments graphiques
 void Gui::renderAll()
 {
     determineSize();
+    l_tft.setClipRect(0, 0, getWidth(), getHeight());
 
     if(parent!=nullptr)
     {
         updateSizes();
     }
 
-    if(!isEnabled()) // don't render if the object is disabled
+    if(!isEnabled())
         return;
 
     if(parent!=nullptr && (getRelativeY() + getHeight() < 0 || getRelativeY() > parent->getHeight()))
@@ -219,11 +197,12 @@ void Gui::renderAll()
         return;
     }
 
-    if(upFromDrawAll==nullptr) // if it's the first call of drawAll, define himself as the root
+    if(upFromDrawAll==nullptr)
         upFromDrawAll=this;
     
-    if(!rendered)   // render if not already rendered
+    if(!rendered) // si des changement necessitent de refaire le rendu
     {
+        // faire le rendu
         if(getType() != IMAGE_TYPE && getType() != CANVAS_TYPE || children.size()!=0)
         {
             l_tft.deleteSprite();
@@ -231,10 +210,11 @@ void Gui::renderAll()
             l_tft.setColorDepth(16);
             l_tft.createSprite(this->getWidth(), this->getHeight());
 
-            if(parent == nullptr) // no parent -> background = white
+            if(parent == nullptr)
             {
                 l_tft.fillSprite(COLOR_LIGHT);
-            }else // has parent -> background = parent background
+            }
+            else
             {
                 if(!enabledBackground)
                     setBackgroundColor(parent->getBackgroundColor());
@@ -243,21 +223,42 @@ void Gui::renderAll()
             }
         }
 
-        draw(); // draw himself in a sprite
+        draw();
         
-        for (int i = 0; i < children.size(); i++) // render every children
+        for (int i = 0; i < children.size(); i++)
         {
             if(children[i] != nullptr)
+            {
+                l_tft.setClipRect(children[i]->getRelativeX(), children[i]->getRelativeY(), children[i]->getWidth(), children[i]->getHeight());
                 children[i]->renderAll();
+            }
         }
 
         afterRender();
 
-        rendered = true;
-    }else if(getType() == IMAGE_TYPE)
-        draw();
+        rendered = true; // le rendu a été effectué mais les modifications ne sont pas prises en compte sur l'écran
+    }
 
-    if(getType() != IMAGE_TYPE)
+    if ((!drawn || (parent!=nullptr && parent->rendered==false)) && getType() != IMAGE_TYPE)  // si des changements déja rendus necessitent d'être push sur l'écran ou le parent
+    {
+        if(parent != nullptr && parent->drawn == false)  // le parent demande le rendu
+        {   // alors push les modifications vers le parent
+            l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
+            console.log("on push to parent");
+        }else   // le parent ne demande pas de rendu ou le parent n'existe pas
+        {   // alors push les modifications vers l'écran
+            int x1 = getAbsoluteX();
+            int y1 = getAbsoluteY();
+            tft_root.setClipRect(getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight());
+
+            l_tft.pushSprite(&tft_root, getAbsoluteX(), getAbsoluteY());
+            
+            childrenAreDrawn();
+            console.log("on push to screen");
+        }
+    }
+
+    /*if(getType() != IMAGE_TYPE)
     {
         if(upFromDrawAll==this)
         {
@@ -271,15 +272,15 @@ void Gui::renderAll()
         {
             l_tft.pushSprite(&parent->l_tft, getRelativeX(), getRelativeY(), ALPHA_16B);
         }
-    }
+    }*/
     
-
     light::turnOn();
-    #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
+    #if defined(__linux__) || defined(_WIN32__) || defined(_WIN64__) || defined(__APPLE__)
         flushScreen();
     #endif
 }
 
+// Méthode pour effectuer des actions après le rendu
 void Gui::afterRender()
 {
     uint16_t maxH = getLowestY();
@@ -292,19 +293,20 @@ void Gui::afterRender()
     }
 }
 
+// Méthode pour mettre à jour tous les éléments
 bool Gui::updateAll()
 {
     if (!hasEvent)
         return false;
     
-    if(parent == nullptr) // automatically update events
+    if(parent == nullptr)
     {
         eventHandler.update();
         touch.update();
     }
     background_update();
 
-    if(rendered == false)
+    if(drawn == false)
     {
         renderAll();
     }
@@ -314,7 +316,7 @@ bool Gui::updateAll()
 
     bool children_updated = false;
     
-    for (int i = 0; i < children.size(); i++) // Keyboard doit être update en premier car est au premier plan
+    for (int i = 0; i < children.size(); i++)
     {
         if(children[i] != nullptr && children[i]->getType() == KEYBOARD_TYPE)
             if(children[i]->updateAll())
@@ -339,6 +341,7 @@ bool Gui::updateAll()
     return false;
 }
 
+// Méthode pour mettre à jour l'objet courant
 bool Gui::update()
 {
     if (widgetPressed != nullptr && widgetPressed != this)
@@ -349,16 +352,15 @@ bool Gui::update()
 
     bool returnValue = false;
 
-    if (screenTouched && focused) // this object is touched
+    if (screenTouched && focused)
     {
-        if (widgetPressed == nullptr) // first object pressed
+        if (widgetPressed == nullptr)
         {
             console.log("Gui::update: " + std::to_string(getType()));
             widgetPressed = this;
             objectPressState = PRESSED;
             
-            timerPress=millis(); // reset timer
-
+            timerPress=millis();
             ClickEffect();
 
             EventOnClick();
@@ -369,7 +371,7 @@ bool Gui::update()
                 returnValue = true;
             }
         }
-        else// already pressed
+        else
         {
             if(objectPressState != PRESSED && timerPress+LONG_PRESS_TIME<millis())
             {
@@ -386,7 +388,7 @@ bool Gui::update()
                 ReleasedEffect();
             }
 
-            if(touch.stateSlider) // if slide
+            if(touch.stateSlider)
             {
                 objectPressState = SLIDED;
 
@@ -412,9 +414,9 @@ bool Gui::update()
         }
     }
 
-    if (screenTouched && !focused) // touch point had slided without releasing
+    if (screenTouched && !focused)
     {
-        if(touch.stateSlider) // if slide
+        if(touch.stateSlider)
         {
             if(onscroll!=nullptr)
             {
@@ -426,7 +428,7 @@ bool Gui::update()
             {
                 widgetPressed = parent;
 
-                parent->objectPressState = SLIDED; // warning: is not recursive
+                parent->objectPressState = SLIDED;
                 this->objectPressState = NOT_PRESSED;
 
                 ReleasedEffect();
@@ -436,20 +438,16 @@ bool Gui::update()
         }
     }
 
-    if (!screenTouched && objectPressState != NOT_PRESSED) // screen released
+    if (!screenTouched && objectPressState != NOT_PRESSED)
     {
         widgetPressed = nullptr;
         ReleasedEffect();
-
-        //print("objectPressState" + to_string(objectPressState));
 
         if (objectPressState == PRESSED)
         {
             isTouchedState = true;
 
             EventOnReleased();
-
-            // print ("released");
 
             if(onreleased!=nullptr)
             {
@@ -463,16 +461,39 @@ bool Gui::update()
     return false;
 }
 
-void Gui::reload()
+void Gui::reloadAlone()
 {
-    renderAll();
+    this->drawn = false;
+    this->rendered = false;
 }
 
+void Gui::reloadParent()
+{
+    this->drawn = false;
+    if(parent != nullptr)
+    {
+        parent->rendered = false;
+    }
+}
+
+void Gui::childrenAreDrawn()
+{
+    for (int i = 0; i < children.size(); i++)
+    {
+        if(children[i] != nullptr)
+            children[i]->childrenAreDrawn();
+    }
+
+    drawn = true;
+}
+
+// Méthode pour vérifier si l'objet courant est focus
 bool Gui::isFocused()
 {
     return Touched(getAbsoluteX(), getAbsoluteY(), width, height); 
 }
 
+// Méthode pour vérifier si l'objet courant a été touché
 bool Gui::isTouched()
 {
     if(isTouchedState)
@@ -483,33 +504,39 @@ bool Gui::isTouched()
     return 0;
 }
 
+// Méthode pour recharger l'objet courant et ses enfants
 void Gui::reloadWidget()
 {
     if(parent!=nullptr)
-        parent->reloadWidget();
+        parent->reloadAlone();
     rendered=false;
 }
 
+// Méthode pour obtenir la coordonnée X de l'objet courant
 int16_t Gui::getX()
 {
     return this->x;
 }
 
+// Méthode pour obtenir la coordonnée Y de l'objet courant
 int16_t Gui::getY()
 {
     return this->y;
 }
 
+// Méthode pour obtenir la largeur de l'objet courant
 int16_t Gui::getWidth()
 {
     return this->width;
 }
 
+// Méthode pour obtenir la hauteur de l'objet courant
 int16_t Gui::getHeight()
 {
     return this->height;
 }
 
+// Méthode pour obtenir la coordonnée X absolue de l'objet courant
 int16_t Gui::getAbsoluteX()
 {
     if(parent==nullptr)
@@ -518,6 +545,7 @@ int16_t Gui::getAbsoluteX()
         return getRelativeX() + parent->getAbsoluteX();
 }
 
+// Méthode pour obtenir la coordonnée Y absolue de l'objet courant
 int16_t Gui::getAbsoluteY()
 {
     if(parent==nullptr)
@@ -526,6 +554,7 @@ int16_t Gui::getAbsoluteY()
         return getRelativeY() + parent->getAbsoluteY();
 }
 
+// Méthode pour obtenir la coordonnée X absolue fixe de l'objet courant
 int16_t Gui::getAbsoluteFixX()
 {
     if(parent==nullptr)
@@ -534,6 +563,7 @@ int16_t Gui::getAbsoluteFixX()
         return getRelativeFixX() + parent->getAbsoluteFixX();
 }
 
+// Méthode pour obtenir la coordonnée Y absolue fixe de l'objet courant
 int16_t Gui::getAbsoluteFixY()
 {
     if(parent==nullptr)
@@ -542,70 +572,50 @@ int16_t Gui::getAbsoluteFixY()
         return getRelativeFixY() + parent->getAbsoluteFixY();
 }
 
+// Méthode pour obtenir la coordonnée X relative de l'objet courant
 int16_t Gui::getRelativeX()
 {
-    return this->getX() + ((parent!=nullptr && !noMargin) ? (parent->getBorderSize() + parent->getMarginX() + parent->getRadius()/2 + parent->scroolX) : (0));
+    return this->getX() + ((parent!=nullptr && !motionless) ? (parent->getBorderSize()+ parent->getRadius()/2 + parent->scroolX) : (0));
 }
 
+// Méthode pour obtenir la coordonnée Y relative de l'objet courant
 int16_t Gui::getRelativeY()
 {
-    return this->getY() + ((parent!=nullptr && !noMargin) ? (parent->getBorderSize() + parent->getMarginY() + parent->getRadius()/2 + parent->scroolY) : (0));
+    return this->getY() + ((parent!=nullptr && !motionless) ? (parent->getBorderSize() + parent->getRadius()/2 + parent->scroolY) : (0));
 }
 
 int16_t Gui::getRelativeFixX()
 {
-    return this->getX() + ((parent!=nullptr && !noMargin) ? (parent->getBorderSize() + parent->getMarginX() + parent->getRadius()/2) : (0));
+    return this->getX() + ((parent!=nullptr && !motionless) ? (parent->getBorderSize()+ parent->getRadius()/2) : (0));
 }
 
 int16_t Gui::getRelativeFixY()
 {
-    return this->getY() + ((parent!=nullptr && !noMargin) ? (parent->getBorderSize() + parent->getMarginY() + parent->getRadius()/2) : (0));
+    return this->getY() + ((parent!=nullptr && !motionless) ? (parent->getBorderSize() + parent->getRadius()/2) : (0));
 }
 
 void Gui::setX(int16_t x)
 {
     this->x=x;
-    reloadWidget();
+    reloadParent();
 }                               
 
 void Gui::setY(int16_t y)
 {
     this->y=y;
-    reloadWidget();
+    reloadParent();
 }
 
 void Gui::setWidth(int16_t width)
 {
     this->width=width;
-    reloadWidget();
+    reloadParent();
 }
 
 void Gui::setHeight(int16_t height)
 {
     this->height=height;
-    reloadWidget();
-}
-
-void Gui::setMarginX(int16_t marginX)
-{
-    this->marginX = marginX;
-    reloadWidget();
-}
-
-void Gui::setMarginY(int16_t marginY)
-{
-    this->marginY = marginY;
-    reloadWidget();
-}
-
-int16_t Gui::getMarginX()
-{
-    return this->marginX;
-}
-
-int16_t Gui::getMarginY()
-{
-    return this->marginY;
+    reloadParent();
 }
 
 void Gui::addChild(Gui *child)
@@ -615,7 +625,7 @@ void Gui::addChild(Gui *child)
     children.push_back(child);
     child->setParent(this);
 
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::removechildren()
@@ -629,12 +639,14 @@ void Gui::removechildren()
     {
         children.erase(children.begin());
     }
+
+    reloadAlone();
 }
 
 void Gui::setParent(Gui *parent)
 {
     this->parent = parent;
-    reloadWidget();
+    reloadParent();
 }
 
 Gui* Gui::getMaster()
@@ -648,25 +660,25 @@ Gui* Gui::getMaster()
 void Gui::setColor(color_t color)
 {
     this->color=color;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setBackgroundColor(color_t backgroundColor)
 {
     this->backgroundColor=backgroundColor;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setBorderColor(color_t borderColor)
 {
     this->borderColor=borderColor;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setBorderSize(int16_t borderSize)
 {
     this->borderSize=borderSize;
-    reloadWidget();
+    reloadAlone();
 }
 
 color_t Gui::getColor()
@@ -692,13 +704,13 @@ int16_t Gui::getBorderSize()
 void Gui::setHorizontalAlignment(Alignment alignment)
 {
     this->H_alignment=alignment;
-    reloadWidget();
+    reloadAlone();
 }
 
 void Gui::setVerticalAlignment(Alignment alignment)
 {
     this->V_alignment=alignment;
-    reloadWidget();
+    reloadAlone();
 }
 
 Alignment Gui::getHorizontalAlignment()
@@ -714,7 +726,7 @@ Alignment Gui::getVerticalAlignment()
 void Gui::setRadius(uint16_t radius)
 {
     this->radius=radius;
-    reloadWidget();
+    reloadParent();
 }
 
 int16_t Gui::getLowestX()
@@ -752,10 +764,6 @@ int16_t Gui::getLowestY()
                 y=children[i]->getAbsoluteFixY() + children[i]->getHeight();
     }
 
-    /*if (children.size() == 0)
-        print ("   " + to_string(y));
-    else
-        print (" " + to_string(y));*/
     return y;
 }
 
@@ -769,14 +777,6 @@ int16_t Gui::getHighestY()
                 y=children[i]->getLowestY();
     }
     return y;
-}
-
-void Gui::setTheme(uint8_t theme)
-{
-    color = theme_color[theme][0];
-    backgroundColor = theme_color[theme][1];
-    borderColor = theme_color[theme][2];
-    reloadWidget();
 }
 
 Gui* Gui::getParent()
@@ -805,7 +805,7 @@ bool Gui::EventOnScroll()
     int16_t mvtY=touch.isSlidingVertically();
 
     if((mvtX && horizontalSlide) || (mvtY && verticalSlide))
-        reloadWidget(); // a optimiser
+        reloadAlone();
     
     if(mvtX && horizontalSlide)
     {
@@ -832,5 +832,3 @@ bool Gui::EventOnScroll()
         renderAll();
     return mvtX || mvtY;
 }
-
-#endif

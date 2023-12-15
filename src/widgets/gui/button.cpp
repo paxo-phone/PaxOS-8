@@ -1,7 +1,7 @@
 #ifndef BUTTON_CPP
 #define BUTTON_CPP
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 #include "button.hpp"
 #include "label.hpp"
 
@@ -37,13 +37,13 @@ void Button::ClickEffect()
 {
     oldBackgroundColor = backgroundColor;
     backgroundColor = darkenColor(backgroundColor);
-    rendered = false;
+    reloadAlone();
     renderAll();
 }
 void Button::ReleasedEffect()
 {
     backgroundColor = oldBackgroundColor;
-    rendered = false;
+    reloadAlone();
     renderAll();
 }
 

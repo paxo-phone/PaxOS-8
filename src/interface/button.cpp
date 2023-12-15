@@ -1,4 +1,5 @@
 #include "button.hpp"
+// #include <LovyanGFX.hpp>
 
 #ifdef ESP32
     #include <Arduino.h>
@@ -47,6 +48,8 @@ namespace home_button
                 avec sdl pour pouvoir utiliser le home button
                 sur l'émulateur
             */
+
+            // pressed = lgfx::gpio_in(HOME_BUTTON_PIN);
             pressed = simulator::imgui::window::simulator::homeButtonPressed;
         #endif
 

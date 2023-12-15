@@ -18,7 +18,7 @@ The paxos offers a multi-platform emulator so that you can run it directly on yo
 
 ## Linux
 
-Before you start, make sure that `git`, `cmake` and `make` are correctly installed on your computer. If not, install them using the command `sudo apt-get install build-essentials` (if you use `apt` as your package manager).
+Before you start, make sure that `git`, `cmake` and `make` are correctly installed on your computer. If not, install them using the command `sudo apt install build-essential` (if you use `apt` as your package manager).
 
 You can then start the build instructions : 
 1. Clone the directory using `git clone https://github.com/paxo-phone/paxos_8.git`
@@ -54,6 +54,7 @@ You can then start the build instructions :
 5. Run the executable using `./PaxOS`
 
 The emulator should then open in a window.
+Press the 'Escape' key to emulate the 'Home' button.
 
 Troubleshooting :
 - If you get the message `ld: warning: ignoring file /opt/homebrew/Cellar/sdl2/2.28.2/lib/libSDL2-2.0.0.dylib': found architecture 'arm64', required architecture 'x86_64'` followed by an error you can do:

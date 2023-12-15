@@ -13,6 +13,7 @@ void flushScreen();
 
 void Snake::main()
 {
+    tft_root.setClipRect(0, 0, 320, 480);
     mainWindow=nullptr;
     while(1)
     {

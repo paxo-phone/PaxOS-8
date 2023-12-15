@@ -1,6 +1,7 @@
 p = require('paxolib')
 
 function show(text)
+    print("show: " .. text)
     if (window_show == nil) then
         window_show = p.window("Mon application")
         local label = p.label(window_show, 0, 0, 320, 100)
@@ -15,6 +16,7 @@ function run()
     --print(p.getWeb("http://example.com"))
     
     if (window_run == nil) then
+    print("run: ")
         window_run = p.window("Mon application")
         local label = p.label(window_run, 0, 0, 320, 100)
         local image = p.image(window_run, "logo.png", 0, 100, 42, 42)
@@ -24,7 +26,7 @@ function run()
         label:setText("Click here")
         label:onClick(function() show("hello world") end)
 
-        local button = p.button(window_run, p.AUTO, 150, p.AUTO, 100)
+        local button = p.button(window_run, 10, 150, 300, 100)
         button:setText("Click here")
     end
 

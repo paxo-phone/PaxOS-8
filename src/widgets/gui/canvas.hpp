@@ -1,7 +1,7 @@
 #ifndef CANVAS_HPP
 #define CANVAS_HPP
 
-#include "../gui_class.hpp"
+#include "gui_class.hpp"
 
 class Canvas : public Gui
 {
@@ -9,8 +9,8 @@ class Canvas : public Gui
     GUI_TYPE getType();
     Canvas();
     Canvas(int16_t x, int16_t y, int16_t width, int16_t height);
-    void draw();
-    void free();
+    void draw(){}
+    void push();
 };
 
 #endif

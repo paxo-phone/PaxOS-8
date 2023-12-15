@@ -18,7 +18,6 @@ class Browser : public CppAppContainer
         while (!exit)
         {
             Window win("browser");
-            win.setMarginX(0);
 
             Button* buttonData = new Button(10, 0, 100, 30, "files"); win.addChild(buttonData);
             Button* buttonInternet = new Button(320-10-100, 0, 100, 30, "internet"); win.addChild(buttonInternet);
@@ -41,7 +40,7 @@ class Browser : public CppAppContainer
                 file.close();
             }
 
-            Iframe* iframe = new Iframe(html, 0, 50, 310, 480-CONTROL_BAR_SIZE-win.getMarginY()-50);
+            Iframe* iframe = new Iframe(html, 0, 50, 310, 480-CONTROL_BAR_SIZE-50);
             win.addChild(iframe);
 
             while (!home_button::isPressed())
