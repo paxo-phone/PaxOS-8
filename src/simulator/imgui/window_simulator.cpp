@@ -63,7 +63,7 @@ void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width
         ImGui::Text("Libraries :");
         ImGui::Text("- LovyanGFX by lovyan03 - Custom version");
         ImGui::Text("- SDL2 by libsdl.org - v2.28.2");
-        ImGui::Text("- ImGui by Omar Cornut - Docking branch");
+        ImGui::Text("- ImGui by Omar Cornut - v1.90.1 WIP 19002");
         ImGui::Text("- Lua by Lua.org / PUC-Rio - v5.4.6");
         ImGui::Text("- CURL by Curl Corporation - v8.5.0-1");
         ImGui::Text("- Dirent by Toni Rönkkö - v1.23.2");
