@@ -3,10 +3,11 @@
 
 #include "../app.hpp"
 
-class Snake : public CppAppContainer
+class Snake : public CApp
 {
-    public:
-    void main();
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Snake"; }
+    void main() override;
     
     private:
     bool gameover = false;

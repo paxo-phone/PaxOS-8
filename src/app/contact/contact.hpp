@@ -5,10 +5,11 @@
 #include "../app.hpp"
 
 
-class Contact : public CppAppContainer
+class Contact : public CApp
 {
-    public:
-    void main();
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Contact"; }
+    void main() override;
     
     static void loadContacts(bool force = false);
     static void saveContacts();

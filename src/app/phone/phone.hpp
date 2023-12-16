@@ -5,13 +5,15 @@
 #include "../../interface/filestream.hpp"
 #include "../contact/contact.hpp"
 #include "../../interface/interface.hpp"
-#include "../app.hpp"
+#include "../CApp.hpp"
 
-
-class Phone : public CppAppContainer
+class Phone : public CApp
 {
-    public:
-    void main()
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Phone"; }
+
+    void main() override
     {
         Window win("phone");
 
@@ -100,6 +102,7 @@ class Phone : public CppAppContainer
     void make_a_call(std::string number);
     static void during_calling(std::string number);
     static void get_a_call();
+
 };
 
 #endif

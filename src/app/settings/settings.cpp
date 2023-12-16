@@ -1,10 +1,14 @@
 #include "settings.hpp"
 #include "../app.hpp"
 
-class Settings : public CppAppContainer
+#include "../CApp.hpp"
+
+class Settings : public CApp
 {
-    public:
-    void main()
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Settings"; }
+    void main() override
     {
         Window win("settings");
         

@@ -6,6 +6,8 @@
 #include "renderingEngine.hpp"
 #include "SimplexNoise.hpp"
 
+#include "../CApp.hpp"
+
 class Chunk
 {
     public:
@@ -22,10 +24,12 @@ class Chunk
     uint8_t data[16][16][32] = {{{AIR}}}; // [x][y][z]
 };
 
-class Minecraft : public CppAppContainer
+class Minecraft : public CApp
 {
-    public:
-    void main();
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Minecraft"; }
+    void main() override;
     
     std::vector<Chunk *> chunks;
     void processChunks(LGFX_Sprite* output);

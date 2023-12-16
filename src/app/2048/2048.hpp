@@ -5,14 +5,16 @@
 #include <algorithm>
 #include "../app.hpp"
 
-class Game_2048 : public CppAppContainer
+class Game_2048 : public CApp
 {
-    public:
+public:
+    [[nodiscard]] const char* getAppName() const override { return "2048"; }
+
     void launch();
     void draw();
     void move(uint8_t slide);
 
-    void main()
+    void main() override
     {
         launch();
     }

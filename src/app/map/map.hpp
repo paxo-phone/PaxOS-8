@@ -5,11 +5,12 @@
 #include "../../interface/filestream.hpp"
 #include "../app.hpp"
 
-
-class Map : public CppAppContainer
+class Map : public CApp
 {
-    public:
-    void main()
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Phone"; }
+    void main() override
     {
         Window win("map");
 

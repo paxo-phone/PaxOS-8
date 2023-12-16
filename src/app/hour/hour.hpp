@@ -6,10 +6,12 @@
 #include "../app.hpp"
 
 
-class Hour : public CppAppContainer
+class Hour : public CApp
 {
-    public:
-    void main()
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Hour"; }
+    void main() override
     {
         Window win("hour");
 

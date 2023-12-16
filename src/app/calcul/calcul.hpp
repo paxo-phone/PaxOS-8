@@ -7,10 +7,12 @@
 
 class Gui;
 
-class Calcul : public CppAppContainer
+class Calcul : public CApp
 {
-    public:
-    void main()
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Calcul"; }
+    void main() override
     {
         launch();
     }

@@ -7,40 +7,17 @@
 #include "../interface/time.hpp"
 #include "../interface/random.hpp"
 
+#include "CApp.hpp"
+
 class App
 {
-    public:
-    static std::vector<App*> appList;
-    uint16_t id;
+public:
+    virtual void run() = 0;
+
+    static std::vector<CApp*> appList;
+    uint16_t id{};
     std::string name;
     std::string icon;
-
-    virtual void run() = 0;
-};
-
-
-class CppAppContainer
-{
-    public:
-    virtual void main() = 0;
-};
-
-template<class APP_T>
-
-class CppApp : public App
-{
-    public:
-    CppApp(std::string name)
-    {
-        this->name = name;
-        icon = "apps/" + name + "/logo.png";
-    }
-    void run()
-    {
-        CppAppContainer* app = new APP_T;
-        app->main();
-        delete app;
-    }
 };
 
 class LuaApp : public App

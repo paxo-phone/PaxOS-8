@@ -32,7 +32,7 @@ void launcher()
         box->setBackgroundColor(COLOR_EXTRA_LIGHT);
         box->setRadius(15);
 
-        Image* image = new Image(App::appList[i]->icon, AUTO, AUTO, AUTO, AUTO);
+        Image* image = new Image(App::appList[i]->getIconPath(), AUTO, AUTO, AUTO, AUTO);
         image->load();
         box->addChild(image);
 
@@ -48,7 +48,7 @@ void launcher()
         {
             if(appBoxs[i]->isTouched())
             {
-                App::appList[i]->run(); // launch application
+                App::appList[i]->main(); // launch application
             }
         }
 
