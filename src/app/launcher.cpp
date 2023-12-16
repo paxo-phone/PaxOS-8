@@ -5,13 +5,15 @@
 
 void launcher()
 {
+    // Ajouter les applications au registre
     registerApplications();
 
+    // Récupérer les applications ajoutées
     const auto& registeredApplications = CAppsManager::getApplications();
 
     Window win("launcher");
     win.enableToolbar();
-    
+
     uint16_t day_ = gsm.days;
     uint16_t day = gsm.days;
     uint16_t month = gsm.months;
@@ -44,7 +46,9 @@ void launcher()
 
         appBoxs.push_back(image);
     }
-    
+
+    win.addChild(label);
+
     while(true)
     {
         win.updateAll();
