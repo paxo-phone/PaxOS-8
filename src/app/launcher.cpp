@@ -70,42 +70,22 @@ void launcher()
 
         if(home_button::isPressed())
         {
-            // standby mode
+
             light::turnOff();
-
-            // home_button::clear();
-
-            // #ifdef OLD_PAXO
-            //     pinMode(22, OUTPUT); // 22 for new and 14 for old
-            //     digitalWrite(22, 1);
-            // #endif
-
-            #ifdef ESP32
-                setCpuFrequencyMhz(40);
-                Serial.end();
-                Serial.begin(115200);
-                gsm.init();
-            #endif
+            standbymode::enable();
 
             while (!home_button::isPressed())
             {
                 eventHandler.update();
-                // home_button::resetStandbyMod();
+
                 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
                     SDL_Delay(1);
                 #endif
             }
 
-            #ifdef ESP32
-                setCpuFrequencyMhz(240);
-                Serial.end();
-                Serial.begin(115200);
-                gsm.init();
-            #endif
-
-            // home_button::clear();
-
+            standbymode::disable();
             light::turnOn();
+
         }
         #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
             SDL_Delay(20);

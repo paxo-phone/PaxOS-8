@@ -11,6 +11,7 @@
 #include "lights.hpp"
 #include "screen.hpp"
 #include "console.hpp"
+#include "standbymode.hpp"
 // #include "shell.hpp"
 
 #endif
