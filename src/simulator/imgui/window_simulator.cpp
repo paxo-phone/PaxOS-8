@@ -6,8 +6,9 @@
 #include "window_simulator.hpp"
 
 ImVec2 simulator::imgui::window::simulator::cursorPos;
-bool simulator::imgui::window::simulator::homeButtonPressed;
-bool simulator::imgui::window::simulator::aboutWindow;
+bool simulator::imgui::window::simulator::homeButtonPressed = false;
+bool simulator::imgui::window::simulator::aboutWindow = false;
+float simulator::imgui::window::simulator::screenScale = 1;
 
 void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width, int height) {
     if (!ImGui::Begin("Simulator", nullptr, ImGuiWindowFlags_MenuBar)) {
@@ -27,9 +28,14 @@ void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width
     cursorPos = ImGui::GetCursorScreenPos(); // Get pos before drawing the image, so the image x & y on screen
 
     // Use ImageButton to disable ImGui input handler
-    ImGui::ImageButton(texture, ImVec2(static_cast<float>(width), static_cast<float>(height)));
+    ImGui::ImageButton(texture, ImVec2(static_cast<float>(width) * screenScale, static_cast<float>(height) * screenScale));
 
-    homeButtonPressed = ImGui::Button("Back", ImVec2(static_cast<float>(width) + 8, 50));
+    homeButtonPressed = ImGui::Button("Back", ImVec2(static_cast<float>(width) * screenScale + 8, 50));
+
+    ImGui::Separator();
+
+    ImGui::Text("Config");
+    ImGui::SliderFloat("Scale", &screenScale, 0.1, 5, "%.2f");
 
     ImGui::End();
 

@@ -13,6 +13,7 @@ namespace simulator::imgui::window::simulator {
     extern ImVec2 cursorPos;
     extern bool homeButtonPressed;
     extern bool aboutWindow;
+    extern float screenScale;
 
     void render(SDL_Texture *texture, int width, int height);
     void offsetClick(int *x, int *y);
