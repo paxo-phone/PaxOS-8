@@ -17,10 +17,14 @@ void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width
 
     cursorPos = ImGui::GetCursorScreenPos(); // Get pos before drawing the image, so the image x & y on screen
 
-    // Use ImageButton to disable ImGui input handler
-    ImGui::ImageButton(texture, ImVec2(static_cast<float>(width) * screenScale, static_cast<float>(height) * screenScale));
+    ImVec2 windowSize = ImGui::GetWindowSize();
+    ImVec2 screenSize = ImVec2(static_cast<float>(width) * screenScale, static_cast<float>(height) * screenScale);
 
-    homeButtonPressed = ImGui::Button("Back", ImVec2(static_cast<float>(width) * screenScale + 8, 50));
+    ImGui::SetCursorPosX((windowSize.x - screenSize.x) * 0.5f); // Center horizontally
+    ImGui::ImageButton(texture, screenSize); // Use ImageButton to disable ImGui input handler
+
+    ImGui::SetCursorPosX((windowSize.x - screenSize.x) * 0.5f);
+    homeButtonPressed = ImGui::Button("Back", ImVec2(screenSize.x + 8, 50));
 
     ImGui::Separator();
 
