@@ -11,16 +11,17 @@ end
 
 function run()
   local window = p.window("Mon application")
-  label = p.label(window, 10, 175, 100, 55)
-  local buttonRun = p.button(window, p.AUTO, 394, p.AUTO, 40)
+
+  label = p.label(window, 0, 50, 190, 100)
+  local buttonRun = p.button(window, 10, 150, 300, 100)
 
   label:setText("0:00")
   print(tostring(p.CENTER_ALIGNMENT))
   label:setHorizontalAlignment(1)
   buttonRun:setText("Run")
   --print(tostring(p.COLOR_LIGHT))
-  
-  buttonRun:onClick(function() 
+
+  buttonRun:onClick(function()
     running = true
     chrono = p.monotonic()
   end)
