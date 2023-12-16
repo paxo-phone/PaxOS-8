@@ -9,8 +9,13 @@
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
 
+#include "window_simulator.hpp"
+#include "window_debug.hpp"
+
 SDL_Window *simulator::imgui::sdlWindow;
 SDL_Renderer *simulator::imgui::sdlRenderer;
+SDL_Texture *simulator::imgui::screenTexture;
+ImVec2 simulator::imgui::screenSize;
 
 void simulator::imgui::init(SDL_Window *w, SDL_Renderer *r) {
     sdlWindow = w;
@@ -38,15 +43,29 @@ void simulator::imgui::forwardEvent(SDL_Event *event) {
     ImGui_ImplSDL2_ProcessEvent(event);
 }
 
+void simulator::imgui::setScreenTexture(SDL_Texture *texture, int width, int height) {
+    screenTexture = texture;
+    screenSize = ImVec2(static_cast<float>(width), static_cast<float>(height));
+}
+
 void simulator::imgui::beginDraw() {
     // Begin ImGui frame
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
+    if (ImGui::BeginMainMenuBar()) {
+        ImGui::MenuItem("About");
 
+        ImGui::EndMainMenuBar();
+    }
+
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
     ImGui::ShowDemoWindow();
+
+    window::simulator::render(screenTexture, static_cast<int>(screenSize.x), static_cast<int>(screenSize.y));
+    window::debug::render();
 }
 
 void simulator::imgui::endDraw() {

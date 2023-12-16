@@ -31,25 +31,6 @@ void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width
 
     homeButtonPressed = ImGui::Button("Back", ImVec2(static_cast<float>(width) + 8, 50));
 
-    if (ImGui::CollapsingHeader("Debug")) {
-        if (ImGui::TreeNode("Position")) {
-            ImVec2 mousePosRaw = ImGui::GetMousePos();
-
-            int mouseX = static_cast<int>(mousePosRaw.x);
-            int mouseY = static_cast<int>(mousePosRaw.y);
-
-            offsetClick(&mouseX, &mouseY);
-
-            auto mousePosScreen = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
-
-            ImGui::Text("Mouse Pos (raw) : %.f, %.f", mousePosRaw.x, mousePosRaw.y);
-            ImGui::Text("Mouse Pos (screen) : %.f, %.f", mousePosScreen.x, mousePosScreen.y);
-
-            ImGui::TreePop();
-        }
-
-    }
-
     ImGui::End();
 
     if (aboutWindow) {

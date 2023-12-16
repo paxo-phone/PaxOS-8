@@ -691,6 +691,7 @@ namespace lgfx
     SDL_SetTextureBlendMode(m->texture, SDL_BLENDMODE_NONE);
 
     simulator::imgui::init(m->window, m->renderer);
+    simulator::imgui::setScreenTexture(m->texture, _cfg.panel_width, _cfg.panel_height);
   }
 
   void Panel_sdl::sdl_update(const monitor_t* const m)
@@ -702,7 +703,7 @@ namespace lgfx
     simulator::imgui::beginDraw();
 
     // SDL_RenderCopy(m->renderer, m->texture, NULL, NULL);
-    simulator::imgui::window::simulator::render(m->texture, m->panel->config().panel_width, m->panel->config().panel_height);
+//    simulator::imgui::window::simulator::render(m->texture, m->panel->config().panel_width, m->panel->config().panel_height);
 
     simulator::imgui::endDraw();
     SDL_RenderPresent(m->renderer);

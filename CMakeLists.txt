@@ -54,9 +54,7 @@ file(GLOB imgui_src
 
 add_definitions(-DLGFX_SDL)
 
-add_executable(PaxOS ${src} ${gfx_src} ${imgui_src}
-        src/simulator/imgui/window_simulator.cpp
-        src/simulator/imgui/window_simulator.hpp)
+add_executable(PaxOS ${src} ${gfx_src} ${imgui_src})
 
 target_include_directories(PaxOS PUBLIC "src/interface/LovyanGFX")
 
