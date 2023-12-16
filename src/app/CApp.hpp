@@ -7,13 +7,14 @@
 
 #include <string>
 #include <sstream>
+#include <cstdint>
 
 class CApp {
 
 public:
     [[nodiscard]] virtual const char* getAppName() const = 0;
 
-    virtual void main() = 0;
+    virtual void onApplicationStart() = 0;
     virtual ~CApp() = default;
 
     [[nodiscard]] virtual std::string getAppBasePath() const

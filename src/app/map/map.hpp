@@ -3,14 +3,15 @@
 
 #include "../../widgets/gui.hpp"
 #include "../../interface/filestream.hpp"
-#include "../app.hpp"
+
+#include "../CApp.hpp"
 
 class Map : public CApp
 {
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "Map"; }
-    void main() override
+    void onApplicationStart() override
     {
         Window win("map");
 

@@ -1,13 +1,13 @@
 #ifndef SNAKE_HPP
 #define SNAKE_HPP
 
-#include "../app.hpp"
+#include "../CApp.hpp"
 
 class Snake : public CApp
 {
 public:
     [[nodiscard]] const char* getAppName() const override { return "Snake"; }
-    void main() override;
+    void onApplicationStart() override;
     
     private:
     bool gameover = false;

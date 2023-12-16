@@ -11,7 +11,7 @@ class Browser : public CApp
 {
 public:
     [[nodiscard]] const char* getAppName() const override { return "Browser"; }
-    void main() override
+    void onApplicationStart() override
     {
         bool exit = false;
         bool mode = false;

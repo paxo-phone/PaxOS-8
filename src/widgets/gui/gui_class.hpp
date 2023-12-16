@@ -22,7 +22,8 @@
 
 #include "../touch_manager.hpp"
 
-class App;
+#include "../../app/CApp.hpp"
+
 typedef uint8_t Alignment;
 typedef void event;
 
@@ -155,15 +156,15 @@ class Gui // widget system
     virtual void ReleasedEffect() {}
 
 
-    void (*onclick)(App *app, Gui* object, void* data) = nullptr;
-    void (*onlongclick)(App *app, Gui* object, void* data) = nullptr;
-    void (*onreleased)(App *app, Gui* object, void* data) = nullptr;
-    void (*onscroll)(App *app, Gui* object, void* data) = nullptr;
+    void (*onclick)(CApp *app, Gui* object, void* data) = nullptr;
+    void (*onlongclick)(CApp *app, Gui* object, void* data) = nullptr;
+    void (*onreleased)(CApp *app, Gui* object, void* data) = nullptr;
+    void (*onscroll)(CApp *app, Gui* object, void* data) = nullptr;
 
     bool verticalSlide=false;
     bool horizontalSlide=false;
 
-    App* appCallback = nullptr;
+    CApp* appCallback = nullptr;
     void* dataCallback = nullptr;
     bool hasEvent = true;
 

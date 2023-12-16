@@ -3,7 +3,8 @@
 
 #include <string>
 #include <algorithm>
-#include "../app.hpp"
+
+#include "../CApp.hpp"
 
 class Gui;
 
@@ -12,15 +13,11 @@ class Calcul : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "Calcul"; }
-    void main() override
-    {
-        launch();
-    }
+    void onApplicationStart() override;
 
-    void launch();
     void buildGui();
     void processExpression(std::string &equation);
-    static void addChar(App *app, Gui* objectPrt, void* data);
+    static void addChar(CApp *app, Gui* objectPrt, void* data);
 };
 
 #endif

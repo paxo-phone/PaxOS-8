@@ -1,10 +1,11 @@
 #include "launcher.hpp"
 
 #include "CAppsManager.hpp"
+#include "ApplicationsRegistery.hpp"
 
 void launcher()
 {
-    initializeApplications();
+    registerApplications();
 
     const auto& registeredApplications = CAppsManager::getApplications();
 
@@ -51,7 +52,7 @@ void launcher()
         {
             if(appBoxs[i]->isTouched())
             {
-                registeredApplications[i]->main(); // launch application
+                registeredApplications[i]->onApplicationStart(); // launch application
             }
         }
 

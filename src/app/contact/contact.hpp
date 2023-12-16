@@ -2,14 +2,14 @@
 #define CONTACT_HPP
 
 #include <vector>
-#include "../app.hpp"
 
+#include "../CApp.hpp"
 
 class Contact : public CApp
 {
 public:
     [[nodiscard]] const char* getAppName() const override { return "Contact"; }
-    void main() override;
+    void onApplicationStart() override;
     
     static void loadContacts(bool force = false);
     static void saveContacts();

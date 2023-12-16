@@ -13,7 +13,7 @@ class Phone : public CApp
 public:
     [[nodiscard]] const char* getAppName() const override { return "Phone"; }
 
-    void main() override
+    void onApplicationStart() override
     {
         Window win("phone");
 

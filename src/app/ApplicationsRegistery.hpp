@@ -1,8 +1,9 @@
-#ifndef APP_CPP
-#define APP_CPP
+//
+// Created by Kevin on 16/12/2023.
+//
 
-#include "app.hpp"
-#include "CAppsManager.hpp"
+#ifndef PAXOS_APPLICATIONSREGISTERY_HPP
+#define PAXOS_APPLICATIONSREGISTERY_HPP
 
 #include "phone/phone.hpp"
 #include "message/message.hpp"
@@ -12,9 +13,10 @@
 #include "2048/2048.hpp"
 #include "snake/snake.hpp"
 #include "browser/browser.hpp"
-#include "minecraft/minecraft.hpp"
 
-void initializeApplications()
+#include "CAppsManager.hpp"
+
+void registerApplications()
 {
     // Applications Natives
     CAppsManager::registerNativeApplication<Phone>();
@@ -23,9 +25,9 @@ void initializeApplications()
     CAppsManager::registerNativeApplication<Calcul>();
     CAppsManager::registerNativeApplication<Hour>();
     CAppsManager::registerNativeApplication<Map>();
-    // CAppsManager::registerNativeApplication<Game_2048>();
-    // CAppsManager::registerNativeApplication<Snake>();
-    // CAppsManager::registerNativeApplication<Browser>();
+    CAppsManager::registerNativeApplication<Game_2048>();
+    CAppsManager::registerNativeApplication<Snake>();
+    CAppsManager::registerNativeApplication<Browser>();
     // CAppsManager::registerNativeApplication<Minecraft>();
 
     // Applications Lua
@@ -34,4 +36,4 @@ void initializeApplications()
         CAppsManager::registerLuaApplication(luaAppName);
 }
 
-#endif
+#endif //PAXOS_APPLICATIONSREGISTERY_HPP

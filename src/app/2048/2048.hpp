@@ -3,23 +3,21 @@
 
 #include <string>
 #include <algorithm>
-#include "../app.hpp"
+
+#include "../../widgets/gui/canvas.hpp"
+#include "../CApp.hpp"
 
 class Game_2048 : public CApp
 {
 public:
     [[nodiscard]] const char* getAppName() const override { return "2048"; }
 
-    void launch();
     void draw();
     void move(uint8_t slide);
 
-    void main() override
-    {
-        launch();
-    }
+    void onApplicationStart() override;
 
-    private:
+private:
     unsigned int matrice1[4][4];
     unsigned int matrice2[4][4];
     unsigned int matrice3[4][4];

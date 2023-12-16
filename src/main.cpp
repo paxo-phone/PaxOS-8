@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "app/launcher.hpp"
+
 using namespace std;
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
@@ -33,7 +35,7 @@ using namespace std;
 #include "widgets/gui.hpp"
 #include "tasks/tasks.hpp"
 #include "lua/lua.hpp"
-#include "app/app.hpp"
+#include "app/CApp.hpp"
 #include "network/network.hpp"
 #include "app/message/message.hpp"
 
@@ -78,8 +80,8 @@ void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones) // in
     gsm.init();
     gsm.saveMessages = Message::saveMessage;
 
-
     launcher();
+
 }
 
 void loop()

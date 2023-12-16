@@ -1,11 +1,12 @@
 #include "message.hpp"
 
 #include "../contact/contact.hpp"
-#include "../../interface/interface.hpp"
+
+#include "../../widgets/gui.hpp"
 
 bool Message::notif = false;
 
-void Message::main()
+void Message::onApplicationStart()
 {
     while(!home_button::isPressed())
     {

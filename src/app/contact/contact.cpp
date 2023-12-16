@@ -1,6 +1,6 @@
 #include "contact.hpp"
 
-#include "../../interface/interface.hpp"
+#include "../../widgets/gui.hpp"
 
 std::vector<Contact::OneContact> Contact::contacts = {};
 
@@ -44,7 +44,7 @@ void Contact::saveContacts()
     loadContacts(true);
 }
 
-void Contact::main()
+void Contact::onApplicationStart()
 {
     while(!home_button::isPressed())
         showContact(contactPage());

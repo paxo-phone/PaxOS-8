@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "../lua/lua.hpp"
 #include "CApp.hpp"
 
 class CLuaApp : public CApp
@@ -31,7 +32,7 @@ public:
         m_luaAppName = luaAppName;
     }
 
-    void main() override
+    void onApplicationStart() override
     {
         LuaInterpreter lua(getAppBasePath());
         lua.loadScript(getAppBasePath() + "/main.lua");

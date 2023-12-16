@@ -1,5 +1,4 @@
 #include "settings.hpp"
-#include "../app.hpp"
 
 #include "../CApp.hpp"
 
@@ -8,7 +7,7 @@ class Settings : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "Settings"; }
-    void main() override
+    void onApplicationStart() override
     {
         Window win("settings");
         
