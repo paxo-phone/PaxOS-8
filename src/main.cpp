@@ -10,7 +10,7 @@
 #include "widgets/gui.hpp"
 #include "tasks/tasks.hpp"
 #include "lua/lua.hpp"
-#include "app/app.hpp"
+#include "app/CApp.hpp"
 #include "network/network.hpp"
 #include "app/message/message.hpp"
 
@@ -27,7 +27,7 @@ using namespace std;
     };
 
     bool *shouldUS;
-    Rectangle* *screenUZ;
+    struct Rectangle* *screenUZ;
 
     void flushScreen()
     {
