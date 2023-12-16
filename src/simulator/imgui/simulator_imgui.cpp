@@ -16,6 +16,7 @@ SDL_Window *simulator::imgui::sdlWindow;
 SDL_Renderer *simulator::imgui::sdlRenderer;
 SDL_Texture *simulator::imgui::screenTexture;
 ImVec2 simulator::imgui::screenSize;
+bool simulator::imgui::aboutWindow;
 
 void simulator::imgui::init(SDL_Window *w, SDL_Renderer *r) {
     sdlWindow = w;
@@ -55,7 +56,7 @@ void simulator::imgui::beginDraw() {
     ImGui::NewFrame();
 
     if (ImGui::BeginMainMenuBar()) {
-        ImGui::MenuItem("About");
+        ImGui::MenuItem("About", nullptr, &aboutWindow);
 
         ImGui::EndMainMenuBar();
     }
@@ -66,6 +67,27 @@ void simulator::imgui::beginDraw() {
 
     window::simulator::render(screenTexture, static_cast<int>(screenSize.x), static_cast<int>(screenSize.y));
     window::debug::render();
+
+    if (aboutWindow) {
+        ImGui::Begin("About", &aboutWindow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse);
+
+        ImGui::Text("PaxOS 8.0 by Paxo");
+        ImGui::Separator();
+        ImGui::Text("Website : https://paxo.fr/");
+        ImGui::Text("Contribute : https://github.com/paxo-phone/PaxOS-8");
+        ImGui::Separator();
+        ImGui::Text("Libraries :");
+        ImGui::Text("- LovyanGFX by lovyan03 - Custom version");
+        ImGui::Text("- SDL2 by libsdl.org - v2.28.2");
+        ImGui::Text("- ImGui by Omar Cornut - v1.90.1 WIP 19002");
+        ImGui::Text("- Lua by Lua.org / PUC-Rio - v5.4.6");
+        ImGui::Text("- CURL by Curl Corporation - v8.5.0-1");
+        ImGui::Text("- Dirent by Toni Rönkkö - v1.23.2");
+        ImGui::Text("");
+        ImGui::Text("Missing credits ? Contact us at paxo.fr");
+
+        ImGui::End();
+    }
 }
 
 void simulator::imgui::endDraw() {

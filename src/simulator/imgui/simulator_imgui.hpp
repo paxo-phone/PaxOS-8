@@ -14,6 +14,7 @@ namespace simulator::imgui {
     extern SDL_Renderer *sdlRenderer;
     extern SDL_Texture *screenTexture;
     extern ImVec2 screenSize;
+    extern bool aboutWindow;
 
     void init(SDL_Window *window, SDL_Renderer *renderer);
     void shutdown();
