@@ -80,12 +80,20 @@ ENDIF ()
 
 target_compile_features(PaxOS PUBLIC cxx_std_17)
 
+# COPIER STORAGE/
+file(COPY ressources/storage DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+# Méthode pour copier un DLL de ressources/ vers l'endroit où se trouve PaxOS.exe
+macro(copy_dll DLLName)
+    file(COPY ressources/dll/${DLLName} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endmacro()
+
+copy_dll(libcurl-x64.dll)
+copy_dll(libgcc_s_seh-1.dll)
+copy_dll(libstdc++-6.dll)
+copy_dll(libwinpthread-1.dll)
+
 if (WIN32)
     include_directories(src/lib/dirent-1.23.2/include)
-endif()
-
-file(COPY resources/storage DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
-if (WIN32)
-    file(COPY resources/SDL2.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    copy_dll(SDL2.dll)
 endif()
