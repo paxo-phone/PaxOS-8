@@ -1,10 +1,12 @@
 #include "launcher.hpp"
 
-#include "../interface/interface.hpp"
+#include "CAppsManager.hpp"
 
 void launcher()
 {
     initializeApplications();
+
+    const auto& registeredApplications = CAppsManager::getApplications();
 
     Window win("launcher");
     win.enableToolbar();
@@ -26,13 +28,14 @@ void launcher()
 
     std::vector<Gui*> appBoxs;
 
-    for (int i = 0; i < App::appList.size(); i++)
+    for (int i = 0; i < registeredApplications.size(); i++)
     {
+        std::cout << registeredApplications[i]->getAppIconPath() << std::endl;
         Box* box = new Box(33 + (95 * (i%3)), 117 + (95 * int(i/3)), 63, 63);
         box->setBackgroundColor(COLOR_EXTRA_LIGHT);
         box->setRadius(15);
 
-        Image* image = new Image(App::appList[i]->getIconPath(), AUTO, AUTO, AUTO, AUTO);
+        Image* image = new Image(registeredApplications[i]->getAppIconPath(), AUTO, AUTO, AUTO, AUTO);
         image->load();
         box->addChild(image);
 
@@ -44,11 +47,11 @@ void launcher()
     while(true)
     {
         win.updateAll();
-        for (int i = 0; i < App::appList.size(); i++)
+        for (int i = 0; i < registeredApplications.size(); i++)
         {
             if(appBoxs[i]->isTouched())
             {
-                App::appList[i]->main(); // launch application
+                registeredApplications[i]->main(); // launch application
             }
         }
 

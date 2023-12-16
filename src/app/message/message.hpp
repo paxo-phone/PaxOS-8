@@ -6,7 +6,7 @@
 
 class Message : public CApp
 {
-    
+
 public:
     [[nodiscard]] const char* getAppName() const override { return "Message"; }
     void main() override;

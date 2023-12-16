@@ -12,18 +12,28 @@ class CApp {
 
 public:
     [[nodiscard]] virtual const char* getAppName() const = 0;
-    virtual void main() = 0;
 
-    [[nodiscard]] std::string getIconPath() const
+    virtual void main() = 0;
+    virtual ~CApp() = default;
+
+    [[nodiscard]] virtual std::string getAppBasePath() const
     {
         std::stringstream ss;
         ss << "apps/";
         ss << getAppName();
+        ss << "/";
+        return ss.str();
+    }
+
+    [[nodiscard]] std::string getAppIconPath() const
+    {
+        std::stringstream ss;
+        ss << getAppBasePath();
         ss << "/logo.png";
         return ss.str();
     }
 
-    [[nodiscard]] std::string getConfPath() const
+    [[nodiscard]] std::string getAppConfPath() const
     {
         std::stringstream ss;
         ss << getAppName();
