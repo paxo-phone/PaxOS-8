@@ -87,5 +87,7 @@ endif()
 file(COPY resources/storage DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 if (WIN32)
-    file(COPY resources/SDL2.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(GLOB WIN_DLLS resources/*.dll)
+    message(">> Copying DLLs: ${WIN_DLLS}")
+    file(COPY ${WIN_DLLS} DESTINATION /)
 endif()
