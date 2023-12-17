@@ -13,7 +13,7 @@ class CApp
 
         [[nodiscard]] virtual const char* getAppName() const = 0;
 
-        virtual void main() = 0;
+        virtual void execute() = 0;
 
         [[nodiscard]] virtual std::string getAppBasePath() const
         {

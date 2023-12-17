@@ -11,7 +11,7 @@ class Hour : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "hour"; }
-    void main() override
+    void execute() override
     {
         Window win("hour");
 

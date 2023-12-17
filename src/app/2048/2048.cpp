@@ -11,7 +11,7 @@
     void flushScreen();
 #endif
 
-void Game_2048::main()
+void Game_2048::execute()
 {
     Window window("");
     canvas = new Canvas(0, 0, 320, 480);

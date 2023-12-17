@@ -10,7 +10,7 @@ class Message : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "message"; }
-    void main() override;
+    void execute() override;
     
     static void saveMessage(std::vector<GSM::Message> message);
     static bool notif;

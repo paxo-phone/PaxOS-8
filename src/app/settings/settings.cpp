@@ -7,7 +7,7 @@ class Settings : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "settings"; }
-    void main() override
+    void execute() override
     {
         Window win("settings");
         

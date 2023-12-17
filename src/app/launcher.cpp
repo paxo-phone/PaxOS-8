@@ -56,7 +56,7 @@ void launcher()
         {
             if(appBoxs[i]->isTouched())
             {
-                registeredApplications[i]->main(); // launch application
+                registeredApplications[i]->execute(); // launch application
             }
         }
 

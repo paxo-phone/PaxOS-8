@@ -46,7 +46,7 @@ void Contact::saveContacts()
     loadContacts(true);
 }
 
-void Contact::main()
+void Contact::execute()
 {
     quitt = false;
     while(quitt != true)

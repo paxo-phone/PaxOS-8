@@ -9,7 +9,7 @@ class Contact : public CApp
 {
 public:
     [[nodiscard]] const char* getAppName() const override { return "contact"; }
-    void main() override;
+    void execute() override;
     
     static void loadContacts(bool force = false);
     static void saveContacts();

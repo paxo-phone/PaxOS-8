@@ -29,7 +29,7 @@ class CLuaApp : public CApp
             m_luaAppName = luaAppName;
         }
 
-        void main() override
+        void execute() override
         {
             LuaInterpreter lua(getAppBasePath());
             lua.loadScript(getAppBasePath() + "/main.lua");

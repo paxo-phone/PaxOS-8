@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <string>
 
-void Calcul::main()
+void Calcul::execute()
 {
     buildGui();
 }

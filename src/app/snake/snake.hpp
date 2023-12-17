@@ -7,7 +7,7 @@ class Snake : public CApp
 {
 public:
     [[nodiscard]] const char* getAppName() const override { return "snake"; }
-    void main() override;
+    void execute() override;
     
     private:
     bool gameover = false;
