@@ -34,11 +34,11 @@ The emulator should then open in a window.
 Before getting started, you need an IDE and know how to setup a CMake project with custom toolchain.
 
 1. Install CMake and MinGW
-2. Setup your favorite IDE (eg. CLion) with MinGW (recommended)
+2. Setup your favorite IDE 
+  'CLion' with MinGW (recommended) 
+  'Visual Studio Code' with MinGW (https://code.visualstudio.com/docs/cpp/config-mingw)
 3. Setup CMake using Ninja (recommended)
 4. You shouldn't have to install any library (everything is included)
-
-**Info :** You need to copy the necessary ``.dll`` from ``windows/dynamic-libs`` for the executable to work.
 
 ## MacOS
 
