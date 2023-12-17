@@ -14,6 +14,7 @@ namespace simulator::imgui::window::simulator {
     extern bool homeButtonPressed;
     extern bool aboutWindow;
     extern float screenScale;
+    extern bool autoScale;
 
     void render(SDL_Texture *texture, int width, int height);
     void offsetClick(int *x, int *y);
