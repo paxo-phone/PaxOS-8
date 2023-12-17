@@ -12,7 +12,7 @@ class Calcul : public CApp
 {
 
 public:
-    [[nodiscard]] const char* getAppName() const override { return "Calcul"; }
+    [[nodiscard]] const char* getAppName() const override { return "calcul"; }
     void main() override;
 
     void buildGui();

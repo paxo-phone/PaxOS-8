@@ -6,7 +6,7 @@
 class Snake : public CApp
 {
 public:
-    [[nodiscard]] const char* getAppName() const override { return "Snake"; }
+    [[nodiscard]] const char* getAppName() const override { return "snake"; }
     void main() override;
     
     private:

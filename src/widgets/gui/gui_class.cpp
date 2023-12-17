@@ -192,10 +192,10 @@ void Gui::renderAll()
     if(!isEnabled())
         return;
 
-    if(parent!=nullptr && (getRelativeY() + getHeight() < 0 || getRelativeY() > parent->getHeight()))
+    /*if(parent!=nullptr && (getRelativeY() + getHeight() < 0 || getRelativeY() > parent->getHeight()))
     {
         return;
-    }
+    }*/
 
     if(upFromDrawAll==nullptr)
         upFromDrawAll=this;

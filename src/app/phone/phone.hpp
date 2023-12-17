@@ -11,23 +11,23 @@ class Phone : public CApp
 {
 
 public:
-    [[nodiscard]] const char* getAppName() const override { return "Phone"; }
+    [[nodiscard]] const char* getAppName() const override { return "phone"; }
 
     void main() override
     {
         Window win("phone");
 
-        Box* numberBox = new Box(AUTO, 0, AUTO, 70);
+        Box* numberBox = new Box(0, 0, 320, 70);
             numberBox->hasEvent = true;
             win.addChild(numberBox);
             numberBox->setBorderSize(1); numberBox->setBorderColor(0);
 
-            Label* numberLabel = new Label(AUTO, AUTO, AUTO, AUTO, "+33");
+            Label* numberLabel = new Label(0, 0, 320, 42, "+33");
                 numberBox->addChild(numberLabel);
                 numberLabel->setFontSize(30);
                 numberLabel->hasEvent = false;
                 numberLabel->setHorizontalAlignment(CENTER_ALIGNMENT);
-            Label* clicktogetcontact = new Label(AUTO, 42, AUTO, AUTO, "click to see contacts");
+            Label* clicktogetcontact = new Label(0, 42, 320, 28, "click to see contacts");
                 numberBox->addChild(clicktogetcontact);
                 clicktogetcontact->setFontSize(15);
                 clicktogetcontact->hasEvent = false;

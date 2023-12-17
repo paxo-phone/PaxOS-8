@@ -11,8 +11,6 @@
     void flushScreen();
 #endif
 
-LGFX_Sprite S(&tft_root);
-
 void Game_2048::main()
 {
     Window window("");
@@ -39,7 +37,9 @@ void Game_2048::main()
             break;
         }
     }
+
     draw();
+    canvas->push();
 
     while (true)
     {
@@ -48,7 +48,6 @@ void Game_2048::main()
         {
             if(home_button::isPressed())
             {
-                delete canvas;
                 return;
             }
             eventHandler.update();

@@ -28,7 +28,7 @@ class CApp
         {
             std::string o = "";
             o += getAppBasePath();
-            o += "/logo.png";
+            o += "logo.png";
             return o;
         }
 
@@ -36,7 +36,7 @@ class CApp
         {
             std::string o = "";
             o += getAppName();
-            o += "/conf.txt";
+            o += "conf.txt";
             return o;
         }
 };

@@ -8,7 +8,7 @@
 class Contact : public CApp
 {
 public:
-    [[nodiscard]] const char* getAppName() const override { return "Contact"; }
+    [[nodiscard]] const char* getAppName() const override { return "contact"; }
     void main() override;
     
     static void loadContacts(bool force = false);
@@ -24,6 +24,7 @@ public:
     };
 
     static std::vector<OneContact> contacts;
+    static bool quitt;
 };
 
 #endif

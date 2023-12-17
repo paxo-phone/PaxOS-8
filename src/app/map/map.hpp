@@ -10,7 +10,7 @@ class Map : public CApp
 {
 
 public:
-    [[nodiscard]] const char* getAppName() const override { return "Map"; }
+    [[nodiscard]] const char* getAppName() const override { return "map"; }
     void main() override
     {
         Window win("map");
