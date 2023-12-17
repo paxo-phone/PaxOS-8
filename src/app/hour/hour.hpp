@@ -3,13 +3,15 @@
 
 #include "../../widgets/gui.hpp"
 #include "../../interface/filestream.hpp"
-#include "../app.hpp"
 
+#include "../CApp.hpp"
 
-class Hour : public CppAppContainer
+class Hour : public CApp
 {
-    public:
-    void main()
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Hour"; }
+    void onApplicationStart() override
     {
         Window win("hour");
 

@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <string>
 
-void Calcul::launch()
+void Calcul::onApplicationStart()
 {
     buildGui();
 }
@@ -189,7 +189,7 @@ void Calcul::processExpression(std::string &expression)
     }
 }
 
-void Calcul::addChar(App *app, Gui* objectPrt, void* data)
+void Calcul::addChar(CApp* app, Gui* objectPrt, void* data)
 {
     std::string chr = reinterpret_cast<Label*>(objectPrt)->getText();
     Label* label = reinterpret_cast<Label*>(data);

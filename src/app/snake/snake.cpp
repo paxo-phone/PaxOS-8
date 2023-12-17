@@ -11,7 +11,7 @@
 void flushScreen();
 #endif
 
-void Snake::main()
+void Snake::onApplicationStart()
 {
     tft_root.setClipRect(0, 0, 320, 480);
     mainWindow=nullptr;

@@ -5,11 +5,13 @@
 #include "../../interface/filestream.hpp"
 #include "../../network/network.hpp"
 
+#include "../CApp.hpp"
 
-class Browser : public CppAppContainer
+class Browser : public CApp
 {
-    public:
-    void main()
+public:
+    [[nodiscard]] const char* getAppName() const override { return "Browser"; }
+    void onApplicationStart() override
     {
         bool exit = false;
         bool mode = false;

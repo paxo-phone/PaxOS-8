@@ -134,6 +134,7 @@ void LuaInterpreter::runApp() {
     for (uint i = 0; i < timeOuts.size(); i++)
         delete timeOuts[i];
     timeOuts.clear();
+
 }
 
 // Fills metatable for GUI components
@@ -252,33 +253,40 @@ int LuaInterpreter::box(lua_State* L) {
     return 1;
 }
 
-int LuaInterpreter::label(lua_State* L) {
-    if (lua_gettop(L) != 5 && !lua_isnumber(L, 2)
-                           && !lua_isnumber(L, 3)
-                           && !lua_isnumber(L, 4)
-                           && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
-    Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
-    luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
-    uint16_t x         = lua_tonumber(L, 2);
-    uint16_t y         = lua_tonumber(L, 3);
-    uint16_t w         = lua_tonumber(L, 4);
-    uint16_t h         = lua_tonumber(L, 5);
+int LuaInterpreter::label(lua_State* L)
+{
+    // Vérifier les arguments
+    if (lua_gettop(L) != 5
+        && !lua_isnumber(L, 2)
+        && !lua_isnumber(L, 3)
+        && !lua_isnumber(L, 4)
+        && !lua_isnumber(L, 5)) return luaL_error(L, LUA_FUNC_ERR);
 
-    // Allocate our userdata and assign our metatable
-    Label **l = static_cast<Label **>(lua_newuserdata(L, sizeof *l));
+    // Récuperer le parent (la fenêtre)
+    Window** pParent = static_cast<Window**>(lua_touserdata(L, 1));
+
+    luaL_argcheck(L, pParent != nullptr, 1, "Parent gui expected!");
+    int16_t x = lua_tonumber(L, 2);
+    int16_t y = lua_tonumber(L, 3);
+    int16_t w = lua_tonumber(L, 4);
+    int16_t h = lua_tonumber(L, 5);
+
+    // Créer le nouveau label
+    Label* pLabel = new Label(x, y, w, h);
+    Label** pUserData = static_cast<Label**>(lua_newuserdata(L, sizeof(Label*)));
+    *pUserData = pLabel;
+
     luaL_getmetatable(L, METATABLE_LABEL_GUI);
     lua_setmetatable(L, -2);
-    
-    // Fill metatable
+
+    // Remplir la usertable (label) avec ses méthodes associées (ex: setText ...)
     fill_gui_metatable(L, METATABLE_LABEL_GUI, [](lua_State* L) {
-        Label **l = static_cast<Label **>(lua_touserdata(L, -1));
-        delete *l;
         return 0;
     });
 
-    // Instance of label
-    *l = new Label(x, y, w, h);
-    (*parent)->addChild(*l);
+    // Ajouter le label à la fenêtre
+    (*pParent)->addChild(pLabel);
+
     return 1;
 }
 
@@ -448,7 +456,7 @@ int LuaInterpreter::getHeight(lua_State* L) {
     return 1;
 }
 
-int LuaInterpreter::setVerticalAlignement(lua_State* L)
+int LuaInterpreter::setVerticalAlignment(lua_State* L)
 {
     if (lua_gettop(L) != 2) return luaL_error(L, LUA_FUNC_ERR);
     Gui *gui = get_checked_gui(L, -2);
@@ -456,7 +464,7 @@ int LuaInterpreter::setVerticalAlignement(lua_State* L)
     return 0;
 }
 
-int LuaInterpreter::setHorizontalAlignement(lua_State* L)
+int LuaInterpreter::setHorizontalAlignment(lua_State* L)
 {
     if (lua_gettop(L) != 2 || !lua_isnumber(L, 2)) return luaL_error(L, LUA_FUNC_ERR);
 
