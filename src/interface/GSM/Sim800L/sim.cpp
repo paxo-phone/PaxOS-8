@@ -3,6 +3,8 @@
 #include "../../interface.hpp"
 #include "../../../app/phone/phone.hpp"
 
+#include "../../../simulator/imgui/window_debug.hpp"
+
 const char *daysOfWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" };
 const char *daysOfMonth[12] = { "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"};
 
@@ -436,13 +438,35 @@ void GSM::parseHourFromComputer(time_t* time) {
     localtime_r(time, formattedTime);
 #endif
 
-    // https://cplusplus.com/reference/ctime/tm/
-    years = formattedTime->tm_year + 1900;
-    months = formattedTime->tm_mon + 1;
-    days = formattedTime->tm_mday;
-    hours = formattedTime->tm_hour;
-    minutes = formattedTime->tm_min; // 0-59
-    seconds = formattedTime->tm_sec; // 0-60 "tm_sec is generally 0-59. The extra range is to accommodate for leap seconds in certain systems."
+    if (simulator::imgui::window::debug::automaticDate) {
+        // Debug, but set the date to "automatic" (actual date)
+
+        // https://cplusplus.com/reference/ctime/tm/
+        years = formattedTime->tm_year + 1900;
+        months = formattedTime->tm_mon + 1;
+        days = formattedTime->tm_mday;
+        hours = formattedTime->tm_hour;
+        minutes = formattedTime->tm_min; // 0-59
+        seconds = formattedTime->tm_sec; // 0-60 "tm_sec is generally 0-59. The extra range is to accommodate for leap seconds in certain systems."
+
+        // Update ImGui
+        simulator::imgui::window::debug::dateYears = years;
+        simulator::imgui::window::debug::dateMonths = months;
+        simulator::imgui::window::debug::dateDays = days;
+        simulator::imgui::window::debug::dateHours = hours;
+        simulator::imgui::window::debug::dateMinutes = minutes;
+        simulator::imgui::window::debug::dateSeconds = seconds;
+    } else {
+        // Debug, but set a custom date
+
+        years = simulator::imgui::window::debug::dateYears - 1900;
+        months = simulator::imgui::window::debug::dateMonths - 1;
+        days = simulator::imgui::window::debug::dateDays;
+        hours = simulator::imgui::window::debug::dateHours;
+        minutes = simulator::imgui::window::debug::dateMinutes;
+        seconds = simulator::imgui::window::debug::dateSeconds;
+    }
+
 }
 #endif
 
@@ -477,7 +501,7 @@ void GSM::getNetworkQuality()
     add_request({&GSM::askNetworkQuality, &GSM::parseNetworkQuality});
     #endif
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
-    quality = 4;
+    quality = simulator::imgui::window::debug::networkQuality;
     #endif
 }
 
@@ -506,7 +530,7 @@ void GSM::getBatteryLevel()
     add_request({&GSM::askBatteryLevel, &GSM::parseBatteryLevel});
     #endif
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
-    batteryLevel = 4;
+    batteryLevel = simulator::imgui::window::debug::batteryLevel;
     #endif
 }
 
