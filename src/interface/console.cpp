@@ -7,6 +7,8 @@
 #include "interface.hpp"
 #include "GSM/GSM.hpp"
 
+#include "../simulator/imgui/window_console.hpp"
+
 #define SERIAL_DATA_RATE 115200
 
 Console::Console()
@@ -23,6 +25,7 @@ void Console::log(char c)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         std::cout << c << std::endl;
+        simulator::imgui::window::console::info(std::string(1, c));
     #endif
 
     #ifdef ESP32
@@ -35,6 +38,7 @@ void Console::log(const char* str)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         std::cout << str << std::endl;
+        simulator::imgui::window::console::info(str);
     #endif
 
     #ifdef ESP32
@@ -49,6 +53,7 @@ void Console::log(const std::string& str)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         std::cout << str << std::endl;
+        simulator::imgui::window::console::info(str);
     #endif
 
     #ifdef ESP32
@@ -63,6 +68,7 @@ void Console::error(char c)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         std::cerr << c << std::endl;
+        simulator::imgui::window::console::error(std::string(1, c));
     #endif
 
     #ifdef ESP32
@@ -75,6 +81,7 @@ void Console::error(const char* str)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         std::cerr << str << std::endl;
+        simulator::imgui::window::console::error(std::string(str));
     #endif
 
     #ifdef ESP32
@@ -88,6 +95,7 @@ void Console::error(const std::string& str)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         std::cerr << str << std::endl;
+        simulator::imgui::window::console::error(str);
     #endif
 
     #ifdef ESP32

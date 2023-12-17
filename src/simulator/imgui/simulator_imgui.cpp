@@ -11,6 +11,7 @@
 
 #include "window_simulator.hpp"
 #include "window_debug.hpp"
+#include "window_console.hpp"
 
 SDL_Window *simulator::imgui::sdlWindow;
 SDL_Renderer *simulator::imgui::sdlRenderer;
@@ -67,6 +68,7 @@ void simulator::imgui::beginDraw() {
 
     window::simulator::render(screenTexture, static_cast<int>(screenSize.x), static_cast<int>(screenSize.y));
     window::debug::render();
+    window::console::render();
 
     if (aboutWindow) {
         ImGui::Begin("About", &aboutWindow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse);
