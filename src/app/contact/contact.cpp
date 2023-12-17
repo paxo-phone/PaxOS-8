@@ -44,7 +44,7 @@ void Contact::saveContacts()
     loadContacts(true);
 }
 
-void Contact::onApplicationStart()
+void Contact::main()
 {
     while(!home_button::isPressed())
         showContact(contactPage());

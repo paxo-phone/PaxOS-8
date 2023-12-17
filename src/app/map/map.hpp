@@ -11,7 +11,7 @@ class Map : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "Map"; }
-    void onApplicationStart() override
+    void main() override
     {
         Window win("map");
 

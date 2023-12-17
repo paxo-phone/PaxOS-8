@@ -1,9 +1,5 @@
-//
-// Created by Kevin on 16/12/2023.
-//
-
-#ifndef PAXOS_APPLICATIONSREGISTERY_HPP
-#define PAXOS_APPLICATIONSREGISTERY_HPP
+#ifndef APPLICATIONS_REGISTERY_HPP
+#define APPLICATIONS_REGISTERY_HPP
 
 #include "phone/phone.hpp"
 #include "message/message.hpp"
@@ -16,9 +12,10 @@
 
 #include "CAppsManager.hpp"
 
-void registerApplications()
+void registerApplications(void)
 {
-    // Applications Natives
+    // Natives
+
     CAppsManager::registerNativeApplication<Phone>();
     CAppsManager::registerNativeApplication<Message>();
     CAppsManager::registerNativeApplication<Contact>();
@@ -28,12 +25,11 @@ void registerApplications()
     CAppsManager::registerNativeApplication<Game_2048>();
     CAppsManager::registerNativeApplication<Snake>();
     CAppsManager::registerNativeApplication<Browser>();
-    // CAppsManager::registerNativeApplication<Minecraft>();
 
-    // Applications Lua
-    const vector<string> luaAppNames = storage::listdir("apps/lua", true);
-    for (const string& luaAppName : luaAppNames)
+    // Externes
+    const std::vector<std::string> luaAppNames = storage::listdir("apps/lua", true);
+    for (const std::string& luaAppName : luaAppNames)
         CAppsManager::registerLuaApplication(luaAppName);
 }
 
-#endif //PAXOS_APPLICATIONSREGISTERY_HPP
+#endif /* APPLICATIONS_REGISTERY_HPP */

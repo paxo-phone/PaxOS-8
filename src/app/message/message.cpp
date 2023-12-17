@@ -6,7 +6,7 @@
 
 bool Message::notif = false;
 
-void Message::onApplicationStart()
+void Message::main()
 {
     while(!home_button::isPressed())
     {

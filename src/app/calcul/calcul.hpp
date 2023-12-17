@@ -13,7 +13,7 @@ class Calcul : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "Calcul"; }
-    void onApplicationStart() override;
+    void main() override;
 
     void buildGui();
     void processExpression(std::string &equation);

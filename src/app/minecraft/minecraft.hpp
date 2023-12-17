@@ -29,7 +29,7 @@ class Minecraft : public CApp
 
 public:
     [[nodiscard]] const char* getAppName() const override { return "Minecraft"; }
-    void onApplicationStart() override;
+    void main() override;
     
     std::vector<Chunk *> chunks;
     void processChunks(LGFX_Sprite* output);
@@ -58,7 +58,7 @@ uint8_t Minecraft::isBlock(int x, int y, int z)
     return false;
 }
 
-void Minecraft::onApplicationStart()
+void Minecraft::main()
 {
     mainWindow=nullptr;
     

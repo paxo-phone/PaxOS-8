@@ -13,7 +13,7 @@
 
 LGFX_Sprite S(&tft_root);
 
-void Game_2048::onApplicationStart()
+void Game_2048::main()
 {
     Window window("");
     canvas = new Canvas(0, 0, 320, 480);

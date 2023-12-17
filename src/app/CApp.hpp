@@ -1,47 +1,45 @@
-//
-// Created by Kevin on 16/12/2023.
-//
-
-#ifndef PAXOS_CAPP_HPP
-#define PAXOS_CAPP_HPP
+#ifndef C_APP_HPP
+#define C_APP_HPP
 
 #include <string>
 #include <sstream>
 #include <cstdint>
 
-class CApp {
+class CApp 
+{
+    public:
+    
+        virtual ~CApp() = default;
 
-public:
-    [[nodiscard]] virtual const char* getAppName() const = 0;
+        [[nodiscard]] virtual const char* getAppName() const = 0;
 
-    virtual void onApplicationStart() = 0;
-    virtual ~CApp() = default;
+        virtual void main() = 0;
 
-    [[nodiscard]] virtual std::string getAppBasePath() const
-    {
-        std::stringstream ss;
-        ss << "apps/";
-        ss << getAppName();
-        ss << "/";
-        return ss.str();
-    }
+        [[nodiscard]] virtual std::string getAppBasePath() const
+        {
+            std::string o = "";
+            o += "apps/";
+            o += getAppName();
+            o += "/";
+            return o;
+        }
 
-    [[nodiscard]] std::string getAppIconPath() const
-    {
-        std::stringstream ss;
-        ss << getAppBasePath();
-        ss << "/logo.png";
-        return ss.str();
-    }
+        [[nodiscard]] std::string getAppIconPath() const
+        {
+            std::string o = "";
+            o += getAppBasePath();
+            o += "/logo.png";
+            return o;
+        }
 
-    [[nodiscard]] std::string getAppConfPath() const
-    {
-        std::stringstream ss;
-        ss << getAppName();
-        ss << "/conf.txt";
-        return ss.str();
-    }
+        [[nodiscard]] std::string getAppConfPath() const
+        {
+            std::string o = "";
+            o += getAppName();
+            o += "/conf.txt";
+            return o;
+        }
 };
 
 
-#endif //PAXOS_CAPP_HPP
+#endif /* C_APP_HPP */

@@ -1,9 +1,5 @@
-//
-// Created by Kevin on 16/12/2023.
-//
-
-#ifndef PAXOS_CAPPSMANAGER_HPP
-#define PAXOS_CAPPSMANAGER_HPP
+#ifndef C_APPS_MANAGER_HPP
+#define C_APPS_MANAGER_HPP
 
 #include <vector>
 #include <iostream>
@@ -18,39 +14,37 @@ using AppVector = std::vector<AppUniquePtr>;
 
 class CAppsManager
 {
-public:
-    static CAppsManager& getInstance()
-    {
-        static CAppsManager sInstance;
-        return sInstance;
-    }
-    static const AppVector& getApplications()
-    {
-        return getInstance().m_apps;
-    }
 
-    template <typename T>
-    static void registerNativeApplication()
-    {
-        AppUniquePtr pNewRegisteredApp = std::make_unique<T>();
-        std::cout << "Successfully registered '" << pNewRegisteredApp->getAppName() << "' application." << std::endl;
+    public:
 
-        getInstance().m_apps.push_back(std::move(pNewRegisteredApp));
-    }
+        static CAppsManager& getInstance()
+        {
+            static CAppsManager sInstance;
+            return sInstance;
+        }
+        
+        static const AppVector& getApplications()
+        {
+            return getInstance().m_apps;
+        }
 
-    static void registerLuaApplication(const std::string& luaAppName)
-    {
-        LuaAppUniquePtr pNewRegisteredLuaApp = std::make_unique<CLuaApp>();
-        pNewRegisteredLuaApp->initializeLuaApp(luaAppName);
+        template <typename T>
+        static void registerNativeApplication()
+        {
+            AppUniquePtr pNewRegisteredApp = std::make_unique<T>();
+            getInstance().m_apps.push_back(std::move(pNewRegisteredApp));
+        }
 
-        std::cout << "Successfully registered '" << pNewRegisteredLuaApp->getAppName() << "' Lua application." << std::endl;
+        static void registerLuaApplication(const std::string& luaAppName)
+        {
+            LuaAppUniquePtr pNewRegisteredLuaApp = std::make_unique<CLuaApp>();
+            pNewRegisteredLuaApp->initializeLuaApp(luaAppName);
+            getInstance().m_apps.push_back(std::move(pNewRegisteredLuaApp));
+        }
 
-        getInstance().m_apps.push_back(std::move(pNewRegisteredLuaApp));
-    }
-
-private:
-    AppVector m_apps;
+    private:
+        AppVector m_apps;
 };
 
 
-#endif //PAXOS_CAPPSMANAGER_HPP
+#endif // C_APPS_MANAGER_HPP

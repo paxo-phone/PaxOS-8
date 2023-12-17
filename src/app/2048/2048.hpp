@@ -15,7 +15,7 @@ public:
     void draw();
     void move(uint8_t slide);
 
-    void onApplicationStart() override;
+    void main() override;
 
 private:
     unsigned int matrice1[4][4];
