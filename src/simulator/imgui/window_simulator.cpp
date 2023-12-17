@@ -13,6 +13,7 @@ float simulator::imgui::window::simulator::screenScale = 1;
 void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width, int height) {
     if (!ImGui::Begin("Simulator", nullptr, ImGuiWindowFlags_MenuBar)) {
         ImGui::End();
+        return;
     }
 
     ImVec2 windowSize = ImGui::GetWindowSize();

@@ -23,6 +23,7 @@ int simulator::imgui::window::debug::dateSeconds = 33; // 33s
 void simulator::imgui::window::debug::render() {
     if (!ImGui::Begin("Debug")) {
         ImGui::End();
+        return;
     }
 
     if (ImGui::CollapsingHeader("Position")) {
