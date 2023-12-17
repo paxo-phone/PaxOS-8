@@ -11,7 +11,7 @@ ImVec2 simulator::imgui::window::simulator::cursorPos;
 bool simulator::imgui::window::simulator::homeButtonPressed = false;
 bool simulator::imgui::window::simulator::aboutWindow = false;
 float simulator::imgui::window::simulator::screenScale = 1;
-bool simulator::imgui::window::simulator::autoScale = false;
+bool simulator::imgui::window::simulator::autoScale = true;
 
 void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width, int height) {
     if (!ImGui::Begin("Simulator", nullptr, ImGuiWindowFlags_MenuBar)) {
@@ -62,7 +62,7 @@ void simulator::imgui::window::simulator::render(SDL_Texture *texture, int width
         screenScale = screenSize.x / static_cast<float>(width);
     }
 
-    ImGui::SetCursorPosY((windowSize.y - screenSize.y - 50) * 0.5f); // Center vertically
+    ImGui::SetCursorPosY((windowSize.y - screenSize.y - 25) * 0.5f); // Center vertically
     ImGui::SetCursorPosX((windowSize.x - screenSize.x) * 0.5f); // Center horizontally
     cursorPos = ImGui::GetCursorScreenPos(); // Get pos before drawing the image, so the image x & y on screen
     ImGui::ImageButton(texture, screenSize); // Use ImageButton to disable ImGui input handler
