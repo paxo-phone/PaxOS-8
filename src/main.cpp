@@ -4,6 +4,16 @@
 #include <string>
 #include <iostream>
 
+#include "app/launcher.hpp"
+
+#include "interface/interface.hpp"
+#include "widgets/gui.hpp"
+#include "tasks/tasks.hpp"
+#include "lua/lua.hpp"
+#include "app/CApp.hpp"
+#include "network/network.hpp"
+#include "app/message/message.hpp"
+
 using namespace std;
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
@@ -17,7 +27,7 @@ using namespace std;
     };
 
     bool *shouldUS;
-    Rectangle* *screenUZ;
+    struct Rectangle* *screenUZ;
 
     void flushScreen()
     {
@@ -33,39 +43,32 @@ using namespace std;
 #include "widgets/gui.hpp"
 #include "tasks/tasks.hpp"
 #include "lua/lua.hpp"
-#include "app/app.hpp"
+#include "app/CApp.hpp"
 #include "network/network.hpp"
 #include "app/message/message.hpp"
 
-// cette partie est simplement pour activer les processus qui different entre arduino / pc
-
 #ifdef ESP32
-void setup() // initialize paxos v8
+void setup()
 {
-    //esp_task_wdt_init(10000, 0);
     esp_task_wdt_init(30, true);
 
-    // Disable the task watchdog timer
     esp_task_wdt_deinit();
 #endif
     
 #if defined(__linux__) || defined(__APPLE__)
-void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones) // initialize paxos v8
+void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones)
     {
     shouldUS = shouldUpdateScreen;
     screenUZ = screenUpdateZones;
 #elif defined(_WIN32) || defined(_WIN64)
-    // Conflict with winGDI.h Rectangle typedef from windows.h
-    // Import of windows.h is in dirent.h
-void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones) // initialize paxos v8
+
+void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones)
 {
     shouldUS = shouldUpdateScreen;
     screenUZ = screenUpdateZones;
 #endif
 
-
     screen::init();
-    // new_thread(CORE_BACK, shell::thread_shell, nullptr);
     
     storage::init();
     light::init();
@@ -78,8 +81,8 @@ void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones) // in
     gsm.init();
     gsm.saveMessages = Message::saveMessage;
 
-
     launcher();
+
 }
 
 void loop()

@@ -3,22 +3,21 @@
 
 #include <string>
 #include <algorithm>
-#include "../app.hpp"
+
+#include "../CApp.hpp"
 
 class Gui;
 
-class Calcul : public CppAppContainer
+class Calcul : public CApp
 {
-    public:
-    void main()
-    {
-        launch();
-    }
 
-    void launch();
+public:
+    [[nodiscard]] const char* getAppName() const override { return "calcul"; }
+    void execute() override;
+
     void buildGui();
     void processExpression(std::string &equation);
-    static void addChar(App *app, Gui* objectPrt, void* data);
+    static void addChar(CApp *app, Gui* objectPrt, void* data);
 };
 
 #endif

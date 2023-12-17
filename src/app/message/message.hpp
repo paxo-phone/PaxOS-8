@@ -1,13 +1,16 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
-#include "../app.hpp"
 #include "../../interface/interface.hpp"
 
-class Message : public CppAppContainer
+#include "../CApp.hpp"
+
+class Message : public CApp
 {
-    public:
-    void main();
+
+public:
+    [[nodiscard]] const char* getAppName() const override { return "message"; }
+    void execute() override;
     
     static void saveMessage(std::vector<GSM::Message> message);
     static bool notif;

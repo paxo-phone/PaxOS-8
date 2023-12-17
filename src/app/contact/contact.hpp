@@ -2,13 +2,14 @@
 #define CONTACT_HPP
 
 #include <vector>
-#include "../app.hpp"
 
+#include "../CApp.hpp"
 
-class Contact : public CppAppContainer
+class Contact : public CApp
 {
-    public:
-    void main();
+public:
+    [[nodiscard]] const char* getAppName() const override { return "contact"; }
+    void execute() override;
     
     static void loadContacts(bool force = false);
     static void saveContacts();
@@ -23,6 +24,7 @@ class Contact : public CppAppContainer
     };
 
     static std::vector<OneContact> contacts;
+    static bool quitt;
 };
 
 #endif

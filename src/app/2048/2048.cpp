@@ -1,20 +1,17 @@
 #ifndef GAME_2048_CPP
 #define GAME_2048_CPP
 
-#include "2048.hpp"
-#include "../../interface/screen.hpp"
-#include "../../interface/interface.hpp"
-#include "../app.hpp"
-
 #include <cstdint>
 
+#include "2048.hpp"
+
+#include "../../widgets/gui.hpp"
+
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
-void flushScreen();
+    void flushScreen();
 #endif
 
-LGFX_Sprite S(&tft_root);
-
-void Game_2048::launch()
+void Game_2048::execute()
 {
     Window window("");
     canvas = new Canvas(0, 0, 320, 480);
@@ -40,7 +37,9 @@ void Game_2048::launch()
             break;
         }
     }
+
     draw();
+    canvas->push();
 
     while (true)
     {
@@ -49,7 +48,6 @@ void Game_2048::launch()
         {
             if(home_button::isPressed())
             {
-                delete canvas;
                 return;
             }
             eventHandler.update();

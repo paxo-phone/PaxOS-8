@@ -3,8 +3,6 @@
 
 #include <stdlib.h>
 
-#include "app.hpp"
-
 void launcher();
 
 #endif

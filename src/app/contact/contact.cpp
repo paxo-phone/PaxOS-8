@@ -1,8 +1,10 @@
 #include "contact.hpp"
 
-#include "../../interface/interface.hpp"
+#include "../../widgets/gui.hpp"
 
 std::vector<Contact::OneContact> Contact::contacts = {};
+bool Contact::quitt = false;
+
 
 void Contact::loadContacts(bool force)
 {
@@ -44,14 +46,17 @@ void Contact::saveContacts()
     loadContacts(true);
 }
 
-void Contact::main()
+void Contact::execute()
 {
-    while(!home_button::isPressed())
+    quitt = false;
+    while(quitt != true)
         showContact(contactPage());
+    quitt = false;
 }
 
 int16_t Contact::contactPage()
 {
+    quitt = false;
     while (true)
     {
         Window win("contact");
@@ -65,7 +70,6 @@ int16_t Contact::contactPage()
             label->setRadius(0);
             label->setFontSize(29);
             win.addChild(label);
-            label->setCanBeEdited(true); // just for testing
 
         std::vector<Gui*> contactList;
 
@@ -105,6 +109,7 @@ int16_t Contact::contactPage()
 
             if(home_button::isPressed())
             {
+                quitt = true;
                 return -1;
             }
             #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
