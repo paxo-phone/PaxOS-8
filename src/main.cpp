@@ -6,35 +6,6 @@
 
 #include "app/launcher.hpp"
 
-#include "interface/interface.hpp"
-#include "widgets/gui.hpp"
-#include "tasks/tasks.hpp"
-#include "lua/lua.hpp"
-#include "app/CApp.hpp"
-#include "network/network.hpp"
-#include "app/message/message.hpp"
-
-using namespace std;
-
-#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
-    #include <atomic>
-
-    struct Rectangle {
-        uint16_t x;
-        uint16_t y;
-        uint16_t width;
-        uint16_t height;
-    };
-
-    bool *shouldUS;
-    struct Rectangle* *screenUZ;
-
-    void flushScreen()
-    {
-        *shouldUS = true;
-    }
-#endif
-
 /*
     HEADERS OF THE PAXOS_8
 */
@@ -47,6 +18,16 @@ using namespace std;
 #include "network/network.hpp"
 #include "app/message/message.hpp"
 
+#if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
+// Note that SDL will only redraw the screen if pShouldUpdateScreen is true, SDL set it to true if the screen has been touched.
+bool *pShouldUpdateScreen;
+
+void flushScreen()
+{
+    *pShouldUpdateScreen = true;
+}
+#endif
+
 #ifdef ESP32
 void setup()
 {
@@ -55,17 +36,10 @@ void setup()
     esp_task_wdt_deinit();
 #endif
     
-#if defined(__linux__) || defined(__APPLE__)
-void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones)
-    {
-    shouldUS = shouldUpdateScreen;
-    screenUZ = screenUpdateZones;
-#elif defined(_WIN32) || defined(_WIN64)
-
-void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones)
+#if defined(__linux__) || defined(__APPLE__) || defined(_WIN32) || defined(_WIN64)
+void setup(bool *shouldUS)
 {
-    shouldUS = shouldUpdateScreen;
-    screenUZ = screenUpdateZones;
+    pShouldUpdateScreen = shouldUS;
 #endif
 
     screen::init();
