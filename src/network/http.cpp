@@ -13,7 +13,6 @@
 #endif
 
 #include <string>
-#include <stdint.h>
 
 #include "http.hpp"
 

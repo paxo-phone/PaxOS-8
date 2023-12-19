@@ -1,11 +1,6 @@
 #ifndef TOUCH_MANAGER
 #define TOUCH_MANAGER
 
-#define SLIDE_UP 1
-#define SLIDE_DOWN 2
-#define SLIDE_RIGHT 3
-#define SLIDE_LEFT 4
-
 #define FLUIDITY 1
 #define FLUIDITY_START 20
 

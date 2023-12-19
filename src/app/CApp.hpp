@@ -2,8 +2,6 @@
 #define C_APP_HPP
 
 #include <string>
-#include <sstream>
-#include <cstdint>
 
 class CApp 
 {
@@ -17,27 +15,27 @@ class CApp
 
         [[nodiscard]] virtual std::string getAppBasePath() const
         {
-            std::string o = "";
-            o += "apps/";
-            o += getAppName();
-            o += "/";
-            return o;
+            std::string appBasePath;
+            appBasePath += "apps/";
+            appBasePath += getAppName();
+            appBasePath += "/";
+            return appBasePath;
         }
 
         [[nodiscard]] std::string getAppIconPath() const
         {
-            std::string o = "";
-            o += getAppBasePath();
-            o += "logo.png";
-            return o;
+            std::string appIconPath;
+            appIconPath += getAppBasePath();
+            appIconPath += "logo.png";
+            return appIconPath;
         }
 
         [[nodiscard]] std::string getAppConfPath() const
         {
-            std::string o = "";
-            o += getAppName();
-            o += "conf.txt";
-            return o;
+            std::string appConfPath;
+            appConfPath += getAppName();
+            appConfPath += "conf.txt";
+            return appConfPath;
         }
 };
 

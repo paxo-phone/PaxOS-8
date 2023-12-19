@@ -8,8 +8,8 @@
     #include <esp_task_wdt.h>
 #endif
 
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <cstring>
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
@@ -24,7 +24,7 @@
 */
 
 
-int16_t random(const int16_t start, const int16_t end);
+int16_t random(int16_t start, int16_t end);
 
 #endif /* #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__) */
 

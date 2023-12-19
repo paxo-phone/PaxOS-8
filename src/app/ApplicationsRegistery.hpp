@@ -15,7 +15,6 @@
 void registerApplications(void)
 {
     // Natives
-
     CAppsManager::registerNativeApplication<Phone>();
     CAppsManager::registerNativeApplication<Message>();
     CAppsManager::registerNativeApplication<Contact>();

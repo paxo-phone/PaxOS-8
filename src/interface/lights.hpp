@@ -14,14 +14,14 @@
 #endif
 
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace light
 {
     /**
      * @brief Initialise la DEL
     */
-    void init(void);
+    void init();
     
     /**
      * @brief Fixe l'état de la DEL
@@ -32,12 +32,12 @@ namespace light
     /**
      * @brief Allume la DEL (équivalent à setAnalogState(255))
     */
-    void turnOn(void);
+    void turnOn();
 
     /**
      * @brief Éteint la DEL (équivalent à setAnalogState(-1))
     */
-    void turnOff(void);
+    void turnOff();
 
     /**
      * @brief Fixe un état binaire (allumé ou éteint) à la DEL. 

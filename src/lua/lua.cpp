@@ -1,8 +1,5 @@
 #include "lua.hpp"
-#include "../interface/filestream.hpp"
 #include "../network/network.hpp"
-#include "../interface/interface.hpp"
-#include "../interface/console.hpp"
 
 #define uint unsigned int // Windows compatibility
 
@@ -14,7 +11,7 @@ LuaEventTimeOut* LuaInterpreter::timeOutToRemove = nullptr;
 uint64_t LuaInterpreter::timerFromStart;
 std::string LuaInterpreter::dir;
 
-LuaEventInterval::LuaEventInterval(lua_State *L, int callback_ref, int interval)
+LuaEventInterval::LuaEventInterval(lua_State *L, int callback_ref, uint32_t interval)
 {
     this->callback_ref = callback_ref;
     this->L = L;
@@ -24,7 +21,7 @@ LuaEventInterval::~LuaEventInterval()
 {
     removeInterval(this->id);
 }
-void LuaEventInterval::call(void)
+void LuaEventInterval::call()
 {
     lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
     if (lua_pcall(L, 0, 0, 0) != 0) {
@@ -35,7 +32,7 @@ void LuaEventInterval::call(void)
     }
 }
 
-LuaEventTimeOut::LuaEventTimeOut(lua_State *L, int callback_ref, int timer)
+LuaEventTimeOut::LuaEventTimeOut(lua_State *L, int callback_ref, uint32_t timer)
 {
     this->callback_ref = callback_ref;
     this->L = L;
@@ -45,7 +42,7 @@ LuaEventTimeOut::~LuaEventTimeOut()
 {
     removeTimeout(this->id);
 }
-void LuaEventTimeOut::call(void)
+void LuaEventTimeOut::call()
 {
     lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
     if (lua_pcall(L, 0, 0, 0) != 0) {
@@ -57,26 +54,26 @@ void LuaEventTimeOut::call(void)
     LuaInterpreter::timeOutToRemove = this;
 }
 
-LuaInterpreter::LuaInterpreter(string dir) {
-    if (dir.size() == 0)
+LuaInterpreter::LuaInterpreter(string directory) {
+    if (directory.empty())
         return;
-    if(dir[dir.size() - 1] != '/')
-        dir += '/';
-    console.log("dir: " + dir);
-    LuaInterpreter::dir = dir;
+    if(directory[directory.size() - 1] != '/')
+        directory += '/';
+    console.log("dir: " + directory);
+    LuaInterpreter::dir = directory;
 }
 
-void LuaInterpreter::loadScript(std::string filename) {
+void LuaInterpreter::loadScript(const std::string& filename) {
     storage::FileStream file(filename, storage::READ);
     data = file.read();
     file.close();
 }
 
 void LuaInterpreter::runApp() {
-    
+
     // Creating lua state and adding base libraries and our own library
     lua_State* L = luaL_newstate();
-    lua_setallocf(L, custom_allocator, NULL);
+    lua_setallocf(L, custom_allocator, nullptr);
     luaL_openlibs(L);
     luaL_requiref(L, "paxolib", luaopen_paxolib, 1);
     lua_pop(L, 1); // Remove the library from the stack
@@ -140,17 +137,12 @@ void LuaInterpreter::runApp() {
 // Fills metatable for GUI components
 // Function also needs to set stack in the same state as the caller gave it!
 // Extra is here in order to add extra bindings if needed.
-void LuaInterpreter::fill_gui_metatable(lua_State* L, const char* table_name, lua_CFunction f, const luaL_Reg *extra = nullptr){
+void LuaInterpreter::fill_gui_metatable(lua_State* L, const char* table_name, lua_CFunction f){
     // Add all of our GUI functions that can be used for each component
     lua_newtable(L);
     int table = lua_gettop(L);
-    if(extra != nullptr) {
-        for (const luaL_Reg* ptr = extra; ptr->name != NULL; ptr++) {
-            lua_pushcfunction(L, ptr->func);
-            lua_setfield(L, -2, ptr->name);
-        }
-    }
-    for (const luaL_Reg* ptr = gui_common_binds; ptr->name != NULL; ptr++) {
+
+    for (const luaL_Reg* ptr = gui_common_binds; ptr->name != nullptr; ptr++) {
         lua_pushcfunction(L, ptr->func);
 	    lua_setfield(L, -2, ptr->name);
     }
@@ -175,7 +167,7 @@ int LuaInterpreter::window(lua_State* L) {
     string title = lua_tostring(L, 1);
 
     // Allocate our userdata and assign our metatable
-    Window **w = static_cast<Window **>(lua_newuserdata(L, sizeof *w)); 
+    Window **w = static_cast<Window **>(lua_newuserdata(L, sizeof *w));
     luaL_getmetatable(L, METATABLE_WIN_GUI);
     lua_setmetatable(L, -2);
 
@@ -194,14 +186,14 @@ int LuaInterpreter::window(lua_State* L) {
 // Set the primary window
 int LuaInterpreter::setWindow(lua_State* L) {
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
-    luaL_argcheck(L, parent != NULL, 1, "Window gui expected!");
+    luaL_argcheck(L, parent != nullptr, 1, "Window gui expected!");
     current_root = (*parent);
     return 0;
 }
 
 int LuaInterpreter::delWindow(lua_State* L) {
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
-    luaL_argcheck(L, parent != NULL, 1, "Window gui expected!");
+    luaL_argcheck(L, parent != nullptr, 1, "Window gui expected!");
     delete (*parent);
     current_root = nullptr;
     return 0;
@@ -362,7 +354,7 @@ int LuaInterpreter::image(lua_State* L) {
                            && !lua_isstring(L, 2)))
 
         return luaL_error(L, LUA_FUNC_ERR);
-    
+
     Window **parent = static_cast<Window **>(lua_touserdata(L, 1));
     luaL_argcheck(L, parent != NULL, 1, "Parent gui expected!");
     uint16_t x         = lua_tonumber(L, 3);
@@ -376,7 +368,7 @@ int LuaInterpreter::image(lua_State* L) {
         w         = lua_tonumber(L, 5);
         h         = lua_tonumber(L, 6);
     }
-    
+
     std:string path    = dir+lua_tostring(L, 2);
 
     // Allocate our userdata and assign our metatable
@@ -682,7 +674,7 @@ int LuaInterpreter::setTimeOut(lua_State* L)
 int LuaInterpreter::monotonic(lua_State* L) {
     if(!(lua_gettop(L) == 0))
         return luaL_error(L, LUA_FUNC_ERR);
-    
+
     lua_pushnumber(L, millis()-timerFromStart);
 
     return 1;
@@ -691,7 +683,7 @@ int LuaInterpreter::monotonic(lua_State* L) {
 int LuaInterpreter::getTime(lua_State* L) {
     if(!(lua_gettop(L) == 0))
         return luaL_error(L, LUA_FUNC_ERR);
-        
+
     lua_newtable(L);
 
     lua_pushinteger(L, gsm.hours);
@@ -724,7 +716,7 @@ int LuaInterpreter::setEditable(lua_State* L) {
 
     if(gui->getType() != LABEL_TYPE)
         return luaL_error(L, LUA_FUNC_ERR);
-    
+
     bool isEditable = lua_toboolean(L, -1);
     reinterpret_cast<Label*>(gui)->setCanBeEdited(isEditable);
 
@@ -739,7 +731,7 @@ int LuaInterpreter::setFontSize(lua_State* L) {
 
     if(gui->getType() != LABEL_TYPE)
         return luaL_error(L, LUA_FUNC_ERR);
-    
+
     uint8_t fontSize = lua_tointeger(L, -1);
     reinterpret_cast<Label*>(gui)->setFontSize(fontSize);
 
@@ -778,10 +770,10 @@ Gui *get_checked_gui(lua_State* L, int idx) {
 void* custom_allocator(void *ud, void *ptr, size_t osize, size_t nsize) {
     if (nsize == 0) {
         // Free the block
-        if (ptr != NULL) {
+        if (ptr != nullptr) {
             free(ptr);
         }
-        return NULL;
+        return nullptr;
     } else {
         // Allocate or resize the block
         #ifdef ESP32
@@ -795,7 +787,7 @@ void* custom_allocator(void *ud, void *ptr, size_t osize, size_t nsize) {
 void execute_lua(lua_State* L, const std::string& functionName) {
     lua_getglobal(L, functionName.c_str());
     if(!lua_isfunction(L, -1)) std::cerr << "Lua function '" << functionName << "' not found." << std::endl;
-    if(!lua_pcall(L, 0, LUA_MULTRET, 0) == 0) std::cerr << "Error executing Lua function '" << functionName << "': " << lua_tostring(L, -1) << std::endl;
+    if((!lua_pcall(L, 0, LUA_MULTRET, 0)) == 0) std::cerr << "Error executing Lua function '" << functionName << "': " << lua_tostring(L, -1) << std::endl;
 }
 
 LUAMOD_API int luaopen_paxolib(lua_State* L){

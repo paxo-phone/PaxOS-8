@@ -6,7 +6,7 @@
 #include "../lua/lua.hpp"
 #include "CApp.hpp"
 
-class CLuaApp : public CApp
+class CLuaApp final : public CApp
 {
     public:
 

@@ -2,7 +2,6 @@
 #define C_APPS_MANAGER_HPP
 
 #include <vector>
-#include <iostream>
 #include <memory>
 
 #include "CApp.hpp"
@@ -37,7 +36,7 @@ class CAppsManager
 
         static void registerLuaApplication(const std::string& luaAppName)
         {
-            LuaAppUniquePtr pNewRegisteredLuaApp = std::make_unique<CLuaApp>();
+            auto pNewRegisteredLuaApp = std::make_unique<CLuaApp>();
             pNewRegisteredLuaApp->initializeLuaApp(luaAppName);
             getInstance().m_apps.push_back(std::move(pNewRegisteredLuaApp));
         }

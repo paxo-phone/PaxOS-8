@@ -8,8 +8,8 @@
     #include <esp_task_wdt.h>
 #endif
 
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <string>
 
 #include <cstdio>
 #include <vector>

@@ -8,8 +8,8 @@
     #include <esp_task_wdt.h>
 #endif
 
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <cstring>
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 
@@ -21,14 +21,14 @@
   * @return Entier représentant le nombre de microsecondes depuis une date fixée
   * @remark Cette fonction est déjà présente sur l'esp32
   */
-uint64_t micros(void);
+uint64_t micros();
 
 /**
   * @brief Retourne le nombre de millisecondes depuis une date fixée
   * @return Entier représentant le nombre de microsecondes depuis une date fixée
   * @remark Cette fonction est déjà présente sur l'esp32
   */
-uint64_t millis(void);
+uint64_t millis();
 
 /**
  * @brief Attend un certain nombre de millisecondes
