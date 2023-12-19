@@ -3,6 +3,6 @@
 
 // SI CA NE COMPILE PLUS POUR ESP32, CONTACTEZ MOI SUR DISCORD
 // K3
-#include <malloc.h>
+#include <cstdlib>
 
 #endif //PAXOS_SMART_ALLOCA_HPP
