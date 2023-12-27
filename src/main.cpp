@@ -81,6 +81,9 @@ void setup(bool *shouldUpdateScreen, struct Rectangle* *screenUpdateZones)
     gsm.init();
     gsm.saveMessages = Message::saveMessage;
 
+    /*LuaFile lua("test.lua");  // test du nouveau lua
+    lua.run();*/
+
     launcher();
 
 }

@@ -14,7 +14,7 @@ class Window : public Gui
     const static int WINDOW_HEIGHT = 480;
     int updateEventId;
 
-    Window(std::string title);
+    Window(std::string title = "");
     ~Window();
     GUI_TYPE getType() { return WINDOW_TYPE; }
 

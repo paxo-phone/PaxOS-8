@@ -1,6 +1,8 @@
 #ifndef LUA_HPP
 #define LUA_HPP
 
+#include "lua2.hpp"
+
 #ifdef ESP32
     #include <Arduino.h>
     #include "soc/rtc_wdt.h"
