@@ -52,8 +52,16 @@ add_executable(PaxOS ${src} ${gfx_src})
 target_include_directories(PaxOS PUBLIC "src/interface/LovyanGFX")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    find_package(SDL2 REQUIRED SDL2)
-    find_package(CURL REQUIRED) # Add this line to find cURL
+    find_package(SDL2)
+    find_package(CURL) # Add this line to find cURL
+
+    if(NOT SDL2_FOUND)
+        message(FATAL_ERROR "SDL2 not found. You could install it using:\nsudo apt-get install libsdl2-dev")
+    endif()
+
+    if(NOT CURL_FOUND)
+        message(FATAL_ERROR "CURL not found. You could install it using:\nsudo apt-get install libcurlpp-dev")
+    endif()
 
     include_directories(${SDL2_INCLUDE_DIRS})
     target_link_libraries(PaxOS PUBLIC -lpthread ${SDL2_LIBRARIES} CURL::libcurl -lstdc++fs) # Link to cURL
