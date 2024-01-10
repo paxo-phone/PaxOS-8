@@ -427,7 +427,6 @@ void GSM::getHour()
 
 #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
 void GSM::parseHourFromComputer(time_t* time) {
-    return;
     struct tm* formattedTime;
     formattedTime = gmtime(time);
 

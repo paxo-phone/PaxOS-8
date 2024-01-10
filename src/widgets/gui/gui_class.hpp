@@ -74,6 +74,8 @@ class Gui // widget system
     void reloadAlone();  // mise a jour sur les coordonées de l'objet
     void reloadParent();  // mise a jour qui concerne le parent
     void childrenAreDrawn();
+    void parentAreNotRendered();
+    void parentAreNotDrawn();
 
     virtual void updateSizes() {}
     void determineSize();

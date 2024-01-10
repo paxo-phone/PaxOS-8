@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../lua/lua.hpp"
+#include "../lua/lua2.hpp"
 #include "CApp.hpp"
 
 class CLuaApp : public CApp
@@ -31,9 +31,8 @@ class CLuaApp : public CApp
 
         void execute() override
         {
-            LuaInterpreter lua(getAppBasePath());
-            lua.loadScript(getAppBasePath() + "/main.lua");
-            lua.runApp();
+            LuaFile lua(getAppBasePath() + "/main.lua");  // test du nouveau lua
+            lua.run();
         }
 
     private:

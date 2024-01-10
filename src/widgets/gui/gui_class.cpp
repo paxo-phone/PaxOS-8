@@ -258,6 +258,11 @@ void Gui::renderAll()
         }
     }
 
+    if ((!drawn || (parent!=nullptr && parent->rendered==false)) && getType() == IMAGE_TYPE)  // si des changements déja rendus necessitent d'être push sur l'écran ou le parent
+    {
+        draw();
+    }
+
     /*if(getType() != IMAGE_TYPE)
     {
         if(upFromDrawAll==this)
@@ -465,15 +470,35 @@ void Gui::reloadAlone()
 {
     this->drawn = false;
     this->rendered = false;
+
+    if(parent != nullptr)
+        parent->parentAreNotRendered();
 }
 
 void Gui::reloadParent()
 {
     this->drawn = false;
+    this->rendered = false;
+
     if(parent != nullptr)
-    {
-        parent->rendered = false;
-    }
+        parent->parentAreNotDrawn();
+}
+
+void Gui::parentAreNotRendered()
+{
+    if(parent != nullptr)
+        parent->parentAreNotRendered();
+
+    rendered = false;
+}
+
+void Gui::parentAreNotDrawn()
+{
+    if(parent != nullptr)
+        parent->parentAreNotDrawn();
+
+    drawn = false;
+    rendered = false;
 }
 
 void Gui::childrenAreDrawn()

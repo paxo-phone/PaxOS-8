@@ -25,12 +25,16 @@ class LuaWidget
     int getY(){return this->widget->getY();}
     int getWidth(){return this->widget->getWidth();}
     int getHeight(){return this->widget->getHeight();}
-    void setColor(color_t color){this->widget->setBackgroundColor(color);}
+    void setBackgroundColor(color_t color){this->widget->setBackgroundColor(color);}
     color_t getColor(){return this->widget->getColor();}
     void enable(){this->widget->enable();}
     void disable(){this->widget->disable();}
     bool isTouched(){return this->widget->isFocused();}
-    void onClick(sol::function func){onClickFunc = func;}
+    void onClick(sol::function func){onClickFunc = func; widget->hasEvent = true;}
+    void onScrollUp(sol::function func){onScrollUpFunc = func;}
+    void onScrollDown(sol::function func){onScrollDownFunc = func;}
+    void onScrollRight(sol::function func){onScrollRightFunc = func;}
+    void onScrollLeft(sol::function func){onScrollLeftFunc = func;}
 
     void update();
 
@@ -42,6 +46,10 @@ class LuaWidget
     LuaWidget* parent = nullptr;
     std::vector<LuaWidget*> children;
     sol::function onClickFunc;
+    sol::function onScrollUpFunc;
+    sol::function onScrollDownFunc;
+    sol::function onScrollRightFunc;
+    sol::function onScrollLeftFunc;
 };
 
 class LuaBox : public LuaWidget
@@ -68,6 +76,10 @@ class LuaLabel : public LuaWidget
     std::string getText(){ return widget->getText(); }
     void setFontSize(int fontSize){ widget->setFontSize(fontSize); }
     int getTextHeight(){ return widget->getTextHeight(); }
+    void setBold(bool bold){ widget->setBold(bold); }
+    void setItalic(bool italic){ widget->setItalic(italic); }
+    void setVerticalAlignment(int alignment){ widget->setVerticalAlignment(alignment); }
+    void setHorizontalAlignment(int alignment){ widget->setHorizontalAlignment(alignment); }
 
     Label* widget = nullptr;
 };
@@ -81,6 +93,8 @@ class LuaInput : public LuaWidget
     void setFontSize(int fontSize){ widget->setFontSize(fontSize); }
     int getTextHeight(){ return widget->getTextHeight(); }
     void onChange(sol::function func){ onChangeFunc = func;}
+    void setVerticalAlignment(int alignment){ widget->setVerticalAlignment(alignment); }
+    void setHorizontalAlignment(int alignment){ widget->setHorizontalAlignment(alignment); }
 
     Label* widget = nullptr;
     sol::function onChangeFunc;
@@ -115,33 +129,122 @@ class LuaGui
 
 class LuaStorageFile
 {
-    /*public:
-    LuaStorageFile(const std::string& filename);
+    public:
+    LuaStorageFile(const std::string& filename, bool mode = false);
 
     void open();
+    void close();
     void write(const std::string& text);
     char readChar();
     std::string readLine();
-    std::string readAll();*/
+    std::string readAll();
+
+    private:
+    bool mode;  // false->read;   true->write;
+    std::string filename;
+    storage::FileStream file;
 };
 
 class LuaStorage
 {
-    /*public:
+    public:
     LuaStorage(LuaFile* lua);
     
-    void file();
-    void renameFile();
-    void deleteFile();
-    void newDir();
-    void renameDir();
-    void deleteDir();
-    bool isDir();
-    bool isFile();
-    std::vector<std::string> listDir(std::string path);
+    LuaStorageFile* file(const std::string& filename, bool mode);
+    bool newDir(const std::string& path);
+    bool renameFile(const std::string& oldpath, const std::string& newpath);
+    bool renameDir(const std::string& oldpath, const std::string& newpath);
+    bool deleteFile(const std::string& path);
+    bool deleteDir(const std::string& text);
+    bool isDir(const std::string& text);
+    bool isFile(const std::string& text);
+    std::vector<std::string> listDir(const std::string& path);
+
+    bool legalPath(const std::string& path);
+    std::string convertPath(const std::string& path);
 
     private:
-    LuaFile* lua = nullptr;*/
+    LuaFile* lua = nullptr;
+};
+
+class LuaTimeInterval
+{
+    public:
+    LuaTimeInterval(LuaFile* lua, sol::function func, uint32_t interval);
+    int getId();
+    void call();
+    ~LuaTimeInterval();
+
+    private:
+    LuaFile* lua;
+    sol::function func;
+    uint32_t interval;
+    int id;
+};
+
+class LuaTimeTimeout
+{
+    public:
+    LuaTimeTimeout(LuaFile* lua, sol::function func, uint32_t timeout);
+    int getId();
+    void call();
+    ~LuaTimeTimeout();
+
+    bool done = false;
+
+    private:
+    LuaFile* lua;
+    sol::function func;
+    uint32_t timeout;
+    int id;
+};
+
+class LuaTime
+{
+    public:
+    LuaTime(LuaFile* lua);
+    ~LuaTime();
+    void update();
+    
+    uint32_t monotonic();
+    sol::table get(std::string format);
+    int setInterval(sol::function func, uint32_t interval);
+    int setTimeout(sol::function func, uint32_t timeout);
+    void removeInterval(int id);
+    void removeTimeout(int id);
+
+    private:
+    LuaFile* lua = nullptr;
+    uint32_t timerFromStart = 0;
+
+    std::vector<LuaTimeInterval*> intervals;
+    std::vector<LuaTimeTimeout*> timeouts;
+};
+
+#include "../network/network.hpp"
+
+class LuaHttpClient
+{
+    public:
+    LuaHttpClient(LuaFile* lua);
+    ~LuaHttpClient();
+    std::string get(std::string url);
+    std::string post(std::string url);
+
+    network::HttpClient httpClient;
+
+    private:
+    LuaFile* lua;
+};
+
+class LuaNetwork
+{
+    public:
+    LuaNetwork(LuaFile* lua);
+    std::shared_ptr<LuaHttpClient> createHttpClient();
+
+    private:
+    LuaFile* lua;
 };
 
 struct Permissions
@@ -150,6 +253,9 @@ struct Permissions
     bool acces_files = true;
     bool acces_files_root = true;
     bool acces_hardware = true;
+    bool acces_time = true;
+    bool acces_web_paxo = true;
+    bool acces_web = true;
 };
 
 class LuaFile
@@ -163,12 +269,15 @@ class LuaFile
     Permissions perms;
     std::string directory;
 
+    sol::state lua;
+
     private:
     std::string filename;
     Window* current_root;
-    sol::state lua;
 
     LuaHardware lua_hardware;
     LuaGui lua_gui;
     LuaStorage lua_storage;
+    LuaTime lua_time;
+    LuaNetwork lua_network;
 };
