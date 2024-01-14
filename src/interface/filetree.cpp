@@ -39,7 +39,6 @@ void storage::init()
 vector<string> storage::listdir(string path, bool onlyDirs)
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
-
         path = "storage/" + path;
 
         #ifdef __APPLE__
@@ -50,7 +49,7 @@ vector<string> storage::listdir(string path, bool onlyDirs)
 
         for(const auto& foundDirectory : std::filesystem::directory_iterator(path))
         {
-            if (onlyDirs && foundDirectory.is_directory())
+            if ((onlyDirs && foundDirectory.is_directory()) || !onlyDirs)
                 foundDirs.push_back(foundDirectory.path().filename().string());
         }
 

@@ -1,42 +1,34 @@
-function cli()
-    print("clicked")
-end
+p = require('paxolib')
 
-function printTable(tbl)
-    for key, value in pairs(tbl) do
-        print(key, value)
+function show(text)
+    print("show: " .. text)
+    if (window_show == nil) then
+        window_show = p.window("Mon application")
+        local label = p.label(window_show, 0, 0, 320, 100)
+        label:setFontSize(30)
+        label:setText(text)
+        label:onClick(function() run() end)
     end
+    p.setWindow(window_show)
 end
 
 function run()
-    window = gui:window()
-    label = gui:label(window, 35, 130, 250, 40)
-    label:setText("Steve Jobs")
-    label:setHorizontalAlignment(CENTER_ALIGNMENT);
+    --print(p.getWeb("http://example.com"))
+    
+    if (window_run == nil) then
+    print("run: ")
+        window_run = p.window("Mon application")
+        local label = p.label(window_run, 0, 0, 320, 100)
+        local image = p.image(window_run, "logo.png", 0, 100, 42, 42)
+        label:setColor(p.COLOR_SUCCESS)
+        label:setFontSize(30)
 
-    file = storage:file("conf.txt", false)
-    file:open()
-    label:setText(file:readAll())
-    file:close()
+        label:setText("Click here")
+        label:onClick(function() show("hello world") end)
 
-    storage:mkdir("conf")
-    storage:mkdir("todel")
-    storage:rmDir("deleteDir")
-
-    local id = time:setTimeout(function() print ("LUAAAAA") end, 5000)
-    time:removeTimeout(id)
-
-    print("Contenu de la table:")
-    printTable(time:get("y,s,h,d,mo,y"))
-    print("end")
-
-    img = gui:image(window, "launcher.png", 0, 0, 100, 100)
-    label:onClick(function() print('ok') img:setX(img:getX() + 10) end)
-    gui:setWindow(window)
-
-    if(true) then
-        local http = network:HttpClient()
-        print(http:get("http://example.com"))
+        local button = p.button(window_run, 10, 150, 300, 100)
+        button:setText("Click here")
     end
 
+    p.setWindow(window_run)
 end

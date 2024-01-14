@@ -280,11 +280,11 @@ std::vector<std::string> LuaStorage::listDir(const std::string& path)
 
 bool LuaStorage::legalPath(const std::string& path)
 {
-    if (path.empty())
-        return false;
-
     if (!this->lua->perms.acces_files)  // a acces aux fichiers
         return false;
+
+    if (path.empty())
+        return true;
 
     if (!this->lua->perms.acces_files_root) // a acces a la racine de la mémoire
         if(path.find("../") == std::string::npos || path[0] == '/')
@@ -296,7 +296,7 @@ bool LuaStorage::legalPath(const std::string& path)
 std::string LuaStorage::convertPath(const std::string& path)
 {
     if (!legalPath(path))
-        return "";
+        return this->lua->directory;
     
     if(path[0]=='/')
         return path;
@@ -515,7 +515,7 @@ LuaFile::LuaFile(std::string filename)
     size_t lastSlashPos = filename.find_last_of("/\\"); // trouver le path du dossier
 
     if (lastSlashPos != std::string::npos) {
-        this->directory = filename.substr(0, lastSlashPos);
+        this->directory = filename.substr(0, lastSlashPos-1);
     } else {
         this->directory = "";
     }
@@ -686,7 +686,7 @@ void LuaFile::run()
         lua.script(code, sol::script_throw_on_error);
         lua.script("run()", sol::script_throw_on_error);
 
-        while (!home_button::isPressed())
+        while (!home_button::isPressed() && lua_gui.mainWindow != nullptr)
         {
             lua_gui.update();
             lua_time.update();
