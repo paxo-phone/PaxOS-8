@@ -163,6 +163,12 @@ LuaInput* LuaGui::input(LuaWidget* parent, int x, int y, int width, int height)
     return w;
 }
 
+LuaButton* LuaGui::button(LuaWidget* parent, int x, int y, int width, int height)
+{
+    LuaButton* w = new LuaButton(parent, x, y, width, height);
+    return w;
+}
+
 LuaWindow* LuaGui::window()
 {
     return new LuaWindow();
@@ -536,6 +542,7 @@ void LuaFile::run()
     // Charger le module dans l'environnement Lua
     lua.open_libraries(sol::lib::base);
     lua.open_libraries(sol::lib::math);
+    lua.open_libraries(sol::lib::table);
 
     // Lire la configuration
     storage::FileStream file2(directory+"conf.txt", storage::READ);
@@ -631,7 +638,7 @@ void LuaFile::run()
             "setHorizontalAlignment", &LuaLabel::setHorizontalAlignment,
             sol::base_classes, sol::bases<LuaWidget>());
 
-        lua.new_usertype<LuaInput>("LuaLabel",
+        lua.new_usertype<LuaInput>("LuaInput",
             "setText", &LuaInput::setText,
             "getText", &LuaInput::getText,
             "setFontSize", &LuaInput::setFontSize,
@@ -639,6 +646,15 @@ void LuaFile::run()
             "onChange", &LuaInput::onChange,
             "setVerticalAlignment", &LuaInput::setVerticalAlignment,
             "setHorizontalAlignment", &LuaInput::setHorizontalAlignment,
+            sol::base_classes, sol::bases<LuaWidget>());
+        
+        lua.new_usertype<LuaButton>("LuaButton",
+            "setText", &LuaButton::setText,
+            "getText", &LuaButton::getText,
+            "setFontSize", &LuaButton::setFontSize,
+            "getTextHeight", &LuaButton::getTextHeight,
+            "setVerticalAlignment", &LuaButton::setVerticalAlignment,
+            "setHorizontalAlignment", &LuaButton::setHorizontalAlignment,
             sol::base_classes, sol::bases<LuaWidget>());
 
         lua.set("LEFT_ALIGNMENT", LEFT_ALIGNMENT);

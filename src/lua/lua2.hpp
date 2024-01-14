@@ -100,6 +100,20 @@ class LuaInput : public LuaWidget
     sol::function onChangeFunc;
 };
 
+class LuaButton : public LuaWidget
+{
+    public:
+    LuaButton(LuaWidget* parent, int x, int y, int width, int height);
+    void setText(const std::string& text){ widget->setText(text); }
+    std::string getText(){ return widget->getText(); }
+    void setFontSize(int fontSize){ widget->setFontSize(fontSize); }
+    int getTextHeight(){ return widget->getTextHeight(); }
+    void setVerticalAlignment(int alignment){ widget->setVerticalAlignment(alignment); }
+    void setHorizontalAlignment(int alignment){ widget->setHorizontalAlignment(alignment); }
+
+    Button* widget = nullptr;
+};
+
 class LuaWindow : public LuaWidget
 {
     public:
@@ -118,6 +132,7 @@ class LuaGui
     LuaImage* image(LuaWidget* parent, const std::string& path, int x, int y, int width, int height);
     LuaLabel* label(LuaWidget* parent, int x, int y, int width, int height);
     LuaInput* input(LuaWidget* parent, int x, int y, int width, int height);
+    LuaButton* button(LuaWidget* parent, int x, int y, int width, int height);
     LuaWindow* window();
 
     void update();
