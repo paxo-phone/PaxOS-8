@@ -551,6 +551,7 @@ void LuaFile::run()
     lua.open_libraries(sol::lib::base);
     lua.open_libraries(sol::lib::math);
     lua.open_libraries(sol::lib::table);
+    lua.open_libraries(sol::lib::string);
 
     // Lire la configuration
     storage::FileStream file2(directory+"conf.txt", storage::READ);
