@@ -21,8 +21,8 @@ The paxos offers a multi-platform emulator so that you can run it directly on yo
 Before you start, make sure that `git`, `cmake` and `make` are correctly installed on your computer. If not, install them using the command `sudo apt install build-essential` (if you use `apt` as your package manager).
 
 You can then start the build instructions : 
-1. Clone the directory using `git clone https://github.com/paxo-phone/paxos_8.git`
-2. Move to the newly created folder using `cd paxos_8/`
+1. Clone the directory using `git clone https://github.com/paxo-phone/PaxOS-8.git`
+2. Move to the newly created folder using `cd PaxOS-8/`
 3. Load the sub-modules using `git submodule init && git submodule update`
 4. Compile the project using `cmake . && make`
 5. Run the executable using `./PaxOS`
@@ -47,8 +47,8 @@ The instructions for building under macos are fairly similar to those under Linu
 Before you start, make sure that `git`, `cmake` and `make` are correctly installed on your computer. If not, you can use the `brew` package manager to install them using the following command `brew install cmake make git`.
 
 You can then start the build instructions : 
-1. Clone the directory using `git clone https://github.com/paxo-phone/paxos_8.git`
-2. Move to the newly created folder using `cd paxos_8/`
+1. Clone the directory using `git clone https://github.com/paxo-phone/PaxOS-8.git`
+2. Move to the newly created folder using `cd PaxOS-8/`
 3. Load the sub-modules using `git submodule init && git submodule update`
 4. Compile the project using `cmake . && make`
 5. Run the executable using `./PaxOS`
