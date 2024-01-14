@@ -2,9 +2,9 @@
 
 GUI_TYPE Box::getType(){return BOX_TYPE;}
 
-Box::Box() {}
+Box::Box() = default;
 
-Box::Box(int16_t x, int16_t y, int16_t width, int16_t height) : Gui(x, y, width, height)
+Box::Box(const int16_t x, int16_t const y, const int16_t width, const int16_t height) : Gui(x, y, width, height)
 {
     setBorderSize(0);
     setRadius(0);

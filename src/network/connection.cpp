@@ -11,8 +11,6 @@
 #endif
 
 #include <string>
-#include <stdint.h>
-#include <string.h>
 
 #include "connection.hpp"
 

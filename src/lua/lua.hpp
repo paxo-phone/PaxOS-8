@@ -10,11 +10,11 @@
     #include <esp_task_wdt.h>
 #endif
 
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <cstring>
 
 #include "../lib/lua/lua.hpp"
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include <map>
 #include <iostream>
@@ -51,39 +51,39 @@ typedef struct LuaEvent {
 class LuaEventInterval
 {
     public:
-    LuaEventInterval(lua_State *L, int callback_ref, int interval);
+    LuaEventInterval(lua_State *L, int callback_ref, uint32_t interval);
     ~LuaEventInterval();
     int id;
     int callback_ref;
     lua_State *L;
-    void call(void);
+    void call();
 };
 
 class LuaEventTimeOut
 {
     public:
-    LuaEventTimeOut(lua_State *L, int callback_ref, int timer);
+    LuaEventTimeOut(lua_State *L, int callback_ref, uint32_t timer);
     ~LuaEventTimeOut();
     int id;
     int callback_ref;
     lua_State *L;
-    void call(void);
+    void call();
 };
 
 class LuaInterpreter {
     private:
         static Window* current_root;
-        std::string data = "";
+        std::string data;
         static std::string dir;
         static vector<LuaEvent> events;
         static vector<LuaEventInterval*> intervals;
         static vector<LuaEventTimeOut*> timeOuts;
         static uint64_t timerFromStart;
-        static void fill_gui_metatable(lua_State* L, const char* table_name, lua_CFunction f, const luaL_Reg *l);
+        static void fill_gui_metatable(lua_State* L, const char* table_name, lua_CFunction f);
 
     public:
-        LuaInterpreter(string dir);
-        void loadScript(std::string filename);
+        explicit LuaInterpreter(string dir);
+        void loadScript(const std::string& filename);
         void runApp();
 
         // Lua provided to lua    
@@ -162,7 +162,7 @@ static const luaL_Reg gui_common_binds[] = {
     {"isFocused",  LuaInterpreter::isFocused},
     {"setVerticalAlignment",   LuaInterpreter::setVerticalAlignment},
     {"setHorizontalAlignment", LuaInterpreter::setHorizontalAlignment},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
 // Library bindings
@@ -193,7 +193,7 @@ static const luaL_Reg paxolib[] = {
     {"getTime",     LuaInterpreter::getTime},
     {"getWeb",      LuaInterpreter::getWeb},
     
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
 static const std::map<std::string, int> color_bindings = {

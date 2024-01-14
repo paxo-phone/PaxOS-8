@@ -2,6 +2,7 @@
 #define CONTACT_HPP
 
 #include <vector>
+#include <cstdint>
 
 #include "../CApp.hpp"
 

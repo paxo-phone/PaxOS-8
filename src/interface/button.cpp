@@ -8,7 +8,6 @@
     #include <esp_task_wdt.h>
 #endif
 
-#include <stdint.h>
 #include "../tasks/tasks.hpp"
 
 namespace home_button

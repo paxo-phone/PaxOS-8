@@ -3,10 +3,6 @@
 
 #define KEY_ERASE 127 // ascii delete char
 
-#define COLOR_PRESS 0x9F1D
-#define COLOR_NOT_PRESS 0x29A6
-#define COLOR_BACKGROUND 0xFFFF
-
 class Box;
 class Label;
 

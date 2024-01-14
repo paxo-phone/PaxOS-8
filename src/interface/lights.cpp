@@ -1,5 +1,3 @@
-#include <stdint.h>
-
 #include "lights.hpp"
 
 namespace light
@@ -11,7 +9,7 @@ namespace light
     #define PWM1_FREQ  1000
 
     #define ANALOG_STATE_MAX 255
-    #define ANALOG_STATE_MIN -1
+    #define ANALOG_STATE_MIN (-1)
 
     void init(void)
     {

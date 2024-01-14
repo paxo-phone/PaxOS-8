@@ -19,7 +19,6 @@ enum : color_t
     COLOR_BEIGE = 0xEF5B
 };
 
-#define ALPHA_8B 254
 #define ALPHA_16B 0xF7BE
 
 color_t rgb(uint8_t r, uint8_t g, uint8_t b);

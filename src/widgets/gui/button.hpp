@@ -1,7 +1,6 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
-//#include "../gui.hpp"
 #include "label.hpp"
 
 class Button : public Label
