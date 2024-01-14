@@ -535,6 +535,7 @@ void LuaFile::run()
 
     // Charger le module dans l'environnement Lua
     lua.open_libraries(sol::lib::base);
+    lua.open_libraries(sol::lib::math);
 
     // Lire la configuration
     storage::FileStream file2(directory+"conf.txt", storage::READ);
@@ -546,8 +547,6 @@ void LuaFile::run()
     // perms....
 
     // en fonction des permissions, charger certains modules
-
-    lua.open_libraries(sol::lib::base);
 
     if (perms.acces_hardware)   // si hardware est autorisé
     {
