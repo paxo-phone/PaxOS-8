@@ -9,26 +9,16 @@
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 #include <iostream>
-#include <atomic>
 
-struct Rectangle {
-    uint16_t x;
-    uint16_t y;
-    uint16_t width;
-    uint16_t height;
-};
-
-
-void setup(bool *shouldUpdateScreen, Rectangle* *screenUpdateZones);
-
-bool shouldUpdateScreen = true;
-Rectangle* screenUpdateZones;
+void setup(bool *shouldUS);
 
 void loop(void);
 
 static void loopThread(void)
 {
-  setup(&shouldUpdateScreen, &screenUpdateZones);
+  // Will be available globally with pShouldUpdateScreen defined in main.cpp.
+  bool SDLShouldUpdateScreen = true;
+  setup(&SDLShouldUpdateScreen);
   for (;;)
   {
     std::this_thread::yield();
