@@ -16,12 +16,12 @@ void launcher()
 
     uint16_t day_ = gsm.days;
     uint16_t day = gsm.days;
-    uint16_t month = gsm.months;
+    const uint16_t month = gsm.months;
     uint16_t year = gsm.years;
-    std::string dayName = daysOfWeek[(day+=month<3?year--:year-2,23*month/9+day+4+year/4-year/100+year/400)%7];
+    const std::string dayName = daysOfWeek[(day+=month<3?year--:year-2,23*month/9+day+4+year/4-year/100+year/400)%7];
     std::string monthName = daysOfMonth[month==0?1:(month-1)];
 
-    Label* label = new Label(AUTO, 31, AUTO, AUTO, dayName + "\n" + to_string(gsm.days) + " " + monthName);
+    auto* label = new Label(AUTO, 31, AUTO, AUTO, dayName + "\n" + to_string(gsm.days) + " " + monthName);
     label->setHorizontalAlignment(CENTER_ALIGNMENT);
     label->setFontSize(25);
     label->setFontName("sans");
@@ -34,11 +34,11 @@ void launcher()
     for (int i = 0; i < registeredApplications.size(); i++)
     {
         std::cout << registeredApplications[i]->getAppIconPath() << std::endl;
-        Box* box = new Box(33 + (95 * (i%3)), 117 + (95 * int(i/3)), 63, 63);
+        auto* box = new Box(33 + (95 * (i%3)), 117 + (95 * (i/3)), 63, 63);
         box->setBackgroundColor(COLOR_EXTRA_LIGHT);
         box->setRadius(15);
 
-        Image* image = new Image(registeredApplications[i]->getAppIconPath(), AUTO, AUTO, AUTO, AUTO);
+        auto* image = new Image(registeredApplications[i]->getAppIconPath(), AUTO, AUTO, AUTO, AUTO);
         image->load();
         box->addChild(image);
 
@@ -62,9 +62,9 @@ void launcher()
 
         if(day_ != gsm.days)
         {
-            std::string monthName = daysOfMonth[gsm.months==0?0:(gsm.months-1)];
-            Date d = {gsm.days, gsm.months, gsm.years};
-            label->setText(std::string(daysOfWeek[myWhatDay(d)]) + "\n" + to_string(gsm.days) + " " + monthName);
+            monthName = daysOfMonth[gsm.months==0?0:(gsm.months-1)];
+            const Date date = {gsm.days, gsm.months, gsm.years};
+            label->setText(std::string(daysOfWeek[myWhatDay(date)]) + "\n" + to_string(gsm.days) + " " + monthName);
             day_ = gsm.days;
         }
 

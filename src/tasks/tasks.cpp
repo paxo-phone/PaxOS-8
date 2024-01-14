@@ -1,13 +1,11 @@
 #ifndef TASK_CPP
 #define TASK_CPP
 
-#include "thread.hpp"
 #include "tasks.hpp"
 #include "../interface/interface.hpp"
 #include <vector>
 
 EventHandler eventHandler;
-EventHandler graphicalEventHandler;
 
 Timeout::Timeout(CallbackClass* callback, uint32_t timeout)
 {
@@ -91,7 +89,6 @@ void EventHandler::update()
             delete eventHandler.timeouts[i];
             eventHandler.timeouts.erase(eventHandler.timeouts.begin() + i);
             break;
-            i-=1;
         }
     }
 }

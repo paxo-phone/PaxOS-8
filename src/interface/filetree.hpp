@@ -1,5 +1,5 @@
-#ifndef __FILE_TREE__
-#define __FILE_TREE__
+#ifndef __FILE_TREE_HPP__
+#define __FILE_TREE_HPP__
 
 #ifdef ESP32
     #include <Arduino.h>

@@ -12,7 +12,7 @@
 
 namespace standbymode
 {
-    void enable(void)
+    void enable()
     {
         #ifdef ESP32
             setCpuFrequencyMhz(FREEZE_CPU_FREQUENCY);
@@ -22,7 +22,7 @@ namespace standbymode
         #endif
     }
 
-    void disable(void)
+    void disable()
     {
         #ifdef ESP32
             setCpuFrequencyMhz(NORMAL_CPU_FREQUENCY);

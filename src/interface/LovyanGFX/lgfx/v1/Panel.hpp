@@ -17,14 +17,9 @@ Contributors:
 /----------------------------------------------------------------------------*/
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 
-#if __has_include("alloca.h")
-#include <alloca.h>
-#else
-#include <malloc.h>
-#define alloca _alloca
-#endif
+#include "../../smart_alloca.hpp"
 
 #include "misc/enum.hpp"
 #include "misc/colortype.hpp"

@@ -104,7 +104,7 @@ void storage::FileStream::open(const string& path, OPEN_MODE mode, bool erase)
     #endif
 }
 
-void storage::FileStream::close(void)
+void storage::FileStream::close()
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         this->stream->close();
@@ -115,7 +115,7 @@ void storage::FileStream::close(void)
 }
 
 
-string storage::FileStream::read(void)
+string storage::FileStream::read()
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         string o;
@@ -134,7 +134,7 @@ string storage::FileStream::read(void)
     #endif
 }
 
-string storage::FileStream::readline(void)
+string storage::FileStream::readline()
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         string line;
@@ -161,7 +161,7 @@ string storage::FileStream::readline(void)
  * Reads a word from the file and returns as a string.
  * @return A word from the file as a string
  */
-string storage::FileStream::readword(void)
+string storage::FileStream::readword()
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         string word;
@@ -191,7 +191,7 @@ string storage::FileStream::readword(void)
  * Reads a single character from the file.
  * @return A character read from the file
  */
-char storage::FileStream::readchar(void)
+char storage::FileStream::readchar()
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         return (this->stream)->get();
@@ -234,7 +234,7 @@ void storage::FileStream::write(const char& c)
  * Checks if the file is open.
  * @return True if the file is open, false otherwise
  */
-bool storage::FileStream::is_open(void)
+bool storage::FileStream::is_open()
 {
     #if defined(__linux__) || defined(_WIN32) || defined(_WIN64) || defined(__APPLE__)
         return this->stream->is_open();

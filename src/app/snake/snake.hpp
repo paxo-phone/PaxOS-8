@@ -1,6 +1,8 @@
 #ifndef SNAKE_HPP
 #define SNAKE_HPP
 
+#include <cstdint>
+
 #include "../CApp.hpp"
 
 class Snake : public CApp

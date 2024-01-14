@@ -13,14 +13,14 @@ namespace home_button
     /**
      * @brief Initialise le bouton home
     */
-    void init(void);
+    void init();
 
     /**
      * @brief Vérifie si le bouton home est pressé
      * @return Vrai si le bouton home est pressé, faux sinon
     */
-    void update(void);
-    bool isPressed(void);
+    void update();
+    bool isPressed();
 }
 
 #endif /* HOME_BUTTON_HPP */
