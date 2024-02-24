@@ -527,7 +527,7 @@ int LuaInterpreter::fillRect(lua_State* L) {
     // Cast to derived class before doing anything
     switch (gui->getType()) {
         case GUI_TYPE::CANVAS_TYPE:
-            reinterpret_cast<Canvas*>(gui)->l_tft.fillRect(lua_tointeger(L, 2), lua_tointeger(L, 3), lua_tointeger(L, 4), lua_tointeger(L, 5), lua_tointeger(L, 6));
+            reinterpret_cast<Canvas*>(gui)->l_tft.fillRect<uint32_t>(lua_tointeger(L, 2), lua_tointeger(L, 3), lua_tointeger(L, 4), lua_tointeger(L, 5), lua_tointeger(L, 6));
             break;
         default:
             break; // Nothing to do here
